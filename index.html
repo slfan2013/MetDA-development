@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
    <script src="js/core/jquery.min.js"></script>
    <script>
       $("head").load("header.html")
-
-         check_loaded_interval = setInterval(function () { //  check if the header.html is successfully loaded. Otherwise, wait.
-            if (typeof loaded === "undefined") {
-               console.log("waiting")
-            } else {
-               $("nav").load("nav.html")
-               $("#home_content").load("home.html")
-               clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
-               // JS CODING.
-               $("#test").text(loaded)
+      check_loaded_interval = setInterval(function () { //  check if the header.html is successfully loaded. Otherwise, wait.
+         if (typeof loaded === "undefined") {
+            console.log("waiting")
+         } else {
+            $("nav").load("nav.html")
+            
+            clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
+            // JS CODING.
+            $("#test").text(loaded)
+            function loadjscssfile(filename, filetype) {
+               if (filetype == "js") { //if filename is a external JavaScript file
+                  var fileref = document.createElement('script')
+                  fileref.setAttribute("type", "text/javascript")
+                  fileref.setAttribute("src", filename)
+               }
+               else if (filetype == "css") { //if filename is an external CSS file
+                  var fileref = document.createElement("link")
+                  fileref.setAttribute("rel", "stylesheet")
+                  fileref.setAttribute("type", "text/css")
+                  fileref.setAttribute("href", filename)
+               }
+               if (typeof fileref != "undefined")
+                  document.getElementsByTagName("head")[0].appendChild(fileref)
             }
-         }, 100);
+
+            loadjscssfile("js/home.js", "js")
+
+         }
+      }, 100);
    </script>
 
-  
+
+
 </head>
 
 <body style="background-color:white" class="off-canvas-sidebar">
@@ -29,11 +48,17 @@
       <nav class="navbar navbar-expand-lg navbar-absolute fixed-top text-black"></nav>
       <!-- End Navbar -->
       <div class="wrapper wrapper-full-page">
-         <div class="page-header" >
-            <div class="container" id='home_content'>
+         <div class="page-header">
+            <div class="container" id=''>
+               <div id="home_content" class='contents'></div>
+               <div id="missing_value_imputation_content" class='contents'></div>
+
+
 
 
             </div>
+
+
          </div>
       </div>
    </div>
@@ -45,4 +70,5 @@
 
 
 </body>
+
 </html>
