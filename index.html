@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <script src="js/core/jquery.min.js"></script>
+   <script>
+      $("head").load("header.html")
+
+         check_loaded_interval = setInterval(function () { //  check if the header.html is successfully loaded. Otherwise, wait.
+            if (typeof loaded === "undefined") {
+               console.log("waiting")
+            } else {
+               $("nav").load("nav.html")
+               $("#home_content").load("home.html")
+               clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
+               // JS CODING.
+               $("#test").text(loaded)
+            }
+         }, 100);
+   </script>
+
+  
+</head>
+
+<body style="background-color:white" class="off-canvas-sidebar">
+   <i class="fas fa-adjust fa-spin" style="font-size:24px" id="loading"></i>
+   <div id="content" style="display:none">
+      <!-- HTML CODING -->
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg navbar-absolute fixed-top text-black"></nav>
+      <!-- End Navbar -->
+      <div class="wrapper wrapper-full-page">
+         <div class="page-header" >
+            <div class="container" id='home_content'>
+
+
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+
+
+
+
+
+</body>
+</html>
