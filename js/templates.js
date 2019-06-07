@@ -22,6 +22,8 @@ check_input_format = function(){
             text = text + "<p class='text-success'>" + obj.success_message.join("</p><p class='text-success'>") + "</p>"
             $("#inputFile_validating").html(text)
             $('#parameter_settings_card').show();
+            // HERE load the missing_value_imputation html. <script src='missing_value_imputation.jb'></script>
+            
         })
     }).fail(function(e){
         //alert(e.responseText)
