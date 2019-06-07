@@ -6,19 +6,13 @@
    <script>
       $("head").load("header.html")
       check_loaded_interval = setInterval(function () { //  check if the header.html is successfully loaded. Otherwise, wait.
+         console.log("!")
          if (typeof loaded === "undefined") {
             console.log("waiting")
          } else {
             console.log("header loaded")
+            //$("#home_content").load("home.html")
             $("nav").load("nav.html")
-
-
-            $("#home_content").load("home_content".replace("_content", "")+".html")
-            /*var idArray = [];
-            $('.contents').each(function () {
-               //console.log(this.id)
-               $("#"+this.id).load(this.id.replace("_content", "")+".html")
-            });*/
 
             clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
             // JS CODING.
@@ -39,34 +33,35 @@
                   document.getElementsByTagName("head")[0].appendChild(fileref)
             }
 
-
-            //loadjscssfile("css/material-dashboard.css?v=2.1.0", "css") //dynamically load and add this .js file
-
-
             function load_page_by_url() {
                $(".contents").hide();
                if (window.location.href.split("#")[1] === undefined || window.location.href.split("#")[1] === "") {
                   $("#home_content").show();
-                  //$("#home_content").load("home.html")
+                  $("#home_content").load("home.html", function () {
+                     $.material.init()
+                  })
                } else {
                   $("#" + window.location.href.split("#")[1] + "_content").show();
-                  /*if (["missing_value_imputation"].includes(window.location.href.split("#")[1])) {
-                     $("#" + window.location.href.split("#")[1] + "_content").load("templates.html")
+                  if (["missing_value_imputation"].includes(window.location.href.split("#")[1])) {
+                     $("#" + window.location.href.split("#")[1] + "_content").load("templates.html", function () {
+                        $.material.init()
+                     })
                   } else {
-                     $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html")
-                  }*/
+                     $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html", function () {
+                        console.log("!")
+                        $.material.init()
+                     })
+                  }
                }
+               loadjscssfile("js/material-dashboard.js?v=2.1.0", "js") //dynamically load and add this .js file
 
             }
 
             // TRY! when click anchor, do not use load. Rather use show and hide.
-           // load_page_by_url();
+            load_page_by_url();
             window.addEventListener('hashchange', load_page_by_url, false);
-
-
-
          }
-      }, 100);
+      }, 1000);
    </script>
 
 
@@ -86,7 +81,7 @@
                This will send data using AJAX to Python:<br /><br />
                <a href="" id="theButton">Click Me</a>
                <div id="home_content" class='contents'></div>
-               <div id="templates_content" class='contents'></div>
+               <div id="missing_value_imputation_content" class='contents'></div>
 
 
 
