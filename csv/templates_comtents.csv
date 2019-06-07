@@ -1,0 +1,2 @@
+﻿id,method_name,method_description
+missing_value_imputation,Missing Value Imputation,"Missing value frequently occur in the untargeted metabolomics datasets. There are multiple methods. Here, we have collected 10 methods for your to impute the missing values. Our default method is XXX, which has been accessed to be suitable compared to other methods. Other recommended methods includes, xxx."

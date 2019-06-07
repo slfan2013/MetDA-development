@@ -1,85 +1,104 @@
+<script src="js/templates.js"></script>
 <div class="row">
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header card-header-warning card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">transform</i>In & Out
-                    </div>
-                    <h4 class="card-title text-center" id="method_name"></h4>
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">transform</i>In & Out
                 </div>
-                <div class="card-body ">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div id="method_description"></div>
-                            <i class="material-icons">transform</i>
-                            <a class="btn btn-primary" href="#" title="Tutorial of MetDA">Learn More</a>
-                        </div>
+                <h3 class="card-title text-center" id="method_name"></h3>
+            </div>
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p id="method_description"></p>
+                        <i class="material-icons">transform</i>
+                        <a class="btn btn-primary" href="#" title="Tutorial of MetDA">Learn More</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!--<script src="js/missing_value_imputation.js"></script>-->
-    
-    
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card ">
-                <div class="card-header card-header-warning card-header-icon">
-                    <div class="card-icon">
-                        Upload Dataset
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">insert_drive_file</i>
+                </div>
+                <h4 class="card-title">Input Dataset File</h4>
+            </div>
+            <div class="card-body">
+                <div class='row'>
+                    <div class='col-lg-6'>
+                        <div class="form-group form-file-upload form-file-simple">
+                            <input type="text" class="form-control inputFileVisible"
+                                placeholder="Click to Selec Dataset File...">
+                            <input type="file" class="inputFileHidden" onchange="check_input_format()" id="inputFile">
+                            <div id="inputFile_validating"></div>
+                        </div>
+                    </div>
+                    <div class='col-lg-6'>
+                        <p>The dataset should meet the basic criterion. Or download the example dataset and see the
+                            format.</p>
                     </div>
                 </div>
-                <div class="card-body ">
-                    <div class="row">
-                        <div class="col-md-12">
-                            upload dataset
+            </div>
+            <div class="card-footer ">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" id="parameter_settings_card" style='display:none'>
+    <div class="col-md-12">
+            <div class="card ">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">settings</i>
                         </div>
+                        <h4 class="card-title">Parameter Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class='row'>
+                            <div class='col-lg-6'>
+                                
+                            </div>
+                            <div class='col-lg-6'>
+                                <p>The dataset should meet the basic criterion. Or download the example dataset and see the
+                                    format.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+        
+                    </div>
+                </div>
+    </div>
+</div>
+
+
+<!--
+<div class="row">
+    <div class="col-md-12">
+        <div class="card ">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    Outputs
+                </div>
+            </div>
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-md-12">
+                        Results are available for download.
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    
-    <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-warning card-header-icon">
-                        <div class="card-icon">
-                            Inputs
-                        </div>
-                    </div>
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-md-12">
-                                upload dataset
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    
-    
-        
-    <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="card-header card-header-warning card-header-icon">
-                        <div class="card-icon">
-                            Outputs
-                        </div>
-                    </div>
-                    <div class="card-body ">
-                        <div class="row">
-                            <div class="col-md-12">
-                                Results are available for download.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-       
+</div>-->
