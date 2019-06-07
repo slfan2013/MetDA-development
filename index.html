@@ -9,8 +9,9 @@
          if (typeof loaded === "undefined") {
             console.log("waiting")
          } else {
+            console.log("header loaded")
             $("nav").load("nav.html")
-            
+
             clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
             // JS CODING.
             $("#test").text(loaded)
@@ -30,7 +31,31 @@
                   document.getElementsByTagName("head")[0].appendChild(fileref)
             }
 
-            loadjscssfile("js/home.js", "js")
+            
+            //loadjscssfile("css/material-dashboard.css?v=2.1.0", "css") //dynamically load and add this .js file
+
+
+            function load_page_by_url() {
+               $(".contents").hide();
+               if (window.location.href.split("#")[1] === undefined || window.location.href.split("#")[1] === "") {
+                  $("#home_content").show();
+                  $("#home_content").load("home.html")
+               } else {
+                  $("#" + window.location.href.split("#")[1] + "_content").show();
+                  if (["missing_value_imputation"].includes(window.location.href.split("#")[1])) {
+                     $("#" + window.location.href.split("#")[1] + "_content").load("templates.html")
+                  } else {
+                     $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html")
+                  }
+               }
+
+            }
+
+            // TRY! when click anchor, do not use load. Rather use show and hide.
+            load_page_by_url();
+            window.addEventListener('hashchange', load_page_by_url, false);
+
+
 
          }
       }, 100);
@@ -50,9 +75,10 @@
       <div class="wrapper wrapper-full-page">
          <div class="page-header">
             <div class="container" id=''>
+                 This will send data using AJAX to Python:<br /><br />
+   <a href="" id="theButton">Click Me</a>
                <div id="home_content" class='contents'></div>
                <div id="missing_value_imputation_content" class='contents'></div>
-
 
 
 
@@ -67,8 +93,45 @@
 
 
 
-
+   <script type="text/javascript">
+      // setup some JSON to use
+      var cars = [
+          { "make": "Porsche", "model": "911S" },
+          { "make": "Mercedes-Benz", "model": "220SE" },
+          { "make": "Jaguar", "model": "Mark VII" }
+      ];
+  
+      window.onload = function () {
+          // setup the button click
+          document.getElementById("theButton").onclick = function () {
+              doWork()
+          };
+      }
+  
+      function doWork() {
+          // ajax the JSON to the server
+    
+          $.ajax({
+              type: "POST",
+              url: "http://127.0.0.1:8081/receiver",
+              data: JSON.stringify(cars),
+              contentType: "application/json; charset=utf-8",
+              //dataType: "json",
+              success: function (data) { 
+                  alert(data);
+              },
+              failure: function (errMsg) {
+                  alert(errMsg);
+              }
+          });
+  
+  
+          // stop link reloading the page
+          event.preventDefault();
+      }
+  </script>
 
 </body>
 
 </html>
+
