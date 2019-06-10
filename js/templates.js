@@ -16,14 +16,21 @@ check_input_format = function(){
         path:$("#inputFile")[0].files[0]
     },function(session){
         session.getObject(function(obj){
-            ooo = obj
+            oo = obj
+            project_id = obj.project_id[0]
             $("#inputFile").prop("disabled", false);
-            var text = "<p class='text-warning'>" + obj.warning_message.join("</p><p class='text-warning'>") + "</p>"
-            text = text + "<p class='text-success'>" + obj.success_message.join("</p><p class='text-success'>") + "</p>"
+            var text = "<p class='text-warning'>" + obj.message.warning_message.join("</p><p class='text-warning'>") + "</p>"
+            text = text + "<p class='text-success'>" + obj.message.success_message.join("</p><p class='text-success'>") + "</p>"
             $("#inputFile_validating").html(text)
             $('#parameter_settings_card').show();
             // HERE load the missing_value_imputation html. <script src='missing_value_imputation.jb'></script>
-            
+
+
+
+
+            $("#parameter_settings").load(window.location.href.split("#")[1]+"_parameter_settings.html",init_selectpicker)
+            $("#parameter_settings_description").html('loaded')
+            loadjscssfile("js/"+window.location.href.split("#")[1]+".js",'js')
         })
     }).fail(function(e){
         //alert(e.responseText)

@@ -1,0 +1,73 @@
+<div>
+    <form onsubmit="Submit()">
+        <div class="form-group">
+            <label for="defination_of_missing_value">Step 1: Defination of Missing
+                Values</label>
+            <select class="form-control selectpicker parameter" data-style="btn btn-link" id="defination_of_missing_value"
+                multiple onchange="defination_of_missing_value_onchange()">
+                <option selected="selected">empty cells</option>
+                <option>zeros</option>
+                <option>negative values</option>
+                <option>values less than ... </option>
+                <option>other</option>
+            </select>
+        </div>
+        <div class="form-group" style="display:none" id="defination_of_missing_value_values_less_than_form_group">
+            <label for="defination_of_missing_value_values_less_than">VALUES LESS THAN ... </label>
+            <input type="number" class="form-control parameter" id="defination_of_missing_value_values_less_than"
+                placeholder="Enter a Value" aria-describedby="defination_of_missing_values_less_than_text">
+            <small id="defination_of_missing_values_less_than_text" class="form-text text-muted">Values less than this
+                entered value will be treated as missing values</small>
+        </div>
+        <div class="form-group" style="display:none" id="defination_of_missing_other_than_form_group">
+            <label for="defination_of_missing_other_than">OTHER</label>
+            <input type="text" class="form-control parameter" id="defination_of_missing_other_than" placeholder="Enter Values"
+                aria-describedby="defination_of_missing_other_than_text">
+            <small id="defination_of_missing_other_than_text" class="form-text text-muted">Speficy values, sapareted by
+                comma (<em>,</em>), that should be
+                treated as missing values.</small>
+        </div>
+        <label for="">Step 2: Remove Compounds with Too Many Missing Values</label>
+        <table style="padding-bottom: 12px">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input parameter" type="checkbox" checked
+                                    id="remove_missing_values_more_than">
+                                Remove compounds with more than
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input type="number" class="form-control parameter" id="remove_missing_values_more_than_value"
+                                value="50" placeholder="Enter a Value" min=0 max=100 step=5>
+                        </div>
+                    </td>
+                    <td>
+                        % missing values
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group">
+            <label for="missing_value_imputation_method">Step 3: Missing Value Imputation Method </label>
+            <select class="form-control selectpicker parameter" data-style="btn btn-link" id="missing_value_imputation_method"
+                onchange="missing_value_imputation_method_onchange()">
+                <option selected="selected">replace by half minimum</option>
+                <option>replace by 1/10 minimum</option>
+                <option>replace by minimum</option>
+                <option>replace by mean</option>
+                <option>replace by median</option>
+                <option>imputed by kNN</option>
+            </select>
+        </div>
+
+        <button type='submit' class="btn btn-warning btn-sm" id="missing_value_imputation_submit">Submit</button>
+    </form>
+</div>
