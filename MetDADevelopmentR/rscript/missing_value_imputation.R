@@ -9,4 +9,9 @@ e = data$e
 f = data$f
 p = data$p
 
-#
+# Summarize the information about missing values.
+# data = wcmc::read_data("GCTOF_Abraham_CM_v_M_heart_NoSwim.xlsx")
+# e = data$e_matrix
+# f = data$f
+# p = data$p
+
