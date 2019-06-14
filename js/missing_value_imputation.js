@@ -15,28 +15,28 @@ var defination_of_missing_value_onchange = function () {
 
 }
 
+missing_value_imputation_append_results = function (obj, session) {
+    $("#results_description").html(obj.results_description)
 
-var Submit = function(){
-    $("#missing_value_imputation_submit").text("Calculating...")
-    $("#missing_value_imputation_submit").prop('disabled', true);
-
-    parameter = {}
-
-    $(".parameter").each(function(){
-        if(this.id !== ''){
-            //parameters.push({:$(this).val()})
-            parameter[this.id] = $(this).val()
+    Papa.parse(session.loc + "files/summary_data.csv", {
+        download: true,
+        header: false,
+        complete: function (results) {
+            data = results.data
+            $('#results_dataset_table').DataTable({
+                data: data.slice(1, data.length - 1),
+                columns: data[0].map(function (x) { return ({ title: x }) })
+            });
         }
+    });
+
+
+
+    var files_sources = [session.loc + "files/result_dataset.csv", session.loc + "files/summary_data.csv"];
+    var files_names = ["missing_value_imputation_result_dataset.csv","missing_value_imputation_result_summary.csv"]
+    var zipfile_name = "missing_value_imputation_results.zip"
+    $("#download_results").click(function(){
+        download_results(files_names,files_sources,zipfile_name)
     })
-    parameter.project_id = project_id
-    parameter.fun_name = window.location.href.split("#")[1]
-    var req = ocpu.call("call_fun",{parameter:parameter} , function (session) {
-        console.log(session)
-        session.getObject(function (obj) {
-            ooo = obj
-            console.log(ooo)
-        })
-    })
-    
 
 }

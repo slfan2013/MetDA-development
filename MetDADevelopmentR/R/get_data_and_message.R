@@ -65,6 +65,9 @@ get_data_and_message = function(path){
   ncol_f = ncol(f)
 
 
+
+  colnames(e_matrix) = p$label
+
   success_message = paste0("Success: Your data has ", num_sample," samples and ",num_compound," compounds. There are ", ncol_p," sample informations and ",ncol_f," compound informations.")
 
   message  = list(warning_message = warning_message, success_message = success_message)

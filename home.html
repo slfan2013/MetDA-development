@@ -1,3 +1,4 @@
+
 <div class="row" style="margin-bottom:10vh;">
     <div class="col-lg-6">
         <div class="card-body">
@@ -44,17 +45,17 @@
             <br />
             <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist">
+                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist" onclick="change_big_category('')">
                         <i class="material-icons">info</i> Description
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link8" role="tablist">
-                        <i class="material-icons">location_on</i> Location
+                    <a class="nav-link active" data-toggle="tab" href="#projects" role="tablist" onclick="change_big_category('projects')">
+                        <i class="material-icons">library_books</i> Projects
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#in_and_out_link" role="tablist">
+                    <a class="nav-link" data-toggle="tab" href="#in_and_out_link" role="tablist" onclick="change_big_category('in_and_out')">
                         <i class="material-icons">transform</i> In & Out
                     </a>
                 </li>
@@ -76,23 +77,82 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="link8">
+                <div class="tab-pane active" id="projects">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Location of the product</h4>
+                            <h4 class="card-title">Projected Analyses</h4>
                             <p class="card-category">
-                                More information here
+                                Create a comprehensive data analysis pipline for your dataset. For example, you could
+                                try out different normalization methods and visualize the results using Principal
+                                Component Analysis. After selecting the best normalized dataset, continue with student
+                                t-test and Mann-Whitney U test and see which compounds have small p-values on both of
+                                the tests.
                             </p>
                         </div>
                         <div class="card-body">
-                            Efficiently unleash cross-media information without cross-media value. Quickly maximize
-                            timely deliverables for real-time schemas.
-                            <br>
-                            <br> Dramatically maintain clicks-and-mortar solutions without functional solutions.
+                            <p><b>Create a Project. &#8594; Input a Dataset. &#8594; Analyse It Comprehensively. &#8594;
+                                    Download the Results and Reports.</b></p>
+                            <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#create_new_project_collapse"
+                                aria-expanded="false" aria-controls="create_new_project_collapse">Create a New
+                                Project</a>
+                            <div class="collapse" id="create_new_project_collapse">
+                                <div class="card card-body">
+                                    <div class='row'>
+                                        <div class='col-lg-6'>
+                                            <div class="form-group form-file-upload form-file-simple">
+                                                <input type="text" class="form-control inputFileVisible"
+                                                    placeholder="Click to Selec Dataset File...">
+                                                <input type="file" class="inputFileHidden"
+                                                    onchange="create_new_project_check_input_format('inputFile_index')"
+                                                    id="inputFile_index">
+                                                <div class="inputFile_validating"></div>
+                                            </div>
+                                        </div>
+                                        <div class='col-lg-6'>
+                                            <p>The dataset should meet the basic criterion. Or download the example
+                                                dataset and
+                                                see
+                                                the
+                                                format.</p>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+                                        <div class='col-lg-6'>
+                                            <div class="form-group">
+                                                <label for="new_project_name">New Project Name</label>
+                                                <input type="text" class="form-control" id="new_project_name"
+                                                    aria-describedby="new_project_name_instruction"
+                                                    placeholder="Enter a New Project Name">
+                                                <small id="new_project_name_instruction"
+                                                    class="form-text text-muted">Please
+                                                    avoid
+                                                    strange characters.</small>
+                                            </div>
+                                        </div>
+                                        <div class='col-lg-6'>
+                                            <p>The project name cannot be duplicated with ones already under your
+                                                account.</p>
+                                        </div>
+                                    </div>
+                                    <div class='row'>
+
+                                        <a class="btn btn-primary btn-link btn-sm" onclick="create_project()">
+                                            Create Project
+                                        </a>
+                                        <a class="btn btn-default btn-link btn-sm" data-toggle="collapse"
+                                            href="#create_new_project_collapse" aria-expanded="false"
+                                            aria-controls="create_new_project_collapse">
+                                            Cancel
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <table class="table" id="projects_table"></table>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane active" id="in_and_out_link">
+                <div class="tab-pane" id="in_and_out_link">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title"><b style="color:#ff9800">In</b>put <b style="color:#ff9800">&</b> <b
@@ -104,15 +164,13 @@
                             </p>
                         </div>
                         <div class="card-body">
-                            <p><b>Select a Method. &#8594; Input the dataset. &#8594; Download the Result.</b></p>
-                            <div class="card ">
-                                <div class="card-body ">
+                            <p><b>Select a Method. &#8594; Input the Dataset. &#8594; Download the Result.</b></p>
+                            <div class="card">
+                                <div class="card-body">
                                     <div class="row">
-
                                         <div class="col-md-9">
-                                            <div class="tab-content">
+                                            <div class="tab-content" id="method_tab_panes">
                                                 <div class="tab-pane active" id="data_processing_link">
-
                                                     <div class="table-responsive">
                                                         <table class="table">
                                                             <thead>
@@ -126,7 +184,8 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="text-center">1</td>
-                                                                    <td><a href="#missing_value_imputation">Missing Value Imputation</a></td>
+                                                                    <td><a href="#missing_value_imputation">Missing
+                                                                            Value Imputation</a></td>
                                                                     <td>Replace or impute missing values.</td>
                                                                     <td>paper1</td>
                                                                 </tr>
@@ -143,7 +202,6 @@
                                                             </tbody>
                                                         </table>
                                                     </div>
-
                                                 </div>
                                                 <div class="tab-pane" id="univariate_analysis_link">
                                                     Efficiently unleash cross-media information without cross-media
@@ -153,11 +211,6 @@
                                                     functional solutions.
                                                 </div>
                                                 <div class="tab-pane" id="multivariate_analysis_link">
-
-
-
-
-
                                                 </div>
                                                 <div class="tab-pane" id="data_visualization_link">
                                                     Some data visualization.
@@ -167,7 +220,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <ul class="nav nav-pills nav-pills-primary flex-column" role="tablist">
+                                            <ul class="nav nav-pills nav-pills-primary flex-column" role="tablist"
+                                                id="method_nav_items">
                                                 <li class="nav-item">
                                                     <a class="nav-link active" data-toggle="tab"
                                                         href="#data_processing_link" role="tablist">
@@ -205,3 +259,5 @@
         </div>
     </div>
 </div>
+
+<script src="js/home.js"></script>

@@ -10,42 +10,32 @@
             console.log("waiting")
          } else {
             //$("#home_content").load("home.html")
-            $("nav").load("nav.html",init_ripples)
+            $("nav").load("nav.html", init_ripples)
 
             clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
             // JS CODING.
             $("#test").text(loaded)
-            function loadjscssfile(filename, filetype) {
-               if (filetype == "js") { //if filename is a external JavaScript file
-                  var fileref = document.createElement('script')
-                  fileref.setAttribute("type", "text/javascript")
-                  fileref.setAttribute("src", filename)
-               }
-               else if (filetype == "css") { //if filename is an external CSS file
-                  var fileref = document.createElement("link")
-                  fileref.setAttribute("rel", "stylesheet")
-                  fileref.setAttribute("type", "text/css")
-                  fileref.setAttribute("href", filename)
-               }
-               if (typeof fileref != "undefined")
-                  document.getElementsByTagName("head")[0].appendChild(fileref)
-            }
+
 
             function load_page_by_url() {
                $(".contents").hide();
                if (window.location.href.split("#")[1] === undefined || window.location.href.split("#")[1] === "") {
                   $("#home_content").show();
-                  $("#home_content").load("home.html",init_ripples)
+                  $("#home_content").load("home.html", function () {
+                     init_ripples()
+                     update_projects_table()
+                  })
                } else {
                   $("#" + window.location.href.split("#")[1] + "_content").show();
-                  if (["missing_value_imputation"].includes(window.location.href.split("#")[1])) {
-                     $("#" + window.location.href.split("#")[1] + "_content").load("templates.html",init_ripples)
+                  if (["missing_value_imputation","project_overview"].includes(window.location.href.split("#")[1])) {
+                     console.log("@")
+                     $("#" + window.location.href.split("#")[1] + "_content").load("templates.html", init_ripples)
 
                   } else {
                      $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html", init_ripples)
                   }
                }
-               setTimeout(function(){init_fileInput()},500)
+               setTimeout(function () { init_fileInput() }, 500)
             }
 
             load_page_by_url();
@@ -53,7 +43,7 @@
          }
       }, 00);
    </script>
-
+   <script src="js/index.js"></script>
 
 
 </head>
@@ -61,20 +51,25 @@
 <body style="background-color:white" class="off-canvas-sidebar">
    <i class="fas fa-adjust fa-spin" style="font-size:24px" id="loading"></i>
    <div id="content" style="display:none">
+
+
+
       <!-- HTML CODING -->
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute fixed-top text-black"></nav>
       <!-- End Navbar -->
+
+
+
       <div class="wrapper wrapper-full-page">
+                 
          <div class="page-header">
             <div class="container" id=''>
-               This will send data using AJAX to Python:<br /><br />
-               <a href="" id="theButton">Click Me</a>
+               <!--This will send data using AJAX to Python:<br /><br />
+               <a href="" id="theButton">Click Me</a>-->
                <div id="home_content" class='contents'></div>
                <div id="missing_value_imputation_content" class='contents'></div>
-
-
-
+               <div id="project_overview_content" class='contents'></div>
             </div>
 
 
@@ -94,12 +89,12 @@
          { "make": "Jaguar", "model": "Mark VII" }
       ];
 
-      window.onload = function () {
+      /*window.onload = function () {
          // setup the button click
          document.getElementById("theButton").onclick = function () {
             doWork()
          };
-      }
+      }*/
 
       function doWork() {
          // ajax the JSON to the server

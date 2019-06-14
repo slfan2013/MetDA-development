@@ -1,0 +1,3 @@
+﻿# Method Name,# Method Name link,Description,Example,Example link,category
+Missing Value Imputation,missing_value_imputation,Replace or impute missing values.,paper1,,DATA PROCESSING
+Principal Component Analysis (PCA),pca,To reduce a larger set of variables into a smaller set of 'artificial' variables that account for most of the variance in the original variables.,paper2,,MULTIVARIATE ANALYSIS
