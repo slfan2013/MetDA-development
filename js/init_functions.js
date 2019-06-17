@@ -22,6 +22,9 @@ init_fileInput = function () {
     $(this).parent().parent().addClass('is-focused');
   });
 
+
+
+
   $('.form-file-multiple .inputFileHidden').change(function () {
     var names = '';
     for (var i = 0; i < $(this).get(0).files.length; ++i) {
@@ -66,15 +69,6 @@ loadjscssfile = function (filename, filetype) {
 
 
 
-results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-  if (['missing_value_imputation'].includes(page)) {
-    $("#results_card_body").load("one_top_description_bottom_table.html", function () {
-      init_selectpicker
-      var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
-      append_results_fun(obj, session)
-    })
-  }
-}
 
 
 
@@ -89,21 +83,20 @@ download_results = function (files_names, files_sources, zipfile_name) {
       header: true,
       skipEmptyLines: true,
       error: function (err, file, inputElem, reason) {
-        alert("Papa.parse error: " + reason)
+        console.log(reason)
         $(".download").prop("disabled", false);
         $("#download_results").text("Download Results")
       },
       complete: function (results) {
-        allResults.push(results.data);
+        allResults.push(results);
         if (allResults.length == files_names.length) {
           var zip = new JSZip();
           for (var j = 0; j < files_names.length; j++) {
             zip.file(files_names[j], Papa.unparse(allResults[j]))
           }
-          //zip.file("Partial Correlations "+time_stamp+".csv", Papa.unparse(oo.data_matrix2))
           zip.generateAsync({ type: "blob" })
             .then(function (blob) {
-              saveAs(blob, zipfile_name);
+              saveAs(blob, zipfile_name + ".zip");
               $(".download").prop("disabled", false);
               $("#download_results").text("Download Results")
             });
@@ -113,16 +106,56 @@ download_results = function (files_names, files_sources, zipfile_name) {
   }
 }
 
+save_results = function (files_names, files_sources, files_types, fold_name,parameters,epf_index) {
+  console.log(files_sources)
+  $('#save_results_collapse').collapse('toggle')
+  $(".download").prop("disabled", true);
+  $("#save_results").text("Waiting User to Select a Folder ... ")
+  // open a jstree.
+
+  ocpu.call("open_project_structure_to_save_result", {
+    project_id: localStorage['activate_project_id'],
+    selected_data: localStorage['activate_data_id']
+  }, function (session) {
+    session.getObject(function (obj) {
+      ooo = obj
+      $("#save_results_tree").jstree("destroy");
+      $("#save_results_tree").jstree({
+        'core': {
+          'data': obj,
+          'multiple': false, // cannot select multiple nodes.
+          'expand_selected_onload': true,
+          'check_callback': true
+        }
+      })
+      $('#save_results_tree').on("select_node.jstree", function (e, data) {
+        console.log("!!")
+
+        ocpu.call("save_results_to_project", {
+          files_names: files_names,
+          files_sources: files_sources,
+          files_types:files_types,
+          fold_name: fold_name,
+          parameters:parameters,
+          epf_index:epf_index,
+          project_id: localStorage['activate_project_id'],
+          selected_folder: data.node.original.id
+        }, function (session) {
+          console.log(session)
+        }).fail(function (e2) {
+          Swal.fire('Oops...', e2.responseText, 'error')
+        })
+      })
 
 
-function unpack(rows, key) {
+    })
+  }).fail(function (e) {
+    Swal.fire('Oops...', e.responseText, 'error')
+  })
 
-  for(var i=0; i<rows.length;i++){
-    if(rows[i] === null){
-      rows[i] = ""
-    }
-  }
 
-    return rows.map(function(row)
-    { return row[key]; });
+
+
+
+
 }

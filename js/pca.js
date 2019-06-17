@@ -1,4 +1,7 @@
-console.log("missing_value_imputation.js")
+console.log("pca.js")
+
+//$("#scaling_method_div").load("scaling_method.html")
+
 
 var defination_of_missing_value_onchange = function () {
     selected_values = $("#defination_of_missing_value").val()
@@ -17,7 +20,7 @@ var defination_of_missing_value_onchange = function () {
 
 }
 
-missing_value_imputation_append_results = function (obj, session) {
+pca_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
     Papa.parse(session.loc + "files/summary_data.csv", {
@@ -32,17 +35,13 @@ missing_value_imputation_append_results = function (obj, session) {
         }
     });
 
+
+
     var files_sources = [session.loc + "files/result_dataset.csv", session.loc + "files/summary_data.csv"];
-    var files_names = ["missing_value_imputation_result_dataset.csv","missing_value_imputation_result_summary.csv"]
-    var zipfile_name = "missing_value_imputation_results"
+    var files_names = ["pca_result_dataset.csv","missing_value_imputation_result_summary.csv"]
+    var zipfile_name = "pca_results.zip"
     $("#download_results").click(function(){
         download_results(files_names,files_sources,zipfile_name)
-    })
-    var fold_name = "Missing Value Imputation"
-    var files_names = ["result dataset.csv","result summary.csv"]
-    var files_types = ["application/vnd.ms-excel","application/vnd.ms-excel"]
-    $("#save_results").click(function(){// open a dialog and ask where to save.
-        save_results(files_names,files_sources,files_types,fold_name,JSON.parse(localStorage.getItem('parameter')),[1])
     })
 
 }

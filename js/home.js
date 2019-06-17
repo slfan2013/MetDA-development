@@ -8,11 +8,11 @@ $("#create_new_project").click(function () {
 
 
 create_new_project_check_input_format = function (inputFile) {
-    console.log($("#"+inputFile)[0].files[0])
+    console.log($("#" + inputFile)[0].files[0])
     $(".inputFileHidden").prop("disabled", true);
     $(".inputFile_validating").text("Validating")
     ocpu.call("inputFile", {
-        path:$("#"+inputFile)[0].files[0]
+        path: $("#" + inputFile)[0].files[0]
     }, function (session) {
         session.getObject(function (obj) {
             oo = obj
@@ -22,6 +22,7 @@ create_new_project_check_input_format = function (inputFile) {
             text = text + "<p class='text-success'>" + obj.message.success_message.join("</p><p class='text-success'>") + "</p>"
             $(".inputFile_validating").html(text)
             localStorage['temp_project_id'] = oo.project_id[0]
+            localStorage['activate_data_id'] = 'e.csv'
         })
     }).fail(function (e) {
         //alert(e.responseText)
@@ -37,6 +38,7 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
     //ddd = data
     category_names = Object.keys(data.methods_structure)
     headers = Object.keys(data.methods_structure[category_names[0]].missing_value_imputation)
+    
     method_tab_panes = ""
     for (var cat = 0; cat < category_names.length; cat++) {
         console.log(cat)
@@ -70,9 +72,9 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
             for (var td = -1; td < current_row_value.length; td++) {
                 if (td === -1) {
                     method_tab_panes = method_tab_panes + "<td>" + (td + 2) + "</td>"
-                } else if(td === 0){
-                    method_tab_panes = method_tab_panes + "<td><a href='#"+methods_in_this_category[tr].toLowerCase().replace(" ", "_")+"'>" + current_row_value[td] + "</a></td>"
-                }else{
+                } else if (td === 0) {
+                    method_tab_panes = method_tab_panes + "<td><a href='#" + methods_in_this_category[tr].toLowerCase().replace(" ", "_") + "'>" + current_row_value[td] + "</a></td>"
+                } else {
                     method_tab_panes = method_tab_panes + "<td>" + current_row_value[td] + "</td>"
                 }
 
@@ -121,7 +123,10 @@ create_project = function () {
                     new_name: $("#new_project_name").val(),
                     temp_project_id: localStorage['temp_project_id']
                 }, function (session2) {
+                    console.log(session2)
                     session2.getObject(function (obj2) {
+                        ooo = obj2
+                        console.log(obj2)
                         update_projects_table()
                         $('#create_new_project_modal').modal('toggle');
                     })
@@ -138,18 +143,18 @@ create_project = function () {
 
 
 update_projects_table = function () {
-    Papa.parse("http://localhost:5985/metda_userinfo/"+localStorage['user_id']+"/metda_userinfo_"+localStorage['user_id']+".csv", {
+    Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
         download: true,
         complete: function (results) {
             var table_html = "<thead>"
-            for(var i=0; i<results.data[0].length;i++){
+            for (var i = 0; i < results.data[0].length; i++) {
                 table_html = table_html + "<th>" + results.data[0][i] + "</th>"
             }
             table_html = table_html + "</thead>"
             table_html = table_html + "<tbody>"
-            for(var i=1; i<results.data.length;i++){
+            for (var i = 1; i < results.data.length; i++) {
                 table_html = table_html + "<tr>"
-                for(var j=0; j<results.data[i].length;j++){
+                for (var j = 0; j < results.data[i].length; j++) {
                     table_html = table_html + "<td>" + results.data[i][j] + "</td>"
                 }
                 table_html = table_html + "</tr>"
@@ -158,12 +163,12 @@ update_projects_table = function () {
             $("#projects_table").html(table_html)
 
 
-            $("#projects_table tr").click(function(){
-                $(this).addClass('selected').siblings().removeClass('selected');    
-                var project_id=$(this).find('td:first').html();
+            $("#projects_table tr").click(function () {
+                $(this).addClass('selected').siblings().removeClass('selected');
+                var project_id = $(this).find('td:first').html();
                 localStorage['activate_project_id'] = project_id
-                window.location.href = "#missing_value_imputation";
-             });
+                window.location.href = "#project_overview";
+            });
 
 
 
@@ -173,7 +178,7 @@ update_projects_table = function () {
 update_projects_table()
 
 localStorage['big_category'] = 'project'
-change_big_category = function(category){
+change_big_category = function (category) {
     localStorage['big_category'] = category
 }
 

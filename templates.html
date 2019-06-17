@@ -1,21 +1,15 @@
-<script src="js/templates.js"></script>
-<div class="sidebar show_when_project" data-color="azure" data-image="img/sidebar-1.jpg"
-    style="top:80px; display:none;">
-    <div class="sidebar-wrapper">
-        <ul class="nav" id="sidebar_ul"></ul>
-    </div>
-</div>
+<div id="sidebar"></div>
 
-
-
-
-<div id="templates_project_overview">
+<div id="template_overview_div">
 
 </div>
 
 
 
-<div id="templates_other_than_project_overview">
+
+
+<div id="other_than_template_overview_div">
+
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
@@ -47,7 +41,8 @@
                     <h4 class="card-title">Input Dataset File</h4>
                 </div>
                 <div class="card-body">
-                    <div class='row'>
+
+                    <div class='row' id="templates_input_file_from_upload">
                         <div class='col-lg-6'>
                             <div class="form-group form-file-upload form-file-simple">
                                 <input type="text" class="form-control inputFileVisible"
@@ -62,6 +57,20 @@
                                 format.</p>
                         </div>
                     </div>
+
+                    <div class='row' id="templates_input_file_from_project">
+                        <div class='col-lg-6'>
+                            <div id="project_structure_with_dataset_only"></div>
+                        </div>
+                        <div class='col-lg-6'>
+                            <p>The dataset should meet the basic criterion. Or download the example dataset and see
+                                the
+                                format.</p>
+                        </div>
+                    </div>
+
+
+
                 </div>
                 <div class="card-footer ">
 
@@ -111,9 +120,19 @@
 
                 </div>
                 <div class="card-footer">
-
+                        <button class="btn btn-primary btn-sm download" id="save_results" style="display:none;" data-toggle="collapse" href="#save_results_collapse" aria-expanded="false" aria-controls="save_results_collapse">Save Results</button>
+                        <button class="btn btn-sm download" id="download_results">Download Results</button>
+                        <button class="btn btn-default btn-sm download" id="only_download_result_dataset" style="display:none;">Only Download Dataset</button>
                 </div>
+                <div class="collapse" id="save_results_collapse">
+                    please click the folder you want to save the results.
+                        <div class="card card-body" id="save_results_tree"></div>
+                      </div>
             </div>
         </div>
     </div>
+
+
 </div>
+
+<script src="js/templates.js"></script>
