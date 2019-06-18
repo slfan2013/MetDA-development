@@ -14,3 +14,13 @@ for (i in 1:length(all_r_files)) {
   projectList[["_attachments"]] <- new_att
 }
 result <- RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = T, force = T))
+
+
+plot_ly(diamonds, x = ~cut)
+
+o =  plot_ly(diamonds, x = ~cut)
+
+# plotly_json(o)
+
+
+

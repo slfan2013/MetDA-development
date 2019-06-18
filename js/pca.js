@@ -1,6 +1,9 @@
 console.log("pca.js")
 
-//$("#scaling_method_div").load("scaling_method.html")
+
+$("#scaling_method_div").load("scaling_method.html", init_selectpicker)
+
+
 
 
 var defination_of_missing_value_onchange = function () {
@@ -23,25 +26,34 @@ var defination_of_missing_value_onchange = function () {
 pca_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
-    Papa.parse(session.loc + "files/summary_data.csv", {
+    Papa.parse(session.loc + "files/sample_scores.csv", {
         download: true,
         header: false,
         complete: function (results) {
-            data = results.data
-            $('#results_dataset_table').DataTable({
-                data: data.slice(1, data.length - 1),
-                columns: data[0].map(function (x) { return ({ title: x }) })
+            sample_scores = results.data
+
+            Papa.parse(session.loc + "files/compound_loadings.csv", {
+                download: true,
+                header: false,
+                complete: function (results2) {
+                    compound_loadings = results2.data
+
+                    // here draw the PCA
+
+                }
             });
+
+
         }
     });
 
 
 
-    var files_sources = [session.loc + "files/result_dataset.csv", session.loc + "files/summary_data.csv"];
-    var files_names = ["pca_result_dataset.csv","missing_value_imputation_result_summary.csv"]
+    var files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv"];
+    var files_names = ["sample_scores.csv", "compound_loadings.csv"]
     var zipfile_name = "pca_results.zip"
-    $("#download_results").click(function(){
-        download_results(files_names,files_sources,zipfile_name)
+    $("#download_results").click(function () {
+        download_results(files_names, files_sources, zipfile_name)
     })
 
 }

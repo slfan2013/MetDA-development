@@ -1,9 +1,7 @@
 <label for="scaling_method">Scaling Method </label>
 <select class="form-control selectpicker parameter" data-style="btn btn-link" id="scaling_method">
-    <option selected="selected">replace by half minimum</option>
-    <option>replace by 1/10 minimum</option>
-    <option>replace by minimum</option>
-    <option>replace by mean</option>
-    <option>replace by median</option>
-    <option>imputed by kNN</option>
+    <option selected="selected" value="standard">Auto Scaling</option>
+    <option value="pareto">Pareto Scaling</option>
+    <option value="center">Mean Centering</option>
+    <option value="none">No Scaling</option>
 </select>

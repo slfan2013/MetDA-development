@@ -20,7 +20,7 @@ e = data.matrix(read.csv(
   paste0(
     "http://metda:metda@localhost:5985/metda_project/",
     project_id,
-    "/e.csv"
+    "/",activate_data_id
   )
 ))[, -1]
 
@@ -29,6 +29,10 @@ e = data.matrix(read.csv(
 # e = data$e_matrix
 # f = data$f
 # p = data$p
+
+
+## Here, we want to replace missing values.
+
 
 result_dataset =  aggregate_p_f_e(p, f, e)
 fwrite(result_dataset, "result_dataset.csv", col.names = FALSE)

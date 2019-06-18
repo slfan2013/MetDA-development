@@ -28,6 +28,7 @@ get_data_and_message <- function(path) {
   if (sum(duplicated(p$label)) > 0) {
     warning_message[[length(warning_message) + 1]] <- paste0("Warning: ", sum(duplicated(p$label)), " duplicated sample labels were found. They will be made unique by R function `make.unique()`.")
   }
+  p$label = make.unique(p$label)
 
 
 
@@ -38,6 +39,7 @@ get_data_and_message <- function(path) {
   if (sum(duplicated(f$label)) > 0) {
     warning_message[[length(warning_message) + 1]] <- paste0("Warning: ", sum(duplicated(f$label)), " duplicated compound labels were found. They will be made unique by R function `make.unique()`.")
   }
+  f$label = make.unique(f$label)
 
   e_matrix <- data_matrix[(label_index[1] + 1):nrow(data_matrix), (label_index[2] + 1):ncol(data_matrix)]
   e_matrix <- apply(e_matrix, 2, as.numeric)
@@ -67,6 +69,7 @@ get_data_and_message <- function(path) {
 
 
   colnames(e_matrix) <- p$label
+  rownames(e_matrix) <- f$label
 
   success_message <- paste0("Success: Your data has ", num_sample, " samples and ", num_compound, " compounds. There are ", ncol_p, " sample informations and ", ncol_f, " compound informations.")
 

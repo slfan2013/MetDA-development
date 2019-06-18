@@ -106,7 +106,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $("#parameter_settings_description").html('loaded')
     }
 
-    project_id = localStorage["activate_project_id"]
+    project_id = localStorage["activate_project_id"] // this will be erased by project_id = obj.project_id[0]
     check_input_format = function (inputFile) {
         $('#parameter_settings_card').hide();
         $(".inputFileHidden").prop("disabled", true);
@@ -179,8 +179,23 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             }
         })
         parameter.project_id = project_id
+
+        if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
+            parameter.activate_data_id = localStorage['activate_data_id']
+        }else{
+            parameter.activate_data_id = 'e.csv'
+        }
+
+
+        
+       
+
+
+        
+
+
         parameter.fun_name = window.location.href.split("#")[1]
-        var req = ocpu.call("call_fun", { parameter: parameter }, function (session) {
+        ocpu.call("call_fun", { parameter: parameter }, function (session) {
             sss = session
             console.log(session)
             session.getObject(function (obj) {
