@@ -20,7 +20,7 @@ plot_ly(diamonds, x = ~cut)
 
 o =  plot_ly(diamonds, x = ~cut)
 
-# plotly_json(o)
+p =  plotly_json(o)
 
 
 
