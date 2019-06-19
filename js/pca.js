@@ -19,8 +19,6 @@ var defination_of_missing_value_onchange = function () {
     } else {
         $("#defination_of_missing_other_than_form_group").hide()
     }
-
-
 }
 
 pca_append_results = function (obj, session) {
@@ -39,6 +37,8 @@ pca_append_results = function (obj, session) {
                     compound_loadings = results2.data
 
                     // here draw the PCA
+
+
 
                 }
             });
