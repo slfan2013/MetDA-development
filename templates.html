@@ -4,6 +4,295 @@
 
 </div>
 
+<div class="row">
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="nav nav-pills nav-pills-primary flex-column">
+                    <li class="nav-item"><a class="nav-link active" href="#score_plot_general"
+                            data-toggle="tab">General</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab2" data-toggle="tab">Settings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#tab3" data-toggle="tab">Options</a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="score_plot_general">
+                        <div id="score_plot_accordion" role="tablist">
+                            <div class="card card-collapse">
+                                <div class="card-header" role="tab" id="score_plot_general_defaults_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#score_plot_general_defaults_collapse"
+                                            aria-expanded="false" aria-controls="score_plot_general_defaults_collapse">
+                                            Defaults
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="score_plot_general_defaults_collapse" class="collapse" role="tabpanel"
+                                    aria-labelledby="score_plot_general_defaults_heading"
+                                    data-parent="#score_plot_accordion">
+                                    <div class="card-body">
+                                        <div class="card" style="margin:0">
+                                            <div class="card-body" style="padding-top:0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            Plot Background Color
+                                                        </span>
+                                                    </div>
+                                                    <div class="pickr-container" id="score_plot_plot_bgcolor">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            Margin Background
+                                                        </span>
+                                                    </div>
+                                                    <div class="pickr-container" id="score_plot_paper_bgcolor">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            plot width
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_width" placeholder="width" min="100"
+                                                        max="1500" step="100">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            plot height
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_height" placeholder="height" min="100"
+                                                        max="1500" step="100">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            margin top
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_margin_top" placeholder="margin top"
+                                                        min="0" max="500" step="10">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            margin right
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_margin_right" placeholder="margin right"
+                                                        min="0" max="500" step="10">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            margin bottom
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_margin_bottom" placeholder="margin bottom"
+                                                        min="0" max="500" step="10">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            margin left
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_margin_left" placeholder="margin left"
+                                                        min="0" max="500" step="10">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card" style="margin:0">
+                                            <div class="card-header" style="padding-top:0">Text</div>
+                                            <div class="card-body" style="padding-top:0">
+                                                <div id="score_plot_layout_font"></div>
+                                            </div>
+                                        </div>
+                                        <div class="card" style="margin:0">
+                                            <div class="card-header" style="padding-top:0">Title</div>
+                                            <div class="card-body" style="padding-top:0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            text
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        id="score_plot_layout_title_text" placeholder="title text">
+                                                </div>
+                                                <div id="score_plot_layout_title_font"></div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            position
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_title_x" placeholder="horizontal position"
+                                                        min="0" max="1" step="0.1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-collapse">
+                                <div class="card-header" role="tab" id="score_plot_general_xaxis_heading">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse"
+                                            href="#score_plot_general_xaxis_collapse" aria-expanded="true"
+                                            aria-controls="score_plot_general_xaxis_collapse">
+                                            X - Axis
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="score_plot_general_xaxis_collapse" class="collapse show" role="tabpanel"
+                                    aria-labelledby="score_plot_general_xaxis_heading" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="card" style="margin:0">
+                                            <div class="card-header" style="padding-top:0">Title</div>
+                                            <div class="card-body" style="padding-top:0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            text
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" class="form-control"
+                                                        id="score_plot_layout_xaxis_title_text"
+                                                        placeholder="xaxis title text">
+                                                </div>
+                                                <div id="score_plot_layout_xaxis_title_font"></div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            position
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_xaxis_title_x"
+                                                        placeholder="horizontal position" min="0" max="1" step="0.1">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card" style="margin:0">
+                                            <div class="card-header" style="padding-top:0">Ticks</div>
+                                            <div class="card-body" style="padding-top:0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            length
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_xaxis_ticklen" placeholder="tick length"
+                                                        min="0" max="100" step="1">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            width
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_xaxis_ticklen" placeholder="tick width"
+                                                        min="0" max="100" step="1">
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            color
+                                                        </span>
+                                                    </div>
+                                                    <div class="pickr-container" id="score_plot_layout_xaxis_tickcolor">
+                                                    </div>
+                                                </div>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            tick angle
+                                                        </span>
+                                                    </div>
+                                                    <input type="number" class="form-control"
+                                                        id="score_plot_layout_xaxis_tickangle" placeholder="tick angle"
+                                                        min="0" max="360" step="10">
+                                                </div>
+                                            </div>
+                                            <div id="score_plot_layout_xaxis_tickfont"></div>
+                                        </div>
+
+                                        <div class="card" style="margin:0">
+                                            <div class="card-header" style="padding-top:0">Axis Line</div>
+                                            <div class="card-body" style="padding-top:0">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-collapse">
+                                <div class="card-header" role="tab" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <a class="collapsed" data-toggle="collapse" href="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            Collapsible Group Item #3
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
+                                        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
+                                        sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                                        shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo.
+                                        Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
+                                        you probably haven't heard of them accusamus labore sustainable VHS.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        Efficiently unleash cross-media information without cross-media value. Quickly maximize timely
+                        deliverables for real-time schemas.
+                        <br><br>Dramatically maintain clicks-and-mortar solutions without functional solutions.
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        Completely synergize resource taxing relationships via premier niche markets. Professionally
+                        cultivate one-to-one customer service with robust ideas.
+                        <br><br>Dynamically innovate resource-leveling customer service for state of the art customer
+                        service.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div id="testing_pca"></div>
+    </div>
+</div>
+
 
 
 
@@ -120,14 +409,17 @@
 
                 </div>
                 <div class="card-footer">
-                        <button class="btn btn-primary btn-sm download" id="save_results" style="display:none;" data-toggle="collapse" href="#save_results_collapse" aria-expanded="false" aria-controls="save_results_collapse">Save Results</button>
-                        <button class="btn btn-sm download" id="download_results">Download Results</button>
-                        <button class="btn btn-default btn-sm download" id="only_download_result_dataset" style="display:none;">Only Download Dataset</button>
+                    <button class="btn btn-primary btn-sm download" id="save_results" style="display:none;"
+                        data-toggle="collapse" href="#save_results_collapse" aria-expanded="false"
+                        aria-controls="save_results_collapse">Save Results</button>
+                    <button class="btn btn-sm download" id="download_results">Download Results</button>
+                    <button class="btn btn-default btn-sm download" id="only_download_result_dataset"
+                        style="display:none;">Only Download Dataset</button>
                 </div>
                 <div class="collapse" id="save_results_collapse">
                     please click the folder you want to save the results.
-                        <div class="card card-body" id="save_results_tree"></div>
-                      </div>
+                    <div class="card card-body" id="save_results_tree"></div>
+                </div>
             </div>
         </div>
     </div>
