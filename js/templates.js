@@ -1,158 +1,15 @@
-ocpu.call("get_test_data", {
+parameter = {}
+parameter.fun_name = 'principal_component_analysis'
+parameter.project_id = localStorage.activate_project_id
 
-}, function (session) {
+if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
+    parameter.activate_data_id = localStorage['activate_data_id']
+} else {
+    parameter.activate_data_id = 'e.csv'
+}
+parameter.scaling_method = "standard"
+ocpu.call("call_fun", { parameter: parameter }, function (session) {
     session.getObject(function (obj) {
-        $("#score_plot_layout_font, #score_plot_layout_title_font, #score_plot_layout_xaxis_title_font, #score_plot_layout_xaxis_tickfont").load("fonts_select.html", init_selectpicker)
-        setTimeout(function () {
-            $(".pickr-container").each(function () {
-                console.log(this.id)
-                new Pickr(Object.assign({
-                    el: this, theme: 'classic',
-                    default: '#42445A'
-                }, {
-                        swatches: [
-                            'rgba(244, 67, 54, 1)',
-                            'rgba(233, 30, 99, 0.95)',
-                            'rgba(156, 39, 176, 0.9)',
-                            'rgba(103, 58, 183, 0.85)',
-                            'rgba(63, 81, 181, 0.8)',
-                            'rgba(33, 150, 243, 0.75)',
-                            'rgba(3, 169, 244, 0.7)',
-                            'rgba(0, 188, 212, 0.7)',
-                            'rgba(0, 150, 136, 0.75)',
-                            'rgba(76, 175, 80, 0.8)',
-                            'rgba(139, 195, 74, 0.85)',
-                            'rgba(205, 220, 57, 0.9)',
-                            'rgba(255, 235, 59, 0.95)',
-                            'rgba(255, 193, 7, 1)'
-                        ],
-                        components: {
-                            preview: true, opacity: true, hue: true,
-                            interaction: {
-                                hex: true, rgba: true, input: true, clear: true, save: true
-                            }
-                        }
-                    }));
-            })
-        }, 100)
-
-
-        o = obj
-        data = o
-
-        x = unpack(data, 'count')
-        y = unpack(data, 'count11')
-        type = unpack(data, 'type')
-        sex = unpack(data, 'sex')
-        citizen = unpack(data, 'citizen')
-
-
-        color_by = type
-        color_levels = type.filter(unique)
-        color_values = ['red', 'green', 'azure', 'rebeccapurple', 'burlywood', 'mediumseagreen'].map(x => colourNameToHex(x)).map(x => hexToRgb(x, 1))
-        shape_by = sex
-        shape_levels = sex.filter(unique)
-        shape_values = ["circle", "square"]
-        size_by = citizen
-        size_levels = citizen.filter(unique)
-        size_values = [2, 6]
-        ellipse_group = ['color']
-
-        labels = new Array(x.length).fill(1).map((_, i) => i + 1)
-        layout = {
-            plot_bgcolor: "#ffffff",
-            paper_bgcolor: "#ffffff",
-            font: {
-                family: "Arial",
-                size: 12,
-                color: "#000000"
-            },
-            title: {
-                text: "plot title",
-                font: {
-                    family: "Arial",
-                    size: 12,
-                    color: "#000000"
-                },
-                x: 0.5,
-                y: 1
-            },
-            autosize: false,
-            width: 1000,
-            height: 1000,
-            margin: {
-                l: 80,
-                r: 80,
-                t: 100,
-                b: 80,
-                pad: 0,
-                autoexpand: true
-            },
-            xaxis: {
-                title: {
-                    text: "X axis title",
-                    font: {
-                        family: "Arial",
-                        size: 12,
-                        color: "#000000"
-                    },
-                },
-                ticklen: 5,
-                tickwidth: 1,
-                tickcolor: "#000000",
-                tickfont: {
-                    family: "Arial",
-                    size: 12,
-                    color: "#000000"
-                },
-                tickangle: 0,
-                showline: true,
-                linecolor: "#000000",
-                linewidth: 1,
-                showgrid: true,
-                gridcolor: "#eeeeee",
-                gridwidth: 1,
-                gridcolor: "#eeeeee",
-                zeroline: true,
-                zerolinecolor: "#444444",
-                zerolinewidth: 1
-            },
-            yaxis: {
-                title: {
-                    text: "Y axis title",
-                    font: {
-                        family: "Arial",
-                        size: 12,
-                        color: "#000000"
-                    },
-                },
-                ticklen: 5,
-                tickwidth: 100,
-                tickcolor: "#000000",
-                tickfont: {
-                    family: "Arial",
-                    size: 12,
-                    color: "#000000"
-                },
-                tickangle: 0,
-                showline: true,
-                linecolor: "#000000",
-                linewidth: 1,
-                showgrid: true,
-                gridcolor: "#eeeeee",
-                gridwidth: 1,
-                gridcolor: "#eeeeee",
-                zeroline: true,
-                zerolinecolor: "#444444",
-                zerolinewidth: 1
-            },
-            hovermode: "closest"
-        }
-        plot_id = "testing_pca"
-
-
-
-
         scatter_by_group = function ({ x = undefined, y = undefined, color_by = undefined, color_values = undefined, color_levels = undefined,
             shape_by = undefined, shape_values = undefined, shape_levels = undefined,
             size_by = undefined, size_values = undefined, size_levels = undefined,
@@ -341,15 +198,487 @@ ocpu.call("get_test_data", {
 
 
         }
+        $("#score_plot_layout_font, #score_plot_layout_title_font, #score_plot_layout_xaxis_title_font,#score_plot_layout_yaxis_title_font, #score_plot_layout_xaxis_tickfont, #score_plot_layout_yaxis_tickfont").load("fonts_select.html", function () {
+            init_selectpicker();
 
-        scatter_by_group({
-            x: x, y: y, color_by: color_by, color_values: color_values, color_levels: color_levels,
-            shape_by: shape_by, shape_values: shape_values, shape_levels: shape_levels,
-            size_by: size_by, size_values: size_values, size_levels: size_levels,
-            ellipse_group: ellipse_group,
-            labels: labels,
-            layout: layout,
-            plot_id: plot_id
+
+
+
+            $("#score_plot_layout_font .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_font .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_font .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_font .input-group .pickr-container").attr('id', 'score_plot_layout_font_color_id');
+
+            $("#score_plot_layout_title_font .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_title_font .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_title_font .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_title_font .input-group .pickr-container").attr('id', 'score_plot_layout_title_font_color_id');
+
+            $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_title_font .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_title_font .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_title_font .input-group .pickr-container").attr('id', 'score_plot_layout_xaxis_title_font_color_id');
+
+            $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_title_font .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_title_font .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_title_font .input-group .pickr-container").attr('id', 'score_plot_layout_yaxis_title_font_color_id');
+
+            $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_tickfont .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_tickfont .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_xaxis_tickfont .input-group .pickr-container").attr('id', 'score_plot_layout_xaxis_tickfont_color_id');
+
+            $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_tickfont .input-group .size").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_tickfont .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
+            $("#score_plot_layout_yaxis_tickfont .input-group .pickr-container").attr('id', 'score_plot_layout_yaxis_tickfont_color_id');
+
+        })
+
+
+        o = obj
+        data = o
+
+        p_column_names = Object.keys(obj.p[0])
+
+
+        score_plot_color_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_color_levels" data-style="btn btn-link">'
+        for (var i = 0; i < p_column_names.length; i++) {
+            if (p_column_names[i] !== 'label') {
+                score_plot_color_levels_div = score_plot_color_levels_div + '<option>' + p_column_names[i] + '</option>'
+            }
+        }
+        score_plot_color_levels_div = score_plot_color_levels_div + '</select></div>'
+        $("#score_plot_color_levels_div").html(score_plot_color_levels_div)
+        score_plot_color_levels_change = function () {
+            score_plot_color_by = unpack(obj.p, $("#score_plot_color_levels").val())
+            score_plot_color_levels = score_plot_color_by.filter(unique)
+            score_plot_color_options_div = ""
+            for (var i = 0; i < score_plot_color_levels.length; i++) {
+                score_plot_color_options_div = score_plot_color_options_div +
+                    '<div class="input-group" id="score_plot_color_options' + i + '">' +
+                    '<div class="input-group-prepend"><span class="input-group-text">' + score_plot_color_levels[i] +
+                    '</span></div><div class="pickr-container" id="score_plot_color_options' + i + '_id"></div></div>'
+            }
+            $("#score_plot_color_options_div").html(score_plot_color_options_div)
+            init_pickr()
+        }
+        $("#score_plot_color_levels").change(score_plot_color_levels_change)
+
+        score_plot_traces_color_by_info_change = function () {
+            if ($("#score_plot_traces_color_by_info").is(':checked')) {
+                $("#score_plot_show_when_color_by_info").show()
+                $("#score_plot_hide_when_color_by_info").hide()
+            } else {
+                $("#score_plot_show_when_color_by_info").hide()
+                $("#score_plot_hide_when_color_by_info").show()
+            }
+        }
+        $("#score_plot_traces_color_by_info").change(score_plot_traces_color_by_info_change)
+
+        score_plot_shape_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_shape_levels" data-style="btn btn-link">'
+        for (var i = 0; i < p_column_names.length; i++) {
+            if (p_column_names[i] !== 'label') {
+                score_plot_shape_levels_div = score_plot_shape_levels_div + '<option>' + p_column_names[i] + '</option>'
+            }
+        }
+        score_plot_shape_levels_div = score_plot_shape_levels_div + '</select></div>'
+        $("#score_plot_shape_levels_div").html(score_plot_shape_levels_div)
+        score_plot_shape_levels_change = function () {
+            score_plot_shape_by = unpack(obj.p, $("#score_plot_shape_levels").val())
+            score_plot_shape_levels = score_plot_shape_by.filter(unique)
+            score_plot_shape_options_div = ""
+            for (var i = 0; i < score_plot_shape_levels.length; i++) {
+                score_plot_shape_options_div = score_plot_shape_options_div +
+                    '<div class="form-group" style="margin:0;border:0;padding:0" id="score_plot_shape_options' + i + '">' +
+                    '<label>' + score_plot_shape_levels[i] + '</label><select class="form-control selectpicker" data-style="btn btn-link">' +
+                    '<option>circle</option>' + '<option>square</option>' +
+                    '</select></div>'
+            }
+            $("#score_plot_shape_options_div").html(score_plot_shape_options_div)
+            init_selectpicker()
+        }
+        $("#score_plot_shape_levels").change(score_plot_shape_levels_change)
+
+        score_plot_traces_shape_by_info_change = function () {
+            if ($("#score_plot_traces_shape_by_info").is(':checked')) {
+                $("#score_plot_show_when_shape_by_info").show()
+                $("#score_plot_hide_when_shape_by_info").hide()
+            } else {
+                $("#score_plot_show_when_shape_by_info").hide()
+                $("#score_plot_hide_when_shape_by_info").show()
+            }
+        }
+        $("#score_plot_traces_shape_by_info").change(score_plot_traces_shape_by_info_change)
+
+
+        score_plot_size_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_size_levels" data-style="btn btn-link">'
+        for (var i = 0; i < p_column_names.length; i++) {
+            if (p_column_names[i] !== 'label') {
+                score_plot_size_levels_div = score_plot_size_levels_div + '<option>' + p_column_names[i] + '</option>'
+            }
+        }
+        score_plot_size_levels_div = score_plot_size_levels_div + '</select></div>'
+        $("#score_plot_size_levels_div").html(score_plot_size_levels_div)
+        score_plot_size_levels_change = function () {
+            score_plot_size_by = unpack(obj.p, $("#score_plot_size_levels").val())
+            score_plot_size_levels = score_plot_size_by.filter(unique)
+
+            score_plot_size_options_div = ''
+            for (var i = 0; i < score_plot_size_levels.length; i++) {
+                score_plot_size_options_div = score_plot_size_options_div +
+                    '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text">' +
+                    score_plot_size_levels[i] + "</span></div>" +
+                    '<input id="score_plot_size_options' + i + '" type="number" class="form-control" placeholder="Dot Size" min="0" step="1"></div>'
+            }
+            $("#score_plot_size_options_div").html(score_plot_size_options_div)
+        }
+        $("#score_plot_size_levels").change(score_plot_size_levels_change)
+
+        score_plot_traces_size_by_info_change = function () {
+            if ($("#score_plot_traces_size_by_info").is(':checked')) {
+                $("#score_plot_show_when_size_by_info").show()
+                $("#score_plot_hide_when_size_by_info").hide()
+            } else {
+                $("#score_plot_show_when_size_by_info").hide()
+                $("#score_plot_hide_when_size_by_info").show()
+            }
+        }
+        $("#score_plot_traces_size_by_info").change(score_plot_traces_size_by_info_change)
+
+        score_plot_plot_id = "testing_pca"
+
+
+        gather_page_information_to_score_plot = function () {
+
+            x = unpack(obj.sample_scores, "PC1")
+            y = unpack(obj.sample_scores, "PC2")
+
+
+            if (!$("#score_plot_traces_color_by_info").is(":checked")) {
+                score_plot_color_values = [$("#score_plot_color_option .pickr .pcr-button").css('color')]
+            } else {
+                score_plot_color_values = score_plot_color_levels.map(function (x, i) {
+                    return ($("#score_plot_color_options" + i + " .pickr .pcr-button").css('color'))
+                })
+            }
+
+            if (!$("#score_plot_traces_shape_by_info").is(":checked")) {
+                score_plot_shape_values = [$("#score_plot_shape_option .selectpicker").val()]
+            } else {
+                score_plot_shape_values = score_plot_color_levels.map(function (x, i) {
+                    return ($("#score_plot_shape_options" + i + " .selectpicker").val())
+                })
+            }
+
+
+            if (!$("#score_plot_traces_size_by_info").is(":checked")) {
+                score_plot_size_values = [$("#score_plot_size_option").val()]
+            } else {
+                score_plot_size_values = score_plot_color_levels.map(function (x, i) {
+                    return ($("#score_plot_size_options" + i).val())
+                })
+            }
+
+            score_plot_ellipse_group = ['color']
+
+            score_plot_labels = unpack(obj.p, "label")
+            score_plot_layout = {
+                plot_bgcolor: $("#score_plot_plot_bgcolor .pickr .pcr-button").css('color'),
+                paper_bgcolor: $("#score_plot_paper_bgcolor .pickr .pcr-button").css('color'),
+                /*font: {
+                    family: "Arial",
+                    size: 12,
+                    color: "#000000"
+                },*/
+                title: {
+                    text: $("#score_plot_layout_title_text").val(),
+                    font: {
+                        family: $("#score_plot_layout_title_font .form-group .selectpicker").val(),
+                        size: $("#score_plot_layout_title_font .input-group .size").val(),
+                        color: $("#score_plot_layout_title_font .input-group .pickr .pcr-button").css('color')
+                    },
+                    x: $("#score_plot_layout_title_x").val(),
+                    y: $("#score_plot_layout_title_y").val(),
+                },
+                autosize: false,
+                width: $("#score_plot_layout_width").val(),
+                height: $("#score_plot_layout_height").val(),
+                margin: {
+                    l: $("#score_plot_layout_margin_left").val(),
+                    r: $("#score_plot_layout_margin_right").val(),
+                    t: $("#score_plot_layout_margin_top").val(),
+                    b: $("#score_plot_layout_margin_bottom").val(),
+                    pad: 0,
+                    autoexpand: true
+                },
+                xaxis: {
+                    title: {
+                        text: $("#score_plot_layout_xaxis_title_text").val(),
+                        font: {
+                            family: $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").val(),
+                            size: $("#score_plot_layout_xaxis_title_font .input-group .size").val(),
+                            color: $("#score_plot_layout_xaxis_title_font .input-group .pickr .pcr-button").css('color')
+                        },
+                    },
+                    ticklen: $("#score_plot_layout_xaxis_ticklen").val(),
+                    tickwidth: $("#score_plot_layout_xaxis_tickwidth").val(),
+                    tickcolor: $("#score_plot_layout_xaxis_tickcolor .pickr .pcr-button").css('color'),
+                    tickfont: {
+                        family: $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").val(),
+                        size: $("#score_plot_layout_xaxis_tickfont .input-group .size").val(),
+                        color: $("#score_plot_layout_xaxis_tickfont .input-group .pickr .pcr-button").css('color')
+                    },
+                    tickangle: $("#score_plot_layout_xaxis_tickangle").val(),
+                    showline: true,
+                    linecolor: $("#score_plot_layout_xaxis_linecolor .pickr .pcr-button").css('color'),
+                    linewidth: $("#score_plot_layout_xaxis_linewidth").val(),
+                    showgrid: $("#score_plot_layout_xaxis_showgrid").is(":checked"),
+                    gridcolor: $("#score_plot_layout_xaxis_gridcolor .pickr .pcr-button").css('color'),
+                    gridwidth: $("#score_plot_layout_xaxis_gridwidth").val(),
+                    zeroline: $("#score_plot_layout_xaxis_zeroline").is(":checked"),
+                    zerolinecolor: $("#score_plot_layout_xaxis_zerolinecolor .pickr .pcr-button").css('color'),
+                    zerolinewidth: $("#score_plot_layout_xaxis_zerolinewidth").val()
+                },
+                yaxis: {
+                    title: {
+                        text: $("#score_plot_layout_yaxis_title_text").val(),
+                        font: {
+                            family: $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").val(),
+                            size: $("#score_plot_layout_yaxis_title_font .input-group .size").val(),
+                            color: $("#score_plot_layout_yaxis_title_font .input-group .pickr .pcr-button").css('color')
+                        },
+                    },
+                    ticklen: $("#score_plot_layout_yaxis_ticklen").val(),
+                    tickwidth: $("#score_plot_layout_yaxis_tickwidth").val(),
+                    tickcolor: $("#score_plot_layout_yaxis_tickcolor .pickr .pcr-button").css('color'),
+                    tickfont: {
+                        family: $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").val(),
+                        size: $("#score_plot_layout_yaxis_tickfont .input-group .size").val(),
+                        color: $("#score_plot_layout_yaxis_tickfont .input-group .pickr .pcr-button").css('color')
+                    },
+                    tickangle: $("#score_plot_layout_yaxis_tickangle").val(),
+                    showline: true,
+                    linecolor: $("#score_plot_layout_yaxis_linecolor .pickr .pcr-button").css('color'),
+                    linewidth: $("#score_plot_layout_yaxis_linewidth").val(),
+                    showgrid: $("#score_plot_layout_yaxis_showgrid").is(":checked"),
+                    gridcolor: $("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color'),
+                    gridwidth: $("#score_plot_layout_yaxis_gridwidth").val(),
+                    zeroline: $("#score_plot_layout_yaxis_zeroline").is(":checked"),
+                    zerolinecolor: $("#score_plot_layout_yaxis_zerolinecolor .pickr .pcr-button").css('color'),
+                    zerolinewidth: $("#score_plot_layout_yaxis_zerolinewidth").val()
+                },
+                hovermode: "closest"
+            }
+
+            save_score_plot_style = function () {
+                ocpu.call("save_score_plot_style", {
+                    method: window.location.href.split("#")[1],
+                    style: score_plot_layout,
+                    user_id: localStorage.user_id
+                }, function (session) {
+                    console.log("good.")
+                }).fail(function (e2) {
+                    Swal.fire('Oops...', e2.responseText, 'error')
+                })
+            }
+
+            scatter_by_group({
+                x: x, y: y, color_by: score_plot_color_by, color_values: score_plot_color_values, color_levels: score_plot_color_levels,
+                shape_by: score_plot_shape_by, shape_values: score_plot_shape_values, shape_levels: score_plot_shape_levels,
+                size_by: score_plot_size_by, size_values: score_plot_size_values, size_levels: score_plot_size_levels,
+                ellipse_group: score_plot_ellipse_group,
+                labels: score_plot_labels,
+                layout: score_plot_layout,
+                plot_id: score_plot_plot_id
+            })
+        }
+
+
+
+
+        // assign the default value for pca score plot
+        ocpu.call("get_pca_score_plot_style", {
+            user_id: localStorage.user_id
+        }, function (session) {
+            session.getObject(function (obj) {
+                console.log(obj)
+                sss = obj
+
+                init_pickr = function () {
+                    $(".pickr-container").each(function () {
+                        switch (this.id) {
+                            case "score_plot_plot_bgcolor_id":
+                                default_color = sss.plot_bgcolor[0];
+                                break;
+                            case "score_plot_paper_bgcolor_id":
+                                default_color = sss.paper_bgcolor[0];
+                                break;
+
+                            case "score_plot_layout_title_font_color_id":
+                                default_color = sss.title.font.color[0]
+                                break;
+
+                            case "score_plot_layout_xaxis_title_font_color_id":
+                                default_color = sss.xaxis.title.font.color[0]
+                                break;
+                            case "score_plot_layout_xaxis_tickfont_color_id":
+                                default_color = sss.xaxis.tickfont.color[0]
+                                break;
+
+                            case "score_plot_layout_yaxis_title_font_color_id":
+                                default_color = sss.xaxis.title.font.color[0]
+                                break;
+                            case "score_plot_layout_yaxis_tickfont_color_id":
+                                default_color = sss.xaxis.tickfont.color[0]
+                                break;
+
+                            case "score_plot_layout_xaxis_tickcolor_id":
+                                default_color = sss.xaxis.tickcolor[0];
+                                break;
+                            case "score_plot_layout_xaxis_linecolor_id":
+                                default_color = sss.xaxis.linecolor[0];
+                                break;
+                            case "score_plot_layout_xaxis_gridcolor_id":
+                                default_color = sss.xaxis.gridcolor[0];
+                                break;
+                            case "score_plot_layout_xaxis_zerolinecolor_id":
+                                default_color = sss.xaxis.zerolinecolor[0];
+                                break;
+                            case "score_plot_layout_yaxis_tickcolor_id":
+                                default_color = sss.yaxis.tickcolor[0];
+                                break;
+                            case "score_plot_layout_yaxis_linecolor_id":
+                                default_color = sss.yaxis.linecolor[0];
+                                break;
+                            case "score_plot_layout_yaxis_gridcolor_id":
+                                default_color = sss.yaxis.gridcolor[0];
+                                break;
+                            case "score_plot_layout_yaxis_zerolinecolor_id":
+                                default_color = sss.yaxis.zerolinecolor[0];
+                                break;
+                            default:
+                            default_color = "rgb(0, 0, 0)"
+                        }
+                        new Pickr(Object.assign({
+                            el: this, theme: 'classic',
+                            default: default_color
+                        }, {
+                                swatches: [
+                                    'rgba(244, 67, 54, 1)',
+                                    'rgba(233, 30, 99, 0.95)',
+                                    'rgba(156, 39, 176, 0.9)',
+                                    'rgba(103, 58, 183, 0.85)',
+                                    'rgba(63, 81, 181, 0.8)',
+                                    'rgba(33, 150, 243, 0.75)',
+                                    'rgba(3, 169, 244, 0.7)',
+                                    'rgba(0, 188, 212, 0.7)',
+                                    'rgba(0, 150, 136, 0.75)',
+                                    'rgba(76, 175, 80, 0.8)',
+                                    'rgba(139, 195, 74, 0.85)',
+                                    'rgba(205, 220, 57, 0.9)',
+                                    'rgba(255, 235, 59, 0.95)',
+                                    'rgba(255, 193, 7, 1)'
+                                ],
+                                components: {
+                                    preview: true, opacity: true, hue: true,
+                                    interaction: {
+                                        hex: true, rgba: true, input: true, clear: true, save: true
+                                    }
+                                }
+                            })).on('save', function () {
+                                setTimeout(gather_page_information_to_score_plot, 200)
+                            });
+                    })
+                }
+
+                //init_pickr = function(){}
+                setTimeout(function(){
+                    init_pickr()
+                    gather_page_information_to_score_plot()
+                }, 500)
+
+                score_plot_color_levels_change(); score_plot_traces_color_by_info_change();
+                score_plot_shape_levels_change(); score_plot_traces_shape_by_info_change();
+                score_plot_size_levels_change(); score_plot_traces_size_by_info_change()
+
+                /*$("#score_plot_plot_bgcolor .pickr .pcr-button").css('color', obj.plot_bgcolor)
+                $("#score_plot_paper_bgcolor .pickr .pcr-button").css('color', obj.paper_bgcolor)*/
+                $("#score_plot_layout_title_text").val(obj.title.text)
+                $("#score_plot_layout_title_font .form-group .selectpicker").val(obj.title.font.family)
+                $("#score_plot_layout_title_font .form-group .selectpicker").selectpicker('refresh')
+                $("#score_plot_layout_title_font .input-group .size").val(obj.title.font.size)
+                //$("#score_plot_layout_title_font .input-group .pickr .pcr-button").css('color', obj.title.font.color)
+                $("#score_plot_layout_title_x").val(obj.title.x)
+                $("#score_plot_layout_title_y").val(obj.title.y)
+                $("#score_plot_layout_width").val(obj.width)
+                $("#score_plot_layout_height").val(obj.height)
+                $("#score_plot_layout_margin_left").val(obj.margin.l)
+                $("#score_plot_layout_margin_right").val(obj.margin.r)
+                $("#score_plot_layout_margin_top").val(obj.margin.t)
+                $("#score_plot_layout_margin_bottom").val(obj.margin.b)
+
+                $("#score_plot_layout_xaxis_title_text").val(obj.xaxis.title.text)
+                $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").val(obj.xaxis.title.font.family)
+                $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").selectpicker('refresh')
+                $("#score_plot_layout_xaxis_title_font .input-group .size").val(obj.xaxis.title.font.size)
+                //$("#score_plot_layout_xaxis_title_font .input-group .pickr .pcr-button").css('color', obj.xaxis.title.font.color)
+
+                $("#score_plot_layout_xaxis_ticklen").val(obj.xaxis.ticklen)
+                $("#score_plot_layout_xaxis_tickwidth").val(obj.xaxis.tickwidth)
+                //$("#score_plot_layout_xaxis_tickcolor .pickr .pcr-button").css('color', obj.xaxis.tickcolor)
+
+                $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").val(obj.xaxis.title.font.family)
+                $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").selectpicker('refresh')
+                $("#score_plot_layout_xaxis_tickfont .input-group .size").val(obj.xaxis.title.font.size)
+                //$("#score_plot_layout_xaxis_tickfont .input-group .pickr .pcr-button").css('color', obj.xaxis.title.font.color)
+
+                $("#score_plot_layout_xaxis_tickangle").val(obj.xaxis.tickangle)
+                //$("#score_plot_layout_xaxis_linecolor .pickr .pcr-button").css('color', obj.xaxis.linecolor)
+                $("#score_plot_layout_xaxis_linewidth").val(obj.xaxis.linewidth)
+
+                $("#score_plot_layout_xaxis_showgrid").prop("checked", obj.xaxis.showgrid[0])
+                //$("#score_plot_layout_xaxis_gridcolor .pickr .pcr-button").css('color', obj.xaxis.gridcolor)
+                $("#score_plot_layout_xaxis_gridwidth").val(obj.xaxis.gridwidth)
+                $("#score_plot_layout_xaxis_zeroline").prop("checked", obj.xaxis.zeroline[0])
+                //$("#score_plot_layout_xaxis_zerolinecolor .pickr .pcr-button").css('color', obj.xaxis.zerolinecolor)
+                $("#score_plot_layout_xaxis_zerolinewidth").val(obj.xaxis.zerolinewidth)
+
+
+                $("#score_plot_layout_yaxis_title_text").val(obj.yaxis.title.text)
+                $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").val(obj.yaxis.title.font.family)
+                $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").selectpicker('refresh')
+                $("#score_plot_layout_yaxis_title_font .input-group .size").val(obj.yaxis.title.font.size)
+                //$("#score_plot_layout_yaxis_title_font .input-group .pickr .pcr-button").css('color', obj.yaxis.title.font.color)
+
+                $("#score_plot_layout_yaxis_ticklen").val(obj.yaxis.ticklen)
+                $("#score_plot_layout_yaxis_tickwidth").val(obj.yaxis.tickwidth)
+                //$("#score_plot_layout_yaxis_tickcolor .pickr .pcr-button").css('color', obj.yaxis.tickcolor)
+
+                $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").val(obj.yaxis.title.font.family)
+                $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").selectpicker('refresh')
+                $("#score_plot_layout_yaxis_tickfont .input-group .size").val(obj.yaxis.title.font.size)
+                //$("#score_plot_layout_yaxis_tickfont .input-group .pickr .pcr-button").css('color', obj.yaxis.title.font.color)
+
+                $("#score_plot_layout_yaxis_tickangle").val(obj.yaxis.tickangle)
+                //$("#score_plot_layout_yaxis_linecolor .pickr .pcr-button").css('color', obj.yaxis.linecolor)
+                $("#score_plot_layout_yaxis_linewidth").val(obj.yaxis.linewidth)
+
+                $("#score_plot_layout_yaxis_showgrid").prop("checked", obj.yaxis.showgrid[0])
+                //$("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color', obj.yaxis.gridcolor)
+                $("#score_plot_layout_yaxis_gridwidth").val(obj.yaxis.gridwidth)
+                $("#score_plot_layout_yaxis_zeroline").prop("checked", obj.yaxis.zeroline[0])
+                //$("#score_plot_layout_yaxis_zerolinecolor .pickr .pcr-button").css('color', obj.yaxis.zerolinecolor)
+                $("#score_plot_layout_yaxis_zerolinewidth").val(obj.yaxis.zerolinewidth)
+
+                
+
+
+
+            })
+        }).fail(function (e2) {
+            Swal.fire('Oops...', e2.responseText, 'error')
         })
 
 

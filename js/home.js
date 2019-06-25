@@ -167,7 +167,22 @@ update_projects_table = function () {
                 $(this).addClass('selected').siblings().removeClass('selected');
                 var project_id = $(this).find('td:first').html();
                 localStorage['activate_project_id'] = project_id
-                window.location.href = "#project_overview";
+
+                // here change the p and f.
+                ocpu.call("get_p_and_f",{
+                    project_id:localStorage['activate_project_id']
+                },function(session){
+                    session.getObject(function(obj){
+                        localStorage['p'] = JSON.stringify(obj.p) 
+                        localStorage['f'] = JSON.stringify(obj.f) 
+                        window.location.href = "#project_overview";
+                    })
+                }).fail(function (e) {
+                    Swal.fire('Oops...', e.responseText, 'error')
+                })
+
+
+                
             });
 
 

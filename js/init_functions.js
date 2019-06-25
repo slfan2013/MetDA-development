@@ -150,11 +150,21 @@ function rgbaToHex (rgba) {
   if(rgba === null){
     return(null)
   }
-    var parts = rgba.substring(rgba.indexOf("(")).split(","),
-        r = parseInt(trim(parts[0].substring(1)), 10),
+  
+    var parts = rgba.substring(rgba.indexOf("(")).split(",")
+	if(parts.length===3){
+		r = parseInt(trim(parts[0].substring(1)), 10),
+        g = parseInt(trim(parts[1]), 10),
+        b = parseInt(trim(parts[2]), 10),
+        a = "1.00"
+	}else{
+		r = parseInt(trim(parts[0].substring(1)), 10),
         g = parseInt(trim(parts[1]), 10),
         b = parseInt(trim(parts[2]), 10),
         a = parseFloat(trim(parts[3].substring(0, parts[3].length - 1))).toFixed(2);
+	}
+		
+        
 
         r = r.toString(16).length==1? "0"+r.toString(16):r.toString(16)
         g = g.toString(16).length==1? "0"+g.toString(16):g.toString(16)
