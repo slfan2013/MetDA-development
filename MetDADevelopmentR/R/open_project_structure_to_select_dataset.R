@@ -1,8 +1,8 @@
 open_project_structure_to_select_dataset = function(
-  project_id = "new project31560542628",
-  selected_data = ""
+  project_id = "ttt1560536819",
+  selected_data = "e.csv"
   ){
-
+  save(project_id, selected_data, file = "test.RData")
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
@@ -46,7 +46,17 @@ open_project_structure_to_select_dataset = function(
 
   }
 
-  return(result_project_structure)
+  p = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/p.csv"))
+  f = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/f.csv"))
+  e = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/",selected_data))
+
+  p = p[p$label %in% colnames(e),]
+  f = f[f$label %in% e[[1]],]
+
+
+  return(list(result_project_structure = result_project_structure, p = p, f = f))
+
+  return(TRUE)
 
 
 

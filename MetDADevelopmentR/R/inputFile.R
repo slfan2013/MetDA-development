@@ -37,5 +37,5 @@ inputFile <- function(path = "D:\\MetDA-development\\MetDADevelopmentR\\GCTOF_Ab
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
 
 
-  return(list(message = result$message, project_id = temp_project_id))
+  return(list(message = result$message, project_id = temp_project_id, p = p, f = f))
 }

@@ -47,7 +47,9 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
         if (current_cat === "DATA PROCESSING") {
             sidebar_ul = sidebar_ul + 'donut_large'
         } else if (current_cat === 'MULTIVARIATE ANALYSIS') {
-            sidebar_ul = sidebar_ul + 'drag_indicator'
+            sidebar_ul = sidebar_ul + 'reorder'
+        } else if (current_cat === 'UNIVARIATE ANALYSIS') {
+            sidebar_ul = sidebar_ul + 'remove'
         }
         sidebar_ul = sidebar_ul + '</i>' +
             '<p>' + current_cat + '<b class="caret"></b></p></a>'

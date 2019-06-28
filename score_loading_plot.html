@@ -1,0 +1,730 @@
+<div class="row">
+        <div class="col-lg-4">
+                <div class="row">
+                    
+                    
+                    <div class="col-md-4">
+                            <ul class="nav nav-pills nav-pills-primary flex-column">
+                                <li class="nav-item"><a class="nav-link active" href="#score_plot_general" data-toggle="tab">General</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="#score_plot_traces"
+                                        data-toggle="tab">Traces</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#tab3" data-toggle="tab">Options</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-8">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="score_plot_general">
+                                        <div id="score_plot_layout_accordion" role="tablist">
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_general_defaults_heading">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" href="#score_plot_general_defaults_collapse"
+                                                            aria-expanded="true" aria-controls="score_plot_general_defaults_collapse">
+                                                            Defaults
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_general_defaults_collapse" class="collapse show" role="tabpanel"
+                                                    aria-labelledby="score_plot_general_defaults_heading"
+                                                    data-parent="#score_plot_layout_accordion" style="">
+                                                    <div class="card-body">
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            Plot Background Color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_plot_bgcolor">
+                                                                        <div class="pickr-container" id="score_plot_plot_bgcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            Margin Background
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_paper_bgcolor">
+                                                                        <div class="pickr-container" id="score_plot_paper_bgcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            plot width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_width" placeholder="width" min="100"
+                                                                        max="1500" step="100" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            plot height
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_height" placeholder="height" min="100"
+                                                                        max="1500" step="100" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            margin top
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_margin_top" placeholder="margin top"
+                                                                        min="0" max="500" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            margin right
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_margin_right" placeholder="margin right"
+                                                                        min="0" max="500" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            margin bottom
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_margin_bottom" placeholder="margin bottom"
+                                                                        min="0" max="500" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            margin left
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_margin_left" placeholder="margin left"
+                                                                        min="0" max="500" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--<div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Text</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div id="score_plot_layout_font"></div>
+                                                            </div>
+                                                        </div>-->
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Title</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            text
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control"
+                                                                        id="score_plot_layout_title_text" placeholder="title text" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div id="score_plot_layout_title_font"></div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            position - x 
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_title_x" placeholder="horizontal position"
+                                                                        min="0" max="1" step="0.1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            position - y
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_title_y" placeholder="horizontal position"
+                                                                        min="0" max="1" step="0.1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_general_xaxis_heading">
+                                                    <h5 class="mb-0">
+                                                        <a class="collapsed" data-toggle="collapse"
+                                                            href="#score_plot_general_xaxis_collapse" aria-expanded="false"
+                                                            aria-controls="score_plot_general_xaxis_collapse">
+                                                            X - Axis
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_general_xaxis_collapse" class="collapse" role="tabpanel"
+                                                    aria-labelledby="score_plot_general_xaxis_heading"
+                                                    data-parent="#score_plot_layout_accordion">
+                                                    <div class="card-body">
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Title</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            text
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control"
+                                                                        id="score_plot_layout_xaxis_title_text"
+                                                                        placeholder="xaxis title text" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div id="score_plot_layout_xaxis_title_font"></div>
+                                                                <!--
+                                                                    <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            position
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_title_x"
+                                                                        placeholder="horizontal position" min="0" max="1" step="0.1">
+                                                                </div>
+                
+                                                                -->
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Ticks</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            length
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_ticklen" placeholder="tick length"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_tickwidth" placeholder="tick width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_xaxis_tickcolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_xaxis_tickcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            tick angle
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_tickangle" placeholder="tick angle"
+                                                                        min="0" max="360" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                            </div>
+                                                            <div id="score_plot_layout_xaxis_tickfont"></div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Axis Line</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_linewidth" placeholder="line width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_xaxis_linecolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_xaxis_linecolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Grids</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" type="checkbox" value=""
+                                                                            id="score_plot_layout_xaxis_showgrid" onchange = "gather_page_information_to_score_plot()">
+                                                                        Show Grids
+                                                                        <span class="form-check-sign">
+                                                                            <span class="check"></span>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_gridwidth" placeholder="grid width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_xaxis_gridcolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_xaxis_gridcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Zero Line</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" type="checkbox" value=""
+                                                                            id="score_plot_layout_xaxis_zeroline" onchange = "gather_page_information_to_score_plot()">
+                                                                        Zero Line
+                                                                        <span class="form-check-sign">
+                                                                            <span class="check"></span>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_xaxis_zerolinewidth"
+                                                                        placeholder="zeroline width" min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_xaxis_zerolinecolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_xaxis_zerolinecolor_id">
+                                                                        </div>
+                                                                    </div>
+                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_general_yaxis_heading">
+                                                    <h5 class="mb-0">
+                                                        <a class="collapsed" data-toggle="collapse"
+                                                            href="#score_plot_general_yaxis_collapse" aria-expanded="false"
+                                                            aria-controls="score_plot_general_yaxis_collapse">
+                                                            Y - Axis
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_general_yaxis_collapse" class="collapse" role="tabpanel"
+                                                    aria-labelledby="score_plot_general_yaxis_heading"
+                                                    data-parent="#score_plot_layout_accordion">
+                                                    <div class="card-body">
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Title</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            text
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control"
+                                                                        id="score_plot_layout_yaxis_title_text"
+                                                                        placeholder="yaxis title text" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div id="score_plot_layout_yaxis_title_font"></div>
+                                                                <!--
+                                                                    <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            position
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_title_x"
+                                                                        placeholder="horizontal position" min="0" max="1" step="0.1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                -->
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Ticks</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            length
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_ticklen" placeholder="tick length"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_ticklen" placeholder="tick width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_yaxis_tickcolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_yaxis_tickcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            tick angle
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_tickangle" placeholder="tick angle"
+                                                                        min="0" max="360" step="10" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                            </div>
+                                                            <div id="score_plot_layout_yaxis_tickfont"></div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Axis Line</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_linewidth" placeholder="line width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_yaxis_linecolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_yaxis_linecolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Grids</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" type="checkbox" value=""
+                                                                            id="score_plot_layout_yaxis_showgrid">
+                                                                        Show Grids
+                                                                        <span class="form-check-sign">
+                                                                            <span class="check"></span>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_gridwidth" placeholder="grid width"
+                                                                        min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_yaxis_gridcolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_yaxis_gridcolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card" style="margin:0">
+                                                            <div class="card-header" style="padding-top:0">Zero Line</div>
+                                                            <div class="card-body" style="padding-top:0">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label">
+                                                                        <input class="form-check-input" type="checkbox" value=""
+                                                                            id="score_plot_layout_yaxis_zeroline">
+                                                                        Zero Line
+                                                                        <span class="form-check-sign">
+                                                                            <span class="check"></span>
+                                                                        </span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            width
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="number" class="form-control"
+                                                                        id="score_plot_layout_yaxis_zerolinewidth"
+                                                                        placeholder="zeroline width" min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text">
+                                                                            color
+                                                                        </span>
+                                                                    </div>
+                                                                    <div id="score_plot_layout_yaxis_zerolinecolor">
+                                                                        <div class="pickr-container" id="score_plot_layout_yaxis_zerolinecolor_id">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button class="btn btn-primary btn-sm" onclick="save_score_plot_style()">Set This Style As Default</button>
+                                    
+                                    </div>
+                                    <div class="tab-pane" id="score_plot_traces">
+                                        <div id="score_plot_traces_accordion" role="tablist">
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_traces_color_heading">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" href="#score_plot_traces_color_collapse"
+                                                            aria-expanded="true" aria-controls="score_plot_traces_color_collapse">
+                                                            Colors
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_traces_color_collapse" class="collapse show" role="tabpanel"
+                                                    aria-labelledby="score_plot_traces_color_heading"
+                                                    data-parent="#score_plot_traces_accordion" style="">
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                                id="score_plot_traces_color_by_info" onchange = "gather_page_information_to_score_plot()">
+                                                            Color By Sample Information
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div id="score_plot_show_when_color_by_info">
+                                                        <!-- here should be able to use p.-->
+                                                        <div id="score_plot_color_levels_div"></div>
+                                                        <!--
+                                                        <div class="form-group" style="margin:0;border:0;padding:0">
+                                                        <select class="form-control selectpicker font" data-style="btn btn-link">
+                                                            <option>Arial</option>
+                                                            <option>Balto</option>
+                                                            <option>Courier New</option>
+                                                            <option>Droid Sans</option>
+                                                            <option>Droid Serif</option>
+                                                        </select>
+                                                    </div>
+                                                    -->
+                                                        <div id="score_plot_color_options_div"></div>
+                                                        <!--<div class="input-group" id="score_plot_color_options1">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Control MHC</span>
+                                                        </div>
+                                                        <div class="pickr-container">
+                                                        </div>
+                                                    </div>-->
+                                                    </div>
+                                                    <div id="score_plot_hide_when_color_by_info">
+                                                        <div class="input-group" id="score_plot_color_option">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">Dot Color</span>
+                                                            </div>
+                                                            <div class="pickr-container" id="score_plot_color_option_id">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
+                                                </div>
+                                            </div>
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_traces_shape_heading">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" href="#score_plot_traces_shape_collapse"
+                                                            aria-expanded="false" aria-controls="score_plot_traces_shape_collapse">
+                                                            Shapes
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_traces_shape_collapse" class="collapse" role="tabpanel"
+                                                    aria-labelledby="score_plot_traces_shape_heading"
+                                                    data-parent="#score_plot_traces_accordion" style="">
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                                id="score_plot_traces_shape_by_info" onchange = "gather_page_information_to_score_plot()">
+                                                            Shape By Sample Information
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div id="score_plot_show_when_shape_by_info">
+                                                        <!-- here should be able to use p.-->
+                                                        <div id="score_plot_shape_levels_div"></div>
+                                                        <div id="score_plot_shape_options_div"></div>
+                                                    </div>
+                                                    <div id="score_plot_hide_when_shape_by_info">
+                                                        <div class="input-group">
+                                                            <div class="form-group" style="margin:0;border:0;padding:0"
+                                                                id="score_plot_shape_option">
+                                                                <label>Dot Shape</label>
+                                                                <select class="form-control selectpicker" data-style="btn btn-link" onchange = "gather_page_information_to_score_plot()">
+                                                                    <option selected>circle</option>
+                                                                    <option>square</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                
+                
+                
+                                            <div class="card-collapse">
+                                                <div class="card-header" role="tab" id="score_plot_traces_size_heading">
+                                                    <h5 class="mb-0">
+                                                        <a data-toggle="collapse" href="#score_plot_traces_size_collapse"
+                                                            aria-expanded="false" aria-controls="score_plot_traces_size_collapse">
+                                                            Sizes
+                                                            <i class="material-icons">keyboard_arrow_down</i>
+                                                        </a>
+                                                    </h5>
+                                                </div>
+                                                <div id="score_plot_traces_size_collapse" class="collapse" role="tabpanel"
+                                                    aria-labelledby="score_plot_traces_size_heading"
+                                                    data-parent="#score_plot_traces_accordion" style="">
+                                                    <div class="form-check">
+                                                        <label class="form-check-label">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                                id="score_plot_traces_size_by_info" onchange = "gather_page_information_to_score_plot()">
+                                                            Size By Sample Information
+                                                            <span class="form-check-sign">
+                                                                <span class="check"></span>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div id="score_plot_show_when_size_by_info">
+                                                        <!-- here should be able to use p.-->
+                                                        <div id="score_plot_size_levels_div"></div>
+                                                        <div id="score_plot_size_options_div"></div>
+                                                    </div>
+                                                    <div id="score_plot_hide_when_size_by_info">
+                
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">
+                                                                    Dot Size
+                                                                </span>
+                                                            </div>
+                                                            <input id="score_plot_size_option" type="number" class="form-control" value="15"
+                                                                placeholder="Dot Size" min="0" step="1" onchange = "gather_page_information_to_score_plot()">
+                                                        </div>
+                
+                
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                
+                
+                
+                
+                
+                                    </div>
+                                    <div class="tab-pane" id="tab3">
+                                        Completely synergize resource taxing relationships via premier niche markets. Professionally
+                                        cultivate one-to-one customer service with robust ideas.
+                                        <br><br>Dynamically innovate resource-leveling customer service for state of the art customer
+                                        service.
+                                    </div>
+                                </div>
+                                
+                            </div>
+                </div>
+            </div>
+        <div class="col-lg-8">
+            <div id="score_plot"></div>
+        </div>
+        
+        
+    </div>

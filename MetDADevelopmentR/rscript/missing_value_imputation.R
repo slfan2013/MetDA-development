@@ -30,8 +30,17 @@ e = data.matrix(read.csv(
 # f = data$f
 # p = data$p
 
-
+summary = list()
 ## Here, we want to replace missing values.
+if('zeros' %in% defination_of_missing_value){
+  summary[["zeros"]] = apply(e,1,function(x){
+    sum(x==0)
+  })
+  e[e==0] = NA
+}
+if('negative values' %in% defination_of_missing_value){
+  e[e<0] = NA
+}
 
 
 result_dataset =  aggregate_p_f_e(p, f, e)

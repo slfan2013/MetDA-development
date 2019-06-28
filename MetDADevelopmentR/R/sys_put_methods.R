@@ -8,6 +8,14 @@ sys_put_methods <- function() {
         "Example link" = ""
       )
     ),
+    "UNIVARIATE ANALYSIS" = list(
+      "student_t_test" = list(
+        "Method Name" = "Student's t-test",
+        "Description" = "The Student's t-test is for testing if the two group means are statistically siginificantly different.",
+        "Example" = "paper3",
+        "Example link" = ""
+      )
+    ),
     "MULTIVARIATE ANALYSIS" = list(
       "pca" = list(
         "Method Name" = "Principal Component Analysis (PCA)",
