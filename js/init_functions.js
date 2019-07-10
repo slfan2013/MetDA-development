@@ -311,7 +311,10 @@ download_results = function (files_names, files_sources, zipfile_name) {
 }
 
 save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index) {
+  
   console.log(files_sources)
+  console.log(fold_name)
+
   $('#save_results_collapse').collapse('toggle')
   $(".download").prop("disabled", true);
   $("#save_results").text("Waiting User to Select a Folder ... ")
@@ -348,7 +351,9 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
                 allResults.push(results.data);
                 if (allResults.length == files.length) {
                   // Do whatever you need to do
+                  console.log("HERE")
                   console.log(allResults)
+                  console.log(data.node.original.id)
                   ocpu.call("save_results_to_project", {
                     files_names: files_names,
                     files_sources: allResults,
@@ -359,6 +364,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
                     project_id: localStorage['activate_project_id'],
                     selected_folder: data.node.original.id
                   }, function (session) {
+                    console.log(session)
                     session.getObject(function (obj) {
                       if (obj) {
                         console.log("success")

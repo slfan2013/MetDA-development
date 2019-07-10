@@ -9,6 +9,12 @@ sys_put_methods <- function() {
       )
     ),
     "UNIVARIATE ANALYSIS" = list(
+      "fold_change" = list(
+        "Method Name" = "Fold Change",
+        "Description" = "Calculate the average ratio between two groups..",
+        "Example" = "paper3",
+        "Example link" = ""
+      ),
       "student_t_test" = list(
         "Method Name" = "Student's t-test",
         "Description" = "The Student's t-test is for testing if the two group means are statistically siginificantly different.",

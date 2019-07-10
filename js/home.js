@@ -167,7 +167,7 @@ update_projects_table = function () {
                 $(this).addClass('selected').siblings().removeClass('selected');
                 var project_id = $(this).find('td:first').html();
                 localStorage['activate_project_id'] = project_id
-
+                localStorage['activate_data_id']='e.csv'
                 // here change the p and f.
                 ocpu.call("get_p_and_f",{
                     project_id:localStorage['activate_project_id']

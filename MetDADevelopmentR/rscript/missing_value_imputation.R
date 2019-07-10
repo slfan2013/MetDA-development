@@ -22,7 +22,7 @@ e = data.matrix(read.csv(
     project_id,
     "/",activate_data_id
   )
-))[, -1]
+  , dec = ','))[, -1]
 
 # Summarize the information about missing values.
 # data = wcmc::read_data("GCTOF_Abraham_CM_v_M_heart_NoSwim.xlsx")

@@ -29,11 +29,16 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
 
         // check which is active.
         current_items = Object.keys(data.methods_structure[category_names[cat]])
+        console.log(current_items)
+
+
+
         if (current_items.includes(window.location.href.split("#")[1])) {
             being_active = true
         } else {
             being_active = false
         }
+        console.log(being_active)
 
         if (being_active) {
             sidebar_ul = sidebar_ul + '<li class="nav-item active">'
@@ -64,6 +69,13 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
             '<ul class="nav">'
         current_items = Object.keys(data.methods_structure[category_names[cat]])
         for (var it = 0; it < current_items.length; it++) {
+            console.log(current_items[it])
+            if (current_items[it] === window.location.href.split("#")[1]) {
+                being_active = true
+            } else {
+                being_active = false
+            }
+            console.log(being_active)
 
             if (being_active) {
                 sidebar_ul = sidebar_ul + '<li class="nav-item active">'

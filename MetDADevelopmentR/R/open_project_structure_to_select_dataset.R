@@ -1,6 +1,6 @@
 open_project_structure_to_select_dataset = function(
-  project_id = "ttt1560536819",
-  selected_data = "e.csv"
+  project_id = "fdeq1560538867",
+  selected_data = "result dataset1562687052.csv"
   ){
   save(project_id, selected_data, file = "test.RData")
 
@@ -38,7 +38,9 @@ open_project_structure_to_select_dataset = function(
   }else{
     result_project_structure = project_structure[id %in% needed_id]
 
-    result_project_structure[[which(id %in% selected_data)]]$state = list(
+
+    result_id = sapply(result_project_structure, function(x){x$id})
+    result_project_structure[[which(result_id %in% selected_data)]]$state = list(
       opened = TRUE,
       selected = TRUE
     )
@@ -56,7 +58,7 @@ open_project_structure_to_select_dataset = function(
 
   return(list(result_project_structure = result_project_structure, p = p, f = f))
 
-  return(TRUE)
+  # return(TRUE)
 
 
 

@@ -26,7 +26,7 @@
                      update_projects_table()
                   })
                } else {
-                  if (["pca","missing_value_imputation","project_overview","student_t_test"].includes(window.location.href.split("#")[1])) {
+                  if (["pca","missing_value_imputation","project_overview","student_t_test","fold_change"].includes(window.location.href.split("#")[1])) {
                      $("#templates_content").show();
                      $("#templates_content").load("templates.html", init_ripples)
                   } else {

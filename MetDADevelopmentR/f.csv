@@ -1,4 +1,4 @@
-"CompoundID","Order","Compound Name","Assay","MIUnit","HMDBID","LipidMAPS","KEGGID","PubChemID","InChiKey","SMILES","label"
+"CompoundID","Order","Compound.Name","Assay","MIUnit","HMDBID","LipidMAPS","KEGGID","PubChemID","InChiKey","SMILES","label"
 "CPD001","1","xylose","GCTOF","Peak height","HMDB00098",NA,"C00181","135191","SRBFZHDQGSBBOR-IOVATXLUSA-N","C1[C@H]([C@@H]([C@H](C(O1)O)O)O)O","xylose"
 "CPD002","2","xylitol","GCTOF","Peak height","HMDB02917",NA,"C00379","6912","HEBKCHPVOIAQTA-NGQZWQHPSA-N","C([C@H](C([C@H](CO)O)O)O)O","xylitol"
 "CPD003","3","xanthine","GCTOF","Peak height","HMDB00292",NA,"C00385","1188","LRFVTYWOQMYALW-UHFFFAOYSA-N","C1=NC2=C(N1)C(=O)NC(=O)N2","xanthine"

@@ -1,7 +1,7 @@
-save_results_to_project <- function(project_id = "dadfasfdas1560556027",
-                                    selected_folder = "dadfasfdas1560556027",
+save_results_to_project <- function(project_id = "aaa1560462496",
+                                    selected_folder = "aaa1560462496",
                                     files_names = c("missing_value_imputation_result_dataset.csv", "missing_value_imputation_result_summary.csv"),
-                                    files_sources = c("http://localhost:5656/ocpu/tmp/x0f07610ed4/files/result_dataset.csv", "http://localhost:5656/ocpu/tmp/x0f07610ed4/files/summary_data.csv"),
+                                    files_sources = c("http://localhost:5656/ocpu/tmp/x0009da5b92/files/result_dataset.csv", "http://localhost:5656/ocpu/tmp/x0009da5b92/files/summary_data.csv"),
                                     files_types = c("application/vnd.ms-excel","application/vnd.ms-excel"),
                                     fold_name = "Missing Value Imputation",
                                     parameters = '"defination_of_missing_value":["empty cells"],"defination_of_missing_value_values_less_than":"","defination_of_missing_other_than":"","remove_missing_values_more_than":"on","remove_missing_values_more_than_value":"50","missing_value_imputation_method":"replace by half minimum","project_id":"dadfasfdas1560556027","fun_name":"missing_value_imputation"',
@@ -10,8 +10,33 @@ save_results_to_project <- function(project_id = "dadfasfdas1560556027",
 save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, file = "test.RData")
 if(class(files_sources) == "list"){# this means this is localhost.https://github.com/opencpu/opencpu/issues/345
   for(file_source in 1:length(files_sources)){
-    data.table::fwrite(files_sources[[file_source]],files_names[file_source])
-    # download.file(URLencode(files_sources[file_source]),files_names[file_source],mode = 'wb')
+
+    if(ncol(files_sources[[file_source]])>1){
+      data.table::fwrite(files_sources[[file_source]],files_names[file_source])
+    }else{
+
+
+
+
+      current_string = paste0(files_sources[[file_source]][1:nrow(files_sources[[file_source]]),], collapse = "\n")
+
+
+      if(file_source %in% epf_index){
+        data.table::fwrite(data.table::fread(text = current_string),files_names[file_source], col.names = FALSE)
+
+        inputFile(files_names[file_source])
+
+        e = read.csv("e.csv")[,-1]
+        rownames(e) = read.csv("f.csv")$label
+
+        data.table::fwrite(e,files_names[file_source], col.names = TRUE, row.names = TRUE)
+
+      }else{
+        data.table::fwrite(data.table::fread(text = current_string),files_names[file_source], col.names = FALSE)
+      }
+
+
+    }
   }
 }else{
   # 1 download all the results.
@@ -26,7 +51,19 @@ if(class(files_sources) == "list"){# this means this is localhost.https://github
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = FALSE)
 
   current_time = as.integer(Sys.time())
-  attachments_ids = paste0(files_names, current_time)
+
+  suffix = paste0(".",sapply(files_names,function(x){
+    tail(strsplit(x,"\\.")[[1]],n=1)
+  }))
+  files_names_without_suffix = sapply(1:length(files_names),function(i){
+    gsub(suffix[i],"",files_names[i])
+  })
+
+
+  attachments_ids = paste0(files_names_without_suffix, current_time,suffix)
+
+  # stringr::str_replace(string = c("abc","abc"), pattern = c("a","b"), replacement = "")
+
   for(file_source in 1:length(files_sources)){
     projectList$`_attachments`[[attachments_ids[file_source]]] = list(
       content_type = files_types[file_source],

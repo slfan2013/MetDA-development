@@ -3,7 +3,7 @@ aggregate_p_f_e <- function(p, f, e) {
   p$label <- NULL
   p$label <- p_label
 
-  p_plus_e <- rbind(cbind(colnames(p), t(p)), cbind(f$label, e))
+  p_plus_e <- rbind(cbind(colnames(p), t(p)), cbind(as.character(f$label), e))
 
   # add some NA to the top of the f.
   f_label_index <- which(p_plus_e[, 1] == "label")

@@ -91,6 +91,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     get_parameter_settings()
                 })
                 if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
+
                     $("#parameter_settings_card").show()
                     get_parameter_settings()
                 }
@@ -141,7 +142,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     }
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-        if (['missing_value_imputation','student_t_test'].includes(page)) {
+        if (['missing_value_imputation','student_t_test', 'fold_change'].includes(page)) {
             $("#results_card_body").load("one_top_description_bottom_table.html", function () {
                 init_selectpicker()
 
