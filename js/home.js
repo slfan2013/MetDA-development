@@ -179,14 +179,8 @@ update_projects_table = function () {
                     })
                 }).fail(function (e) {
                     Swal.fire('Oops...', e.responseText, 'error')
-                })
-
-
-                
+                }) 
             });
-
-
-
         }
     });
 }
@@ -197,4 +191,7 @@ change_big_category = function (category) {
     localStorage['big_category'] = category
 }
 
+go_to_one_click = function(){
+    window.location.href = "#one_click";
+}
 
