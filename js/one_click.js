@@ -163,7 +163,7 @@ $("#confirm_selected_project").click(function () {
                     'check_callback': true
                 }
             })
-            $("#preview_result_structure_information").text("The above red text highlighted are to be added to the project.")
+            $("#preview_result_structure_information").html("<p class='text-success'>The above <span class='text-danger'>red text</span> highlighted are to be added to the project.</p>")
 
         })
     })
