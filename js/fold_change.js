@@ -29,7 +29,7 @@ fold_change_append_results = function (obj, session) {
     var files_names = ["fold_change_result.csv"]
     var files_types = ["application/vnd.ms-excel"]
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0])
     })
 
 }

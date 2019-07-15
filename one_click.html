@@ -12,6 +12,18 @@
                     <div id="inputFile_success"></div>
                     <div class="inputFile_validating"></div>
                 </div>
+
+
+
+                <div class="collapse" id="select_from_projects_collapse">
+                    <div class="card card-body">
+                        <table class="table" id="projects_table"></table>
+                    </div>
+                </div>
+                <div id='selected_project_structure'></div>
+                <p class="text-success" id="data_selected_information"></p>
+
+
             </div>
             <div class="card-footer ">
                 <button class="btn btn-primary btn-sm" id="select_from_projects" data-toggle="collapse"
@@ -20,20 +32,66 @@
                 OR
                 <button class="btn btn-primary btn-sm" id="upload_a_file" class="inputFileHidden">Upload From
                     Local</button>
-
                 <input type="file" class="inputFileHidden" id='inputFile' style="display: none;">
-
-
-
-
-
             </div>
         </div>
     </div>
-    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+        <div class="card ">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">library_books</i>
+                </div>
+                <h4 class="card-title">2. Select a Project</h4>
+            </div>
+            <div class="card-body" style="padding-bottom:0">
+                <div class="collapse" id="select_from_projects_collapse2">
+                    <div class="card card-body">
+                        <table class="table" id="projects_table2"></table>
+                    </div>
+                </div>
+                <div id='selected_project_structure2'></div>
+                <p class="text-success" id="data_selected_information2"></p>
+
+            </div>
+            <div class="card-footer ">
+                <button class="btn btn-primary btn-sm" id="confirm_selected_project">Confirm</button>
+                OR
+                <button class="btn btn-primary btn-sm" id="preview_result">Preview</button>
+
+            </div>
+        </div>
+
+
+
+    </div>
 </div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">settings</i>
+                </div>
+                <h4 class="card-title">3. Preview and Specify Parameters</h4>
+            </div>
+            <div class="card-body" style="padding-bottom:0">
+                <div class="row">
+                        <div class="col-lg-6">
+                                <div id="preview_result_structure"></div>
+                                <p id="preview_result_structure_information" class="text-success"></p>
+                        </div>
+                        <div class="col-lg-6">
+
+                        </div>
+                </div>
+            
+            </div>
+        </div>
 
 
+    </div>
 
+</div>
 
 <script src="js/one_click.js"></script>

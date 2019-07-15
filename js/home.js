@@ -142,47 +142,24 @@ create_project = function () {
 }
 
 
-update_projects_table = function () {
-    Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
-        download: true,
-        complete: function (results) {
-            var table_html = "<thead>"
-            for (var i = 0; i < results.data[0].length; i++) {
-                table_html = table_html + "<th>" + results.data[0][i] + "</th>"
-            }
-            table_html = table_html + "</thead>"
-            table_html = table_html + "<tbody>"
-            for (var i = 1; i < results.data.length; i++) {
-                table_html = table_html + "<tr>"
-                for (var j = 0; j < results.data[i].length; j++) {
-                    table_html = table_html + "<td>" + results.data[i][j] + "</td>"
-                }
-                table_html = table_html + "</tr>"
-            }
-            table_html = table_html + "</tbody>"
-            $("#projects_table").html(table_html)
 
-
-            $("#projects_table tr").click(function () {
-                $(this).addClass('selected').siblings().removeClass('selected');
-                var project_id = $(this).find('td:first').html();
-                localStorage['activate_project_id'] = project_id
-                localStorage['activate_data_id']='e.csv'
-                // here change the p and f.
-                ocpu.call("get_p_and_f",{
-                    project_id:localStorage['activate_project_id']
-                },function(session){
-                    session.getObject(function(obj){
-                        localStorage['p'] = JSON.stringify(obj.p) 
-                        localStorage['f'] = JSON.stringify(obj.f) 
-                        window.location.href = "#project_overview";
-                    })
-                }).fail(function (e) {
-                    Swal.fire('Oops...', e.responseText, 'error')
-                }) 
-            });
-        }
-    });
+when_projects_table_clicked = function () {
+    $(this).addClass('selected').siblings().removeClass('selected');
+    var project_id = $(this).find('td:first').html();
+    localStorage['activate_project_id'] = project_id
+    localStorage['activate_data_id']='e.csv'
+    // here change the p and f.
+    ocpu.call("get_p_and_f",{
+        project_id:localStorage['activate_project_id']
+    },function(session){
+        session.getObject(function(obj){
+            localStorage['p'] = JSON.stringify(obj.p) 
+            localStorage['f'] = JSON.stringify(obj.f) 
+            window.location.href = "#project_overview";
+        })
+    }).fail(function (e) {
+        Swal.fire('Oops...', e.responseText, 'error')
+    }) 
 }
 update_projects_table()
 

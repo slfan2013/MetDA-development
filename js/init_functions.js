@@ -434,3 +434,30 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 
 }
+
+
+update_projects_table = function (id="projects_table",call_back=when_projects_table_clicked) {
+  Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
+      download: true,
+      complete: function (results) {
+          var table_html = "<thead>"
+          for (var i = 0; i < results.data[0].length; i++) {
+              table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+          }
+          table_html = table_html + "</thead>"
+          table_html = table_html + "<tbody>"
+          for (var i = 1; i < results.data.length; i++) {
+              table_html = table_html + "<tr>"
+              for (var j = 0; j < results.data[i].length; j++) {
+                  table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+              }
+              table_html = table_html + "</tr>"
+          }
+          table_html = table_html + "</tbody>"
+          $("#"+id).html(table_html)
+
+
+          $("#"+id+" tr").click(call_back);
+      }
+  });
+}
