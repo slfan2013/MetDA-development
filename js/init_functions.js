@@ -356,7 +356,8 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
                   console.log(data.node.original.id)
                   ocpu.call("save_results_to_project", {
                     files_names: files_names,
-                    files_sources: allResults,
+                    files_sources: files_sources,
+                    files_sources_data: allResults,
                     files_types: files_types,
                     fold_name: fold_name,
                     parameters: parameters,
@@ -366,7 +367,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
                   }, function (session) {
                     console.log(session)
                     session.getObject(function (obj) {
-                      if (obj) {
+                      if (obj.status) {
                         console.log("success")
                         //if this is epf, update the id = project_structure_with_dataset_only and id=save_results_tree
                         ocpu.call("open_project_structure_after_save_result", {
@@ -402,6 +403,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
           ocpu.call("save_results_to_project", {
             files_names: files_names,
             files_sources: files_sources,
+            files_sources_data: 'not_useful',
             files_types: files_types,
             fold_name: fold_name,
             parameters: parameters,

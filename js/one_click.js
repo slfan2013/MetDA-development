@@ -144,20 +144,20 @@ $("#confirm_selected_project").click(function () {
 
 
     // 1. Mimic the result stucture.
-    ocpu.call("preview_result_structure",{
-        project_id:project_id,
-        selected_data:selected_data,
-        project_id2:project_id2,
-        selected_data2:selected_data2
-    },function(session){
-        session.getObject(function(obj){
+    ocpu.call("preview_result_structure", {
+        project_id: project_id,
+        selected_data: selected_data,
+        project_id2: project_id2,
+        selected_data2: selected_data2
+    }, function (session) {
+        session.getObject(function (obj) {
             console.log("Good")
             console.log(obj)
-
+            ooo = obj
             $("#preview_result_structure").jstree("destroy");
             $("#preview_result_structure").jstree({
                 'core': {
-                    'data': obj,
+                    'data': obj.result_project_structure,
                     'multiple': false, // cannot select multiple nodes.
                     'expand_selected_onload': true,
                     'check_callback': true
@@ -165,9 +165,82 @@ $("#confirm_selected_project").click(function () {
             })
             $("#preview_result_structure_information").html("<p class='text-success'>The above <span class='text-danger'>red text</span> highlighted are to be added to the project.</p>")
 
+
+            sample_parameters_global_index = 1
+            sample_parameters_global_nodes = []
+            // now we need to ask the users to specified some parameters. 
+            para_index = 0
+
+            sample_para = obj.to_be_specified["sample_info"]
+            sample_para_keys = Object.keys(sample_para)
+          
+
+            interval_sample = setInterval(function () {
+
+                if (para_index === sample_para_keys.length) {
+                    clearInterval(interval_sample)
+                } else {                    
+                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Treatment Group corresponding to <b>' +sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
+
+                    div_id = "sample_parameters_global_id_" + sample_para_keys[para_index]
+                    id = "sample_parameters_global_id_" + sample_para_keys[para_index]
+                    $("#" + div_id).load("sample_information_non_changing_levels_select.html", init_selectpicker)
+                    sample_parameters_global_nodes[sample_parameters_global_index] = sample_para[sample_para_keys[para_index]]
+
+                    $("#sample_parameters_global_span" + sample_parameters_global_index).hover(function () {
+                        sample_parameters_global_span_hovered = this
+                        $('#preview_result_structure a').filter(function () {
+                            return sample_parameters_global_nodes[sample_parameters_global_span_hovered.id.replace("sample_parameters_global_span", "")].includes(this.id.replace("_anchor", ""))
+                        }).css('background-color', "yellow");
+                    }, function () {
+                        $('#preview_result_structure a').removeAttr('style')
+                    })
+                    sample_parameters_global_index++;
+                    para_index++
+                }
+            },20)
+
         })
+    }).fail(function (e) {
+        Swal.fire('Oops...', e.responseText, 'error')
     })
-    
-    
+
+
+
+})
+
+$("#submit").click(function(){
+    parameter = {}
+    // here perform the statistical analysis pipeline. Now collect all the parameters.
+    $(".parameter").each(function () {
+
+        if (this.id !== '') {
+            //parameters.push({:$(this).val()})
+            if($(this).prop("checked") === undefined){ // this means that it is a select.
+                parameter[this.id] = $(this).val()
+            }else{ // this means that it is a checkbox
+                parameter[this.id] = $(this).prop("checked")
+            }
+        }
+    })
+    console.log(parameter)
+
+    ocpu.call("perform_quick_analysis", {
+        project_id: project_id,
+        selected_data: selected_data,
+        project_id2: project_id2,
+        selected_data2: selected_data2,
+        parameter:parameter
+    }, function (session) {
+        console.log(session)
+        session.getObject(function(obj){
+            console.log(obj)
+            if(obj){
+                console.log("GOOD JOB!")
+            }
+        })
+    }).fail(function (e) {
+        Swal.fire('Oops...', e.responseText, 'error')
+    })
 
 })
