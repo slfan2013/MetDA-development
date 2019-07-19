@@ -25,30 +25,6 @@ pca_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
     ooo = obj
     sss = session
-    /*Papa.parse(session.loc + "files/sample_scores.csv", {
-        download: true,
-        header: false,
-        complete: function (results) {
-            sample_scores = results.data
-
-            Papa.parse(session.loc + "files/compound_loadings.csv", {
-                download: true,
-                header: false,
-                complete: function (results2) {
-                    compound_loadings = results2.data
-
-                    // here draw the PCA
-
-
-
-
-
-                }
-            });
-
-
-        }
-    });*/
 
     scatter_by_group = function ({ x = undefined, y = undefined, color_by = undefined, color_values = undefined, color_levels = undefined,
         shape_by = undefined, shape_values = undefined, shape_levels = undefined,
@@ -127,14 +103,14 @@ pca_append_results = function (obj, session) {
                 mode: 'markers',
                 x: xs[trace_keys[i]],
                 y: ys[trace_keys[i]],
-                name: names[i],
+                name: names[i].replaceAll("+", " "),
                 text: texts[trace_keys[i]],
                 marker: {
-                    color: revalue([trace_keys[i].split("+")[0]],color_levels,color_values)[0],
-                    symbol: revalue([trace_keys[i].split("+")[1]],shape_levels,shape_values)[0],
-                    size: revalue([trace_keys[i].split("+")[2]],size_levels,size_values)[0],
+                    color: revalue([trace_keys[i].split("+")[0]], color_levels, color_values)[0],
+                    symbol: revalue([trace_keys[i].split("+")[1]], shape_levels, shape_values)[0],
+                    size: revalue([trace_keys[i].split("+")[2]], size_levels, size_values)[0],
                 },
-                legendgroup:trace_keys[i]
+                legendgroup: trace_keys[i]
             })
         }
 
@@ -175,21 +151,23 @@ pca_append_results = function (obj, session) {
                 text: null,
                 line: {
                     width: 1.889764,
-                    color: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]],color_levels,color_values)[0], 0.1),
+                    color: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
                     dash: "solid"
                 },
                 fill: "toself",
-                fillcolor: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]],color_levels,color_values)[0], 0.1),
+                fillcolor: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
                 name: ellipse_trace_keys[i],
                 showlegend: false,
                 hoverinfo: "skip",
-                legendgroup:trace_keys[i]
+                legendgroup: trace_keys[i]
             })
         }
 
 
 
-
+        if (names == "++") {
+            layout.showlegend = false
+        }
 
 
         Plotly.newPlot(plot_id, data, layout, { editable: false })
@@ -244,7 +222,6 @@ pca_append_results = function (obj, session) {
     }
     gather_page_information_to_score_plot = function () {
 
-
         x = unpack(obj.sample_scores, "PC1")
         y = unpack(obj.sample_scores, "PC2")
 
@@ -262,7 +239,7 @@ pca_append_results = function (obj, session) {
             score_plot_shape_values = [$("#score_plot_shape_option .selectpicker").val()]
             score_plot_shape_by = undefined
         } else {
-            score_plot_shape_values = score_plot_color_levels.map(function (x, i) {
+            score_plot_shape_values = score_plot_shape_levels.map(function (x, i) {
                 return ($("#score_plot_shape_options" + i + " .selectpicker").val())
             })
         }
@@ -272,7 +249,7 @@ pca_append_results = function (obj, session) {
             score_plot_size_values = [$("#score_plot_size_option").val()]
             score_plot_size_by = undefined
         } else {
-            score_plot_size_values = score_plot_color_levels.map(function (x, i) {
+            score_plot_size_values = score_plot_size_levels.map(function (x, i) {
                 return ($("#score_plot_size_options" + i).val())
             })
         }
@@ -360,14 +337,38 @@ pca_append_results = function (obj, session) {
                 linecolor: $("#score_plot_layout_yaxis_linecolor .pickr .pcr-button").css('color'),
                 linewidth: $("#score_plot_layout_yaxis_linewidth").val(),
                 showgrid: $("#score_plot_layout_yaxis_showgrid").is(":checked"),
-                gridcolor: $("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color'),
+                //gridcolor: $("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color'),
+                gridcolor: $("#score_plot_layout_yaxis_gridcolor").spectrum("get").toRgbString() ,
                 gridwidth: $("#score_plot_layout_yaxis_gridwidth").val(),
                 zeroline: $("#score_plot_layout_yaxis_zeroline").is(":checked"),
                 zerolinecolor: $("#score_plot_layout_yaxis_zerolinecolor .pickr .pcr-button").css('color'),
                 zerolinewidth: $("#score_plot_layout_yaxis_zerolinewidth").val()
             },
-            hovermode: "closest"
+            hovermode: "closest",
+            traces: {
+                scatter_colors: {
+                    "1": ["rgba(0, 0, 0, 1)"],
+                    "2": ["rgba(244, 67, 54, 1)", "rgba(233, 30, 99, 1)"],
+                    "3": ["rgba(156, 39, 176, 1)", "rgba(63, 81, 181, 1)", 'rgba(33, 150, 243, 1)']
+                }
+            }
         }
+        /*
+        'rgba(244, 67, 54, 1)',
+                                'rgba(233, 30, 99, 1)',
+                                'rgba(156, 39, 176, 1)',
+                                'rgba(103, 58, 183, 1)',
+                                'rgba(63, 81, 181, 1)',
+                                'rgba(33, 150, 243, 1)',
+                                'rgba(3, 169, 244, 1)',
+                                'rgba(0, 188, 212, 1)',
+                                'rgba(0, 150, 136, 1)',
+                                'rgba(76, 175, 80, 1)',
+                                'rgba(139, 195, 74, 1)',
+                                'rgba(205, 220, 57, 1)',
+                                'rgba(255, 235, 59, 1)',
+                                'rgba(255, 193, 7, 1)'
+        */
 
         save_score_plot_style = function () {
             ocpu.call("save_score_plot_style", {
@@ -412,7 +413,6 @@ pca_append_results = function (obj, session) {
     $("#score_plot_layout_font, #score_plot_layout_title_font, #score_plot_layout_xaxis_title_font,#score_plot_layout_yaxis_title_font, #score_plot_layout_xaxis_tickfont, #score_plot_layout_yaxis_tickfont").load("fonts_select.html", function () {
         init_selectpicker();
 
-
         $("#score_plot_layout_font .form-group .selectpicker").change(gather_page_information_to_score_plot);
         $("#score_plot_layout_font .input-group .size").change(gather_page_information_to_score_plot);
         $("#score_plot_layout_font .input-group .pickr .pcr-button").change(gather_page_information_to_score_plot);
@@ -446,11 +446,10 @@ pca_append_results = function (obj, session) {
     })
 
 
-    /*o = obj
-    data = o*/
 
     p_column_names = Object.keys(obj.p[0])
-
+    p_column_unique = p_column_names.map(x => unpack(obj.p, x))
+    p_column_unique_length = p_column_unique.map(x => x.filter(unique).length)
 
     score_plot_color_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_color_levels" data-style="btn btn-link">'
     for (var i = 0; i < p_column_names.length; i++) {
@@ -472,6 +471,7 @@ pca_append_results = function (obj, session) {
         }
         $("#score_plot_color_options_div").html(score_plot_color_options_div)
         init_pickr()
+
         setTimeout(gather_page_information_to_score_plot, 500)
 
     }
@@ -489,6 +489,22 @@ pca_append_results = function (obj, session) {
 
     }
     $("#score_plot_traces_color_by_info").change(score_plot_traces_color_by_info_change)
+    /*
+        if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
+            for (var i = 0; i < p_column_unique_length.length; i++) {
+                if (p_column_unique_length[i] > 1 && p_column_unique_length[i] < 6) {
+                    console.log(i)
+                    $("#score_plot_traces_color_by_info").prop("checked", true);
+                    $("#score_plot_color_levels").val(p_column_names[i])
+                  
+                    //score_plot_traces
+                    // = $("#score_plot_plot_bgcolor .pickr .pcr-button").css('color', obj.plot_bgcolor)
+    
+                    break;
+                }
+            }
+        }
+    */
 
     score_plot_shape_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_shape_levels" data-style="btn btn-link">'
     for (var i = 0; i < p_column_names.length; i++) {
@@ -504,13 +520,18 @@ pca_append_results = function (obj, session) {
         score_plot_shape_options_div = ""
         for (var i = 0; i < score_plot_shape_levels.length; i++) {
             score_plot_shape_options_div = score_plot_shape_options_div +
-                '<div class="form-group" style="margin:0;border:0;padding:0" id="score_plot_shape_options' + i + '">' +
+                '<div class="form-group score_plot_shapes" style="margin:0;border:0;padding:0" id="score_plot_shape_options' + i + '">' +
                 '<label>' + score_plot_shape_levels[i] + '</label><select class="form-control selectpicker" data-style="btn btn-link">' +
                 '<option>circle</option>' + '<option>square</option>' +
                 '</select></div>'
         }
         $("#score_plot_shape_options_div").html(score_plot_shape_options_div)
         init_selectpicker()
+        setTimeout(gather_page_information_to_score_plot, 500)
+        $(".score_plot_shapes").change(gather_page_information_to_score_plot)
+
+
+
     }
     $("#score_plot_shape_levels").change(score_plot_shape_levels_change)
 
@@ -522,8 +543,14 @@ pca_append_results = function (obj, session) {
             $("#score_plot_show_when_shape_by_info").hide()
             $("#score_plot_hide_when_shape_by_info").show()
         }
+        score_plot_shape_levels_change()
     }
     $("#score_plot_traces_shape_by_info").change(score_plot_traces_shape_by_info_change)
+
+
+
+
+
 
 
     score_plot_size_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="score_plot_size_levels" data-style="btn btn-link">'
@@ -543,9 +570,11 @@ pca_append_results = function (obj, session) {
             score_plot_size_options_div = score_plot_size_options_div +
                 '<div class="input-group"><div class="input-group-prepend"><span class="input-group-text">' +
                 score_plot_size_levels[i] + "</span></div>" +
-                '<input id="score_plot_size_options' + i + '" type="number" class="form-control" placeholder="Dot Size" min="0" step="1"></div>'
+                '<input id="score_plot_size_options' + i + '" type="number" class="form-control score_plot_sizes" placeholder="Dot Size" min="0" step="1" value="15"></div>'
         }
         $("#score_plot_size_options_div").html(score_plot_size_options_div)
+        setTimeout(gather_page_information_to_score_plot, 500)
+        $(".score_plot_sizes").change(gather_page_information_to_score_plot)
     }
     $("#score_plot_size_levels").change(score_plot_size_levels_change)
 
@@ -557,6 +586,7 @@ pca_append_results = function (obj, session) {
             $("#score_plot_show_when_size_by_info").hide()
             $("#score_plot_hide_when_size_by_info").show()
         }
+        score_plot_size_levels_change()
     }
     $("#score_plot_traces_size_by_info").change(score_plot_traces_size_by_info_change)
 
@@ -575,17 +605,8 @@ pca_append_results = function (obj, session) {
             console.log(obj)
             sss = obj
 
-            init_pickr = function () {
-                /*id=undefined
-                current_id = this.id
-                if(id===undefined){
-                    
-                }else{
-                    current_id = id
-                }
-                console.log(current_id)*/
+            /*init_pickr = function () {
 
-                console.log("!")
                 console.log($(".pickr-container").length)
                 $(".pickr-container").each(function () {
                     switch (this.id) {
@@ -632,9 +653,6 @@ pca_append_results = function (obj, session) {
                         case "score_plot_layout_yaxis_linecolor_id":
                             default_color = sss.yaxis.linecolor[0];
                             break;
-                        case "score_plot_layout_yaxis_gridcolor_id":
-                            default_color = sss.yaxis.gridcolor[0];
-                            break;
                         case "score_plot_layout_yaxis_zerolinecolor_id":
                             default_color = sss.yaxis.zerolinecolor[0];
                             break;
@@ -648,18 +666,18 @@ pca_append_results = function (obj, session) {
                     }, {
                             swatches: [
                                 'rgba(244, 67, 54, 1)',
-                                'rgba(233, 30, 99, 0.95)',
-                                'rgba(156, 39, 176, 0.9)',
-                                'rgba(103, 58, 183, 0.85)',
-                                'rgba(63, 81, 181, 0.8)',
-                                'rgba(33, 150, 243, 0.75)',
-                                'rgba(3, 169, 244, 0.7)',
-                                'rgba(0, 188, 212, 0.7)',
-                                'rgba(0, 150, 136, 0.75)',
-                                'rgba(76, 175, 80, 0.8)',
-                                'rgba(139, 195, 74, 0.85)',
-                                'rgba(205, 220, 57, 0.9)',
-                                'rgba(255, 235, 59, 0.95)',
+                                'rgba(233, 30, 99, 1)',
+                                'rgba(156, 39, 176, 1)',
+                                'rgba(103, 58, 183, 1)',
+                                'rgba(63, 81, 181, 1)',
+                                'rgba(33, 150, 243, 1)',
+                                'rgba(3, 169, 244, 1)',
+                                'rgba(0, 188, 212, 1)',
+                                'rgba(0, 150, 136, 1)',
+                                'rgba(76, 175, 80, 1)',
+                                'rgba(139, 195, 74, 1)',
+                                'rgba(205, 220, 57, 1)',
+                                'rgba(255, 235, 59, 1)',
                                 'rgba(255, 193, 7, 1)'
                             ],
                             components: {
@@ -672,20 +690,20 @@ pca_append_results = function (obj, session) {
                             setTimeout(gather_page_information_to_score_plot, 500)
                         });
                 })
-            }
+            }*/
 
             //init_pickr = function(){}
-            setTimeout(function () {
+            /*setTimeout(function () {
                 console.log("653")
                 init_pickr()
                 setTimeout(function () {
                     gather_page_information_to_score_plot()
                 }, 500)
-            }, 500)
+            }, 500)*/
 
-            score_plot_color_levels_change(); score_plot_traces_color_by_info_change();
+            /*score_plot_color_levels_change(); score_plot_traces_color_by_info_change();
             score_plot_shape_levels_change(); score_plot_traces_shape_by_info_change();
-            score_plot_size_levels_change(); score_plot_traces_size_by_info_change()
+            score_plot_size_levels_change(); score_plot_traces_size_by_info_change()*/
 
             $("#score_plot_plot_bgcolor .pickr .pcr-button").css('color', obj.plot_bgcolor)
             $("#score_plot_paper_bgcolor .pickr .pcr-button").css('color', obj.paper_bgcolor)
@@ -750,11 +768,54 @@ pca_append_results = function (obj, session) {
             $("#score_plot_layout_yaxis_linewidth").val(obj.yaxis.linewidth)
 
             $("#score_plot_layout_yaxis_showgrid").prop("checked", obj.yaxis.showgrid[0])
-            $("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color', obj.yaxis.gridcolor)
+            //$("#score_plot_layout_yaxis_gridcolor .pickr .pcr-button").css('color', obj.yaxis.gridcolor)
+            $("#score_plot_layout_yaxis_gridcolor").spectrum({
+                color: obj.yaxis.gridcolor[0]
+            });
             $("#score_plot_layout_yaxis_gridwidth").val(obj.yaxis.gridwidth)
             $("#score_plot_layout_yaxis_zeroline").prop("checked", obj.yaxis.zeroline[0])
             $("#score_plot_layout_yaxis_zerolinecolor .pickr .pcr-button").css('color', obj.yaxis.zerolinecolor)
             $("#score_plot_layout_yaxis_zerolinewidth").val(obj.yaxis.zerolinewidth)
+
+            score_plot_traces = obj.traces
+
+
+            init_pickr();
+
+
+            setTimeout(function(){
+                if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
+                    for (var i = 0; i < p_column_unique_length.length; i++) {
+                        if (p_column_unique_length[i] > 1 && p_column_unique_length[i] < 6) {
+                            console.log(i)
+                            
+
+                            
+                            $("#score_plot_color_levels").val(p_column_names[i])
+                            $("#score_plot_color_levels").selectpicker('refresh')
+                            $("#score_plot_traces_color_by_info").prop("checked", true).change();
+
+                            
+                            setTimeout(function(){
+                                console.log("!!")
+                                console.log(p_column_unique_length[i])
+                                for(var j=0; j<p_column_unique_length[i];j++){
+                                    $("#score_plot_color_options"+j+" .pickr .pcr-button").css('color', score_plot_traces.scatter_colors[p_column_unique_length[i]][j])
+                                }
+                                console.log("804")
+                                console.log($("#score_plot_color_options"+0+" .pickr .pcr-button").css('color'))
+                                gather_page_information_to_score_plot()
+                            },500)
+
+
+
+                            break;
+                        }
+                    }
+                }
+                
+            },500)
+
 
 
 
@@ -774,7 +835,7 @@ pca_append_results = function (obj, session) {
     var files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv"];
     var files_names = ["sample_scores.csv", "compound_loadings.csv"]
     var zipfile_name = "pca_results.zip"
-    $("#download_results").off("click").on("click",function () {
+    $("#download_results").off("click").on("click", function () {
         download_results(files_names, files_sources, zipfile_name)
     })
 
