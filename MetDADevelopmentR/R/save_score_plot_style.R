@@ -1,5 +1,5 @@
 save_score_plot_style <- function(method, style, user_id) {
-  # save(method, style,file = "test.RData")
+  save(method, style,user_id,file = "test.RData")
   userURL <- URLencode(
     paste0(
       "http://metda:metda@localhost:5985/metda_userinfo/",
@@ -8,6 +8,16 @@ save_score_plot_style <- function(method, style, user_id) {
   )
   userList <- jsonlite::fromJSON(userURL, simplifyVector = FALSE)
 
+
+  for(i in 1:length(style$traces)){
+    style$traces[[names(style$traces)[i]]] = sapply(style$traces[[i]], function(x){
+      if(class(x) == "character"){
+        return(c(x))
+      }else if(class(x) == "matrix"){
+        return(x[,1])
+      }
+    })
+  }
 
   userList$pca_score_plot_layout <- style
 
