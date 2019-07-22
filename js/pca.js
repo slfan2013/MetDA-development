@@ -1,5 +1,8 @@
 console.log("pca.js")
-
+color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
+["rgb(152, 78, 163)", "rgb(242, 126, 51)", "rgb(254, 248, 64)"],
+["rgb(166, 86, 41)", "rgb(241, 128, 191)", "rgb(153, 153, 153)"],
+["rgb(0,0,0)", "rgb(255,255,255)"]]
 
 $("#scaling_method_div").load("scaling_method.html", init_selectpicker)
 
@@ -174,6 +177,50 @@ pca_append_results = function (obj, session) {
 
 
             .then(gd => {
+                ggg = gd
+
+
+                // Note: cache should not be re-used by repeated calls to JSON.stringify.
+                var cache = [];
+                fullLayout = JSON.stringify(ggg._fullLayout, function (key, value) {
+                    if (typeof value === 'object' && value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Duplicate reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                });
+                cache = null; // Enable garbage collection
+
+                // Note: cache should not be re-used by repeated calls to JSON.stringify.
+                var cache = [];
+                fullData = JSON.stringify(ggg._fullData, function (key, value) {
+                    if (typeof value === 'object' && value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Duplicate reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                });
+                cache = null; // Enable garbage collection
+
+/*
+                ocpu.call("test_pca", {
+                    full_data:JSON.parse(fullData),
+                    full_layout:JSON.parse(fullLayout),
+                    data: ggg.data,
+                    layout: ggg.layout
+                }, function (session) {
+                    console.log(session)
+                })
+*/
+                console.log(gd)
                 gd.on('plotly_clickannotation', (x) => {
                     console.log(x)
                     console.log('annotation clicked !!!');
@@ -221,6 +268,7 @@ pca_append_results = function (obj, session) {
 
     }
     gather_page_information_to_score_plot = function () {
+        console.log($("#score_plot_plot_bgcolor").spectrum("get").toRgbString())
 
         x = unpack(obj.sample_scores, "PC1")
         y = unpack(obj.sample_scores, "PC2")
@@ -365,12 +413,29 @@ pca_append_results = function (obj, session) {
 
         save_score_plot_style = function () {
 
-            if($("#score_plot_traces_color_by_info").is(':checked')){
+            if ($("#score_plot_traces_color_by_info").is(':checked')) {
                 for (var i = 0; i < score_plot_color_levels.length; i++) {
-                    score_plot_layout.traces.scatter_colors[score_plot_color_levels.length][i] = $("#score_plot_color_options"+i).spectrum("get").toRgbString()
+                    score_plot_layout.traces.scatter_colors[score_plot_color_levels.length][i] = $("#score_plot_color_options" + i).spectrum("get").toRgbString()
                 }
-            }else{
+            } else {
                 score_plot_layout.traces.scatter_colors[1] = $("#score_plot_color_option").spectrum("get").toRgbString()
+            }
+
+            if ($("#score_plot_traces_shape_by_info").is(':checked')) {
+                for (var i = 0; i < score_plot_shape_levels.length; i++) {
+                    score_plot_layout.traces.scatter_shapes[score_plot_shape_levels.length][i] = $("#score_plot_shape_options" + i + " .selectpicker").val()
+                }
+            } else {
+                score_plot_layout.traces.scatter_shapes[1] = $("#score_plot_shape_option .selectpicker").val()
+            }
+
+
+            if ($("#score_plot_traces_size_by_info").is(':checked')) {
+                for (var i = 0; i < score_plot_size_levels.length; i++) {
+                    score_plot_layout.traces.scatter_sizes[score_plot_size_levels.length][i] = $("#score_plot_size_options" + i).val()
+                }
+            } else {
+                score_plot_layout.traces.scatter_sizes[1] = $("#score_plot_size_option").val()
             }
 
             ocpu.call("save_score_plot_style", {
@@ -465,17 +530,17 @@ pca_append_results = function (obj, session) {
             score_plot_color_options_div = score_plot_color_options_div +
                 '<div class="input-group" id="score_plot_color_options' + i + '_div">' +
                 '<div class="input-group-prepend"><span class="input-group-text">' + score_plot_color_levels[i] +
-                //'</span></div><div class="pickr-container" id="score_plot_color_options' + i + '_id"></div></div>'
                 '</span></div><input type="text" id="score_plot_color_options' + i + '" class="spectrums" data-show-alpha="true" /></div>'
-            //<input type='text' id="score_plot_layout_yaxis_tickcolor" class="spectrums" data-show-alpha="true" />
         }
         $("#score_plot_color_options_div").html(score_plot_color_options_div)
+
         for (var i = 0; i < score_plot_color_levels.length; i++) {
             $("#score_plot_color_options" + i).spectrum({
-                color: "#ff0000"
+                color: score_plot_traces.scatter_colors[score_plot_color_levels.length][i][0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_color_options" + i).change(gather_page_information_to_score_plot)
-
         }
 
         setTimeout(gather_page_information_to_score_plot, 500)
@@ -517,6 +582,16 @@ pca_append_results = function (obj, session) {
                 '</select></div>'
         }
         $("#score_plot_shape_options_div").html(score_plot_shape_options_div)
+
+
+        for (var i = 0; i < score_plot_shape_levels.length; i++) {
+            $("#score_plot_shape_options" + i + " .selectpicker").val(score_plot_traces.scatter_shapes[score_plot_shape_levels.length][i][0])
+            $("#score_plot_shape_options" + i + " .selectpicker").selectpicker('refresh')
+            $("#score_plot_shape_options" + i + " .selectpicker").change(gather_page_information_to_score_plot)
+        }
+
+
+
         init_selectpicker()
         setTimeout(gather_page_information_to_score_plot, 500)
         $(".score_plot_shapes").change(gather_page_information_to_score_plot)
@@ -564,6 +639,22 @@ pca_append_results = function (obj, session) {
                 '<input id="score_plot_size_options' + i + '" type="number" class="form-control score_plot_sizes" placeholder="Dot Size" min="0" step="1" value="15"></div>'
         }
         $("#score_plot_size_options_div").html(score_plot_size_options_div)
+
+
+
+        for (var i = 0; i < score_plot_size_levels.length; i++) {
+            if (score_plot_size_levels.length === 1) {
+                $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i])
+            } else {
+                $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i][0])
+            }
+
+            $("#score_plot_size_options" + i).change(gather_page_information_to_score_plot)
+        }
+
+
+
+
         setTimeout(gather_page_information_to_score_plot, 500)
         $(".score_plot_sizes").change(gather_page_information_to_score_plot)
     }
@@ -599,17 +690,24 @@ pca_append_results = function (obj, session) {
 
 
             $("#score_plot_plot_bgcolor").spectrum({
-                color: obj.plot_bgcolor[0]
+                color: obj.plot_bgcolor[0],
+                showPalette: true,
+                palette: color_pallete
+
             });
             $("#score_plot_paper_bgcolor").spectrum({
-                color: obj.paper_bgcolor[0]
+                color: obj.paper_bgcolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_title_text").val(obj.title.text)
             $("#score_plot_layout_title_font .form-group .selectpicker").val(obj.title.font.family)
             $("#score_plot_layout_title_font .form-group .selectpicker").selectpicker('refresh')
             $("#score_plot_layout_title_font .input-group .size").val(obj.title.font.size)
             $("#score_plot_layout_title_font .input-group .spectrums").spectrum({
-                color: obj.title.font.color[0]
+                color: obj.title.font.color[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_title_x").val(obj.title.x)
             $("#score_plot_layout_title_y").val(obj.title.y)
@@ -620,88 +718,124 @@ pca_append_results = function (obj, session) {
             $("#score_plot_layout_margin_top").val(obj.margin.t)
             $("#score_plot_layout_margin_bottom").val(obj.margin.b)
 
-            $("#score_plot_layout_xaxis_title_text").val(obj.xaxis.title.text)
+            $("#score_plot_layout_xaxis_title_text").val("PC1 (" + (ooo.variance[0] * 100).toFixed(2) + "%)")
+
+
+
             $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").val(obj.xaxis.title.font.family)
             $("#score_plot_layout_xaxis_title_font .form-group .selectpicker").selectpicker('refresh')
             $("#score_plot_layout_xaxis_title_font .input-group .size").val(obj.xaxis.title.font.size)
             $("#score_plot_layout_xaxis_title_font .input-group .spectrums").spectrum({
-                color: obj.xaxis.title.font.color[0]
+                color: obj.xaxis.title.font.color[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
             $("#score_plot_layout_xaxis_ticklen").val(obj.xaxis.ticklen)
             $("#score_plot_layout_xaxis_tickwidth").val(obj.xaxis.tickwidth)
             $("#score_plot_layout_xaxis_tickcolor").spectrum({
-                color: obj.xaxis.tickcolor[0]
+                color: obj.xaxis.tickcolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
-            $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").val(obj.xaxis.title.font.family)
+            $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").val(obj.xaxis.tickfont.family)
             $("#score_plot_layout_xaxis_tickfont .form-group .selectpicker").selectpicker('refresh')
-            $("#score_plot_layout_xaxis_tickfont .input-group .size").val(obj.xaxis.title.font.size)
+            $("#score_plot_layout_xaxis_tickfont .input-group .size").val(obj.xaxis.tickfont.size)
             $("#score_plot_layout_xaxis_tickfont .input-group .spectrums").spectrum({
-                color: obj.xaxis.title.font.color[0]
+                color: obj.xaxis.tickfont.color[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
             $("#score_plot_layout_xaxis_tickangle").val(obj.xaxis.tickangle)
             $("#score_plot_layout_xaxis_linecolor").spectrum({
-                color: obj.xaxis.linecolor[0]
+                color: obj.xaxis.linecolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_xaxis_linewidth").val(obj.xaxis.linewidth)
 
             $("#score_plot_layout_xaxis_showgrid").prop("checked", obj.xaxis.showgrid[0])
             $("#score_plot_layout_xaxis_gridcolor").spectrum({
-                color: obj.xaxis.gridcolor[0]
+                color: obj.xaxis.gridcolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_xaxis_gridwidth").val(obj.xaxis.gridwidth)
             $("#score_plot_layout_xaxis_zeroline").prop("checked", obj.xaxis.zeroline[0])
             $("#score_plot_layout_xaxis_zerolinecolor").spectrum({
-                color: obj.xaxis.zerolinecolor[0]
+                color: obj.xaxis.zerolinecolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_xaxis_zerolinewidth").val(obj.xaxis.zerolinewidth)
 
 
-            $("#score_plot_layout_yaxis_title_text").val(obj.yaxis.title.text)
+            $("#score_plot_layout_yaxis_title_text").val("PC2 (" + (ooo.variance[1] * 100).toFixed(2) + "%)")
             $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").val(obj.yaxis.title.font.family)
             $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").selectpicker('refresh')
             $("#score_plot_layout_yaxis_title_font .input-group .size").val(obj.yaxis.title.font.size)
             $("#score_plot_layout_yaxis_title_font .input-group .spectrums").spectrum({
-                color: obj.yaxis.title.font.color[0]
+                color: obj.yaxis.title.font.color[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
             $("#score_plot_layout_yaxis_ticklen").val(obj.yaxis.ticklen)
             $("#score_plot_layout_yaxis_tickwidth").val(obj.yaxis.tickwidth)
             $("#score_plot_layout_yaxis_tickcolor").spectrum({
-                color: obj.yaxis.tickcolor[0]
+                color: obj.yaxis.tickcolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
-            $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").val(obj.yaxis.title.font.family)
+            $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").val(obj.yaxis.tickfont.family)
             $("#score_plot_layout_yaxis_tickfont .form-group .selectpicker").selectpicker('refresh')
-            $("#score_plot_layout_yaxis_tickfont .input-group .size").val(obj.yaxis.title.font.size)
+            $("#score_plot_layout_yaxis_tickfont .input-group .size").val(obj.yaxis.tickfont.size)
             $("#score_plot_layout_yaxis_tickfont .input-group .spectrums").spectrum({
-                color: obj.yaxis.title.font.color[0]
+                color: obj.yaxis.tickfont.color[0],
+                showPalette: true,
+                palette: color_pallete
             });
 
             $("#score_plot_layout_yaxis_tickangle").val(obj.yaxis.tickangle)
             $("#score_plot_layout_yaxis_linecolor").spectrum({
-                color: obj.yaxis.linecolor[0]
+                color: obj.yaxis.linecolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_yaxis_linewidth").val(obj.yaxis.linewidth)
 
             $("#score_plot_layout_yaxis_showgrid").prop("checked", obj.yaxis.showgrid[0])
             $("#score_plot_layout_yaxis_gridcolor").spectrum({
-                color: obj.yaxis.gridcolor[0]
+                color: obj.yaxis.gridcolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_yaxis_gridwidth").val(obj.yaxis.gridwidth)
             $("#score_plot_layout_yaxis_zeroline").prop("checked", obj.yaxis.zeroline[0])
             $("#score_plot_layout_yaxis_zerolinecolor").spectrum({
-                color: obj.yaxis.zerolinecolor[0]
+                color: obj.yaxis.zerolinecolor[0],
+                showPalette: true,
+                palette: color_pallete
             });
             $("#score_plot_layout_yaxis_zerolinewidth").val(obj.yaxis.zerolinewidth)
 
 
             $("#score_plot_color_option").spectrum({
-                color: score_plot_traces.scatter_colors[1][0]
-            });           
+                color: score_plot_traces.scatter_colors[1][0],
+                showPalette: true,
+                palette: color_pallete
+            });
             $("#score_plot_color_option").change(gather_page_information_to_score_plot)
+
+            $("#score_plot_shape_option .selectpicker").val(score_plot_traces.scatter_shapes[1][0])
+            $("#score_plot_shape_option .selectpicker").selectpicker('refresh')
+            $("#score_plot_shape_option .selectpicker").change(gather_page_information_to_score_plot)
+
+            $("#score_plot_size_option").val(score_plot_traces.scatter_sizes[1][0])
+            $("#score_plot_size_option").change(gather_page_information_to_score_plot)
 
 
             if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
@@ -718,13 +852,6 @@ pca_append_results = function (obj, session) {
                     }
                 }
             }
-
-
-
-
-
-
-
         })
     }).fail(function (e2) {
         Swal.fire('Oops...', e2.responseText, 'error')

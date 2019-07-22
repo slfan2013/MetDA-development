@@ -38,11 +38,7 @@
                                                                             Plot Background Color
                                                                         </span>
                                                                     </div>
-                                                                    <!--<div id="score_plot_plot_bgcolor">
-                                                                        <div class="pickr-container" id="score_plot_plot_bgcolor_id">
-                                                                        </div>
-                                                                    </div>-->
-                                                                    <input type='text' id="score_plot_plot_bgcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_plot_bgcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
@@ -54,7 +50,7 @@
                                                                         <div class="pickr-container" id="score_plot_paper_bgcolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_paper_bgcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_paper_bgcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
@@ -188,22 +184,9 @@
                                                                     </div>
                                                                     <input type="text" class="form-control"
                                                                         id="score_plot_layout_xaxis_title_text"
-                                                                        placeholder="xaxis title text" onchange = "gather_page_information_to_score_plot()">
+                                                                        placeholder="xaxis title text" onchange = "gather_page_information_to_score_plot()" disabled>
                                                                 </div>
                                                                 <div id="score_plot_layout_xaxis_title_font"></div>
-                                                                <!--
-                                                                    <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text">
-                                                                            position
-                                                                        </span>
-                                                                    </div>
-                                                                    <input type="number" class="form-control"
-                                                                        id="score_plot_layout_xaxis_title_x"
-                                                                        placeholder="horizontal position" min="0" max="1" step="0.1">
-                                                                </div>
-                
-                                                                -->
                                                             </div>
                                                         </div>
                 
@@ -240,7 +223,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_xaxis_tickcolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_xaxis_tickcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_xaxis_tickcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
@@ -279,7 +262,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_xaxis_linecolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_xaxis_linecolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_xaxis_linecolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -317,7 +300,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_xaxis_gridcolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_xaxis_gridcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_xaxis_gridcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -354,7 +337,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_xaxis_zerolinecolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_xaxis_zerolinecolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_xaxis_zerolinecolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -387,21 +370,9 @@
                                                                     </div>
                                                                     <input type="text" class="form-control"
                                                                         id="score_plot_layout_yaxis_title_text"
-                                                                        placeholder="yaxis title text" onchange = "gather_page_information_to_score_plot()">
+                                                                        placeholder="yaxis title text" onchange = "gather_page_information_to_score_plot()" disabled>
                                                                 </div>
                                                                 <div id="score_plot_layout_yaxis_title_font"></div>
-                                                                <!--
-                                                                    <div class="input-group">
-                                                                    <div class="input-group-prepend">
-                                                                        <span class="input-group-text">
-                                                                            position
-                                                                        </span>
-                                                                    </div>
-                                                                    <input type="number" class="form-control"
-                                                                        id="score_plot_layout_yaxis_title_x"
-                                                                        placeholder="horizontal position" min="0" max="1" step="0.1" onchange = "gather_page_information_to_score_plot()">
-                                                                </div>
-                                                                -->
                                                             </div>
                                                         </div>
                 
@@ -425,7 +396,7 @@
                                                                         </span>
                                                                     </div>
                                                                     <input type="number" class="form-control"
-                                                                        id="score_plot_layout_yaxis_ticklen" placeholder="tick width"
+                                                                        id="score_plot_layout_yaxis_tickwidth" placeholder="tick width"
                                                                         min="0" max="100" step="1" onchange = "gather_page_information_to_score_plot()">
                                                                 </div>
                                                                 
@@ -439,7 +410,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_yaxis_tickcolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_yaxis_tickcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_yaxis_tickcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                                 <div class="input-group">
                                                                     <div class="input-group-prepend">
@@ -478,7 +449,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_yaxis_linecolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_yaxis_linecolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_yaxis_linecolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -489,7 +460,7 @@
                                                                 <div class="form-check">
                                                                     <label class="form-check-label">
                                                                         <input class="form-check-input" type="checkbox" value=""
-                                                                            id="score_plot_layout_yaxis_showgrid">
+                                                                            id="score_plot_layout_yaxis_showgrid" onchange = "gather_page_information_to_score_plot()">
                                                                         Show Grids
                                                                         <span class="form-check-sign">
                                                                             <span class="check"></span>
@@ -516,7 +487,7 @@
                                                                         <div class="pickr-container" id="score_plot_layout_yaxis_gridcolor_id">
                                                                         </div>
                                                                     </div>-->
-                                                                    <input type='text' id="score_plot_layout_yaxis_gridcolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_yaxis_gridcolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -526,7 +497,7 @@
                                                                 <div class="form-check">
                                                                     <label class="form-check-label">
                                                                         <input class="form-check-input" type="checkbox" value=""
-                                                                            id="score_plot_layout_yaxis_zeroline">
+                                                                            id="score_plot_layout_yaxis_zeroline" onchange = "gather_page_information_to_score_plot()">
                                                                         Zero Line
                                                                         <span class="form-check-sign">
                                                                             <span class="check"></span>
@@ -549,11 +520,7 @@
                                                                             color
                                                                         </span>
                                                                     </div>
-                                                                    <!--<div id="score_plot_layout_yaxis_zerolinecolor">
-                                                                        <div class="pickr-container" id="score_plot_layout_yaxis_zerolinecolor_id">
-                                                                        </div>
-                                                                    </div>-->
-                                                                    <input type='text' id="score_plot_layout_yaxis_zerolinecolor" class="spectrums" data-show-alpha="true" />
+                                                                    <input type='text' id="score_plot_layout_yaxis_zerolinecolor" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -593,32 +560,16 @@
                                                     <div id="score_plot_show_when_color_by_info">
                                                         <!-- here should be able to use p.-->
                                                         <div id="score_plot_color_levels_div"></div>
-                                                        <!--
-                                                        <div class="form-group" style="margin:0;border:0;padding:0">
-                                                        <select class="form-control selectpicker font" data-style="btn btn-link">
-                                                            <option>Arial</option>
-                                                            <option>Balto</option>
-                                                            <option>Courier New</option>
-                                                            <option>Droid Sans</option>
-                                                            <option>Droid Serif</option>
-                                                        </select>
-                                                    </div>
-                                                    -->
+                                                        
                                                         <div id="score_plot_color_options_div"></div>
-                                                        <!--<div class="input-group" id="score_plot_color_options1">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">Control MHC</span>
-                                                        </div>
-                                                        <div class="pickr-container">
-                                                        </div>
-                                                    </div>-->
+                                                     
                                                     </div>
                                                     <div id="score_plot_hide_when_color_by_info">
                                                         <div class="input-group" id="score_plot_color_option_div">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">Dot Color</span>
                                                             </div>
-                                                            <input type='text' id="score_plot_color_option" class="spectrums" data-show-alpha="true" />
+                                                            <input type='text' id="score_plot_color_option" class="spectrums" data-show-alpha="true" onchange = "gather_page_information_to_score_plot()"/>
                                                         </div>
                                                     </div>
                 

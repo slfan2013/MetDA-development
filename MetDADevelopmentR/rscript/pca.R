@@ -49,7 +49,7 @@ fwrite(sample_scores, "sample_scores.csv", col.names = TRUE,row.names = TRUE)
 fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = TRUE)
 
 
-result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings)
+result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
 
 
 
