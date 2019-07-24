@@ -165,25 +165,36 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 append_results_fun(obj, session)
             })
         }else if(['pca'].includes(page)){
-            $("#results_card_body").load("score_loading_plot.html", function () {
+            obj_score_loading_plot = obj
+            obj_scree_plot = obj
+
+
+            $("#results_card_body").append('<div id="score_loading_plot_div"></div>')
+            $("#results_card_body").append('<div id="scree_plot_div"></div>')
+
+            $("#score_loading_plot_div").load("score_loading_plot.html", function () {
                 init_selectpicker()
-                if (localStorage['big_category'] === 'project') {
-                    $("#save_results").show();
-                    $("#only_download_result_dataset").hide();
-                    $("#download_results").removeClass("btn-primary")
-                    $("#download_results").addClass("btn-default")
-                    $("#save_results").addClass("btn-primary")
-                    $("#save_results").removeClass("btn-default")
-                } else if (localStorage['big_category'] === 'in_and_out') {
-                    $("#save_results").hide();
-                    $("#only_download_result_dataset").show();
-                    $("#download_results").addClass("btn-primary")
-                    $("#download_results").removeClass("btn-default")
-                    $("#save_results").removeClass("btn-primary")
-                    $("#save_results").addClass("btn-default")
-                }
-                var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
-                append_results_fun(obj, session)
+                $("#scree_plot_div").load("scree_plot.html",function(){
+                    init_selectpicker()
+                    if (localStorage['big_category'] === 'project') {
+                        $("#save_results").show();
+                        $("#only_download_result_dataset").hide();
+                        $("#download_results").removeClass("btn-primary")
+                        $("#download_results").addClass("btn-default")
+                        $("#save_results").addClass("btn-primary")
+                        $("#save_results").removeClass("btn-default")
+                    } else if (localStorage['big_category'] === 'in_and_out') {
+                        $("#save_results").hide();
+                        $("#only_download_result_dataset").show();
+                        $("#download_results").addClass("btn-primary")
+                        $("#download_results").removeClass("btn-default")
+                        $("#save_results").removeClass("btn-primary")
+                        $("#save_results").addClass("btn-default")
+                    }
+                    var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                    append_results_fun(obj, session)
+                })
+                
             })
         }
     }

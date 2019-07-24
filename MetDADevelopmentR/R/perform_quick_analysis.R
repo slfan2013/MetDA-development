@@ -104,8 +104,6 @@ perform_quick_analysis <- function(
 
       current_parameter$activate_data_id <- paste0(substr(temp_split[[1]], 1, nchar(temp_split[[1]]) - 11 + 1), output_file_time[depending[i]], ".", temp_split[length(temp_split)])
 
-
-
     }
 
 

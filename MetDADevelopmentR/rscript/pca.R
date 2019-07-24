@@ -245,37 +245,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   pp$x$data = data
 
 
-  #
-  # for (i in 1:length(data)) {
-  #   pp$x$data[[i]] <- list()
-  #   if (is.na(data[[i]]$showlegend)) {
-  #     data[[i]]$showlegend <- TRUE
-  #   }
-  #
-  #   pp$x$data[[i]]$visible <- TRUE
-  #   pp$x$data[[i]]$x <- data[[i]]$x
-  #   pp$x$data[[i]]$y <- data[[i]]$y
-  #   pp$x$data[[i]]$mode <- data[[i]]$mode
-  #   pp$x$data[[i]]$name <- data[[i]]$name
-  #   pp$x$data[[i]]$text <- data[[i]]$text
-  #   pp$x$data[[i]]$legendgroup <- data[[i]]$legendgroup
-  #   if (any(!is.na(sapply(data[[i]]$line, function(x) {
-  #     return(x)
-  #   })))) {
-  #     pp$x$data[[i]]$line <- data[[i]]$line
-  #   }
-  #   if (any(!is.na(sapply(data[[i]]$marker, function(x) {
-  #     return(x)
-  #   })))) {
-  #     pp$x$data[[i]]$marker <- data[[i]]$marker
-  #   }
-  #   pp$x$data[[i]]$fill <- data[[i]]$fill
-  #   pp$x$data[[i]]$fillcolor <- data[[i]]$fillcolor
-  #   pp$x$data[[i]]$showlegend <- data[[i]]$showlegend
-  #   pp$x$data[[i]]$hoverinfo <- data[[i]]$hoverinfo
-  # }
-
-
   score_plot_result = pp
   # https://plot.ly/r/static-image-export/
   # orca(score_plot_result, "score_plot.svg") # make sure to match children text.
@@ -285,6 +254,43 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
       pointsize=12)
   plot(1:10)
   dev.off()
+
+
+
+  full_data = scree_plot$full_data
+  full_layout = scree_plot$full_layout
+
+
+  data = scree_plot$data
+  layout = scree_plot$layout
+
+  df <- data.frame()
+  g <- ggplot(df) + geom_point()
+  g <- ggplotly(g)
+  pp <- plotly_build(g)
+
+
+  layout$traces <- NULL
+  layout$xaxis$autorange <- NULL
+  layout$yaxis$autorange <- NULL
+
+
+  pp$x$layout <- layout
+  # pp
+
+  pp$x$data = data
+  pp
+  scree_plot_result = pp
+  svg(filename="score_plot.svg",
+      width=5,
+      height=4,
+      pointsize=12)
+  plot(1:10, main = "score_plot.svg")
+  dev.off()
+
+  orca(score_plot_result, "score_plot.svg") # make sure to match children text.
+
+
 
 
 }

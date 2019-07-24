@@ -14,6 +14,10 @@
             <div class="col-md-8">
                 <div class="tab-content">
                     <div class="tab-pane" id="score_plot_general">
+                        
+                        
+                        
+                        
                         <div id="score_plot_layout_accordion" role="tablist">
                             <div class="card-collapse">
                                 <div class="card-header" role="tab" id="score_plot_general_defaults_heading">
@@ -27,7 +31,7 @@
                                 </div>
                                 <div id="score_plot_general_defaults_collapse" class="collapse show" role="tabpanel"
                                     aria-labelledby="score_plot_general_defaults_heading"
-                                    data-parent="#score_plot_layout_accordion" style="">
+                                    data-parent="#score_plot_layout_accordion">
                                     <div class="card-body">
                                         <div class="card" style="margin:0">
                                             <div class="card-body" style="padding-top:0">
@@ -575,8 +579,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-primary btn-sm" onclick="save_score_plot_style()">Set This Style As
-                            Default</button>
+                        
 
                     </div>
                     <div class="tab-pane" id="score_plot_traces">
@@ -650,7 +653,7 @@
                                 </div>
                                 <div id="score_plot_traces_shape_collapse" class="collapse" role="tabpanel"
                                     aria-labelledby="score_plot_traces_shape_heading"
-                                    data-parent="#score_plot_traces_accordion" style="">
+                                    data-parent="#score_plot_traces_accordion">
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" value=""
@@ -697,7 +700,7 @@
                                 </div>
                                 <div id="score_plot_traces_size_collapse" class="collapse" role="tabpanel"
                                     aria-labelledby="score_plot_traces_size_heading"
-                                    data-parent="#score_plot_traces_accordion" style="">
+                                    data-parent="#score_plot_traces_accordion">
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" value=""
@@ -771,6 +774,8 @@
 
 
                     </div>
+                    <button class="btn btn-primary btn-sm" onclick="save_score_plot_style()">Set This Style As
+                            Default</button>
                 </div>
 
             </div>
@@ -780,3 +785,4 @@
         <div id="score_plot"></div>
     </div>
 </div>
+<script src="js/score_loading_plot.js"></script>

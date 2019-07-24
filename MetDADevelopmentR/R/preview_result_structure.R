@@ -1,7 +1,7 @@
 preview_result_structure <- function(
-                                     project_id = "test01563829439",
+                                     project_id = "auto scree1563993431",
                                      selected_data = "e.csv",
-                                     project_id2 = "test11563829453",
+                                     project_id2 = "scree plot1563993799",
                                      selected_data2 = "e.csv") {
 
   structures = get_to_be_added_structure(project_id,
