@@ -190,6 +190,7 @@ $("#confirm_selected_project").click(function () {
                     $("#sample_parameters_global_span" + sample_parameters_global_index).hover(function () {
                         sample_parameters_global_span_hovered = this
                         $('#preview_result_structure a').filter(function () {
+                            ttt = this
                             return sample_parameters_global_nodes[sample_parameters_global_span_hovered.id.replace("sample_parameters_global_span", "")].includes(this.id.replace("_anchor", ""))
                         }).css('background-color', "yellow");
                     }, function () {

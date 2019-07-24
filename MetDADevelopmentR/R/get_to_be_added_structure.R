@@ -61,8 +61,7 @@ get_to_be_added_structure <- function(
   being_activated_data_id2[1] <- selected_data2
   while (length(being_activated_data_id2) > 0) {
     needed_id2 <- c(needed_id2, being_activated_data_id2)
-    #print(round)
-    #print(being_activated_data_id2)
+
     being_activated_data_id2 <- id2[activate_data_ids2 %in% being_activated_data_id2]
     round <- round + 1
   }

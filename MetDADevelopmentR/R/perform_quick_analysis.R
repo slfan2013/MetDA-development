@@ -1,12 +1,13 @@
 perform_quick_analysis <- function(
-                                   project_id = "test111563385744",
+                                   project_id = "test01563829439",
                                    selected_data = "e.csv",
-                                   project_id2 = "test51563374913",
+                                   project_id2 = "test11563829453",
                                    selected_data2 = "e.csv",
                                    parameter) {
   save(project_id, selected_data, project_id2, selected_data2, parameter, file = "local.RData") # for debugging
 
 
+  load("local.RData")
   structures <- get_to_be_added_structure(
     project_id,
     selected_data,
@@ -59,7 +60,10 @@ perform_quick_analysis <- function(
 
 
   structure_to_be_added_id <- sapply(structure_to_be_added, function(x) x$id)
-  structure_to_be_added_folders_only_id <- sapply(structure_to_be_added_folders_only, function(x) x$id)
+  old_id = sapply(structure_to_be_added_folders_only, function(x) x$id)
+  structure_to_be_added_folders_only_id <- old_id
+
+  structure_to_be_added_folders_only_parents = sapply(structure_to_be_added_folders_only, function(x) x$parent)
 
 
 
@@ -70,68 +74,106 @@ perform_quick_analysis <- function(
     if (length(temp_index) == 0) {
       depending[i] <- 0
     } else {
-      depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added[[i]]$parent)
+      depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
     }
   }
   output_file_time <- c()
 
 
 
+  old_id_to_new_id_matches=c(1:length(structure_to_be_added_folders_only))
+  old_id_to_new_id_matches = structure_to_be_added_folders_only_id
+  names(old_id_to_new_id_matches) = structure_to_be_added_folders_only_id
+
 
   for (i in 1:length(structure_to_be_added_folders_only)) {
-
-
-    # index =  which(activate_data_id%in% structure_to_be_added_folders_only_activated_data_id[i] & structure_to_be_added_icons %in% "fa fa-folder")
-
 
 
     index <- which(structure_to_be_added_ids %in% structure_to_be_added_folders_only[[i]]$id)
 
     current_parameter <- structure_to_be_added[[index]]$parameter
 
-     if(!depending[i] == 0){
-
-       temp_id = current_parameter$activate_data_id
-
-       temp_split = strsplit(temp_id,"\\.")[[1]]
-
-
-       current_parameter$activate_data_id = paste0(substr(temp_split[[1]],1,nchar(temp_split[[1]])-11+1),output_file_time[depending[i]],".",temp_split[length(temp_split)])
-     }
 
 
 
-    # old_time <- substr(project_id, nchar(project_id) - 11 + 1, nchar(project_id))
-    # new_time <- as.integer(Sys.time())
+    if (!depending[i] == 0) {
+      temp_id <- current_parameter$activate_data_id
+
+      temp_split <- strsplit(temp_id, "\\.")[[1]]
+
+
+      current_parameter$activate_data_id <- paste0(substr(temp_split[[1]], 1, nchar(temp_split[[1]]) - 11 + 1), output_file_time[depending[i]], ".", temp_split[length(temp_split)])
 
 
 
+    }
 
-    for (j in 1:length(current_parameter)) {
-      if (current_parameter[[j]] %in% sample_parameters_to) {
-        current_parameter[[j]] <- plyr::revalue(current_parameter[[j]], sample_parameters_to)
+
+
+    # current_parameter$fun_name
+    if (current_parameter$fun_name %in% c("pca")) {
+      for (j in 1:length(current_parameter$score_plot)) {
+        if (current_parameter$score_plot[[j]] %in% names(sample_parameters_to)) {
+          print(j)
+          current_parameter$score_plot[[j]] <- plyr::revalue(current_parameter$score_plot[[j]], sample_parameters_to)
+        }
+      }
+    } else {
+      for (j in 1:length(current_parameter)) {
+        if (current_parameter[[j]] %in% names(sample_parameters_to)) {
+          # print(j)
+          current_parameter[[j]] <- plyr::revalue(current_parameter[[j]], sample_parameters_to)
+        }
       }
     }
+
+
+
+
     current_parameter$project_id <- project_id
 
 
     call_fun(parameter = current_parameter)
 
-    # save results
-    sources <- sapply(structure_to_be_added[[index]]$files_sources, function(x) {
-      strsplit(x, "files/")[[1]][2]
-    }, simplify = T)
+
+
+
+
     children <- structure_to_be_added[structure_to_be_added_parents %in% structure_to_be_added[[index]]$id & !structure_to_be_added_icons %in% "fa fa-folder"]
     children_file_names <- sapply(children, function(x) {
       x$text
     })
 
 
+    # structure_to_be_added_folders_only[[3]]$parent
+
+
+    # save results
+    sources <- sapply(structure_to_be_added[[index]]$files_sources, function(x) {
+      # result = strsplit(x, "files/")[[1]][2]
+      # if(is.na(result)){ # this means this should be a base64.
+      #   result = x
+      # }
+      # return(result)
+      return(strsplit(x, "files/")[[1]][2])
+    }, simplify = T)
+    # base64encode("score_plot.svg")
+
+    names(sources)[1] = "quick_analysis" #this is for save_results_to_project to determin if the call is from the quick analysis.
+
+    if(any(is.na(sources))){
+      children_texts = sapply(children, function(x) x$text)
+      for(i in which(is.na(sources))){
+        sources[i] = base64enc::base64encode(children_texts[i])
+      }
+
+
+    }
 
 
     saved_result <- save_results_to_project(
       project_id ,
-      selected_folder = parents[ids %in% selected_data],
+      selected_folder = plyr::revalue(structure_to_be_added_folders_only_parents[i],old_id_to_new_id_matches),
       files_names = children_file_names,
       files_sources = sources,
       files_sources_data = "not_useful",
@@ -141,6 +183,10 @@ perform_quick_analysis <- function(
       epf_index = structure_to_be_added[[index]]$epf_index
     )
     output_file_time[i] <- saved_result$current_time
+
+
+    old_id_to_new_id_matches[i] = gsub(substr(old_id_to_new_id_matches[i],nchar(old_id_to_new_id_matches[i])-9,nchar(old_id_to_new_id_matches[i])),output_file_time[i],old_id_to_new_id_matches[i])
+
 
 
 

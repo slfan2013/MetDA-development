@@ -167,7 +167,6 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         }else if(['pca'].includes(page)){
             $("#results_card_body").load("score_loading_plot.html", function () {
                 init_selectpicker()
-
                 if (localStorage['big_category'] === 'project') {
                     $("#save_results").show();
                     $("#only_download_result_dataset").hide();

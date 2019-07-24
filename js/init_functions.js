@@ -1,7 +1,7 @@
 init_ripples = function () {
   $.material.init()
 }
-String.prototype.replaceAll = function(search, replacement) {
+String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.split(search).join(replacement);
 };
@@ -282,46 +282,87 @@ loadjscssfile = function (filename, filetype) {
 download_results = function (files_names, files_sources, zipfile_name) {
   $(".download").prop("disabled", true);
   $("#download_results").text("Downloading ... ")
-  var allResults = [];
+
+  index_of_link = []
+  index_of_not_link = []
+  // check how many are links. not links include base64 plots.
   for (var i = 0; i < files_names.length; i++) {
+    if (files_sources[i].substring(0, 4) === 'http') {
+      index_of_link.push(i)
+    } else {
+      index_of_not_link.push(i)
+    }
+  }
+
+  var allResults = [];
+  for (var i = 0; i < index_of_link.length; i++) {
     console.log(i)
-    Papa.parse(files_sources[i], {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      error: function (err, file, inputElem, reason) {
-        console.log(reason)
-        $(".download").prop("disabled", false);
-        $("#download_results").text("Download Results")
-      },
-      complete: function (results) {
-        allResults.push(results);
-        if (allResults.length == files_names.length) {
-          var zip = new JSZip();
-          for (var j = 0; j < files_names.length; j++) {
-            zip.file(files_names[j], Papa.unparse(allResults[j]))
+    if (index_of_link.includes(i)) {// check if this is a link.
+      Papa.parse(files_sources[index_of_link[i]], {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        error: function (err, file, inputElem, reason) {
+          console.log(reason)
+          $(".download").prop("disabled", false);
+          $("#download_results").text("Download Results")
+        },
+        complete: function (results) {
+          allResults.push(results);
+          if (allResults.length == index_of_link.length) {
+            var zip = new JSZip();
+            for (var j = 0; j < index_of_link.length; j++) {
+              zip.file(files_names[index_of_link[j]], Papa.unparse(allResults[j]))
+            }
+
+            for (var j = 0; j < index_of_not_link.length; j++) {
+              zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
+            }
+
+            zip.generateAsync({ type: "blob" })
+              .then(function (blob) {
+                saveAs(blob, zipfile_name + ".zip");
+                $(".download").prop("disabled", false);
+                $("#download_results").text("Download Results")
+              });
           }
-          zip.generateAsync({ type: "blob" })
-            .then(function (blob) {
-              saveAs(blob, zipfile_name + ".zip");
-              $(".download").prop("disabled", false);
-              $("#download_results").text("Download Results")
-            });
         }
-      }
-    })
+      })
+    }
+
   }
 }
 
+
+
+
+
 save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index) {
-  
+
   console.log(files_sources)
   console.log(fold_name)
+
+  index_of_link = []
+  index_of_not_link = []
+  // check how many are links. not links include base64 plots.
+  for (var i = 0; i < files_names.length; i++) {
+    if (files_sources[i].substring(0, 4) === 'http') {
+      index_of_link.push(i)
+    } else {
+      index_of_not_link.push(i)
+    }
+  }
+
+
 
   $('#save_results_collapse').collapse('toggle')
   $(".download").prop("disabled", true);
   $("#save_results").text("Waiting User to Select a Folder ... ")
   // open a jstree.
+
+
+
+
 
   ocpu.call("open_project_structure_to_save_result", {
     project_id: localStorage['activate_project_id'],
@@ -342,21 +383,32 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
         //fff = files_sources
         if (window.location.href.includes("localhost")) {//otherwise it will have issue of https://github.com/opencpu/opencpu/issues/345
           var files = files_sources;
+
+
+
           var allResults = [];
 
-          for (var i = 0; i < files.length; i++) {
-            Papa.parse(files[i], {
+          for (var i = 0; i < index_of_link.length; i++) {
+            Papa.parse(files[index_of_link[i]], {
               download: true,
               header: true,
               skipEmptyLines: true,
               error: function (err, file, inputElem, reason) { /* handle*/ },
               complete: function (results) {
                 allResults.push(results.data);
-                if (allResults.length == files.length) {
+                if (allResults.length == index_of_link.length) {
                   // Do whatever you need to do
                   console.log("HERE")
                   console.log(allResults)
                   console.log(data.node.original.id)
+
+                  for (var j = 0; j < index_of_not_link.length; j++) {
+                    allResults.push(files_sources[index_of_not_link[j]])
+
+                    //zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
+                  }
+
+
                   ocpu.call("save_results_to_project", {
                     files_names: files_names,
                     files_sources: files_sources,
@@ -376,7 +428,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
                         ocpu.call("open_project_structure_after_save_result", {
                           project_id: localStorage['activate_project_id'],
                           selected_data: localStorage['activate_data_id'],
-                          saved_folder_id:data.node.original.id
+                          saved_folder_id: data.node.original.id
                         }, function (session) {
                           session.getObject(function (obj) {
                             ooo = obj
@@ -441,28 +493,28 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 }
 
 
-update_projects_table = function (id="projects_table",call_back=when_projects_table_clicked) {
+update_projects_table = function (id = "projects_table", call_back = when_projects_table_clicked) {
   Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
-      download: true,
-      complete: function (results) {
-          var table_html = "<thead>"
-          for (var i = 0; i < results.data[0].length; i++) {
-              table_html = table_html + "<th>" + results.data[0][i] + "</th>"
-          }
-          table_html = table_html + "</thead>"
-          table_html = table_html + "<tbody>"
-          for (var i = 1; i < results.data.length; i++) {
-              table_html = table_html + "<tr>"
-              for (var j = 0; j < results.data[i].length; j++) {
-                  table_html = table_html + "<td>" + results.data[i][j] + "</td>"
-              }
-              table_html = table_html + "</tr>"
-          }
-          table_html = table_html + "</tbody>"
-          $("#"+id).html(table_html)
-
-
-          $("#"+id+" tr").click(call_back);
+    download: true,
+    complete: function (results) {
+      var table_html = "<thead>"
+      for (var i = 0; i < results.data[0].length; i++) {
+        table_html = table_html + "<th>" + results.data[0][i] + "</th>"
       }
+      table_html = table_html + "</thead>"
+      table_html = table_html + "<tbody>"
+      for (var i = 1; i < results.data.length; i++) {
+        table_html = table_html + "<tr>"
+        for (var j = 0; j < results.data[i].length; j++) {
+          table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+        }
+        table_html = table_html + "</tr>"
+      }
+      table_html = table_html + "</tbody>"
+      $("#" + id).html(table_html)
+
+
+      $("#" + id + " tr").click(call_back);
+    }
   });
 }

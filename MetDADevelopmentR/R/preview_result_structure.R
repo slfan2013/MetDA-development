@@ -1,7 +1,7 @@
 preview_result_structure <- function(
-                                     project_id = "test21563210075",
+                                     project_id = "test01563829439",
                                      selected_data = "e.csv",
-                                     project_id2 = "test31563293566",
+                                     project_id2 = "test11563829453",
                                      selected_data2 = "e.csv") {
 
   structures = get_to_be_added_structure(project_id,
@@ -31,7 +31,7 @@ preview_result_structure <- function(
 
 
 
-  to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) x), function(x) x, simplify = F))
+  to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
 
 
 

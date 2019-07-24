@@ -4,9 +4,9 @@ color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
 ["rgb(166, 86, 41)", "rgb(241, 128, 191)", "rgb(153, 153, 153)"],
 ["rgb(0,0,0)", "rgb(255,255,255)"]]
 
-$("#scaling_method_div").load("scaling_method.html", init_selectpicker)
 
 
+plot_url = {}
 
 
 var defination_of_missing_value_onchange = function () {
@@ -28,6 +28,16 @@ pca_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
     ooo = obj
     sss = session
+
+    /*scatter_by_group({
+        x: x, y: y, color_by: score_plot_color_by, color_values: score_plot_color_values, color_levels: score_plot_color_levels,
+        shape_by: score_plot_shape_by, shape_values: score_plot_shape_values, shape_levels: score_plot_shape_levels,
+        size_by: score_plot_size_by, size_values: score_plot_size_values, size_levels: score_plot_size_levels,
+        ellipse_group: score_plot_ellipse_group,
+        labels: score_plot_labels,
+        layout: score_plot_layout,
+        plot_id: score_plot_plot_id
+    })*/
 
     scatter_by_group = function ({ x = undefined, y = undefined, color_by = undefined, color_values = undefined, color_levels = undefined,
         shape_by = undefined, shape_values = undefined, shape_levels = undefined,
@@ -113,64 +123,70 @@ pca_append_results = function (obj, session) {
                     symbol: revalue([trace_keys[i].split("+")[1]], shape_levels, shape_values)[0],
                     size: revalue([trace_keys[i].split("+")[2]], size_levels, size_values)[0],
                 },
-                legendgroup: trace_keys[i]
+                legendgroup: trace_keys[i],
+                showlegend:true
             })
         }
-
         // add ellipse.
-        ellipse_split_by = Array(x.length).fill("")
-        if (ellipse_group.length > 0) {
-            for (var i = 0; i < ellipse_group.length; i++) {
-                temp_split = eval(ellipse_group[i] + "_by")
-                ellipse_split_by = ellipse_split_by.map((x, j) => x + "+" + temp_split[j])
+        if(ellipse_group === "no_ellipse"){
+            console.log("no ellipse")
+        }else{ // it means use would like to draw ellipse.
+            ellipse_split_by = Array(x.length).fill("")
+            if (ellipse_group.length > 0) {
+                for (var i = 0; i < ellipse_group.length; i++) {
+                    temp_split = eval(ellipse_group[i] + "_by")
+                    ellipse_split_by = ellipse_split_by.map((x, j) => x + "+" + temp_split[j])
+                }
+            }
+            ellipse_split_by = ellipse_split_by.map(x => x.slice(1))
+            ellipse_split_by_revalue = Array(x.length).fill("")
+            if (ellipse_group.length > 0) {
+                for (var i = 0; i < ellipse_group.length; i++) {
+                    temp_split = eval(ellipse_group[i] + "_by_revalue")
+                    ellipse_split_by_revalue = ellipse_split_by_revalue.map((x, j) => x + "+" + temp_split[j])
+                }
+            }
+            ellipse_split_by_revalue = ellipse_split_by_revalue.map(x => x.slice(1))
+            ellipse_xs_from = groupData(ellipse_split_by, x)
+            ellipse_ys_from = groupData(ellipse_split_by, y)
+    
+            ellipse_xs_ys = {}
+            ellipse_trace_keys = Object.keys(ellipse_xs_from)
+            for (var i = 0; i < ellipse_trace_keys.length; i++) {
+                ellipse_xs_ys[ellipse_trace_keys[i]] = ellipse(ellipse_xs_from[ellipse_trace_keys[i]],
+                    ellipse_ys_from[ellipse_trace_keys[i]], 0.95)
+            }
+    
+            //ellipse_names = revalue(ellipse_trace_keys, ellipse_split_by_revalue.filter(unique), ellipse_split_by.filter(unique))
+            ellipse_names = ellipse_trace_keys
+            for (var i = 0; i < ellipse_trace_keys.length; i++) {
+                data.push({
+                    mode: 'lines',
+                    x: ellipse_xs_ys[ellipse_trace_keys[i]][0],
+                    y: ellipse_xs_ys[ellipse_trace_keys[i]][1],
+                    text: null,
+                    line: {
+                        width: 1.889764,
+                        color: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
+                        dash: "solid"
+                    },
+                    fill: "toself",
+                    fillcolor: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
+                    name: ellipse_trace_keys[i],
+                    showlegend: false,
+                    hoverinfo: "skip",
+                    legendgroup: trace_keys[i]
+                })
             }
         }
-        ellipse_split_by = ellipse_split_by.map(x => x.slice(1))
-        ellipse_split_by_revalue = Array(x.length).fill("")
-        if (ellipse_group.length > 0) {
-            for (var i = 0; i < ellipse_group.length; i++) {
-                temp_split = eval(ellipse_group[i] + "_by_revalue")
-                ellipse_split_by_revalue = ellipse_split_by_revalue.map((x, j) => x + "+" + temp_split[j])
-            }
-        }
-        ellipse_split_by_revalue = ellipse_split_by_revalue.map(x => x.slice(1))
-        ellipse_xs_from = groupData(ellipse_split_by, x)
-        ellipse_ys_from = groupData(ellipse_split_by, y)
 
-        ellipse_xs_ys = {}
-        ellipse_trace_keys = Object.keys(ellipse_xs_from)
-        for (var i = 0; i < ellipse_trace_keys.length; i++) {
-            ellipse_xs_ys[ellipse_trace_keys[i]] = ellipse(ellipse_xs_from[ellipse_trace_keys[i]],
-                ellipse_ys_from[ellipse_trace_keys[i]], 0.95)
-        }
-
-        //ellipse_names = revalue(ellipse_trace_keys, ellipse_split_by_revalue.filter(unique), ellipse_split_by.filter(unique))
-        ellipse_names = ellipse_trace_keys
-        for (var i = 0; i < ellipse_trace_keys.length; i++) {
-            data.push({
-                mode: 'lines',
-                x: ellipse_xs_ys[ellipse_trace_keys[i]][0],
-                y: ellipse_xs_ys[ellipse_trace_keys[i]][1],
-                text: null,
-                line: {
-                    width: 1.889764,
-                    color: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
-                    dash: "solid"
-                },
-                fill: "toself",
-                fillcolor: transparent_rgba(revalue([ellipse_trace_keys[i].split("+")[0]], color_levels, color_values)[0], 0.1),
-                name: ellipse_trace_keys[i],
-                showlegend: false,
-                hoverinfo: "skip",
-                legendgroup: trace_keys[i]
-            })
-        }
 
 
 
         if (names == "++") {
             layout.showlegend = false
         }
+        
 
 
         Plotly.newPlot(plot_id, data, layout, { editable: false })
@@ -178,8 +194,6 @@ pca_append_results = function (obj, session) {
 
             .then(gd => {
                 ggg = gd
-
-
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
                 var cache = [];
                 fullLayout = JSON.stringify(ggg._fullLayout, function (key, value) {
@@ -194,7 +208,6 @@ pca_append_results = function (obj, session) {
                     return value;
                 });
                 cache = null; // Enable garbage collection
-
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
                 var cache = [];
                 fullData = JSON.stringify(ggg._fullData, function (key, value) {
@@ -210,6 +223,25 @@ pca_append_results = function (obj, session) {
                 });
                 cache = null; // Enable garbage collection
 
+                score_plot_parameters = {
+                    full_data:JSON.parse(fullData),
+                    full_layout:JSON.parse(fullLayout),
+                    data: ggg.data,
+                    layout: ggg.layout,
+                    
+                }
+                
+                if($("#score_plot_traces_color_by_info").is(":checked")){
+                    score_plot_parameters.score_plot_color_levels=$("#score_plot_color_levels").val()
+                }
+                if($("#score_plot_traces_shape_by_info").is(":checked")){
+                    score_plot_parameters.score_plot_shape_levels=$("#score_plot_shape_levels").val()
+                }
+                if($("#score_plot_traces_size_by_info").is(":checked")){
+                    score_plot_parameters.score_plot_size_levels=$("#score_plot_size_levels").val()
+                }
+                
+
 /*
                 ocpu.call("test_pca", {
                     full_data:JSON.parse(fullData),
@@ -220,11 +252,45 @@ pca_append_results = function (obj, session) {
                     console.log(session)
                 })
 */
-                console.log(gd)
+
+                
+                // here click to add annotations.
+                /*console.log(gd)
                 gd.on('plotly_clickannotation', (x) => {
                     console.log(x)
                     console.log('annotation clicked !!!');
-                })
+                })*/
+                Plotly.toImage(gd,{format:'svg'})
+                    .then(
+                      function(url)
+                       {
+                           console.log("!!")
+                         uuuu = url
+                         uuu = uuuu.replace(/^data:image\/svg\+xml,/, '');
+                         uuu = decodeURIComponent(uuu);
+                         plot_url.score_plot=  btoa(unescape(encodeURIComponent(uuu)))
+                         files_sources[2] = plot_url.score_plot
+                          /*var canvas = document.createElement("canvas");
+                          var context = canvas.getContext("2d");
+                          canvas.width = 4000;
+                          canvas.height = 3000;
+                          var image = new Image();
+                          context.clearRect ( 0, 0, 4000, 3000 );
+                          var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(url.replace("data:image/svg+xml,",""))); // Convert SVG string to data URL
+
+                          var image = new Image();
+                          image.onload = function() {
+                              context.drawImage(image, 0, 0, 4000, 3000);
+                              var img = canvas.toDataURL("image/png");
+                              base64 = img.replace("data:image/png;base64,","")
+                              plot_url.score_plot = base64
+                          };
+                          image.src = imgsrc*/
+                       }
+                   )
+
+
+
             })
             ;
 
@@ -270,8 +336,8 @@ pca_append_results = function (obj, session) {
     gather_page_information_to_score_plot = function () {
         console.log($("#score_plot_plot_bgcolor").spectrum("get").toRgbString())
 
-        x = unpack(obj.sample_scores, "PC1")
-        y = unpack(obj.sample_scores, "PC2")
+        x = unpack(obj.sample_scores, "PC"+$("#score_plot_pcx").val())
+        y = unpack(obj.sample_scores, "PC"+$("#score_plot_pcy").val())
 
 
         if (!$("#score_plot_traces_color_by_info").is(":checked")) {
@@ -301,11 +367,16 @@ pca_append_results = function (obj, session) {
                 return ($("#score_plot_size_options" + i).val())
             })
         }
-
-        score_plot_ellipse_group = ['color']
-
-
+        if($("#score_plot_confidence_ellipse").is(":checked")){
+            score_plot_ellipse_group = ['color']
+        }else{
+            score_plot_ellipse_group = 'no_ellipse'
+        }
+        
         score_plot_labels = unpack(obj.p, "label")
+        $("#score_plot_layout_xaxis_title_text").val("PC"+$("#score_plot_pcx").val()+" (" + (ooo.variance[$("#score_plot_pcx").val()-1] * 100).toFixed(2) + "%)")
+        $("#score_plot_layout_yaxis_title_text").val("PC"+$("#score_plot_pcy").val()+" (" + (ooo.variance[$("#score_plot_pcy").val()-1] * 100).toFixed(2) + "%)")
+
         score_plot_layout = {
             plot_bgcolor: $("#score_plot_plot_bgcolor").spectrum("get").toRgbString(),
             paper_bgcolor: $("#score_plot_paper_bgcolor").spectrum("get").toRgbString(),
@@ -685,7 +756,7 @@ pca_append_results = function (obj, session) {
     }, function (session) {
         session.getObject(function (obj) {
             console.log(obj)
-            sss = obj
+            oo = obj
             score_plot_traces = obj.traces
 
 
@@ -718,7 +789,7 @@ pca_append_results = function (obj, session) {
             $("#score_plot_layout_margin_top").val(obj.margin.t)
             $("#score_plot_layout_margin_bottom").val(obj.margin.b)
 
-            $("#score_plot_layout_xaxis_title_text").val("PC1 (" + (ooo.variance[0] * 100).toFixed(2) + "%)")
+            $("#score_plot_layout_xaxis_title_text").val("PC"+$("#score_plot_pcx").val()+" (" + (ooo.variance[$("#score_plot_pcx").val()-1] * 100).toFixed(2) + "%)")
 
 
 
@@ -772,7 +843,7 @@ pca_append_results = function (obj, session) {
             $("#score_plot_layout_xaxis_zerolinewidth").val(obj.xaxis.zerolinewidth)
 
 
-            $("#score_plot_layout_yaxis_title_text").val("PC2 (" + (ooo.variance[1] * 100).toFixed(2) + "%)")
+            $("#score_plot_layout_yaxis_title_text").val("PC"+$("#score_plot_pcy").val()+" (" + (ooo.variance[$("#score_plot_pcy").val()-1] * 100).toFixed(2) + "%)")
             $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").val(obj.yaxis.title.font.family)
             $("#score_plot_layout_yaxis_title_font .form-group .selectpicker").selectpicker('refresh')
             $("#score_plot_layout_yaxis_title_font .input-group .size").val(obj.yaxis.title.font.size)
@@ -861,13 +932,25 @@ pca_append_results = function (obj, session) {
 
 
 
+    // for downloads.
 
-
-    var files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv"];
-    var files_names = ["sample_scores.csv", "compound_loadings.csv"]
-    var zipfile_name = "pca_results.zip"
+    files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", plot_url.score_plot];
+    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg']
+    zipfile_name = "pca_results.zip"
     $("#download_results").off("click").on("click", function () {
         download_results(files_names, files_sources, zipfile_name)
     })
+
+
+    fold_name = "PCA"
+    files_types = ["application/vnd.ms-excel","application/vnd.ms-excel","image/svg+xml"]
+    $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
+        parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.score_plot = score_plot_parameters
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+    })
+
+
+
 
 }

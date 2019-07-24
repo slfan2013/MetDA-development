@@ -1,5 +1,5 @@
 call_fun <- function(parameter, ...) {
-  save(parameter, file = "local.RData") # for debugging
+  save(parameter, file = "call_fun.RData") # for debugging
 
   parameter_names <- names(parameter)
 
