@@ -70,8 +70,8 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             project_id: localStorage['activate_project_id'],
             selected_data: localStorage['activate_data_id']
         }, function (session) {
-            
-    console.log(session)
+
+            console.log(session)
             session.getObject(function (obj) {
                 ooo = obj
                 p = ooo.p
@@ -142,7 +142,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     }
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-        if (['missing_value_imputation','student_t_test', 'fold_change'].includes(page)) {
+        if (['missing_value_imputation', 'student_t_test', 'fold_change'].includes(page)) {
             $("#results_card_body").load("one_top_description_bottom_table.html", function () {
                 init_selectpicker()
 
@@ -164,7 +164,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
-        }else if(['pca'].includes(page)){
+        } else if (['pca'].includes(page)) {
             obj_score_loading_plot = obj
             obj_scree_plot = obj
 
@@ -174,7 +174,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
             $("#score_loading_plot_div").load("score_loading_plot.html", function () {
                 init_selectpicker()
-                $("#scree_plot_div").load("scree_plot.html",function(){
+                $("#scree_plot_div").load("scree_plot.html", function () {
                     init_selectpicker()
                     if (localStorage['big_category'] === 'project') {
                         $("#save_results").show();
@@ -194,7 +194,30 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                     append_results_fun(obj, session)
                 })
-                
+
+            })
+        } else if (['heatmap'].includes(page)) {
+            obj_heatmap_plot = obj
+            $("#results_card_body").append('<div id="heatmap_plot_div"></div>')
+            $("#heatmap_plot_div").load("heatmap_plot.html", function () {
+                init_selectpicker()
+                if (localStorage['big_category'] === 'project') {
+                    $("#save_results").show();
+                    $("#only_download_result_dataset").hide();
+                    $("#download_results").removeClass("btn-primary")
+                    $("#download_results").addClass("btn-default")
+                    $("#save_results").addClass("btn-primary")
+                    $("#save_results").removeClass("btn-default")
+                } else if (localStorage['big_category'] === 'in_and_out') {
+                    $("#save_results").hide();
+                    $("#only_download_result_dataset").show();
+                    $("#download_results").addClass("btn-primary")
+                    $("#download_results").removeClass("btn-default")
+                    $("#save_results").removeClass("btn-primary")
+                    $("#save_results").addClass("btn-default")
+                }
+                var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                append_results_fun(obj, session)
             })
         }
     }
@@ -209,9 +232,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $(".parameter").each(function () {
             if (this.id !== '') {
                 //parameters.push({:$(this).val()})
-                if($(this).prop("checked") === undefined){ // this means that it is a select.
+                if ($(this).prop("checked") === undefined) { // this means that it is a select.
                     parameter[this.id] = $(this).val()
-                }else{ // this means that it is a checkbox
+                } else { // this means that it is a checkbox
                     parameter[this.id] = $(this).prop("checked")
                 }
             }

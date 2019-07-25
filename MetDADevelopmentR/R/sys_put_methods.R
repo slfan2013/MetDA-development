@@ -28,6 +28,12 @@ sys_put_methods <- function() {
         "Description" = "To reduce a larger set of variables into a smaller set of 'artificial' variables that account for most of the variance in the original variables.",
         "Example" = "paper2",
         "Example link" = ""
+      ),
+	  "heatmap" = list(
+        "Method Name" = "Heatmap",
+        "Description" = "To draw a beautiful heatmap.",
+        "Example" = "paper2",
+        "Example link" = ""
       )
     )
   )

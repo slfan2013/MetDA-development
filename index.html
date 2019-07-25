@@ -18,19 +18,19 @@
 
 
             function load_page_by_url() {
-               $(".contents").hide();
+               $(".contents").empty();
                if (window.location.href.split("#")[1] === undefined || window.location.href.split("#")[1] === "" || window.location.href.split("#")[1] === "home") {
-                  $("#home_content").show();
+                  //$("#home_content").show();
                   $("#home_content").load("home.html", function () {
                      init_ripples()
                      update_projects_table()
                   })
                } else if(window.location.href.split("#")[1] === 'one_click'){
-                  $("#one_click_content").show();
+                  //$("#one_click_content").show();
                   $("#one_click_content").load("one_click.html")
                }else{
-                  if (["pca","missing_value_imputation","project_overview","student_t_test","fold_change"].includes(window.location.href.split("#")[1])) {
-                     $("#templates_content").show();
+                  if (["pca","missing_value_imputation","project_overview","student_t_test","fold_change","heatmap"].includes(window.location.href.split("#")[1])) {
+                     //$("#templates_content").show();
                      $("#templates_content").load("templates.html", init_ripples)
                   } else {
                      $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html", init_ripples)

@@ -153,6 +153,7 @@ when_projects_table_clicked = function () {
         project_id:localStorage['activate_project_id']
     },function(session){
         session.getObject(function(obj){
+            change_big_category('project')
             localStorage['p'] = JSON.stringify(obj.p) 
             localStorage['f'] = JSON.stringify(obj.f) 
             window.location.href = "#project_overview";
@@ -169,6 +170,7 @@ change_big_category = function (category) {
 }
 
 go_to_one_click = function(){
+    change_big_category("one_click")
     window.location.href = "#one_click";
 }
 

@@ -65,6 +65,7 @@ get_to_be_added_structure <- function(
     being_activated_data_id2 <- id2[activate_data_ids2 %in% being_activated_data_id2]
     round <- round + 1
   }
+
   needed_id2 <- needed_id2[!needed_id2 %in% selected_data2]
   structure_to_be_added <- project_structure2[id2 %in% needed_id2]
   for (i in 1:length(structure_to_be_added)) {

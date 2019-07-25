@@ -5,6 +5,7 @@ String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.split(search).join(replacement);
 };
+
 function unpack(rows, key) {
 
   for (var i = 0; i < rows.length; i++) {
@@ -494,6 +495,8 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 
 update_projects_table = function (id = "projects_table", call_back = when_projects_table_clicked) {
+  console.log("HERE")
+  console.log($("#projects_table").length)
   Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
     download: true,
     complete: function (results) {
@@ -511,9 +514,8 @@ update_projects_table = function (id = "projects_table", call_back = when_projec
         table_html = table_html + "</tr>"
       }
       table_html = table_html + "</tbody>"
+      console.log(table_html)
       $("#" + id).html(table_html)
-
-
       $("#" + id + " tr").click(call_back);
     }
   });

@@ -2,8 +2,17 @@
 
 
 # http://localhost:5656/ocpu/tmp/x08f655c87c/
+# helper function for creating dendograms
+ggdend <- function(df) {
+  ggplot() +
+    geom_segment(data = df, aes(x=x, y=y, xend=xend, yend=yend)) +
+    labs(x = "", y = "") + theme_minimal() +
+    theme(axis.text = element_blank(), axis.ticks = element_blank(),
+          panel.grid = element_blank())
+}
+pacman::p_load(data.table, ggdendro, plotly, ggplot2)
 
-pacman::p_load(data.table)
+
 
 data = read_data_from_projects(project_id, activate_data_id)
 e = data$e
@@ -33,24 +42,68 @@ if(scaling_method=='none'){
 e_t = t(e)
 e_scale = scale(e_t, center = !scaling_method=='none', scale = sds)
 
-pca = prcomp(e_scale, center = FALSE)
-variance = round(pca$sdev^2/sum(pca$sdev^2),4)
+
+#dendogram data
+
+if(!exists("order_sample")){
+  order_sample = 'dendrogram'
+}
+if(!exists("order_compound")){
+  order_compound = 'dendrogram'
+}
+if(order_sample == 'dendrogram'){
+  hc.col = hclust(dist(t(e_scale)))
+  dd.col <- as.dendrogram(hc.col)
+  dy <- dendro_data(dd.col)
+  py <- ggdend(dy$segments) + coord_flip()
+  yy = ggplotly(py)
+}else{
+  hc.col = list()
+  hc.col$order = 1:nrow(e)
+}
+
+if(order_compound=='dendrogram'){
+  hc.row = hclust(dist(e_scale))
+  dd.row <- as.dendrogram(hc.row)
+  dx <- dendro_data(dd.row)
+  px <- ggdend(dx$segments)
+  xx = ggplotly(px)
+}else{
+  hc.row = list()
+  hc.row$order = 1:ncol(e)
+}
 
 
-sample_scores = pca$x[,1:min(15,ncol(pca$x))]
-sample_scores = data.table(sample_scores)
-rownames(sample_scores) = make.unique(p$label)
+hc.col.order = hc.col$order
+hc.row.order = hc.row$order
+# result = list(
+#   # temp_data = t(e_scale[hc.row.order,hc.col.order]),
+#   temp_data = t(e_scale),
+#   report_html =report_html,
+#   sx = xx$x$data[[1]]$x,
+#   sy = xx$x$data[[1]]$y,
+#   cx = yy$x$data[[1]]$x,
+#   cy = yy$x$data[[1]]$y,
+#   max = max(e_scale, na.rm = TRUE),
+#   median = median(e_scale, na.rm = TRUE),
+#   min = min(e_scale, na.rm = TRUE),
+#   hc_col_order = hc.col.order-1,
+#   hc_row_order = hc.row.order-1
+# )
 
-compound_loadings = pca$rotation[,1:min(15,ncol(pca$rotation))]
-compound_loadings = data.table(compound_loadings)
-rownames(compound_loadings) = make.unique(f$label)
-
-fwrite(sample_scores, "sample_scores.csv", col.names = TRUE,row.names = TRUE)
-fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = TRUE)
 
 
 
-if(exists("score_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
+
+
+result = list(results_description = "Here is the heatmap summary.",p = p, f = f, hc_col_order = hc.col.order-1, hc_row_order = hc.row.order-1,temp_data = t(e_scale),sx = xx$x$data[[1]]$x,sy = xx$x$data[[1]]$y,cx = yy$x$data[[1]]$x,cy = yy$x$data[[1]]$y,max = max(e_scale, na.rm = TRUE),median = median(e_scale, na.rm = TRUE),min = min(e_scale, na.rm = TRUE))
+
+
+
+
+
+
+if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
   full_data = score_plot$full_data
   full_layout = score_plot$full_layout
 
@@ -295,11 +348,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 }
 
-
-
-
-
-result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
 
 
 

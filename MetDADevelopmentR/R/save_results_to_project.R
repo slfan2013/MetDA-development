@@ -14,9 +14,6 @@ save_results_to_project <- function(project_id = "aaa1560462496",
     for (file_source in 1:length(files_sources_data)) {
       if (is.null(ncol(files_sources_data[[file_source]]))) { # this means this is a base6 (pca score plot)
 
-
-
-
       } else {
         if (ncol(files_sources_data[[file_source]]) > 1) {
           data.table::fwrite(files_sources_data[[file_source]], files_names[file_source])
@@ -127,14 +124,18 @@ save_results_to_project <- function(project_id = "aaa1560462496",
     epf_index = epf_index
   )
 
+
   for (file_source in 1:length(files_sources)) {
+    parameters_for_chilren = list()
+    parameters_for_chilren$activate_data_id= parameters$activate_data_id # this will be used in the quick analysis line 45
     project_structure[[length(project_structure) + 1]] <- list(
       id = attachments_ids[file_source],
       parent = folder_id,
       text = files_names[file_source],
       icon = plyr::revalue(files_types[file_source], c("application/vnd.ms-excel" = "fa fa-file-excel-o","image/svg+xml"="fa fa-file-image-o")),
       with_attachment = TRUE,
-      parameter = parameters
+      parameter = parameters_for_chilren
+      # since the parameters are already saved in the folder. We may do not need to save it in these children.
     )
 
     if (file_source %in% epf_index) {

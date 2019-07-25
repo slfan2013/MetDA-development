@@ -1,0 +1,560 @@
+<div id="PLOT_NAME_layout_accordion" role="tablist">
+        <div class="card-collapse">
+            <div class="card-header" role="tab" id="PLOT_NAME_general_defaults_heading">
+                <h5 class="mb-0">
+                    <a data-toggle="collapse" href="#PLOT_NAME_general_defaults_collapse"
+                        aria-expanded="true" aria-controls="PLOT_NAME_general_defaults_collapse">
+                        Defaults
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                </h5>
+            </div>
+            <div id="PLOT_NAME_general_defaults_collapse" class="collapse show" role="tabpanel"
+                aria-labelledby="PLOT_NAME_general_defaults_heading"
+                data-parent="#PLOT_NAME_layout_accordion">
+                <div class="card-body">
+                    <div class="card" style="margin:0">
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        Plot Background Color
+                                    </span>
+                                </div>
+                                <input type='text' id="PLOT_NAME_plot_bgcolor" class="spectrums"
+                                    data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        Margin Background
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_paper_bgcolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_paper_bgcolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_paper_bgcolor" class="spectrums"
+                                    data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        plot width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_width" placeholder="width" min="100"
+                                    max="1500" step="100"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        plot height
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_height" placeholder="height" min="100"
+                                    max="1500" step="100"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        margin top
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_margin_top" placeholder="margin top"
+                                    min="0" max="500" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        margin right
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_margin_right" placeholder="margin right"
+                                    min="0" max="500" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        margin bottom
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_margin_bottom" placeholder="margin bottom"
+                                    min="0" max="500" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        margin left
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_margin_left" placeholder="margin left"
+                                    min="0" max="500" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="card" style="margin:0">
+                                        <div class="card-header" style="padding-top:0">Text</div>
+                                        <div class="card-body" style="padding-top:0">
+                                            <div id="PLOT_NAME_layout_font"></div>
+                                        </div>
+                                    </div>-->
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Title</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        text
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control"
+                                    id="PLOT_NAME_layout_title_text" placeholder="title text"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div id="PLOT_NAME_layout_title_font"></div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        position - x
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_title_x" placeholder="horizontal position"
+                                    min="0" max="1" step="0.1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        position - y
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_title_y" placeholder="horizontal position"
+                                    min="0" max="1" step="0.1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-collapse">
+            <div class="card-header" role="tab" id="PLOT_NAME_general_xaxis_heading">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse"
+                        href="#PLOT_NAME_general_xaxis_collapse" aria-expanded="false"
+                        aria-controls="PLOT_NAME_general_xaxis_collapse">
+                        X - Axis
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                </h5>
+            </div>
+            <div id="PLOT_NAME_general_xaxis_collapse" class="collapse" role="tabpanel"
+                aria-labelledby="PLOT_NAME_general_xaxis_heading"
+                data-parent="#PLOT_NAME_layout_accordion">
+                <div class="card-body">
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Title</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        text
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_title_text"
+                                    placeholder="xaxis title text"
+                                    onchange="gather_page_information_to_PLOT_NAME()" disabled>
+                            </div>
+                            <div id="PLOT_NAME_layout_xaxis_title_font"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Ticks</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        length
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_ticklen" placeholder="tick length"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_tickwidth" placeholder="tick width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_xaxis_tickcolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_xaxis_tickcolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_xaxis_tickcolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        tick angle
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_tickangle" placeholder="tick angle"
+                                    min="0" max="360" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                        </div>
+                        <div id="PLOT_NAME_layout_xaxis_tickfont"></div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Axis Line</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_linewidth" placeholder="line width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_xaxis_linecolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_xaxis_linecolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_xaxis_linecolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Grids</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        id="PLOT_NAME_layout_xaxis_showgrid"
+                                        onchange="gather_page_information_to_PLOT_NAME()">
+                                    Show Grids
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_gridwidth" placeholder="grid width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_xaxis_gridcolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_xaxis_gridcolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_xaxis_gridcolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Zero Line</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        id="PLOT_NAME_layout_xaxis_zeroline"
+                                        onchange="gather_page_information_to_PLOT_NAME()">
+                                    Zero Line
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_xaxis_zerolinewidth"
+                                    placeholder="zeroline width" min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_xaxis_zerolinecolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_xaxis_zerolinecolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_xaxis_zerolinecolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-collapse">
+            <div class="card-header" role="tab" id="PLOT_NAME_general_yaxis_heading">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse"
+                        href="#PLOT_NAME_general_yaxis_collapse" aria-expanded="false"
+                        aria-controls="PLOT_NAME_general_yaxis_collapse">
+                        Y - Axis
+                        <i class="material-icons">keyboard_arrow_down</i>
+                    </a>
+                </h5>
+            </div>
+            <div id="PLOT_NAME_general_yaxis_collapse" class="collapse" role="tabpanel"
+                aria-labelledby="PLOT_NAME_general_yaxis_heading"
+                data-parent="#PLOT_NAME_layout_accordion">
+                <div class="card-body">
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Title</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        text
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_title_text"
+                                    placeholder="yaxis title text"
+                                    onchange="gather_page_information_to_PLOT_NAME()" disabled>
+                            </div>
+                            <div id="PLOT_NAME_layout_yaxis_title_font"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Ticks</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        length
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_ticklen" placeholder="tick length"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_tickwidth" placeholder="tick width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_yaxis_tickcolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_yaxis_tickcolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_yaxis_tickcolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        tick angle
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_tickangle" placeholder="tick angle"
+                                    min="0" max="360" step="10"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                        </div>
+                        <div id="PLOT_NAME_layout_yaxis_tickfont"></div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Axis Line</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_linewidth" placeholder="line width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_yaxis_linecolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_yaxis_linecolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_yaxis_linecolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Grids</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        id="PLOT_NAME_layout_yaxis_showgrid"
+                                        onchange="gather_page_information_to_PLOT_NAME()">
+                                    Show Grids
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_gridwidth" placeholder="grid width"
+                                    min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <!--<div id="PLOT_NAME_layout_yaxis_gridcolor">
+                                                    <div class="pickr-container" id="PLOT_NAME_layout_yaxis_gridcolor_id">
+                                                    </div>
+                                                </div>-->
+                                <input type='text' id="PLOT_NAME_layout_yaxis_gridcolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card" style="margin:0">
+                        <div class="card-header" style="padding-top:0">Zero Line</div>
+                        <div class="card-body" style="padding-top:0">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" value=""
+                                        id="PLOT_NAME_layout_yaxis_zeroline"
+                                        onchange="gather_page_information_to_PLOT_NAME()">
+                                    Zero Line
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        width
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    id="PLOT_NAME_layout_yaxis_zerolinewidth"
+                                    placeholder="zeroline width" min="0" max="100" step="1"
+                                    onchange="gather_page_information_to_PLOT_NAME()">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        color
+                                    </span>
+                                </div>
+                                <input type='text' id="PLOT_NAME_layout_yaxis_zerolinecolor"
+                                    class="spectrums" data-show-alpha="true"
+                                    onchange="gather_page_information_to_PLOT_NAME()" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
