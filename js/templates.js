@@ -105,7 +105,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
     }
-    open_project_structure_to_select_dataset()
+    if(localStorage.big_category==='project'){
+        open_project_structure_to_select_dataset()
+    }
 
     get_parameter_settings = function () {
         $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", init_selectpicker)
