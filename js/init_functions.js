@@ -493,7 +493,27 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 }
 
+sequence = function(from = 0, to = 10){
+  var N = to-from;
+  var seq = Array.apply(null, {length: N}).map(Function.call, Number);
+  var result = seq.map(x=>x+from)
+  return(result)
+}
+function getAllIndexes(arr, val) {
+  var indexes = [], i;
+  for(i = 0; i < arr.length; i++)
+      if (arr[i] === val)
+          indexes.push(i);
+  return indexes;
+} // get all the indexes of value in an array https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
+function sort(arr,desending=false) {
+  if(desending){
+    return arr.concat().sort(function(a, b){return b-a});
+  }else{
+    return arr.concat().sort();
+  }
 
+}
 update_projects_table = function (id = "projects_table", call_back = when_projects_table_clicked) {
   console.log("HERE")
   console.log($("#projects_table").length)

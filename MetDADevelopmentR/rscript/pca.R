@@ -247,13 +247,38 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
   score_plot_result = pp
   # https://plot.ly/r/static-image-export/
+
+  pacman::p_load(plotly, httr, jsonlite)
+
+
+  if(Sys.which('orca')==''){ # this means that R is in the metda service.
+    orca_serve(port = 9091)
+    url_address = "http://metda_plotly:9091"
+  }else{ # this means that R is in the Windows
+    orca_serve(port = 9091)
+    url_address = "localhost:9091"
+  }
+
+  bod = list(
+    figure = plotly_build(score_plot_result)$x[c("data","layout")],
+    format = 'svg'
+  )
+
+  result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
+  writeBin(httr::content(result, as = "raw"), "score_plot.svg")
+
+
+
+
+
+
   # orca(score_plot_result, "score_plot.svg") # make sure to match children text.
-  svg(filename="score_plot.svg",
-      width=5,
-      height=4,
-      pointsize=12)
-  plot(1:10)
-  dev.off()
+  # svg(filename="score_plot.svg",
+  #     width=5,
+  #     height=4,
+  #     pointsize=12)
+  # plot(1:10)
+  # dev.off()
 
 
 
@@ -281,12 +306,23 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   pp$x$data = data
   pp
   scree_plot_result = pp
-  svg(filename="scree_plot.svg",
-      width=5,
-      height=4,
-      pointsize=12)
-  plot(1:10, main = "scree_plot.svg")
-  dev.off()
+
+  bod = list(
+    figure = plotly_build(scree_plot_result)$x[c("data","layout")],
+    format = 'svg'
+  )
+
+  result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
+  writeBin(httr::content(result, as = "raw"), "scree_plot.svg")
+
+
+
+  # svg(filename="scree_plot.svg",
+  #     width=5,
+  #     height=4,
+  #     pointsize=12)
+  # plot(1:10, main = "scree_plot.svg")
+  # dev.off()
 
   #orca(scree_plot_result, "scree_plot.svg") # make sure to match children text.
 
@@ -323,7 +359,12 @@ result = list(results_description = "Here is the PCA summary.",p = p, f = f, sam
 
 
 
+# ppp <- plot_ly(z = ~volcano) %>% add_surface()
+# orca(ppp, "test_plot.svg")
 
+
+
+# processx::run(command = "orca", args = c("graph",'{ "data": [{"y": [1,2,1]}] }','-o','fig.svg','--format','svg'))
 
 
 

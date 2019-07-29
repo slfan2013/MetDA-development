@@ -125,6 +125,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p
+                f = oo.f
                 project_id = obj.project_id[0]
                 $(".inputFileHidden").prop("disabled", false);
                 var text = "<p class='text-warning'>" + obj.message.warning_message.join("</p><p class='text-warning'>") + "</p>"

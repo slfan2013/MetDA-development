@@ -226,7 +226,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             add_line_trace = true
             line_trace_index = 0
 
-            
+
 
             plot_id = "scree_plot"
 

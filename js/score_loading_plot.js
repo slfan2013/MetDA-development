@@ -298,7 +298,6 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     Plotly.toImage(gd, { format: 'svg' })
                         .then(
                             function (url) {
-                                console.log("!!")
                                 uuuu = url
                                 uuu = uuuu.replace(/^data:image\/svg\+xml,/, '');
                                 uuu = decodeURIComponent(uuu);
