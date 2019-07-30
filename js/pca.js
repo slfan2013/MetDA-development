@@ -30,7 +30,7 @@ pca_append_results = function (obj, session) {
 
     // for downloads.
     files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", plot_url.score_plot, plot_url.scree_plot];
-    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg','scree_plot.svg']
+    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg', 'scree_plot.svg']
     zipfile_name = "pca_results.zip"
     $("#download_results").off("click").on("click", function () {
         download_results(files_names, files_sources, zipfile_name)
@@ -38,8 +38,8 @@ pca_append_results = function (obj, session) {
 
 
     fold_name = "PCA"
-    files_types = ["application/vnd.ms-excel","application/vnd.ms-excel","image/svg+xml","image/svg+xml"]
-    $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
+    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "image/svg+xml", "image/svg+xml"]
+    $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.score_plot = score_plot_parameters
         parameters.scree_plot = scree_plot_parameters

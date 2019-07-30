@@ -37,7 +37,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         eval(adjusted_scree_plot_layout_adjuster3)
 
 
-                        gather_page_information_to_scree_plot()
+                        scree_plot_debounced()
 
                     })
 
@@ -253,6 +253,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
         }
+        scree_plot_debounced = _.debounce(gather_page_information_to_scree_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
 
 
 

@@ -1,7 +1,7 @@
 preview_result_structure <- function(
-                                     project_id = "score plot 01564073597",
+                                     project_id = "heatmap 01564436472",
                                      selected_data = "e.csv",
-                                     project_id2 = "scree plot 11564073492",
+                                     project_id2 = "project done41564443096",
                                      selected_data2 = "e.csv") {
 
   structures = get_to_be_added_structure(project_id,
@@ -24,14 +24,51 @@ preview_result_structure <- function(
   structure_to_be_added_folders_only <- structure_to_be_added[added_icons == "fa fa-folder"]
   structure_to_be_added_folders_only_ids <- sapply(structure_to_be_added_folders_only, function(x) x$id)
 
-  included_sample_info <- sapply(structure_to_be_added_folders_only, function(x) intersect(unlist(x$parameter), colnames_p2))
+  included_sample_info <- sapply(structure_to_be_added_folders_only, function(x) intersect(unlist(x$parameter), colnames_p2), simplify = F)
 
-  structure_to_be_added_folders_only_ids <- structure_to_be_added_folders_only_ids[sapply(included_sample_info, length) > 0]
+
+  structure_to_be_added_folders_only_ids = rep(structure_to_be_added_folders_only_ids,sapply(included_sample_info, length))
+
+
+  # structure_to_be_added_folders_only_ids <- structure_to_be_added_folders_only_ids[sapply(included_sample_info, length) > 0]
+
   included_sample_info <- included_sample_info[sapply(included_sample_info, length) > 0]
 
+  if(length(structure_to_be_added_folders_only_ids)==0){
+    to_be_specified[["sample_info"]] <- ""
+  }else{
+    to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
+  }
 
 
-  to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
+
+
+
+
+
+  f2 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/f.csv"))
+  colnames_f2 <- colnames(f2)
+
+
+  included_compound_info <- sapply(structure_to_be_added_folders_only, function(x) intersect(unlist(x$parameter), colnames_f2), simplify = F)
+
+
+  structure_to_be_added_folders_only_ids <- sapply(structure_to_be_added_folders_only, function(x) x$id)
+  structure_to_be_added_folders_only_ids = rep(structure_to_be_added_folders_only_ids,sapply(included_compound_info, length))
+
+  included_compound_info <- included_compound_info[sapply(included_compound_info, length) > 0]
+
+
+  if(length(structure_to_be_added_folders_only_ids)==0){
+    to_be_specified[["compound_info"]] <- ""
+  }else{
+    to_be_specified[["compound_info"]] <- c(to_be_specified[["compound_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_compound_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
+  }
+
+
+
+
+
 
 
 

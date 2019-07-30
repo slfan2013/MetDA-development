@@ -330,7 +330,6 @@ download_results = function (files_names, files_sources, zipfile_name) {
         }
       })
     }
-
   }
 }
 

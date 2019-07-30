@@ -92,9 +92,20 @@ hc.row.order = hc.row$order
 # )
 
 
+# sample_scores = pca$x[,1:min(15,ncol(pca$x))]
+# sample_scores = data.table(sample_scores)
+# rownames(sample_scores) = make.unique(p$label)
+#
+# fwrite(sample_scores, "sample_scores.csv", col.names = TRUE,row.names = TRUE)
+# fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = TRUE)
 
+sample_order = data.table(sample_order = hc.row.order)
+rownames(sample_order) = make.unique(p$label)
+compound_order = data.table(compound_order = hc.col.order)
+rownames(compound_order) = make.unique(f$label)
 
-
+fwrite(sample_order, "sample_order.csv", col.names = TRUE,row.names = TRUE)
+fwrite(compound_order, "compound_order.csv", col.names = TRUE,row.names = TRUE)
 
 result = list(results_description = "Here is the heatmap summary.",p = p, f = f, hc_col_order = hc.col.order-1, hc_row_order = hc.row.order-1,temp_data = t(e_scale),sx = xx$x$data[[1]]$x,sy = xx$x$data[[1]]$y,cx = yy$x$data[[1]]$x,cy = yy$x$data[[1]]$y,max = max(e_scale, na.rm = TRUE),median = median(e_scale, na.rm = TRUE),min = min(e_scale, na.rm = TRUE))
 
@@ -104,11 +115,11 @@ result = list(results_description = "Here is the heatmap summary.",p = p, f = f,
 
 
 if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
-  full_data = score_plot$full_data
-  full_layout = score_plot$full_layout
+  full_data = heatmap_plot$full_data
+  full_layout = heatmap_plot$full_layout
 
 
-  data = score_plot$data
+  data = heatmap_plot$data
 
   # for(i in 1:length(data)){
   #   data[[i]]$x = unlist(data[[i]]$x)
@@ -116,166 +127,404 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
   #   data[[i]]$text = unlist(data[[i]]$text)
   # }
 
-  score_plot_style = get_pca_score_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  heatmap_plot_style = get_heatmap_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
 
-  x = sample_scores$PC1
-  y = sample_scores$PC2
+  show_sample_label = heatmap_plot$show_sample_label
+  show_compound_label = heatmap_plot$show_compound_label
 
   # here I need to re-generate the data according to user's new dataset.
-  if(!is.null(score_plot$score_plot_color_levels)){
-    color_by = p[[score_plot$score_plot_color_levels]]
-    color_levels = unique(color_by)
-    color_values = unlist(score_plot_style$traces$scatter_colors[[length(color_levels)]])
+  colorscale = heatmap_plot$colorscale
+  sample_tree_height = as.numeric(heatmap_plot$sample_tree_height)
+  sample_annotation_height = as.numeric(heatmap_plot$sample_annotation_height)
+  compound_tree_height = as.numeric(heatmap_plot$compound_tree_height)
+  compound_annotation_height = as.numeric(heatmap_plot$compound_annotation_height)
+
+
+
+  order_sample_by = heatmap_plot$order_sample_by
+  if("as is" %in% order_sample_by){
+    sample_order = 1:length(p)
+    show_sample_dendrogram = FALSE
+  }else if("dendrogram" %in% order_sample_by){
+    sample_order = hc.row.order
+    show_sample_dendrogram = TRUE
   }else{
-    color_by = rep("", nrow(p))
-    color_values = score_plot$data[[1]]$marker$color
-    color_levels = ""
+    temp_data = data.frame(p[,heatmap_plot$order_sample_by])
+
+    sample_order = rep(0, nrow(temp_data))
+    for(i in 1:ncol(temp_data)){
+      if(colnames(temp_data)[i] %in% names(heatmap_plot$order_sample_levels)){
+        levels_temp_data = levels(temp_data[[i]])
+        new_levels = strsplit(heatmap_plot$order_sample_levels[which(names(heatmap_plot$order_sample_levels)%in%colnames(temp_data)[i])], "\\|\\|")[[1]]
+
+        correct_levels = intersect(new_levels, levels_temp_data)
+        correct_levels = c(correct_levels,levels_temp_data[!levels_temp_data%in%new_levels])
+        levels(temp_data[[i]]) = correct_levels
+      }
+      sample_order = sample_order * 1000 + order(temp_data[[i]])
+    }
+    show_sample_dendrogram = FALSE
   }
-  temp_replace = color_values
-  names(temp_replace) = color_levels
-  color_by_revalue = plyr::revalue(color_by, temp_replace)
 
-
-  if(!is.null(score_plot$score_plot_shape_levels)){
-    shape_by = p[[score_plot$score_plot_shape_levels]]
-    shape_levels = unique(shape_by)
-    shape_values = unlist(score_plot_style$traces$scatter_shapes[[length(shape_levels)]])
+  order_compound_by = heatmap_plot$order_compound_by
+  if("as is" %in% order_compound_by){
+    compound_order = 1:length(f)
+    show_compound_dendrogram = FALSE
+  }else if("dendrogram" %in% order_compound_by){
+    compound_order = hc.col.order
+    show_compound_dendrogram = TRUE
   }else{
-    shape_by = rep("", nrow(p))
-    shape_values = score_plot$data[[1]]$marker$symbol
-    shape_levels = ""
+    temp_data = data.frame(f[,heatmap_plot$order_compound_by])
+
+    compound_order = rep(0, nrow(temp_data))
+    for(i in 1:ncol(temp_data)){
+      if(colnames(temp_data)[i] %in% names(heatmap_plot$order_compound_levels)){
+        levels_temp_data = levels(temp_data[[i]])
+        new_levels = strsplit(heatmap_plot$order_compound_levels[which(names(heatmap_plot$order_compound_levels)%in%colnames(temp_data)[i])], "\\|\\|")[[1]]
+
+        correct_levels = intersect(new_levels, levels_temp_data)
+        correct_levels = c(correct_levels,levels_temp_data[!levels_temp_data%in%new_levels])
+        levels(temp_data[[i]]) = correct_levels
+      }
+      compound_order = compound_order * 1000 + order(temp_data[[i]])
+    }
+    show_compound_dendrogram = FALSE
   }
-  temp_replace = shape_values
-  names(temp_replace) = shape_levels
-  shape_by_revalue = plyr::revalue(shape_by, temp_replace)
+
+  dta = t(e_scale)
+  heatmap_z = dta[compound_order,sample_order]
+  sample_label = p$label
+  compound_label = f$label
+
+  heatmap_x = 1:nrow(p)-1
+  heatmap_y = 1:nrow(f)-1
+
+  heatmap_x_text = sample_label[sample_order]
+  heatmap_y_text = compound_label[compound_order]
+  tickvals = c(min(e_scale, na.rm = TRUE), median(e_scale, na.rm = TRUE), max(e_scale, na.rm = TRUE))
 
 
-  if(!is.null(score_plot$score_plot_size_levels)){
-    size_by = p[[score_plot$score_plot_size_levels]]
-    size_levels = unique(size_by)
-    size_values = unlist(score_plot_style$traces$scatter_sizes[[length(size_levels)]])
-  }else{
-    size_by = rep("", nrow(p))
-    size_values = score_plot$data[[1]]$marker$size
-    size_levels = ""
-  }
-  temp_replace = size_values
-  names(temp_replace) = size_levels
-  size_by_revalue = plyr::revalue(size_by, temp_replace)
+  sample_dendro_trace_x = xx$x$data[[1]]$x
+  sample_dendro_trace_y = xx$x$data[[1]]$y
+  compound_dendro_trace_x = yy$x$data[[1]]$x
+  compound_dendro_trace_y = yy$x$data[[1]]$y
 
-  split_by = paste0(color_by,"+",shape_by,"+",size_by)
-  split_by_revalue = paste0(color_by_revalue,"+",shape_by_revalue,"+",size_by_revalue)
 
-  xs = by(x,split_by,function(x) x, simplify = FALSE)
-  ys = by(y,split_by,function(x) x, simplify = FALSE)
-  trace_keys = names(xs)
-  names = trace_keys
-  texts = by(p$label, split_by, function(x) x, simplify = FALSE)
 
-  # data = []
-  # for (var i = 0; i < trace_keys.length; i++) {
-  #   data.push({
-  #     mode: 'markers',
-  #     x: xs[trace_keys[i]],
-  #     y: ys[trace_keys[i]],
-  #     name: names[i].replaceAll("+", " "),
-  #     text: texts[trace_keys[i]],
-  #     marker: {
-  #       color: revalue([trace_keys[i].split("+")[0]], color_levels, color_values)[0],
-  #       symbol: revalue([trace_keys[i].split("+")[1]], shape_levels, shape_values)[0],
-  #       size: revalue([trace_keys[i].split("+")[2]], size_levels, size_values)[0],
-  #     },
-  #     legendgroup: trace_keys[i],
-  #     showlegend:true
-  #   })
-  # }
 
-  data = list()
-  for(i in 1:length(trace_keys)){
-    trace_keys_split = stringr::str_split(trace_keys[i],"\\+")[[1]]
-    # temp_color_replace = color_values
-    # names(temp_color_replace) = color_levels
-    # temp_shape_replace = shape_values
-    # names(temp_shape_replace) = shape_levels
-    # temp_size_replace = size_values
-    # names(temp_size_replace) = size_levels
+  used_sample_annotations = sapply(heatmap_plot$sample_annotations, function(x) x$column)
+  sample_annotations = list()
+  for(i in 1:length(heatmap_plot$sample_annotation)){
+    # here we need to let new plot use old plot's colors if possible. This may involve the whole p and partial p for this data.
+    # if(heatmap_plot$sample_annotation[i] %in% used_sample_annotations){
+    #
+    #   old_levels = levels(factor(p[[heatmap_plot$sample_annotation[i]]]))
+    #
+    #
+    #
+    # }
+    levels = levels(factor(p[[heatmap_plot$sample_annotation[i]]]))
 
-    data[[length(data)+1]] = list(
-      mode='markers',
-      x=xs[[trace_keys[i]]],
-      y=ys[[trace_keys[i]]],
-      name=gsub("\\+","",names)[i],
-      texts=as.character(texts[[trace_keys[i]]]),
-      marker = list(
-        color=revalue(trace_keys_split[1],color_levels,color_values),
-        symbol=revalue(trace_keys_split[2],shape_levels,shape_values),
-        size=revalue(trace_keys_split[3],size_levels,size_values)
-      ),
-      legendgroup=trace_keys[i],
-      showlegend=TRUE
+    sample_annotations[[i]] = list(
+      colors = as.list(heatmap_plot_style$traces$sample_annotation[[length(levels)]]),
+      column = heatmap_plot$sample_annotation[i],
+      type = "character"
     )
   }
+  sample_level_options = sapply(p, unique)
 
-  # add ellipse
-  if(!is.null(score_plot$data[[length(score_plot$data)]]$fill)){ # If true, this meas that the the last element of data has toself property, meaning the user has included ellipses..
-    ellipse_split_by = rep("", nrow(p))
-    # score_plot_ellipse_group = "color"
-    temp_split = color_by
-    ellipse_split_by = color_by
-    ellipse_split_by_revalue = revalue(ellipse_split_by,color_levels,color_values)
-    # Currently, only the ellipse by color is accepted. Check javascript Ellipse_split_by = ellipse_split_by.map((x, j) => x + "+" + temp_split[j])
 
-    ellipse_xs_from = by(x, ellipse_split_by, function(x) x, simplify = F)
-    ellipse_ys_from = by(y, ellipse_split_by, function(x) x, simplify = F)
 
-    ellipse_xs_ys = mapply(function(x, y) return(list(x,y)), ellipse_xs_from, ellipse_ys_from, SIMPLIFY = FALSE)
 
-    ellipse_trace_keys = names(ellipse_xs_ys)
 
-    # for (var i = 0; i < ellipse_trace_keys.length; i++) {
-    #   ellipse_xs_ys[ellipse_trace_keys[i]] = ellipse(ellipse_xs_from[ellipse_trace_keys[i]],
-    #                                                  ellipse_ys_from[ellipse_trace_keys[i]], 0.95)
+
+  used_compound_annotations = sapply(heatmap_plot$compound_annotations, function(x) x$column)
+  compound_annotations = list()
+  for(i in 1:length(heatmap_plot$compound_annotation)){
+    # here we need to let new plot use old plot's colors if possible. This may involve the whole f and partial f for this data.
+    # if(heatmap_plot$compound_annotation[i] %in% used_compound_annotations){
+    #
+    #   old_levels = levels(factor(f[[heatmap_plot$compound_annotation[i]]]))
+    #
+    #
+    #
     # }
+    levels = levels(factor(f[[heatmap_plot$compound_annotation[i]]]))
 
-    for(i in 1:length(ellipse_trace_keys)){
-      ellipse_xs_ys[[ellipse_trace_keys[i]]] = unname(as.list(data.table(car::dataEllipse(x=ellipse_xs_from[[ellipse_trace_keys[i]]], y=ellipse_ys_from[[ellipse_trace_keys[i]]], levels=0.95, draw = F))))
-    }
-    ellipse_names = ellipse_trace_keys
-
-    for(i in 1:length(ellipse_trace_keys)){
-      temp_color_values = readr::parse_number(stringr::str_split(revalue(ellipse_trace_keys[i],color_levels,color_values),",")[[1]])
-      temp_color = paste0("rgba(", temp_color_values[1], ", ", temp_color_values[2], ", ", temp_color_values[3], ", 0.1)")
-      print(i)
+    compound_annotations[[i]] = list(
+      colors = as.list(heatmap_plot_style$traces$compound_annotation[[length(levels)]]),
+      column = heatmap_plot$compound_annotation[i],
+      type = "character"
+    )
+  }
+  compound_level_options = sapply(f, unique)
 
 
-      data[[length(data)+1]] = list(
-        mode="lines",
-        x=ellipse_xs_ys[[ellipse_trace_keys[i]]][[1]],
-        y=ellipse_xs_ys[[ellipse_trace_keys[i]]][[2]],
-        text=NULL,
-        line = list(
-          width = 1.889764,
-          color =temp_color,
-          dash = "solid"
-        ),
-        fill = "toself",
-        fillcolor=temp_color,
-        name = ellipse_trace_keys[i],
-        showlegend = FALSE,
-        hoverinfo = "skip",
-        legendgroup = trace_keys[i]
-      )
-    }
+  layout = heatmap_plot$layout
+  colorscale = heatmap_plot$colorscale
+
+
+
+
+
+  xaxis_index = sapply(heatmap_plot$data, function(x) x$xaxis)
+
+  heatmap_trace = heatmap_plot$data[[which(xaxis_index %in% "x")]]
+  heatmap_trace$x = heatmap_x
+  heatmap_trace$y = heatmap_y
+  heatmap_trace$z = heatmap_z
+  heatmap_trace$tickvals = tickvals
+  heatmap_trace$colorscale = colorscale
+
+
+  if(show_sample_dendrogram){
+
+    sample_dendro_trace = heatmap_plot$data[[which(xaxis_index %in% "x2")]]
+    sample_dendro_trace$x =sample_dendro_trace_x
+    sample_dendro_trace$y =sample_dendro_trace_y
+
+  }
+
+  if(show_compound_dendrogram){
+
+    compound_dendro_trace = heatmap_plot$data[[which(xaxis_index %in% "x3")]]
+    compound_dendro_trace$x =compound_dendro_trace_x
+    compound_dendro_trace$y =compound_dendro_trace_y
+
   }
 
 
 
-  layout = score_plot$layout
+
+  sample_annotation_traces = list()
+  for(i in 1:length(heatmap_plot$sample_annotation)){
+    sample_annotation_traces[[i]] = list()
+
+    temp_z = p[[heatmap_plot$sample_annotation[[i]]]]
+
+    temp_color_scale = list()
+    temp_levels = sample_level_options[[heatmap_plot$sample_annotation[[i]]]]
+    for(j in 1:length(temp_levels)){
+
+      if(length(temp_levels)==1){
+        temp_color_scale[[j]] = c(0, sample_annotations[[i]]$colors[j])
+        temp_color_scale[[j+1]] = c(1, sample_annotations[[i]]$colors[j])
+      }else{
+        temp_color_scale[[j]] = c(j/(length(temp_levels)-1)-1, sample_annotations[[i]]$colors[j])
+      }
+
+    }
+
+    sample_annotation_traces[[i]]$x = heatmap_x
+    sample_annotation_traces[[i]]$z = as.numeric(factor(p[[heatmap_plot$sample_annotation[[i]]]]))[sample_order]-1
+    sample_annotation_traces[[i]]$colorscale =  temp_color_scale
+
+    sample_annotation_traces[[i]]$xaxis = paste0("x",i+3)
+    sample_annotation_traces[[i]]$yaxis = paste0("y",i+3)
+
+    sample_annotation_traces[[i]]$zmax = max(unlist(sample_annotation_traces[[i]]$z), na.rm = TRUE)
 
 
-  if(identical(names,"++")){
-    layout$showlegend = FALSE
+
+
+    sample_annotation_traces[[i]]$y = 0
+    sample_annotation_traces[[i]]$type="heatmap"
+    sample_annotation_traces[[i]]$showscale = FALSE
+
+    sample_annotation_traces[[i]]$autocolorscale = FALSE
+
+    sample_annotation_traces[[i]]$showlegend = FALSE
+
+
+    sample_annotation_traces[[i]]$hoverinfo = "text"
+
+    sample_annotation_traces[[i]]$name = ""
+
+    sample_annotation_traces[[i]]$xgap = 1
+
+    sample_annotation_traces[[i]]$ygap = 1
+
+    sample_annotation_traces[[i]]$zmin = 0
+
   }
+  layout$height = as.numeric(layout$height)
+
+  sample_tree_ratio = 1 - (sample_tree_height / layout$height)
+
+  height_of_sample_annotation = sample_annotation_height
+
+
+  mid_yrang_from  = (layout$height * sample_tree_ratio - rev(c(1:length(sample_annotations))) * height_of_sample_annotation)/layout$height
+
+
+
+  yrange_from = c(0, mid_yrang_from, sample_tree_ratio)
+  yrange_to = c(mid_yrang_from, sample_tree_ratio, 1)
+
+
+
+
+
+
+  compound_annotation_traces = list()
+  for(i in 1:length(heatmap_plot$compound_annotation)){
+    compound_annotation_traces[[i]] = list()
+
+    temp_z = f[[heatmap_plot$compound_annotation[[i]]]]
+
+    temp_color_scale = list()
+    temp_levels = compound_level_options[[heatmap_plot$compound_annotation[[i]]]]
+    for(j in 1:length(temp_levels)){
+
+      if(length(temp_levels)==1){
+        temp_color_scale[[j]] = c(0, compound_annotations[[i]]$colors[j])
+        temp_color_scale[[j+1]] = c(1, compound_annotations[[i]]$colors[j])
+      }else{
+        temp_color_scale[[j]] = c(j/(length(temp_levels)-1)-1, compound_annotations[[i]]$colors[j])
+      }
+
+    }
+
+    compound_annotation_traces[[i]]$x = 0
+    compound_annotation_traces[[i]]$y = heatmap_y
+    compound_annotation_traces[[i]]$z = as.numeric(factor(f[[heatmap_plot$compound_annotation[[i]]]]))[compound_order]-1
+    compound_annotation_traces[[i]]$colorscale =  temp_color_scale
+
+    compound_annotation_traces[[i]]$xaxis = paste0("x",length(heatmap_plot$sample_annotation)+3+i)
+    compound_annotation_traces[[i]]$yaxis = paste0("y",length(heatmap_plot$sample_annotation)+3+i)
+
+    compound_annotation_traces[[i]]$zmax = max(unlist(compound_annotation_traces[[i]]$z), na.rm = TRUE)
+
+
+
+    compound_annotation_traces[[i]]$type="heatmap"
+    compound_annotation_traces[[i]]$showscale = FALSE
+
+    compound_annotation_traces[[i]]$autocolorscale = FALSE
+
+    compound_annotation_traces[[i]]$showlegend = FALSE
+
+
+    compound_annotation_traces[[i]]$hoverinfo = "text"
+
+    compound_annotation_traces[[i]]$name = ""
+
+    compound_annotation_traces[[i]]$xgap = 1
+
+    compound_annotation_traces[[i]]$ygap = 1
+
+    compound_annotation_traces[[i]]$zmin = 0
+
+  }
+
+
+
+
+  layout$width = as.numeric(layout$width)
+  compound_tree_ratio = 1 - (compound_tree_height / layout$width)
+
+  height_of_compound_annotation = compound_annotation_height
+
+
+  mid_xrang_from  = (layout$width * compound_tree_ratio - rev(c(1:length(compound_annotations))) * height_of_compound_annotation)/layout$width
+
+
+
+  xrange_from = c(0, mid_xrang_from, compound_tree_ratio)
+  xrange_to = c(mid_xrang_from, compound_tree_ratio, 1)
+
+
+  layout$xaxis3$domain = c(xrange_from[length(xrange_from)], xrange_to[length(xrange_to)])
+  layout$xaxis3$range = as.numeric(  layout$xaxis3$range )
+
+  layout$yaxis3$domain = c(yrange_from[1],  yrange_to[1])
+  layout$yaxis3$range = c(0.25, max(heatmap_y)+1.5)
+
+
+
+  layout$xaxis2$domain = c(xrange_from[1], xrange_to[1])
+  layout$xaxis2$range = c(0.5, max(heatmap_x)+1.5)
+
+
+  layout$yaxis2$domain = c(yrange_from[length(yrange_from)], yrange_to[length(yrange_to)])
+
+
+  layout$xaxis$range = c(-0.5, max(heatmap_x)+0.5)
+  layout$xaxis$domain = c(xrange_from[1], xrange_to[1])
+  layout$xaxis$tickvals = heatmap_x
+  layout$xaxis$ticktext = heatmap_x_text
+  layout$xaxis$ticklen = ifelse(show_sample_label,5,0)
+  layout$xaxis$showticklabels = show_sample_label
+
+
+
+  layout$yaxis$range = unlist( layout$yaxis$range)
+  layout$yaxis$domain = c(yrange_from[1], yrange_to[1])
+  layout$yaxis$tickvals = heatmap_y
+  layout$yaxis$ticktext = heatmap_y_text
+  layout$yaxis$ticklen =  ifelse(show_compound_label,5,0)
+  layout$yaxis$showticklabels = show_compound_label
+
+
+for(i in 1:length(heatmap_plot$sample_annotation)){
+
+  # layout[[paste0("xaxis",i+3)]] = list(
+  #   autorange = FALSE,
+  #   range = c(-0.5, max(heatmap_x)+0.5),
+  #   type = "linear",
+  #   tickmode = "array",
+  #   domain = c(xrange_from[1], xrange_to[1]),
+  #   ticklen = 0,
+  #   showticklabels = FALSE,
+  #   showline = FALSE,
+  #   showgrid = FALSE,
+  #   zeroline = FALSE,
+  #   title = ""
+  # )
+
+  layout[[paste0("xaxis",i+3)]] = heatmap_plot$layout[[paste0("xaxis",i+3)]]
+
+  layout[[paste0("xaxis",i+3)]]$domain = c(xrange_from[1], xrange_to[1])
+  layout[[paste0("xaxis",i+3)]]$range = c(-0.5, max(heatmap_x)+0.5)
+
+
+  layout[[paste0("yaxis",i+3)]] = heatmap_plot$layout[[paste0("yaxis",i+3)]]
+  layout[[paste0("yaxis",i+3)]]$domain = c(yrange_from[i+1], yrange_to[i+1])
+  layout[[paste0("yaxis",i+3)]]$range = as.numeric(layout[[paste0("yaxis",i+3)]]$range)
+  layout[[paste0("yaxis",i+3)]]$ticktext = heatmap_plot$sample_annotation[i]
+}
+
+  for(i in 1:length(heatmap_plot$compound_annotation)){
+    layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]] = heatmap_plot$layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]]
+
+    layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]]$domain = c(xrange_from[i+1], xrange_to[i+1])
+    layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]]$range = as.numeric(layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]]$range)
+    layout[[paste0("xaxis",i+3+length(heatmap_plot$sample_annotation))]]$ticktext = heatmap_plot$compound_annotation[i]
+
+    layout[[paste0("yaxis",i+3+length(heatmap_plot$sample_annotation))]]$domain = c(yrange_from[1], yrange_to[1])
+    layout[[paste0("yaxis",i+3+length(heatmap_plot$sample_annotation))]]$range = as.numeric(layout[[paste0("yaxis",i+3+length(heatmap_plot$sample_annotation))]]$range)
+
+
+
+  }
+
+
+
+data = list(heatmap_trace)
+if(show_sample_dendrogram){
+  data = c(data, list(sample_dendro_trace))
+}
+if(show_compound_dendrogram){
+  data = c(data, list(compound_dendro_trace))
+}
+
+data = c(data, sample_annotation_traces, compound_annotation_traces)
+
+
+
+
+
+
 
 
   pacman::p_load(ggplot2, plotly)
@@ -287,7 +536,7 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
   pp <- plotly_build(g)
 
 
-  layout$traces <- NULL
+  # layout$traces <- NULL
   layout$xaxis$autorange <- NULL
   layout$yaxis$autorange <- NULL
 
@@ -296,12 +545,50 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
   # pp
 
   pp$x$data = data
+  pp
 
 
-  score_plot_result = pp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  heatmap_plot_result = pp
   # https://plot.ly/r/static-image-export/
-  # orca(score_plot_result, "score_plot.svg") # make sure to match children text.
-  svg(filename="score_plot.svg",
+  # orca(heatmap_plot_result, "heatmap_plot.svg") # make sure to match children text.
+  svg(filename="heatmap_plot.svg",
       width=5,
       height=4,
       pointsize=12)

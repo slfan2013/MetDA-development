@@ -75,6 +75,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             session.getObject(function (obj) {
                 ooo = obj
                 p = ooo.p
+                f = ooo.f
                 $("#project_structure_with_dataset_only").jstree("destroy");
                 $("#project_structure_with_dataset_only").jstree({
                     'core': {

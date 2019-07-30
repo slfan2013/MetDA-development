@@ -11,6 +11,7 @@ $("#upload_a_file").click(function () {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p
+                f = oo.f
                 project_id = obj.project_id[0]
                 $(".inputFileHidden").prop("disabled", false);
                 var text = "<p class='text-warning'>" + obj.message.warning_message.join("</p><p class='text-warning'>") + "</p>"
@@ -48,6 +49,7 @@ when_projects_table_clicked = function () {
         session.getObject(function (obj) {
             ooo = obj
             p = ooo.p
+            f = ooo.f
             $("#selected_project_structure").jstree("destroy");
             $("#selected_project_structure").jstree({
                 'core': {
@@ -170,17 +172,13 @@ $("#confirm_selected_project").click(function () {
             sample_parameters_global_nodes = []
             // now we need to ask the users to specified some parameters. 
             para_index = 0
-
             sample_para = obj.to_be_specified["sample_info"]
             sample_para_keys = Object.keys(sample_para)
-          
-
             interval_sample = setInterval(function () {
-
                 if (para_index === sample_para_keys.length) {
                     clearInterval(interval_sample)
                 } else {                    
-                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Treatment Group corresponding to <b>' +sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
+                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' +sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
 
                     div_id = "sample_parameters_global_id_" + sample_para_keys[para_index]
                     id = "sample_parameters_global_id_" + sample_para_keys[para_index]
@@ -190,7 +188,6 @@ $("#confirm_selected_project").click(function () {
                     $("#sample_parameters_global_span" + sample_parameters_global_index).hover(function () {
                         sample_parameters_global_span_hovered = this
                         $('#preview_result_structure a').filter(function () {
-                            ttt = this
                             return sample_parameters_global_nodes[sample_parameters_global_span_hovered.id.replace("sample_parameters_global_span", "")].includes(this.id.replace("_anchor", ""))
                         }).css('background-color', "yellow");
                     }, function () {
@@ -200,6 +197,39 @@ $("#confirm_selected_project").click(function () {
                     para_index++
                 }
             },20)
+
+
+            compound_parameters_global_index = 1
+            compound_parameters_global_nodes = []
+            // now we need to ask the users to specified some parameters. 
+            compound_para_index = 0
+            compound_para = obj.to_be_specified["compound_info"]
+            compound_para_keys = Object.keys(compound_para)
+            interval_compound = setInterval(function () {
+                if (compound_para_index === compound_para_keys.length) {
+                    clearInterval(interval_compound)
+                } else {                    
+                    $('#parameters_to_be_specified').append(compound_parameters_global_index + '. Select the Compound Info corresponding to <b>' +compound_para_keys[compound_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="compound_parameters_global_span' + compound_parameters_global_index + '">these nodes</span>.' + '<div id="compound_parameters_global_id_' + compound_para_keys[compound_para_index] + '">' + '</div>');
+
+                    div_id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
+                    id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
+                    $("#" + div_id).load("compound_information_non_changing_levels_select.html", init_selectpicker)
+                    compound_parameters_global_nodes[compound_parameters_global_index] = compound_para[compound_para_keys[compound_para_index]]
+
+                    $("#compound_parameters_global_span" + compound_parameters_global_index).hover(function () {
+                        compound_parameters_global_span_hovered = this
+                        $('#preview_result_structure a').filter(function () {
+                            return compound_parameters_global_nodes[compound_parameters_global_span_hovered.id.replace("compound_parameters_global_span", "")].includes(this.id.replace("_anchor", ""))
+                        }).css('background-color', "yellow");
+                    }, function () {
+                        $('#preview_result_structure a').removeAttr('style')
+                    })
+                    compound_parameters_global_index++;
+                    compound_para_index++
+                }
+            },1000)
+
+
 
         })
     }).fail(function (e) {

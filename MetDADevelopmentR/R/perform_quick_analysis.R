@@ -58,6 +58,15 @@ perform_quick_analysis <- function(
   names(sample_parameters_to) <- sample_parameters_from
 
 
+  compound_parameters_from <- gsub("compound_parameters_global_id_", "", names(parameter))
+  compound_parameters_to <- unlist(parameter)
+  names(compound_parameters_to) <- compound_parameters_from
+
+
+
+
+
+
 
   structure_to_be_added_id <- sapply(structure_to_be_added, function(x) x$id)
   old_id = sapply(structure_to_be_added_folders_only, function(x) x$id)
@@ -116,7 +125,30 @@ perform_quick_analysis <- function(
           current_parameter$score_plot[[j]] <- plyr::revalue(current_parameter$score_plot[[j]], sample_parameters_to)
         }
       }
-    } else {
+    } else if(current_parameter$fun_name %in% c("heatmap")){
+      for (j in 1:length(current_parameter$heatmap_plot)) {
+        if(length(current_parameter$heatmap_plot[[j]])>0){
+          if (current_parameter$heatmap_plot[[j]] %in% names(sample_parameters_to)) {
+            current_parameter$heatmap_plot[[j]] <- plyr::revalue(unlist(current_parameter$heatmap_plot[[j]]), sample_parameters_to)
+          }
+         }
+      }
+
+
+
+
+      for (j in 1:length(current_parameter$heatmap_plot)) {
+        if(length(current_parameter$heatmap_plot[[j]])>0){
+          if (current_parameter$heatmap_plot[[j]] %in% names(compound_parameters_to)) {
+            print(j)
+            current_parameter$heatmap_plot[[j]] <- plyr::revalue(unlist(current_parameter$heatmap_plot[[j]]), compound_parameters_to)
+          }
+        }
+      }
+
+
+
+    }else{
       for (j in 1:length(current_parameter)) {
         if (current_parameter[[j]] %in% names(sample_parameters_to)) {
           # print(j)
@@ -131,7 +163,7 @@ perform_quick_analysis <- function(
     current_parameter$project_id <- project_id
 
 
-    call_fun(parameter = current_parameter)
+    call_fun(parameter = current_parameter)# now go to the call_fun and run line by line. The parameter is ready.
 
 
 

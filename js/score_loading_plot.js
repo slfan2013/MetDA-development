@@ -35,14 +35,14 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         showPalette: true,
                         palette: color_pallete
                     });
-                    $("#score_plot_color_option").change(gather_page_information_to_score_plot)
+                    $("#score_plot_color_option").change(score_plot_debounced)
 
                     $("#score_plot_shape_option .selectpicker").val(score_plot_traces.scatter_shapes[1][0])
                     $("#score_plot_shape_option .selectpicker").selectpicker('refresh')
-                    $("#score_plot_shape_option .selectpicker").change(gather_page_information_to_score_plot)
+                    $("#score_plot_shape_option .selectpicker").change(score_plot_debounced)
 
                     $("#score_plot_size_option").val(score_plot_traces.scatter_sizes[1][0])
-                    $("#score_plot_size_option").change(gather_page_information_to_score_plot)
+                    $("#score_plot_size_option").change(score_plot_debounced)
 
                     if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
                         for (var i = 0; i < p_column_unique_length.length; i++) {
@@ -53,7 +53,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 for (var j = 0; j < p_column_unique_length[i]; j++) {
                                     $("#score_plot_color_options" + j).spectrum("set", score_plot_traces.scatter_colors[p_column_unique_length[i]][j][0]);
                                 }
-                                gather_page_information_to_score_plot()
+                                score_plot_debounced()
                                 break;
                             }
                         }
@@ -488,6 +488,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
         }
 
+        score_plot_debounced = _.debounce(gather_page_information_to_score_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
 
 
         p_column_names = Object.keys(obj_score_loading_plot.p[0])
@@ -520,10 +521,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     showPalette: true,
                     palette: color_pallete
                 });
-                $("#score_plot_color_options" + i).change(gather_page_information_to_score_plot)
+                $("#score_plot_color_options" + i).change(score_plot_debounced)
             }
 
-            setTimeout(gather_page_information_to_score_plot, 500)
+            setTimeout(score_plot_debounced, 500)
 
         }
         $("#score_plot_color_levels").change(score_plot_color_levels_change)
@@ -567,14 +568,14 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             for (var i = 0; i < score_plot_shape_levels.length; i++) {
                 $("#score_plot_shape_options" + i + " .selectpicker").val(score_plot_traces.scatter_shapes[score_plot_shape_levels.length][i][0])
                 $("#score_plot_shape_options" + i + " .selectpicker").selectpicker('refresh')
-                $("#score_plot_shape_options" + i + " .selectpicker").change(gather_page_information_to_score_plot)
+                $("#score_plot_shape_options" + i + " .selectpicker").change(score_plot_debounced)
             }
 
 
 
             init_selectpicker()
-            setTimeout(gather_page_information_to_score_plot, 500)
-            $(".score_plot_shapes").change(gather_page_information_to_score_plot)
+            setTimeout(score_plot_debounced, 500)
+            $(".score_plot_shapes").change(score_plot_debounced)
 
 
 
@@ -623,14 +624,14 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i][0])
                 }
 
-                $("#score_plot_size_options" + i).change(gather_page_information_to_score_plot)
+                $("#score_plot_size_options" + i).change(score_plot_debounced)
             }
 
 
 
 
-            setTimeout(gather_page_information_to_score_plot, 500)
-            $(".score_plot_sizes").change(gather_page_information_to_score_plot)
+            setTimeout(score_plot_debounced, 500)
+            $(".score_plot_sizes").change(score_plot_debounced)
         }
         $("#score_plot_size_levels").change(score_plot_size_levels_change)
 

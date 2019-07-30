@@ -15,11 +15,13 @@ save_heatmap_plot_style <- function(method, style, user_id) {
         return(c(x))
       }else if(class(x) == "matrix"){
         return(x[,1])
+      }else{
+        return(x)
       }
     })
   }
 
-  userList$pca_heatmap_plot_layout <- style
+  userList$heatmap_plot_layout <- style
 
 
   RCurl::getURL(userURL, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(userList, auto_unbox = TRUE, force = TRUE))

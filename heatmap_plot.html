@@ -55,21 +55,23 @@
                                     <div class="form-group">
                                         <label for="sample_tree_height">Dendrogram Height</label>
                                         <input type="number" class="form-control" id="sample_tree_height"
-                                            placeholder="Dendrogram Height" min="0" step="5">
+                                            placeholder="Dendrogram Height" min="0" step="5"
+                                            onchange="heatmap_plot_debounced()">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="sample_annotation_height">Annotation Height</label>
                                         <input type="number" class="form-control" id="sample_annotation_height"
-                                            placeholder="Annotation Height" min="0" step="5">
+                                            placeholder="Annotation Height" min="0" step="5"
+                                            onchange="heatmap_plot_debounced()">
                                     </div>
 
 
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input class="form-check-input" type="checkbox" value=""
-                                                id="show_sample_label" checked
-                                                onchange="gather_page_information_to_heatmap_plot()">
+                                                id="show_sample_label"
+                                                onchange="heatmap_plot_debounced()">
                                             Show Sample Label
                                             <span class="form-check-sign">
                                                 <span class="check"></span>
@@ -119,13 +121,15 @@
                                     <div class="form-group">
                                         <label for="compound_tree_height">Dendrogram Height</label>
                                         <input type="number" class="form-control" id="compound_tree_height"
-                                            placeholder="Dendrogram Height" min="0" step="5">
+                                            placeholder="Dendrogram Height" min="0" step="5"
+                                            onchange="heatmap_plot_debounced()">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="compound_annotation_height">Annotation Height</label>
                                         <input type="number" class="form-control" id="compound_annotation_height"
-                                            placeholder="Annotation Height" min="0" step="5">
+                                            placeholder="Annotation Height" min="0" step="5"
+                                            onchange="heatmap_plot_debounced()">
                                     </div>
 
 
@@ -135,8 +139,8 @@
                                     <div class="form-check">
                                             <label class="form-check-label">
                                                 <input class="form-check-input" type="checkbox" value=""
-                                                    id="show_compound_label" checked
-                                                    onchange="gather_page_information_to_heatmap_plot()">
+                                                    id="show_compound_label"
+                                                    onchange="heatmap_plot_debounced()">
                                                 Show Compound Label
                                                 <span class="form-check-sign">
                                                     <span class="check"></span>
@@ -164,7 +168,8 @@
                                     <div class="form-group">
                                         <label for="colorscale">Color Scale</label>
                                         <select class="form-control selectpicker" data-style="btn btn-link"
-                                            id="colorscale">
+                                            id="colorscale"
+                                            onchange="heatmap_plot_debounced()">
                                             <option selected>Portland</option>
                                             <option>Blackbody</option>
                                             <option>Viridis</option>

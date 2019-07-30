@@ -51,7 +51,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 $("#order_sample_by_" + order_sample_by[i]).val(p_column_unique[order_sample_by[i]].join("||"))
                             }
                         }
-                        debounced()
+                        heatmap_plot_debounced()
                     })
                     $('#heatmap_plot_sample_annotation').append($('<option>', {
                         value: p_column_names[i],
@@ -68,7 +68,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 heatmap_plot_sample_annotation_div = heatmap_plot_sample_annotation_div +
                                     '<div class="input-group">' +
                                     '<div class="input-group-prepend"><span class="input-group-text">' + p_column_unique[sample_annotation[i]][j] + '</span></div>' +
-                                    '<input type="text" id="sample_annotation_' + p_column_unique[sample_annotation[i]][j] + '" class="spectrums sample_annotation sample_annotation_' + sample_annotation[i] + '" data-show-alpha="true" onchange="debounced()" />' + '</div>'
+                                    '<input type="text" id="sample_annotation_' + p_column_unique[sample_annotation[i]][j] + '" class="spectrums sample_annotation sample_annotation_' + sample_annotation[i] + '" data-show-alpha="true" onchange="heatmap_plot_debounced()" />' + '</div>'
                             }
                         }
                         $("#heatmap_plot_sample_annotation_div").html(heatmap_plot_sample_annotation_div)
@@ -80,15 +80,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                     showPalette: true,
                                     palette: color_pallete
                                 });
-                                $("[id='sample_annotation_" + p_column_unique[sample_annotation[i]][j] + "']").change(debounced)
+                                $("[id='sample_annotation_" + p_column_unique[sample_annotation[i]][j] + "']").change(heatmap_plot_debounced)
                             }
                         }
-                        debounced()
+                        heatmap_plot_debounced()
                     })
 
                 }
-                $("#sample_tree_height").val(heatmap_plot_traces.sample_tree_height)
-                $("#sample_annotation_height").val(heatmap_plot_traces.sample_annotation_height)
 
                 f_column_names = Object.keys(obj_heatmap_plot.f[0])
                 f_column_unique = {}
@@ -123,7 +121,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 $("#order_compound_by_" + order_compound_by[i]).val(f_column_unique[order_compound_by[i]].join("||"))
                             }
                         }
-                        debounced()
+                        heatmap_plot_debounced()
                     })
                     $('#heatmap_plot_compound_annotation').append($('<option>', {
                         value: f_column_names[i],
@@ -140,7 +138,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 heatmap_plot_compound_annotation_div = heatmap_plot_compound_annotation_div +
                                     '<div class="input-group">' +
                                     '<div class="input-group-prepend"><span class="input-group-text">' + f_column_unique[compound_annotation[i]][j] + '</span></div>' +
-                                    '<input type="text" id="compound_annotation_' + f_column_unique[compound_annotation[i]][j] + '" class="spectrums compound_annotation compound_annotation_' + compound_annotation[i] + '" data-show-alpha="true" onchange="debounced()" />' + '</div>'
+                                    '<input type="text" id="compound_annotation_' + f_column_unique[compound_annotation[i]][j] + '" class="spectrums compound_annotation compound_annotation_' + compound_annotation[i] + '" data-show-alpha="true" onchange="heatmap_plot_debounced()" />' + '</div>'
                             }
                         }
                         $("#heatmap_plot_compound_annotation_div").html(heatmap_plot_compound_annotation_div)
@@ -152,54 +150,32 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                     showPalette: true,
                                     palette: color_pallete
                                 });
-                                $("[id='compound_annotation_" + f_column_unique[compound_annotation[i]][j] + "']").change(debounced)
+                                $("[id='compound_annotation_" + f_column_unique[compound_annotation[i]][j] + "']").change(heatmap_plot_debounced)
                             }
                         }
                     })
                 }
-                $("#compound_tree_height").val(heatmap_plot_traces.compound_tree_height)
-                $("#compound_annotation_height").val(heatmap_plot_traces.compound_annotation_height)
 
 
                 $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
-                    //adjusted_heatmap_plot_layout_adjuster2 = plot_layout_adjuster2.replaceAll("PLOT_NAME", "heatmap_plot")
-
                     adjusted_heatmap_plot_layout_adjuster2 = plot_layout_adjuster2.replace(/PLOT_NAME/g, 'heatmap_plot')
-
-                    console.log(adjusted_heatmap_plot_layout_adjuster2) // THIS console log is neccessary. 
+                    //console.log(adjusted_heatmap_plot_layout_adjuster2)
                     eval(adjusted_heatmap_plot_layout_adjuster2)
-                    /*$("#heatmap_plot_layout_yaxis_title_text").val("PC" + $("#heatmap_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#heatmap_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")
-                    $("#heatmap_plot_layout_yaxis_title_text").val("PC" + $("#heatmap_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#heatmap_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")*/
+                    // initialize the traces on HTML.
+                    $("#show_sample_label").prop("checked", heatmap_plot_obj.traces.show_sample_label[0]).change();
+                    $("#show_compound_label").prop("checked", heatmap_plot_obj.traces.show_compound_label[0]).change();
+                    $("#colorscale").val(heatmap_plot_obj.traces.colorscale)
+                    $("#colorscale").selectpicker('refresh')
+                    $("#sample_tree_height").val(heatmap_plot_obj.traces.sample_tree_height)
+                    $("#sample_annotation_height").val(heatmap_plot_obj.traces.sample_annotation_height)
+                    $("#compound_tree_height").val(heatmap_plot_obj.traces.compound_tree_height)
+                    $("#compound_annotation_height").val(heatmap_plot_obj.traces.compound_annotation_height)
 
-                    /*$("#heatmap_plot_color_option").spectrum({
-                        color: heatmap_plot_traces.scatter_colors[1][0],
-                        showPalette: true,
-                        palette: color_pallete
-                    });
-                    $("#heatmap_plot_color_option").change(debounced)
 
-                    $("#heatmap_plot_shape_option .selectpicker").val(heatmap_plot_traces.scatter_shapes[1][0])
-                    $("#heatmap_plot_shape_option .selectpicker").selectpicker('refresh')
-                    $("#heatmap_plot_shape_option .selectpicker").change(debounced)
+                    
 
-                    $("#heatmap_plot_size_option").val(heatmap_plot_traces.scatter_sizes[1][0])
-                    $("#heatmap_plot_size_option").change(debounced)
 
-                    if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
-                        for (var i = 0; i < p_column_unique_length.length; i++) {
-                            if (p_column_unique_length[i] > 1 && p_column_unique_length[i] < 6) {
-                                $("#heatmap_plot_color_levels").val(p_column_names[i])
-                                $("#heatmap_plot_color_levels").selectpicker('refresh')
-                                $("#heatmap_plot_traces_color_by_info").prop("checked", true).change();
-                                for (var j = 0; j < p_column_unique_length[i]; j++) {
-                                    $("#heatmap_plot_color_options" + j).spectrum("set", heatmap_plot_traces.scatter_colors[p_column_unique_length[i]][j][0]);
-                                }
-                                debounced()
-                                break;
-                            }
-                        }
-                    }*/
-                    debounced()
+                    heatmap_plot_debounced()
                 })
 
             })
@@ -519,7 +495,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 data = data.concat(compound_dendro_trace)
             }
             data = data.concat(sample_annotation_traces).concat(compound_annotation_traces)
-
+lll = layout
 
             Plotly.newPlot(plot_id, data, layout, { editable: false })
 
@@ -562,33 +538,58 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         layout: heatmap_plot_gd.layout,
                     }
 
-                    /*if ($("#heatmap_plot_traces_color_by_info").is(":checked")) {
-                        heatmap_plot_parameters.heatmap_plot_color_levels = $("#heatmap_plot_color_levels").val()
+                    heatmap_plot_parameters.sample_annotation = $("#heatmap_plot_sample_annotation").val()
+                    heatmap_plot_parameters.sample_annotations = sample_annotations
+                    heatmap_plot_parameters.compound_annotation = $("#heatmap_plot_compound_annotation").val()
+                    heatmap_plot_parameters.compound_annotations = compound_annotations
+
+                    heatmap_plot_parameters.order_sample_by = order_sample_by
+                    heatmap_plot_parameters.order_compound_by = order_compound_by
+
+                    if(typeof(order_sample_levels) === "undefined"){
+                        order_sample_levels = ""
                     }
-                    if ($("#heatmap_plot_traces_shape_by_info").is(":checked")) {
-                        heatmap_plot_parameters.heatmap_plot_shape_levels = $("#heatmap_plot_shape_levels").val()
+                    heatmap_plot_parameters.order_sample_levels = order_sample_levels
+                    if(typeof(order_compound_levels) == "undefined"){
+                        order_compound_levels = ""
                     }
-                    if ($("#heatmap_plot_traces_size_by_info").is(":checked")) {
-                        heatmap_plot_parameters.heatmap_plot_size_levels = $("#heatmap_plot_size_levels").val()
-                    }*/
+                    heatmap_plot_parameters.order_compound_levels = order_compound_levels
+
+                    heatmap_plot_parameters.show_sample_label = $("#show_sample_label").prop("checked")
+                    heatmap_plot_parameters.show_compound_label = $("#show_compound_label").prop("checked")
+                    
+                    
+                    heatmap_plot_parameters.colorscale = $("#colorscale").val()
+                    heatmap_plot_parameters.sample_tree_height = $("#sample_tree_height").val()
+                    heatmap_plot_parameters.sample_annotation_height = $("#sample_annotation_height").val()
+                    heatmap_plot_parameters.compound_tree_height = $("#compound_tree_height").val()
+                    heatmap_plot_parameters.compound_annotation_height = $("#compound_annotation_height").val()
+/*
+
+                    if ($("#score_plot_traces_color_by_info").is(":checked")) {
+                        score_plot_parameters.score_plot_color_levels = $("#score_plot_color_levels").val()
+                    }
+                    if ($("#score_plot_traces_shape_by_info").is(":checked")) {
+                        score_plot_parameters.score_plot_shape_levels = $("#score_plot_shape_levels").val()
+                    }
+                    if ($("#score_plot_traces_size_by_info").is(":checked")) {
+                        score_plot_parameters.score_plot_size_levels = $("#score_plot_size_levels").val()
+                    }
+
+
+*/
 
 
 
-
-                    // here click to add annotations.
-                    /*console.log(gd)
-                    gd.on('plotly_clickannotation', (x) => {
-                        console.log(x)
-                        console.log('annotation clicked !!!');
-                    })*/
+             
                     Plotly.toImage(gd, { format: 'svg' })
                         .then(
                             function (url) {
                                 console.log("!!")
-                                scree_plot_url = url
-                                scree_plot_url2 = scree_plot_url.replace(/^data:image\/svg\+xml,/, '');
-                                scree_plot_url2 = decodeURIComponent(scree_plot_url2);
-                                plot_url.heatmap_plot = btoa(unescape(encodeURIComponent(scree_plot_url2)))
+                                heatmap_plot_url = url
+                                heatmap_plot_url2 = heatmap_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                                heatmap_plot_url2 = decodeURIComponent(heatmap_plot_url2);
+                                plot_url.heatmap_plot = btoa(unescape(encodeURIComponent(heatmap_plot_url2)))
                                 files_sources[2] = plot_url.heatmap_plot
                                 /*var canvas = document.createElement("canvas");
                                 var context = canvas.getContext("2d");
@@ -613,18 +614,29 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                 });
         }
-        
+
         gather_page_information_to_heatmap_plot = function () {
 
 
 
             $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
-                adjusted_heatmap_plot_layout_adjuster3 = plot_layout_adjuster3.replace(/PLOT_NAME/g, 'heatmap_plot')
-                console.log(adjusted_heatmap_plot_layout_adjuster3)
+                var adjusted_heatmap_plot_layout_adjuster3 = plot_layout_adjuster3.replace(/PLOT_NAME/g, 'heatmap_plot')
+                //console.log(adjusted_heatmap_plot_layout_adjuster3)
                 eval(adjusted_heatmap_plot_layout_adjuster3)
+                console.log($("#heatmap_plot_plot_bgcolor").spectrum("get").toRgbString())
                 save_heatmap_plot_style = function () {
 
+                    heatmap_plot_layout.traces.show_sample_label = $("#show_sample_label").prop("checked")
+                    heatmap_plot_layout.traces.show_compound_label = $("#show_compound_label").prop("checked")
+                    
+                    heatmap_plot_layout.traces.colorscale = $("#colorscale").val()
+                    heatmap_plot_layout.traces.sample_tree_height = $("#sample_tree_height").val()
+                    heatmap_plot_layout.traces.sample_annotation_height = $("#sample_annotation_height").val()
+                    heatmap_plot_layout.traces.compound_tree_height = $("#compound_tree_height").val()
+                    heatmap_plot_layout.traces.compound_annotation_height = $("#compound_annotation_height").val()
 
+                    //!!! this has not been saved.
+                    //heatmap_plot_traces.sample_annotation[]
 
 
 
@@ -680,7 +692,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 } else if (order_compound_by.includes('dendrogram')) {
                     compound_order = obj_heatmap_plot.hc_col_order
                     show_compound_dendrogram = true
-                } else { // !!!
+                } else { 
                     var num_compound = f.length
                     var keys = Object.keys(order_compound_levels)
                     var values = Object.values(order_compound_levels)
@@ -754,13 +766,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 var compound_annotation_height = $("#compound_annotation_height").val()
 
 
-
-                var colorscale = $("#colorscale").val()
                 var layout = heatmap_plot_layout
+                var colorscale = $("#colorscale").val()
                 var plot_id = "heatmap_plot"
 
-                show_sample_label = $("#show_sample_label").is(':checked')
+
                 show_compound_label = $("#show_compound_label").is(':checked')
+                show_sample_label = $("#show_sample_label").is(':checked')
                 heatmap_plot_fun({
                     heatmap_x: heatmap_x, heatmap_y: heatmap_y, heatmap_z: heatmap_z, sample_label: sample_label, heatmap_x_text: heatmap_x_text, heatmap_y_text: heatmap_y_text, tickvals: tickvals,
                     colorscale: colorscale,
@@ -776,28 +788,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 })
 
             })
-
-
-
-            /*
-                    o = {
-                        x: x, y: y, color_by: heatmap_plot_color_by, color_values: heatmap_plot_color_values, color_levels: heatmap_plot_color_levels,
-                        shape_by: heatmap_plot_shape_by, shape_values: heatmap_plot_shape_values, shape_levels: heatmap_plot_shape_levels,
-                        size_by: heatmap_plot_size_by, size_values: heatmap_plot_size_values, size_levels: heatmap_plot_size_levels,
-                        ellipse_group: heatmap_plot_ellipse_group,
-                        labels: heatmap_plot_labels,
-                        layout: heatmap_plot_layout,
-                        plot_id: heatmap_plot_plot_id
-                    }
-            
-                    for(var i=0; i<Object.keys(o).length; i++){
-                        window[Object.keys(o)[i]] = Object.values(o)[i]
-                    }
-              */
-
-
         }
-        var debounced = _.debounce(gather_page_information_to_heatmap_plot, 250, { 'maxWait': 1000 });
+        heatmap_plot_debounced = _.debounce(gather_page_information_to_heatmap_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
+
+
+
     }, 'js')
 }, 'html');
 
