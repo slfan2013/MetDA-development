@@ -95,6 +95,9 @@ perform_quick_analysis <- function(
   names(old_id_to_new_id_matches) = structure_to_be_added_folders_only_id
 
 
+
+  result = TRUE
+  results = list()
   for (i in 1:length(structure_to_be_added_folders_only)) {
 
 
@@ -163,7 +166,7 @@ perform_quick_analysis <- function(
     current_parameter$project_id <- project_id
 
 
-    call_fun(parameter = current_parameter)# now go to the call_fun and run line by line. The parameter is ready.
+    result = call_fun(parameter = current_parameter)# now go to the call_fun and run line by line. The parameter is ready.
 
 
 
@@ -191,19 +194,35 @@ perform_quick_analysis <- function(
 
     names(sources)[1] = "quick_analysis" #this is for save_results_to_project to determin if the call is from the quick analysis.
 
-    if(any(is.na(sources))){
-      children_texts = sapply(children, function(x) x$text)
-      for(i in which(is.na(sources))){
-        sources[i] = base64enc::base64encode(children_texts[i])
+    if(current_parameter$fun_name %in% c("heatmap")){
+      if(any(is.na(sources))){
+        children_texts = sapply(children, function(x) x$text)
+        for(j in which(is.na(sources))){
+          sources[j] = base64enc::base64encode(1:100)
+        }
       }
 
+      need_plot = TRUE # needs the js to draw the plot and save.
+
+    }else{
+      if(any(is.na(sources))){
+        children_texts = sapply(children, function(x) x$text)
+        for(j in which(is.na(sources))){
+          sources[j] = base64enc::base64encode(children_texts[j])
+        }
+      }
+
+      need_plot = FALSE
 
     }
 
 
+
+
+
     saved_result <- save_results_to_project(
       project_id ,
-      selected_folder = plyr::revalue(structure_to_be_added_folders_only_parents[i],old_id_to_new_id_matches),
+      selected_folder = plyr::revalue(structure_to_be_added_folders_only_parents[[i]],old_id_to_new_id_matches),
       files_names = children_file_names,
       files_sources = sources,
       files_sources_data = "not_useful",
@@ -217,22 +236,23 @@ perform_quick_analysis <- function(
 
     old_id_to_new_id_matches[i] = gsub(substr(old_id_to_new_id_matches[i],nchar(old_id_to_new_id_matches[i])-9,nchar(old_id_to_new_id_matches[i])),output_file_time[i],old_id_to_new_id_matches[i])
 
-
-
+    if(need_plot){
+      results[[as.character(output_file_time[i])]] = result
+    }
 
   }
-
+  return(results)
 
   # print(round)
   # # print(being_activated_data_id2)
   # being_activated_data_id2 <- id2[activate_data_ids2 %in% being_activated_data_id2]
   # round <- round + 1
 
+return(TRUE)
 
 
 
 
 
 
-  return(TRUE)
 }

@@ -230,7 +230,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 .then(gd => {
                     ggg = gd
                     // Note: cache should not be re-used by repeated calls to JSON.stringify.
-                    var cache = [];
+                    /*var cache = [];
                     fullLayout = JSON.stringify(ggg._fullLayout, function (key, value) {
                         if (typeof value === 'object' && value !== null) {
                             if (cache.indexOf(value) !== -1) {
@@ -256,11 +256,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         }
                         return value;
                     });
-                    cache = null; // Enable garbage collection
+                    cache = null; // Enable garbage collection*/
 
                     score_plot_parameters = {
-                        full_data: JSON.parse(fullData),
-                        full_layout: JSON.parse(fullLayout),
+                        //full_data: JSON.parse(fullData),
+                        //full_layout: JSON.parse(fullLayout),
                         data: ggg.data,
                         layout: ggg.layout,
 

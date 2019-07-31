@@ -177,8 +177,8 @@ $("#confirm_selected_project").click(function () {
             interval_sample = setInterval(function () {
                 if (para_index === sample_para_keys.length) {
                     clearInterval(interval_sample)
-                } else {                    
-                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' +sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
+                } else {
+                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' + sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
 
                     div_id = "sample_parameters_global_id_" + sample_para_keys[para_index]
                     id = "sample_parameters_global_id_" + sample_para_keys[para_index]
@@ -196,7 +196,7 @@ $("#confirm_selected_project").click(function () {
                     sample_parameters_global_index++;
                     para_index++
                 }
-            },20)
+            }, 100)
 
 
             compound_parameters_global_index = 1
@@ -208,8 +208,8 @@ $("#confirm_selected_project").click(function () {
             interval_compound = setInterval(function () {
                 if (compound_para_index === compound_para_keys.length) {
                     clearInterval(interval_compound)
-                } else {                    
-                    $('#parameters_to_be_specified').append(compound_parameters_global_index + '. Select the Compound Info corresponding to <b>' +compound_para_keys[compound_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="compound_parameters_global_span' + compound_parameters_global_index + '">these nodes</span>.' + '<div id="compound_parameters_global_id_' + compound_para_keys[compound_para_index] + '">' + '</div>');
+                } else {
+                    $('#parameters_to_be_specified').append(compound_parameters_global_index + '. Select the Compound Info corresponding to <b>' + compound_para_keys[compound_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="compound_parameters_global_span' + compound_parameters_global_index + '">these nodes</span>.' + '<div id="compound_parameters_global_id_' + compound_para_keys[compound_para_index] + '">' + '</div>');
 
                     div_id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
                     id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
@@ -227,7 +227,7 @@ $("#confirm_selected_project").click(function () {
                     compound_parameters_global_index++;
                     compound_para_index++
                 }
-            },1000)
+            }, 1000)
 
 
 
@@ -240,16 +240,16 @@ $("#confirm_selected_project").click(function () {
 
 })
 
-$("#submit").click(function(){
+$("#submit").click(function () {
     parameter = {}
     // here perform the statistical analysis pipeline. Now collect all the parameters.
     $(".parameter").each(function () {
 
         if (this.id !== '') {
             //parameters.push({:$(this).val()})
-            if($(this).prop("checked") === undefined){ // this means that it is a select.
+            if ($(this).prop("checked") === undefined) { // this means that it is a select.
                 parameter[this.id] = $(this).val()
-            }else{ // this means that it is a checkbox
+            } else { // this means that it is a checkbox
                 parameter[this.id] = $(this).prop("checked")
             }
         }
@@ -261,13 +261,73 @@ $("#submit").click(function(){
         selected_data: selected_data,
         project_id2: project_id2,
         selected_data2: selected_data2,
-        parameter:parameter
+        parameter: parameter
     }, function (session) {
         console.log(session)
-        session.getObject(function(obj){
+        session.getObject(function (obj) {
             console.log(obj)
-            if(obj){
+            oooo = obj
+            if (obj) {
+
+                plot_base64 = {}
+
                 console.log("GOOD JOB!")
+
+
+                project_times = Object.keys(obj)
+                plots = Object.values(obj)
+
+
+
+                for (var i = 0; i < plots.length; i++) {
+                    plot_base64[project_times[i]] = {}
+                    current_plot = JSON.parse(plots[i][0])
+
+                    individual_plot_names = Object.keys(current_plot)
+                    individual_plot_paramters = Object.values(current_plot)
+
+                    for (var j = 0; j < individual_plot_names.length; j++) {
+
+                        current_plot_name = individual_plot_names[j].split(".")[0]
+
+
+                        plot_fun = window[current_plot_name + "_fun"]
+
+
+                        current_parameter = individual_plot_paramters[j]
+
+                    
+                        plot_base64[project_times[i]][individual_plot_names[j]] = {}
+
+
+                        current_parameter.plot_id = "temp_id_" + project_times[i] + current_plot_name
+                        current_parameter.quick_analysis = true
+                        current_parameter.quick_analysis_project_time = project_times[i]
+                        current_parameter.quick_analysis_plot_name = individual_plot_names[j]
+
+
+                        
+                        $('#for_temp_plots').append('<div id="'+current_parameter.plot_id+'"></div>')    
+                        plot_fun(current_parameter)
+
+                        //current_parameter_keys = Object.keys(current_parameter)
+                        //current_parameter_values = Object.values(current_parameter)
+
+                        //for(var k=0; k<current_parameter_keys.length; k++){
+                            //window[current_parameter_keys[k]] = current_parameter_values[k]
+                        //}
+
+
+
+                    }
+
+
+
+                }
+
+
+
+
             }
         })
     }).fail(function (e) {

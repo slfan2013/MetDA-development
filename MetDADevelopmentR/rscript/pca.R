@@ -51,11 +51,8 @@ fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = 
 
 
 if(exists("score_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
-  full_data = score_plot$full_data
-  full_layout = score_plot$full_layout
 
 
-  data = score_plot$data
 
   # for(i in 1:length(data)){
   #   data[[i]]$x = unlist(data[[i]]$x)
@@ -279,11 +276,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   #     pointsize=12)
   # plot(1:10)
   # dev.off()
-
-
-
-  full_data = scree_plot$full_data
-  full_layout = scree_plot$full_layout
 
 
   data = scree_plot$data
