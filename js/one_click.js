@@ -152,6 +152,7 @@ $("#confirm_selected_project").click(function () {
         project_id2: project_id2,
         selected_data2: selected_data2
     }, function (session) {
+        console.log(session)
         session.getObject(function (obj) {
             console.log("Good")
             console.log(obj)
@@ -174,11 +175,14 @@ $("#confirm_selected_project").click(function () {
             para_index = 0
             sample_para = obj.to_be_specified["sample_info"]
             sample_para_keys = Object.keys(sample_para)
+            if (sample_para_keys[0] === '0') {
+                sample_para_keys = []
+            }
             interval_sample = setInterval(function () {
                 if (para_index === sample_para_keys.length) {
                     clearInterval(interval_sample)
-                } else {                    
-                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' +sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
+                } else {
+                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' + sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
 
                     div_id = "sample_parameters_global_id_" + sample_para_keys[para_index]
                     id = "sample_parameters_global_id_" + sample_para_keys[para_index]
@@ -196,7 +200,7 @@ $("#confirm_selected_project").click(function () {
                     sample_parameters_global_index++;
                     para_index++
                 }
-            },20)
+            }, 100)
 
 
             compound_parameters_global_index = 1
@@ -205,11 +209,14 @@ $("#confirm_selected_project").click(function () {
             compound_para_index = 0
             compound_para = obj.to_be_specified["compound_info"]
             compound_para_keys = Object.keys(compound_para)
+            if (compound_para_keys[0] === '0') {
+                compound_para_keys = []
+            }
             interval_compound = setInterval(function () {
                 if (compound_para_index === compound_para_keys.length) {
                     clearInterval(interval_compound)
-                } else {                    
-                    $('#parameters_to_be_specified').append(compound_parameters_global_index + '. Select the Compound Info corresponding to <b>' +compound_para_keys[compound_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="compound_parameters_global_span' + compound_parameters_global_index + '">these nodes</span>.' + '<div id="compound_parameters_global_id_' + compound_para_keys[compound_para_index] + '">' + '</div>');
+                } else {
+                    $('#parameters_to_be_specified').append(compound_parameters_global_index + '. Select the Compound Info corresponding to <b>' + compound_para_keys[compound_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="compound_parameters_global_span' + compound_parameters_global_index + '">these nodes</span>.' + '<div id="compound_parameters_global_id_' + compound_para_keys[compound_para_index] + '">' + '</div>');
 
                     div_id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
                     id = "compound_parameters_global_id_" + compound_para_keys[compound_para_index]
@@ -227,7 +234,7 @@ $("#confirm_selected_project").click(function () {
                     compound_parameters_global_index++;
                     compound_para_index++
                 }
-            },1000)
+            }, 1000)
 
 
 
@@ -240,16 +247,16 @@ $("#confirm_selected_project").click(function () {
 
 })
 
-$("#submit").click(function(){
+$("#submit").click(function () {
     parameter = {}
     // here perform the statistical analysis pipeline. Now collect all the parameters.
     $(".parameter").each(function () {
 
         if (this.id !== '') {
             //parameters.push({:$(this).val()})
-            if($(this).prop("checked") === undefined){ // this means that it is a select.
+            if ($(this).prop("checked") === undefined) { // this means that it is a select.
                 parameter[this.id] = $(this).val()
-            }else{ // this means that it is a checkbox
+            } else { // this means that it is a checkbox
                 parameter[this.id] = $(this).prop("checked")
             }
         }
@@ -261,13 +268,186 @@ $("#submit").click(function(){
         selected_data: selected_data,
         project_id2: project_id2,
         selected_data2: selected_data2,
-        parameter:parameter
+        parameter: parameter
     }, function (session) {
         console.log(session)
-        session.getObject(function(obj){
+        session.getObject(function (obj) {
             console.log(obj)
-            if(obj){
+            oooo = obj
+
+            if (obj.length>0 || obj.length === undefined) {
+                //obj.length>0 || obj.length === undefined
+                plot_base64 = {}
+                number_of_plots = 0
                 console.log("GOOD JOB!")
+
+
+                project_times = Object.keys(obj)
+                plots = Object.values(obj)
+
+
+
+                for (var i = 0; i < plots.length; i++) {
+                    plot_base64[project_times[i]] = {}
+                    current_plot = JSON.parse(plots[i][0])
+
+                    individual_plot_names = Object.keys(current_plot)
+                    individual_plot_paramters = Object.values(current_plot)
+
+                    for (var j = 0; j < individual_plot_names.length; j++) {
+
+                        current_plot_name = individual_plot_names[j].split(".")[0]
+
+
+                        plot_fun = window[current_plot_name + "_fun"]
+
+
+                        current_parameter = individual_plot_paramters[j]
+
+
+                        plot_base64[project_times[i]][individual_plot_names[j]] = {}
+
+
+                        current_parameter.plot_id = "temp_id_" + project_times[i] + current_plot_name
+                        current_parameter.quick_analysis = true
+                        current_parameter.quick_analysis_project_time = project_times[i]
+                        current_parameter.quick_analysis_plot_name = individual_plot_names[j]
+
+
+                        $('#for_temp_plots').append('<div id="' + current_parameter.plot_id + '"></div>')
+                        if (current_plot_name === 'boxplot_plot') {
+                            var temp_current_parameter =current_parameter
+
+                            plot_fun(temp_current_parameter)
+
+                            var quick_analysis_project_time = temp_current_parameter.quick_analysis_project_time
+                            var quick_analysis_plot_name = temp_current_parameter.quick_analysis_plot_name
+
+                            var temp_plot_url = []
+                            var main_group_values = temp_current_parameter.main_group_values
+                            var main_group_levels = temp_current_parameter.main_group_levels
+                            var e = temp_current_parameter.e
+                            var f_label = unpack(f, 'label')
+
+
+                            var plotting_compound_index = 0;
+                            var plot_loop = setInterval(function () {
+                                var zip = new JSZip();
+                                if (plotting_compound_index === e.length) {
+                                    console.log("Quick Analysis Boxplots Generated")
+                                    clearInterval(plot_loop);
+
+                                    for (var k = 0; k < temp_plot_url.length; k++) {
+                                        zip.file((k + 1) + "th " + f_label[k].replace(/[^0-9a-zA-Z _().]/g, "_") + ".svg", btoa(unescape(temp_plot_url[k].replace("data:image/svg+xml,", ""))), { base64: true });
+                                    }
+
+
+                                    zip.generateAsync({ type: "base64" }).then(function (base64) {
+                                        bbb = base64
+                                        console.log("quick analysis boxplot done")
+                                        plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = base64
+                                    })
+
+
+
+                                } else {
+                                    var y = e[plotting_compound_index]
+                                    var ys = array_split_by_one_factor(y, main_group_values, main_group_levels)
+                                    var update_data = {
+                                        y: ys
+                                    }
+                                    temp_current_parameter.layout.title.text = f_label[plotting_compound_index]
+                                    Plotly.relayout(temp_current_parameter.plot_id, temp_current_parameter.layout)
+
+                                    Plotly.restyle(temp_current_parameter.plot_id, update_data).then(function (gd) {
+                                        Plotly.toImage(gd, { format: 'svg' })
+                                            .then(
+                                                function (url) {
+                                                    var uuuu = url
+                                                    var uuu = uuuu.replace(/^data:image\/svg\+xml,/, '');
+                                                    uuu = decodeURIComponent(uuu);
+                                                    if (false) {
+                                                        //plot_url.boxplot_plot = btoa(unescape(encodeURIComponent(uuu)))
+                                                        //files_sources[2] = plot_url.boxplot_plot
+                                                        //console.log(plotting_compound_index)
+                                                        //plot_url.push(url)
+                                                    } else {
+                                                        //plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(uuu)))
+                                                        temp_plot_url.push(url)
+                                                    }
+                                                }
+                                            )
+                                    })
+
+
+
+
+                                }
+                                plotting_compound_index++;
+                            }, 1)
+
+
+                          
+
+
+                        } else {
+                            plot_fun(current_parameter)
+
+                        }
+
+
+
+
+
+                        /*current_parameter_keys = Object.keys(current_parameter)
+                        current_parameter_values = Object.values(current_parameter)
+
+                        for(var k=0; k<current_parameter_keys.length; k++){
+                            window[current_parameter_keys[k]] = current_parameter_values[k]
+                        }*/
+                        number_of_plots++;
+                    }
+                }
+
+                console.log(number_of_plots)
+
+
+
+
+                function getValuesFromNestedObject(obj) {
+                    for (var key in obj) {
+                        if (typeof obj[key] === "object") {
+                            getValuesFromNestedObject(obj[key]);
+                        } else {
+                            getValuesFromNestedObject_result.push(obj[key])
+                        }
+                    }
+                }
+                var myVar = setInterval(function () {
+
+                    getValuesFromNestedObject_result = []
+                    getValuesFromNestedObject(plot_base64)
+                    if (getValuesFromNestedObject_result.length < number_of_plots) {
+
+                        //console.log("waiting")
+
+
+                    } else {
+                        clearInterval(myVar)
+                        ocpu.call("save_plots", { plot_base64: plot_base64, project_id: project_id }, function (session) {
+                            console.log(session)
+                            session.getObject(function (obj) {
+                                console.log(obj)
+                            })
+                        })
+                    }
+                }, 200)
+
+
+
+
+
+
             }
         })
     }).fail(function (e) {

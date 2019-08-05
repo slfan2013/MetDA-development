@@ -4,6 +4,9 @@ preview_result_structure <- function(
                                      project_id2 = "project done41564443096",
                                      selected_data2 = "e.csv") {
 
+  save(project_id, selected_data, project_id2, selected_data2, file = "preview_result_structure.RData")
+
+  load("preview_result_structure.RData")
   structures = get_to_be_added_structure(project_id,
                             selected_data,
                             project_id2,
@@ -66,12 +69,8 @@ preview_result_structure <- function(
   }
 
 
-
-
-
-
-
-
-
   return(list(result_project_structure = result_project_structure, to_be_specified = to_be_specified))
+
+
+  return(TRUE)
 }

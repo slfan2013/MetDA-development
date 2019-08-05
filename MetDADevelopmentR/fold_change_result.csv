@@ -1,151 +1,149 @@
-index,Sepal.Length,Sepal.Width,Petal.Length,Petal.Width,Species
-1,5.1,3.5,1.4,0.2,setosa
-2,4.9,3,1.4,0.2,setosa
-3,4.7,3.2,1.3,0.2,setosa
-4,4.6,3.1,1.5,0.2,setosa
-5,5,3.6,1.4,0.2,setosa
-6,5.4,3.9,1.7,0.4,setosa
-7,4.6,3.4,1.4,0.3,setosa
-8,5,3.4,1.5,0.2,setosa
-9,4.4,2.9,1.4,0.2,setosa
-10,4.9,3.1,1.5,0.1,setosa
-11,5.4,3.7,1.5,0.2,setosa
-12,4.8,3.4,1.6,0.2,setosa
-13,4.8,3,1.4,0.1,setosa
-14,4.3,3,1.1,0.1,setosa
-15,5.8,4,1.2,0.2,setosa
-16,5.7,4.4,1.5,0.4,setosa
-17,5.4,3.9,1.3,0.4,setosa
-18,5.1,3.5,1.4,0.3,setosa
-19,5.7,3.8,1.7,0.3,setosa
-20,5.1,3.8,1.5,0.3,setosa
-21,5.4,3.4,1.7,0.2,setosa
-22,5.1,3.7,1.5,0.4,setosa
-23,4.6,3.6,1,0.2,setosa
-24,5.1,3.3,1.7,0.5,setosa
-25,4.8,3.4,1.9,0.2,setosa
-26,5,3,1.6,0.2,setosa
-27,5,3.4,1.6,0.4,setosa
-28,5.2,3.5,1.5,0.2,setosa
-29,5.2,3.4,1.4,0.2,setosa
-30,4.7,3.2,1.6,0.2,setosa
-31,4.8,3.1,1.6,0.2,setosa
-32,5.4,3.4,1.5,0.4,setosa
-33,5.2,4.1,1.5,0.1,setosa
-34,5.5,4.2,1.4,0.2,setosa
-35,4.9,3.1,1.5,0.2,setosa
-36,5,3.2,1.2,0.2,setosa
-37,5.5,3.5,1.3,0.2,setosa
-38,4.9,3.6,1.4,0.1,setosa
-39,4.4,3,1.3,0.2,setosa
-40,5.1,3.4,1.5,0.2,setosa
-41,5,3.5,1.3,0.3,setosa
-42,4.5,2.3,1.3,0.3,setosa
-43,4.4,3.2,1.3,0.2,setosa
-44,5,3.5,1.6,0.6,setosa
-45,5.1,3.8,1.9,0.4,setosa
-46,4.8,3,1.4,0.3,setosa
-47,5.1,3.8,1.6,0.2,setosa
-48,4.6,3.2,1.4,0.2,setosa
-49,5.3,3.7,1.5,0.2,setosa
-50,5,3.3,1.4,0.2,setosa
-51,7,3.2,4.7,1.4,versicolor
-52,6.4,3.2,4.5,1.5,versicolor
-53,6.9,3.1,4.9,1.5,versicolor
-54,5.5,2.3,4,1.3,versicolor
-55,6.5,2.8,4.6,1.5,versicolor
-56,5.7,2.8,4.5,1.3,versicolor
-57,6.3,3.3,4.7,1.6,versicolor
-58,4.9,2.4,3.3,1,versicolor
-59,6.6,2.9,4.6,1.3,versicolor
-60,5.2,2.7,3.9,1.4,versicolor
-61,5,2,3.5,1,versicolor
-62,5.9,3,4.2,1.5,versicolor
-63,6,2.2,4,1,versicolor
-64,6.1,2.9,4.7,1.4,versicolor
-65,5.6,2.9,3.6,1.3,versicolor
-66,6.7,3.1,4.4,1.4,versicolor
-67,5.6,3,4.5,1.5,versicolor
-68,5.8,2.7,4.1,1,versicolor
-69,6.2,2.2,4.5,1.5,versicolor
-70,5.6,2.5,3.9,1.1,versicolor
-71,5.9,3.2,4.8,1.8,versicolor
-72,6.1,2.8,4,1.3,versicolor
-73,6.3,2.5,4.9,1.5,versicolor
-74,6.1,2.8,4.7,1.2,versicolor
-75,6.4,2.9,4.3,1.3,versicolor
-76,6.6,3,4.4,1.4,versicolor
-77,6.8,2.8,4.8,1.4,versicolor
-78,6.7,3,5,1.7,versicolor
-79,6,2.9,4.5,1.5,versicolor
-80,5.7,2.6,3.5,1,versicolor
-81,5.5,2.4,3.8,1.1,versicolor
-82,5.5,2.4,3.7,1,versicolor
-83,5.8,2.7,3.9,1.2,versicolor
-84,6,2.7,5.1,1.6,versicolor
-85,5.4,3,4.5,1.5,versicolor
-86,6,3.4,4.5,1.6,versicolor
-87,6.7,3.1,4.7,1.5,versicolor
-88,6.3,2.3,4.4,1.3,versicolor
-89,5.6,3,4.1,1.3,versicolor
-90,5.5,2.5,4,1.3,versicolor
-91,5.5,2.6,4.4,1.2,versicolor
-92,6.1,3,4.6,1.4,versicolor
-93,5.8,2.6,4,1.2,versicolor
-94,5,2.3,3.3,1,versicolor
-95,5.6,2.7,4.2,1.3,versicolor
-96,5.7,3,4.2,1.2,versicolor
-97,5.7,2.9,4.2,1.3,versicolor
-98,6.2,2.9,4.3,1.3,versicolor
-99,5.1,2.5,3,1.1,versicolor
-100,5.7,2.8,4.1,1.3,versicolor
-101,6.3,3.3,6,2.5,virginica
-102,5.8,2.7,5.1,1.9,virginica
-103,7.1,3,5.9,2.1,virginica
-104,6.3,2.9,5.6,1.8,virginica
-105,6.5,3,5.8,2.2,virginica
-106,7.6,3,6.6,2.1,virginica
-107,4.9,2.5,4.5,1.7,virginica
-108,7.3,2.9,6.3,1.8,virginica
-109,6.7,2.5,5.8,1.8,virginica
-110,7.2,3.6,6.1,2.5,virginica
-111,6.5,3.2,5.1,2,virginica
-112,6.4,2.7,5.3,1.9,virginica
-113,6.8,3,5.5,2.1,virginica
-114,5.7,2.5,5,2,virginica
-115,5.8,2.8,5.1,2.4,virginica
-116,6.4,3.2,5.3,2.3,virginica
-117,6.5,3,5.5,1.8,virginica
-118,7.7,3.8,6.7,2.2,virginica
-119,7.7,2.6,6.9,2.3,virginica
-120,6,2.2,5,1.5,virginica
-121,6.9,3.2,5.7,2.3,virginica
-122,5.6,2.8,4.9,2,virginica
-123,7.7,2.8,6.7,2,virginica
-124,6.3,2.7,4.9,1.8,virginica
-125,6.7,3.3,5.7,2.1,virginica
-126,7.2,3.2,6,1.8,virginica
-127,6.2,2.8,4.8,1.8,virginica
-128,6.1,3,4.9,1.8,virginica
-129,6.4,2.8,5.6,2.1,virginica
-130,7.2,3,5.8,1.6,virginica
-131,7.4,2.8,6.1,1.9,virginica
-132,7.9,3.8,6.4,2,virginica
-133,6.4,2.8,5.6,2.2,virginica
-134,6.3,2.8,5.1,1.5,virginica
-135,6.1,2.6,5.6,1.4,virginica
-136,7.7,3,6.1,2.3,virginica
-137,6.3,3.4,5.6,2.4,virginica
-138,6.4,3.1,5.5,1.8,virginica
-139,6,3,4.8,1.8,virginica
-140,6.9,3.1,5.4,2.1,virginica
-141,6.7,3.1,5.6,2.4,virginica
-142,6.9,3.1,5.1,2.3,virginica
-143,5.8,2.7,5.1,1.9,virginica
-144,6.8,3.2,5.9,2.3,virginica
-145,6.7,3.3,5.7,2.5,virginica
-146,6.7,3,5.2,2.3,virginica
-147,6.3,2.5,5,1.9,virginica
-148,6.5,3,5.2,2,virginica
-149,6.2,3.4,5.4,2.3,virginica
-150,5.9,3,5.1,1.8,virginica
+index,label,fold_changes
+1,xylose,0.727161539185248
+2,xylitol,1.00829514472997
+3,xanthine,1.12397588498995
+4,valine,0.741718493009869
+5,uridine,1.01530584602048
+6,uric acid,1.31207674943567
+7,urea,0.960606317036536
+8,uracil,0.908998988877654
+9,UDP GlcNAc,1.22952029520295
+10,tyrosine,0.854669147191246
+11,tryptophan,1.03802329241423
+12,tocopherol alpha-,1.07389190411578
+13,thymine,0.906315058986815
+14,threonine,1.03913594310596
+15,threonic acid,1.01164057971014
+16,terephthalic acid,1.08874388254486
+17,taurine,1.01174845339611
+18,tagatose,0.709883337001981
+19,sucrose,1.67983870967742
+20,succinic acid,1.4442903069538
+21,succinate semialdehyde,0.858555460017197
+22,squalene,1.19781105217216
+23,sorbitol,0.897639532318553
+24,shikimic acid,1.05266272189349
+25,serine,0.968758998830519
+26,ribose,0.90999046256557
+27,ribonic acid,1.05419766206164
+28,ribitol,0.913022813688213
+29,pyruvic acid,0.717282493692521
+30,pyrophosphate,0.968332036130512
+31,pseudo uridine,0.857997698504028
+32,proline,0.758848940914158
+33,p-hydroxylphenyllactic acid,0.822916666666667
+34,phosphoethanolamine,1.17735849056604
+35,phosphate,1.23801290420034
+36,phenylalanine,0.897043403170426
+37,pentadecanoic acid,1.072731989968
+38,pantothenic acid,0.930537772087068
+39,palmitoleic acid,1.09095283926853
+40,oxoproline,1.00326007765121
+41,oxalic acid,0.675265553869499
+42,ornithine,1.07334280783677
+43,oleic acid,6.69121484488258
+44,noradrenaline,0.601596852580421
+45,nonadecanoic acid,1.38013352215254
+46,nicotinamide,1.1216234292077
+47,N-acetylputrescine,0.91196355085244
+48,n-acetyl-d-hexosamine,1.36342042755344
+49,N-acetylaspartic acid,1.02951344970065
+50,myristic acid,0.923655913978495
+51,myo-inositol,1.19767484064785
+52,methionine sulfoxide,0.741062039957939
+53,methionine,0.740761126828785
+54,methanolphosphate,1.02835310786403
+55,melibiose,1.25789473684211
+56,mannose,0.799653234485233
+57,maltotriose,1.29397781299525
+58,maltose,1.18510443772417
+59,malic acid,1.11246745114203
+60,lyxose,0.948126801152738
+61,lyxitol,1.22381982440514
+62,lysine,1.28511204073029
+63,linoleic acid,0.91213306075462
+64,levoglucosan,0.657333333333333
+65,leucine,0.816464326012287
+66,lauric acid,1.15505385687106
+67,lactic acid,0.873250852439056
+68,isothreonic acid,1.10094637223975
+69,isoleucine,0.857256050469896
+70,isohexonic acid,1.06356736242884
+71,inositol-4-monophosphate,1.17243487831723
+72,inosine-5'-monophosphate,3.72269681742044
+73,inosine,0.913379716663446
+74,indole-3-lactate,0.853075749872903
+75,hypoxanthine,1.01410913106156
+76,hydroxycarbamate NIST,0.682469757359625
+77,homoserine,0.947639083683965
+78,hexose-6-phosphate,0.416919133069215
+79,hexitol,0.963426189122608
+80,hexadecylglycerol NIST,1.11873944850872
+81,heptadecanoic acid,0.926592797783934
+82,guanosine,1.05110896817743
+83,glycolic acid,1.06935215946844
+84,glycine,0.953332404356601
+85,glycerol-alpha-phosphate,1.91706132653797
+86,glycerol-3-galactoside,1.36366794025703
+87,glycerol,1.22795344666251
+88,glyceric acid,0.935943060498221
+89,glutathione,1.23192273478206
+90,glutaric acid,1.05017921146953
+91,glutamine,1.14246031746032
+92,glutamate,0.968168883594732
+93,glucose-6-phosphate,0.330390309555855
+94,glucose-1-phosphate,0.713848938124683
+95,glucose,0.828129407425087
+96,galactonic acid,0.935362802335279
+97,galactitol,1.01797040169133
+98,fumaric acid,1.03913349502594
+99,fucose,1.19474637681159
+100,fructose-6-phosphate,0.255538847117795
+101,fructose,0.878609028553198
+102,ethanol phosphate NIST,0.788309982486865
+103,erythronic acid lactone,0.893578947368421
+104,erythritol,1.15199286139203
+105,docosahexaenoic acid,1.15685360330358
+106,dihydrocholesterol,1.06558251133031
+107,dehydroascorbic acid,0.80526555827356
+108,cysteine-glycine,1.38288288288288
+109,cysteine,0.735138705416116
+110,creatinine,1.07269990447991
+111,conduritol-beta-epoxide,0.990281827016521
+112,citrulline,1.20883567299752
+113,citric acid,1.19379187515902
+114,cis-gondoic acid,0.869322412509307
+115,cholesterol,1.17184843102427
+116,capric acid,1.14537977745525
+117,beta-sitosterol,0.997485668309363
+118,beta-gentiobiose,1.32218610544874
+119,beta-alanine,1.48067010309278
+120,benzoic acid,1.00674469351319
+121,behenic acid,0.666320571057755
+122,aspartic acid,0.68467382876129
+123,ascorbic acid,1.05996154770488
+124,arachidonic acid,1.12866976691591
+125,arachidic acid,1.15752501924557
+126,aminomalonate,0.967716535433071
+127,alpha-ketoglutarate,2.37270341207349
+128,alanine,0.836784614327694
+129,adipic acid,1.21083978558666
+130,adenosine-5-monophosphate,1.21941896024465
+131,adenosine,0.703863196654809
+132,adenine,1.14889751941869
+133,5-methoxytryptamine,1.1630859375
+134,5'-deoxy-5'-methylthioadenosine,0.900846729660081
+135,4-hydroxybutyric acid,1.53471989265347
+136,3-hydroxybutyric acid,0.97836261276538
+137,"3,6-anhydro-D-galactose",1.09133858267717
+138,2-picolinic acid,0.93891557995882
+139,2-monopalmitin,1.3050273018264
+140,2-monoolein,1.28406685236769
+141,2-ketoisocaproic acid,0.706091913074457
+142,2-hydroxyglutaric acid,0.939750729249536
+143,"2,5-dihydroxypyrazine NIST",1.18036906727939
+144,1-monostearin,1.53871733966746
+145,1-monopalmitin,0.819120287253142
+146,1-kestose,0.870928829915561
+147,"1,5-anhydroglucitol",0.976631708821715
+148,"1,2,4-benzenetriol",1.26997578692494

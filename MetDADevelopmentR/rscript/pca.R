@@ -51,11 +51,8 @@ fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = 
 
 
 if(exists("score_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
-  full_data = score_plot$full_data
-  full_layout = score_plot$full_layout
 
 
-  data = score_plot$data
 
   # for(i in 1:length(data)){
   #   data[[i]]$x = unlist(data[[i]]$x)
@@ -137,31 +134,31 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   #   })
   # }
 
-  data = list()
-  for(i in 1:length(trace_keys)){
-    trace_keys_split = stringr::str_split(trace_keys[i],"\\+")[[1]]
-    # temp_color_replace = color_values
-    # names(temp_color_replace) = color_levels
-    # temp_shape_replace = shape_values
-    # names(temp_shape_replace) = shape_levels
-    # temp_size_replace = size_values
-    # names(temp_size_replace) = size_levels
-
-    data[[length(data)+1]] = list(
-      mode='markers',
-      x=xs[[trace_keys[i]]],
-      y=ys[[trace_keys[i]]],
-      name=gsub("\\+","",names)[i],
-      texts=as.character(texts[[trace_keys[i]]]),
-      marker = list(
-        color=revalue(trace_keys_split[1],color_levels,color_values),
-        symbol=revalue(trace_keys_split[2],shape_levels,shape_values),
-        size=revalue(trace_keys_split[3],size_levels,size_values)
-      ),
-      legendgroup=trace_keys[i],
-      showlegend=TRUE
-    )
-  }
+  # data = list()
+  # for(i in 1:length(trace_keys)){
+  #   trace_keys_split = stringr::str_split(trace_keys[i],"\\+")[[1]]
+  #   # temp_color_replace = color_values
+  #   # names(temp_color_replace) = color_levels
+  #   # temp_shape_replace = shape_values
+  #   # names(temp_shape_replace) = shape_levels
+  #   # temp_size_replace = size_values
+  #   # names(temp_size_replace) = size_levels
+  #
+  #   data[[length(data)+1]] = list(
+  #     mode='markers',
+  #     x=xs[[trace_keys[i]]],
+  #     y=ys[[trace_keys[i]]],
+  #     name=gsub("\\+","",names)[i],
+  #     texts=as.character(texts[[trace_keys[i]]]),
+  #     marker = list(
+  #       color=revalue(trace_keys_split[1],color_levels,color_values),
+  #       symbol=revalue(trace_keys_split[2],shape_levels,shape_values),
+  #       size=revalue(trace_keys_split[3],size_levels,size_values)
+  #     ),
+  #     legendgroup=trace_keys[i],
+  #     showlegend=TRUE
+  #   )
+  # }
 
   # add ellipse
   if(!is.null(score_plot$data[[length(score_plot$data)]]$fill)){ # If true, this meas that the the last element of data has toself property, meaning the user has included ellipses..
@@ -225,52 +222,60 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   }
 
 
-  pacman::p_load(ggplot2, plotly)
+  # pacman::p_load(ggplot2, plotly)
 
 
-  df <- data.frame()
-  g <- ggplot(df) + geom_point()
-  g <- ggplotly(g)
-  pp <- plotly_build(g)
+  # df <- data.frame()
+  # g <- ggplot(df) + geom_point()
+  # g <- ggplotly(g)
+  # pp <- plotly_build(g)
+  #
+  #
+  # layout$traces <- NULL
+  # layout$xaxis$autorange <- NULL
+  # layout$yaxis$autorange <- NULL
 
 
-  layout$traces <- NULL
-  layout$xaxis$autorange <- NULL
-  layout$yaxis$autorange <- NULL
+  # pp$x$layout <- layout
+  # # pp
+  #
+  # pp$x$data = data
+  #
+  #
+  # score_plot_result = pp
+  # # https://plot.ly/r/static-image-export/
+  #
+  # pacman::p_load(plotly, httr, jsonlite)
+  #
+  #
+  # if(Sys.which('orca')==''){ # this means that R is in the metda service.
+  #   orca_serve(port = 9091)
+  #   url_address = "http://metda_plotly:9091"
+  # }else{ # this means that R is in the Windows
+  #   orca_serve(port = 9091)
+  #   url_address = "localhost:9091"
+  # }
+  #
+  # bod = list(
+  #   figure = plotly_build(score_plot_result)$x[c("data","layout")],
+  #   format = 'svg'
+  # )
+  #
+  # result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
+  # writeBin(httr::content(result, as = "raw"), "score_plot.svg")
 
 
-  pp$x$layout <- layout
-  # pp
+  score_plot_result = list(
 
-  pp$x$data = data
+    x= x, y= y, color_by= color_by, color_values= color_values, color_levels= color_levels,
+    shape_by= shape_by, shape_values= shape_values, shape_levels= shape_levels,
+    size_by= size_by, size_values= size_values, size_levels= size_levels,
+    ellipse_group= ifelse(!is.null(score_plot$data[[length(score_plot$data)]]$fill),'color','no_ellipse'),
+    labels= p$label,
+    layout= layout,
+    plot_id= ""
 
-
-  score_plot_result = pp
-  # https://plot.ly/r/static-image-export/
-
-  pacman::p_load(plotly, httr, jsonlite)
-
-
-  if(Sys.which('orca')==''){ # this means that R is in the metda service.
-    orca_serve(port = 9091)
-    url_address = "http://metda_plotly:9091"
-  }else{ # this means that R is in the Windows
-    orca_serve(port = 9091)
-    url_address = "localhost:9091"
-  }
-
-  bod = list(
-    figure = plotly_build(score_plot_result)$x[c("data","layout")],
-    format = 'svg'
   )
-
-  result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
-  writeBin(httr::content(result, as = "raw"), "score_plot.svg")
-
-
-
-
-
 
   # orca(score_plot_result, "score_plot.svg") # make sure to match children text.
   # svg(filename="score_plot.svg",
@@ -281,39 +286,58 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   # dev.off()
 
 
-
-  full_data = scree_plot$full_data
-  full_layout = scree_plot$full_layout
-
-
-  data = scree_plot$data
   layout = scree_plot$layout
 
-  df <- data.frame()
-  g <- ggplot(df) + geom_point()
-  g <- ggplotly(g)
-  pp <- plotly_build(g)
 
+  ys = list(variance)
+  texts = sapply(ys, function(x){
+    paste0(signif(x*100,4),"%")
+  }, simplify = F)
 
-  layout$traces <- NULL
-  layout$xaxis$autorange <- NULL
-  layout$yaxis$autorange <- NULL
+  hovertexts = sapply(texts, function(x){
+    paste0("PC", 1:length(x), ": ", x)
+  }, simplify = F)
 
-
-  pp$x$layout <- layout
-  # pp
-
-  pp$x$data = data
-  pp
-  scree_plot_result = pp
-
-  bod = list(
-    figure = plotly_build(scree_plot_result)$x[c("data","layout")],
-    format = 'svg'
+  names = list("Variance Explained")
+  add_line_trace = TRUE
+  line_trace_index = 0
+  scree_plot_layout = layout
+  plot_id = ""
+  scree_plot_result = list(
+    ys= ys, texts= texts, hovertexts= hovertexts, names= names, add_line_trace= add_line_trace, line_trace_index= line_trace_index, scree_plot_layout= scree_plot_layout, plot_id= plot_id
   )
 
-  result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
-  writeBin(httr::content(result, as = "raw"), "scree_plot.svg")
+
+  result = jsonlite::toJSON(list("score_plot.svg" = score_plot_result, "scree_plot.svg" = scree_plot_result
+  ), auto_unbox = TRUE, force = TRUE)
+
+
+
+  # df <- data.frame()
+  # g <- ggplot(df) + geom_point()
+  # g <- ggplotly(g)
+  # pp <- plotly_build(g)
+  #
+  #
+  # layout$traces <- NULL
+  # layout$xaxis$autorange <- NULL
+  # layout$yaxis$autorange <- NULL
+  #
+  #
+  # pp$x$layout <- layout
+  # # pp
+  #
+  # pp$x$data = data
+  # pp
+  # scree_plot_result = pp
+  #
+  # bod = list(
+  #   figure = plotly_build(scree_plot_result)$x[c("data","layout")],
+  #   format = 'svg'
+  # )
+  #
+  # result = POST(url = url_address, body = plotly:::to_JSON(bod), encode = "json")
+  # writeBin(httr::content(result, as = "raw"), "scree_plot.svg")
 
 
 
@@ -328,6 +352,8 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 
+}else{
+  result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
 
 }
 
@@ -335,7 +361,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 
-result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
 
 
 
