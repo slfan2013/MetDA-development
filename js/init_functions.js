@@ -279,7 +279,6 @@ loadjscssfile = function (filename, filetype) {
 
 
 
-
 download_results = function (files_names, files_sources, zipfile_name) {
   $(".download").prop("disabled", true);
   $("#download_results").text("Downloading ... ")
