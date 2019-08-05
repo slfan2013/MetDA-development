@@ -20,6 +20,12 @@ sys_put_methods <- function() {
         "Description" = "The Student's t-test is for testing if the two group means are statistically siginificantly different.",
         "Example" = "paper3",
         "Example link" = ""
+      ),
+      "boxplot" = list(
+        "Method Name" = "Boxplot",
+        "Description" = "To draw a beautiful boxplot for each compound.",
+        "Example" = "paper2",
+        "Example link" = ""
       )
     ),
     "MULTIVARIATE ANALYSIS" = list(

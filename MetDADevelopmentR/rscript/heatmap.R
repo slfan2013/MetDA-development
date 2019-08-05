@@ -208,13 +208,19 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
     #
     #
     # }
-    levels = levels(factor(p[[heatmap_plot$sample_annotation[i]]]))
 
-    sample_annotations[[i]] = list(
-      colors = as.list(heatmap_plot_style$traces$sample_annotation[[length(levels)]]),
-      column = heatmap_plot$sample_annotation[i],
-      type = "character"
-    )
+    if(!length(heatmap_plot$sample_annotation)==0){
+      levels = levels(factor(p[[heatmap_plot$sample_annotation[i]]]))
+
+      sample_annotations[[i]] = list(
+        colors = as.list(heatmap_plot_style$traces$sample_annotation[[length(levels)]]),
+        column = heatmap_plot$sample_annotation[i],
+        type = "character"
+      )
+    }else{
+      sample_annotations = list()
+    }
+
   }
   sample_level_options = sapply(p, unique)
 
@@ -234,21 +240,25 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
     #
     #
     # }
-    levels = levels(factor(f[[heatmap_plot$compound_annotation[i]]]))
+    if(!length(heatmap_plot$compound_annotation) ==0){
+      levels = levels(factor(f[[heatmap_plot$compound_annotation[i]]]))
+      compound_annotations[[i]] = list(
+        colors = as.list(heatmap_plot_style$traces$compound_annotation[[length(levels)]]),
+        column = heatmap_plot$compound_annotation[i],
+        type = "character"
+      )
+    }else{
+      compound_annotations = list()
+    }
 
-    compound_annotations[[i]] = list(
-      colors = as.list(heatmap_plot_style$traces$compound_annotation[[length(levels)]]),
-      column = heatmap_plot$compound_annotation[i],
-      type = "character"
-    )
   }
   compound_level_options = sapply(f, unique)
 
 
 
-  heatmap_x
-  heatmap_y
-  heatmap_z
+  # heatmap_x
+  # heatmap_y
+  # heatmap_z
 
 
 

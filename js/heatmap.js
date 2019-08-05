@@ -22,7 +22,7 @@ heatmap_append_results = function (obj, session) {
     })
 
 
-    fold_name = "heatmap"
+    fold_name = "Heatmap"
     files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel","image/svg+xml"]
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))

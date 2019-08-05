@@ -43,7 +43,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 heatmap_plot_order_sample_by_div = heatmap_plot_order_sample_by_div +
                                     '<div class="form-group">' +
                                     '<label for="order_sample_by_' + order_sample_by[i] + '">' + order_sample_by[i] + '</label>' +
-                                    '<input type="text" class="form-control order_sample_levels" id="order_sample_by_' + order_sample_by[i] + '" aria-describedby="" placeholder="">' +
+                                    '<input type="text" class="form-control order_sample_levels" id="order_sample_by_' + order_sample_by[i] + '" aria-describedby="" placeholder="" onchange="heatmap_plot_debounced()">' +
                                     '</div>'
                             }
                             $("#heatmap_plot_order_sample_levels_div").html(heatmap_plot_order_sample_by_div)
@@ -113,7 +113,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 heatmap_plot_order_compound_by_div = heatmap_plot_order_compound_by_div +
                                     '<div class="form-group">' +
                                     '<label for="order_compound_by_' + order_compound_by[i] + '">' + order_compound_by[i] + '</label>' +
-                                    '<input type="text" class="form-control order_compound_levels" id="order_compound_by_' + order_compound_by[i] + '" aria-describedby="" placeholder="">' +
+                                    '<input type="text" class="form-control order_compound_levels" id="order_compound_by_' + order_compound_by[i] + '" aria-describedby="" placeholder="" onchange="heatmap_plot_debounced()">' +
                                     '</div>'
                             }
                             $("#heatmap_plot_order_compound_levels_div").html(heatmap_plot_order_compound_by_div)
@@ -123,6 +123,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         }
                         heatmap_plot_debounced()
                     })
+
                     $('#heatmap_plot_compound_annotation').append($('<option>', {
                         value: f_column_names[i],
                         text: f_column_names[i]
@@ -257,8 +258,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 }
 
 
-                // !!!order_compound_by = $("#heatmap_plot_order_compound_by").val() 
-                order_compound_by = "dendrogram"
+                order_compound_by = $("#heatmap_plot_order_compound_by").val()
                 if (order_compound_by.includes('as is')) {
                     compound_order = sequence(from = 0, to = f.length - 1)
                     show_compound_dendrogram = false

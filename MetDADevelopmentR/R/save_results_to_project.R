@@ -9,8 +9,8 @@ save_results_to_project <- function(project_id = "aaa1560462496",
                                     epf_index = c(1)) {
   save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, files_sources_data, file = "test.RData")
 
-
-  if (class(files_sources_data) == "list") { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
+  load('test.RData')
+  if (class(files_sources_data) %in% c("list",'data.frame')) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
     for (file_source in 1:length(files_sources_data)) {
       if (is.null(ncol(files_sources_data[[file_source]]))) { # this means this is a base6 (pca score plot)
 
@@ -39,7 +39,7 @@ save_results_to_project <- function(project_id = "aaa1560462496",
       }
     }
   } else {
-    if (!names(files_sources)[1]=='quick_analysis') {
+    if (!identical(names(files_sources)[1],'quick_analysis')) {
       # !!! base64 (pca score plot) may not work for this.
       for (file_source in 1:length(files_sources)) {
         download.file(URLencode(files_sources[file_source]), files_names[file_source], mode = "wb")
@@ -93,7 +93,7 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   # stringr::str_replace(string = c("abc","abc"), pattern = c("a","b"), replacement = "")
 
   for (file_source in 1:length(files_names)) {
-    if(grepl(".svg|.png",files_names[file_source])){
+    if(grepl(".svg|.png|.zip",files_names[file_source])){
       projectList$`_attachments`[[attachments_ids[file_source]]] <- list(
         content_type = files_types[file_source],
         data =
@@ -112,7 +112,19 @@ save_results_to_project <- function(project_id = "aaa1560462496",
 
   # 3 update tree
   project_structure <- projectList$project_structure
-  folder_id <- paste0(fold_name, current_time)
+  # folder_id <- paste0(fold_name, current_time)
+
+
+  from_fun_name_to_folder_id = c("fold_change"="Fold Change","heatmap" = "Heatmap", "boxplot" = "Boxplot", "pca" = "PCA", "missing_value_imputation" = 'Missing Value Imputation', "student_t_test" = "Student t-test")
+
+  folder_id = paste0(plyr::revalue(parameters$fun_name,from_fun_name_to_folder_id), current_time)
+
+
+  # check if the fold_name is taken.
+
+
+
+
   project_structure[[length(project_structure) + 1]] <- list(
     id = folder_id,
     parent = selected_folder,
@@ -132,7 +144,7 @@ save_results_to_project <- function(project_id = "aaa1560462496",
       id = attachments_ids[file_source],
       parent = folder_id,
       text = files_names[file_source],
-      icon = plyr::revalue(files_types[file_source], c("application/vnd.ms-excel" = "fa fa-file-excel-o","image/svg+xml"="fa fa-file-image-o")),
+      icon = plyr::revalue(files_types[file_source], c("application/vnd.ms-excel" = "fa fa-file-excel-o","image/svg+xml"="fa fa-file-image-o","application/x-zip-compressed" = "file-archive-o")),
       with_attachment = TRUE,
       parameter = parameters_for_chilren
       # since the parameters are already saved in the folder. We may do not need to save it in these children.
@@ -148,5 +160,5 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   #
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
   return(list(status = TRUE, current_time = current_time))
-  # return(TRUE)
+  return(TRUE)
 }

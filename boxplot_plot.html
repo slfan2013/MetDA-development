@@ -1,0 +1,205 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="nav nav-pills nav-pills-primary flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#boxplot_plot_general" data-toggle="tab">General</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#boxplot_plot_traces" data-toggle="tab">Traces</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#boxplot_plot_explanation"
+                            data-toggle="tab">Explanation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane" id="boxplot_plot_general">
+                        <div id="boxplot_plot_to_be_loaded"></div>
+                    </div>
+                    <div class="tab-pane" id="boxplot_plot_traces">
+                        <div id="boxplot_plot_traces_accordion" role="tablist">
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="boxplot_plot_treatment_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#boxplot_plot_treatment_collapse"
+                                            aria-expanded="true" aria-controls="boxplot_plot_treatment_collapse">
+                                            Sample Grouping
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="boxplot_plot_treatment_collapse" class="collapse show" role="tabpanel"
+                                    aria-labelledby="boxplot_plot_treatment_heading"
+                                    data-parent="#boxplot_plot_traces_accordion">
+
+
+                                    <div class="form-group">
+                                        <label for="compound">Compound</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                            id="compound" onchange="boxplot_plot_debounced()">
+                                        </select>
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label for="boxplot_plot_group_sample_by">Group Sample By</label>
+                                        <select multiple class="form-control selectpicker" data-style="btn btn-link"
+                                            id="boxplot_plot_group_sample_by">
+                                        </select>
+                                    </div>
+                                    <div id="boxplot_plot_group_sample_levels_div"></div>
+                                    <div class="form-group">
+                                        <label for="boxplot_plot_group_sample_main">Main Group</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                            id="boxplot_plot_group_sample_main">
+                                        </select>
+                                    </div>
+                                    <div id="boxplot_plot_group_sample_main_color_div"></div>
+                                </div>
+
+                                <div class="card-header" role="tab" id="boxplot_plot_options_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#boxplot_plot_options_collapse"
+                                            aria-expanded="false" aria-controls="boxplot_plot_options_collapse">
+                                            Other Options
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="boxplot_plot_options_collapse" class="collapse" role="tabpanel"
+                                    aria-labelledby="boxplot_plot_options_heading"
+                                    data-parent="#boxplot_plot_traces_accordion">
+
+                                    <div class="form-group">
+                                        <label for="fillcolor_transparency">Box Fillcolor Transparency</label>
+                                        <input type="number" class="form-control" id="fillcolor_transparency" min="0"
+                                            step="0.1" max="1" onchange="boxplot_plot_debounced()">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="jitter">Jitter</label>
+                                        <input type="number" class="form-control" id="jitter" min="0" step="0.1" max="1"
+                                            onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label for="pointpos">Point Position</label>
+                                        <input type="number" class="form-control" id="pointpos" min="-2" step="0.1"
+                                            max="2" onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="size">Point Size</label>
+                                        <input type="number" class="form-control" id="size" min="0" step="1"
+                                            onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label for="line_width">Box Border Width</label>
+                                        <input type="number" class="form-control" id="line_width" min="0" step="1"
+                                            onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label for="whiskerwidth">Whisker Width</label>
+                                        <input type="number" class="form-control" id="whiskerwidth" min="0" step="1"
+                                            onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value="" id="notched" onchange="boxplot_plot_debounced()">
+                                            Notched
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="notchwidth">Notch Width</label>
+                                        <input type="number" class="form-control" id="notchwidth" min="0" step="1"
+                                            onchange="boxplot_plot_debounced()">
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label for="symbol">Dot Shape</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link" id="symbol"
+                                            onchange="boxplot_plot_debounced()">
+                                            <option selected>circle</option>
+                                            <option>square</option>
+                                        </select>
+                                    </div>
+
+
+
+                                    <div class="form-group">
+                                        <label for="boxmean">Other Box Statistics</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link" id="boxmean"
+                                            onchange="boxplot_plot_debounced()">
+                                            <option selected>mean</option>
+                                            <option>sd</option>
+                                            <option>none</option>
+                                        </select>
+                                    </div>
+
+
+
+
+                                    <div class="form-group">
+                                        <label for="boxpoints">Points</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link"
+                                            id="boxpoints" onchange="boxplot_plot_debounced()">
+                                            <option selected>all</option>
+                                            <option>outliers</option>
+                                            <option>suspectedoutliers</option>
+                                            <option>false</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                Outlier Color
+                                            </span>
+                                        </div>
+                                        <input type='text' id="outliercolor" class="spectrums" data-show-alpha="true"
+                                            onchange="boxplot_plot_debounced()" />
+                                    </div>
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane active" id="boxplot_plot_explanation">
+                        explanations
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="save_boxplot_plot_style()">Set This Style As
+                        Default</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div id="boxplot_plot"></div>
+    </div>
+</div>
+<script src="js/boxplot_plot.js"></script>

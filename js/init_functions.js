@@ -1,3 +1,16 @@
+
+start_cal = function(){
+  $("body").append('<div id="overlay" style="background-color:rgba(0,0,0,0.5);position:absolute;top:0;left:0;height:100%;width:100%;z-index:999"></div>');
+}
+end_cal = function(){
+  $("#overlay").remove();
+}
+
+get_time_string = function(){
+	var d = new Date();var time_string = d.getTime().toString()
+	return(time_string)
+}
+
 init_ripples = function () {
   $.material.init()
 }
@@ -144,7 +157,15 @@ transparent_rgba = function (rgba, alpha = 0.1) {
 function trim(str) {
   return str.replace(/^\s+|\s+$/gm, '');
 }
-
+array_split_by_one_factor = function(array,fac,lev){
+  //fac = unpack(p.data,"species")
+  var result = [];
+  for(var l1=0; l1<lev.length;l1++){
+      var target_level = lev[l1]
+      result.push(getAllIndexes(fac,target_level).map(ind => array[ind]))
+  }
+  return(result)
+}
 function hexToRgb(hex, alpha) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? 'rgba(' + parseInt(result[1], 16) + "," + parseInt(result[2], 16) + "," + parseInt(result[3], 16) + ',' + alpha + ')' : null;
@@ -355,7 +376,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 
 
-  $('#save_results_collapse').collapse('toggle')
+  $('#save_results_collapse').collapse('show')
   $(".download").prop("disabled", true);
   $("#save_results").text("Waiting User to Select a Folder ... ")
   // open a jstree.
@@ -380,21 +401,80 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
         }
       })
       $('#save_results_tree').on("select_node.jstree", function (e, data) {
+
+        var when_done = function(){
+          ocpu.call("save_results_to_project", {
+            files_names: files_names,
+            files_sources: files_sources,
+            files_sources_data: allResults,
+            files_types: files_types,
+            fold_name: fold_name,
+            parameters: parameters,
+            epf_index: epf_index,
+            project_id: localStorage['activate_project_id'],
+            selected_folder: data.node.original.id
+          }, function (session) {
+            console.log(session)
+            session.getObject(function (obj) {
+              if (obj.status) {
+                console.log("success")
+                //if this is epf, update the id = project_structure_with_dataset_only and id=save_results_tree
+                ocpu.call("open_project_structure_after_save_result", {
+                  project_id: localStorage['activate_project_id'],
+                  selected_data: localStorage['activate_data_id'],
+                  saved_folder_id: data.node.original.id
+                }, function (session) {
+                  session.getObject(function (obj) {
+                    ooo = obj
+                    $("#save_results_tree").jstree("destroy");
+                    $("#save_results_tree").jstree({
+                      'core': {
+                        'data': obj,
+                        'multiple': false, // cannot select multiple nodes.
+                        'expand_selected_onload': true,
+                        'check_callback': true
+                      }
+                    })
+                  })
+                }).fail(function (e2) {
+                  Swal.fire('Oops...', e2.responseText, 'error')
+                })
+              }
+            })
+          }).fail(function (e2) {
+            Swal.fire('Oops...', e2.responseText, 'error')
+          })
+        }
+
+
+        ddd = data
         //fff = files_sources
+        console.log("selected")
         if (window.location.href.includes("localhost")) {//otherwise it will have issue of https://github.com/opencpu/opencpu/issues/345
           var files = files_sources;
-
-
-
-          var allResults = [];
+          allResults = [];
+          if(index_of_link.length===0){
+            index_of_link[0] = 0
+          }
 
           for (var i = 0; i < index_of_link.length; i++) {
             Papa.parse(files[index_of_link[i]], {
               download: true,
               header: true,
               skipEmptyLines: true,
-              error: function (err, file, inputElem, reason) { /* handle*/ },
+              error: function (err, file, inputElem, reason) { 
+                if(err.message = "Not Found"){ // this means there is no index_of_link and I've made a fake 'fake.csv'
+                console.log("here")
+                for (var j = 0; j < index_of_not_link.length; j++) {
+                  allResults.push({fake:files_sources[index_of_not_link[j]]})
+                }
+                
+                when_done()
+
+                }
+              },
               complete: function (results) {
+                console.log("complete")
                 allResults.push(results.data);
                 if (allResults.length == index_of_link.length) {
                   // Do whatever you need to do
@@ -404,52 +484,11 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
                   for (var j = 0; j < index_of_not_link.length; j++) {
                     allResults.push(files_sources[index_of_not_link[j]])
-
-                    //zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
                   }
 
+                  when_done()
 
-                  ocpu.call("save_results_to_project", {
-                    files_names: files_names,
-                    files_sources: files_sources,
-                    files_sources_data: allResults,
-                    files_types: files_types,
-                    fold_name: fold_name,
-                    parameters: parameters,
-                    epf_index: epf_index,
-                    project_id: localStorage['activate_project_id'],
-                    selected_folder: data.node.original.id
-                  }, function (session) {
-                    console.log(session)
-                    session.getObject(function (obj) {
-                      if (obj.status) {
-                        console.log("success")
-                        //if this is epf, update the id = project_structure_with_dataset_only and id=save_results_tree
-                        ocpu.call("open_project_structure_after_save_result", {
-                          project_id: localStorage['activate_project_id'],
-                          selected_data: localStorage['activate_data_id'],
-                          saved_folder_id: data.node.original.id
-                        }, function (session) {
-                          session.getObject(function (obj) {
-                            ooo = obj
-                            $("#save_results_tree").jstree("destroy");
-                            $("#save_results_tree").jstree({
-                              'core': {
-                                'data': obj,
-                                'multiple': false, // cannot select multiple nodes.
-                                'expand_selected_onload': true,
-                                'check_callback': true
-                              }
-                            })
-                          })
-                        }).fail(function (e2) {
-                          Swal.fire('Oops...', e2.responseText, 'error')
-                        })
-                      }
-                    })
-                  }).fail(function (e2) {
-                    Swal.fire('Oops...', e2.responseText, 'error')
-                  })
+                  
                 }
               }
             });
@@ -533,7 +572,7 @@ update_projects_table = function (id = "projects_table", call_back = when_projec
         table_html = table_html + "</tr>"
       }
       table_html = table_html + "</tbody>"
-      console.log(table_html)
+      //console.log(table_html)
       $("#" + id).html(table_html)
       $("#" + id + " tr").click(call_back);
     }

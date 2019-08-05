@@ -1,7 +1,7 @@
 perform_quick_analysis <- function(
-                                   project_id = "test01563829439",
+                                   project_id = "boxplot b41564966343",
                                    selected_data = "e.csv",
-                                   project_id2 = "test11563829453",
+                                   project_id2 = "boxplot a41564966178",
                                    selected_data2 = "e.csv",
                                    parameter) {
   save(project_id, selected_data, project_id2, selected_data2, parameter, file = "local.RData") # for debugging
@@ -138,8 +138,6 @@ perform_quick_analysis <- function(
       }
 
 
-
-
       for (j in 1:length(current_parameter$heatmap_plot)) {
         if(length(current_parameter$heatmap_plot[[j]])>0){
           if (current_parameter$heatmap_plot[[j]] %in% names(compound_parameters_to)) {
@@ -149,6 +147,24 @@ perform_quick_analysis <- function(
         }
       }
 
+
+
+    } else if(current_parameter$fun_name %in% c("boxplot")){
+
+
+
+      for (j in 1:length(current_parameter$boxplot_plot)) {
+        if(length(current_parameter$boxplot_plot[[j]])>0){
+          if (current_parameter$boxplot_plot[[j]] %in% names(sample_parameters_to)) {
+            current_parameter$boxplot_plot[[j]] <- plyr::revalue(unlist(current_parameter$boxplot_plot[[j]]), sample_parameters_to)
+          }
+        }
+      }
+
+
+
+
+      # stop("Needs to figure out what to do on boxplot.")
 
 
     }else{
@@ -194,7 +210,7 @@ perform_quick_analysis <- function(
 
     names(sources)[1] = "quick_analysis" #this is for save_results_to_project to determin if the call is from the quick analysis.
 
-    if(current_parameter$fun_name %in% c("heatmap")){
+    if(current_parameter$fun_name %in% c("heatmap","pca",'boxplot')){
       if(any(is.na(sources))){
         children_texts = sapply(children, function(x) x$text)
         for(j in which(is.na(sources))){
