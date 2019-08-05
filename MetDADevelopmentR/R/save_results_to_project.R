@@ -115,7 +115,7 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   # folder_id <- paste0(fold_name, current_time)
 
 
-  from_fun_name_to_folder_id = c("fold_change"="Fold Change","heatmap" = "Heatmap", "boxplot" = "Boxplot", "pca" = "PCA", "missing_value_imputation" = 'Missing Value Imputation', "student_t_test" = "Student t-test")
+  from_fun_name_to_folder_id = c("fold_change"="Fold Change","heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA", "missing_value_imputation" = 'Missing Value Imputation', "student_t_test" = "Student t-test")
 
   folder_id = paste0(plyr::revalue(parameters$fun_name,from_fun_name_to_folder_id), current_time)
 

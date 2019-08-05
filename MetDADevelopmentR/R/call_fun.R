@@ -1,6 +1,8 @@
 call_fun <- function(parameter, ...) {
   save(parameter, file = "call_fun.RData") # for debugging
 
+
+  load("call_fun.RData")
   parameter_names <- names(parameter)
 
   for (i in 1:length(parameter)) {
@@ -12,4 +14,5 @@ call_fun <- function(parameter, ...) {
   eval(parse(text = gsub("\r", "", readr::read_file(fileName))))
 
   return(result)
+  return(TRUE)
 }

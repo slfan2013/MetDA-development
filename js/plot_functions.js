@@ -540,6 +540,92 @@ boxplot_plot_fun = function ({
 
 
 
+volcano_plot_fun = function ({
+    xs = undefined, ys = undefined, texts = undefined, boxpoints = undefined, jitter = undefined, pointpos = undefined, trace_names = undefined, box_colors = undefined,
+    symbol = undefined, whiskerwidth = undefined, notched = undefined, notchwidth = undefined, boxmean = undefined,
+    size = undefined, outliercolor = undefined, line_width = undefined, fillcolor_transparency = undefined, title = undefined, categoryarray = undefined,
+    layout = undefined, plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined } = {}
+) {
+    var myPlot = document.getElementById(plot_id)
+    var data = [];
+    for (var i = 0; i < ys.length; i++) {
+        var trace = {
+            y: ys[i],
+            type: 'box',
+            boxpoints: boxpoints,
+            jitter: jitter,
+            text: texts[i],
+            pointpos: pointpos,
+            name: trace_names[i],
+            marker: {
+                color: box_colors[trace_names[i]],
+                symbol: symbol,
+                size: size,
+                outliercolor: outliercolor,
+            },
+            line: {
+                width: line_width
+            },
+            fillcolor: transparent_rgba(box_colors[trace_names[i]], fillcolor_transparency),
+            whiskerwidth: whiskerwidth,
+            notched: notched,
+            notchwidth: notchwidth,
+            boxmean: boxmean
+        }
+        if (xs !== undefined) {
+            trace.x = xs[i]
+        }
+        data.push(trace)
+    }
+
+
+    layout.title.text = title
+    layout.xaxis.categoryorder = 'array'
+    if (xs === undefined) {
+        layout.boxmode = "overlay"
+    } else {
+        layout.boxmode = "group"
+        layout.xaxis.categoryarray = categoryarray
+    }
+
+
+    Plotly.newPlot(plot_id, data, layout, { showSendToCloud: false })
+
+        .then(gd => {
+            volcano_plot_gd = gd
+            if (!quick_analysis) {
+                
+                volcano_plot_parameters = {
+                    //full_data: JSON.parse(fullData),
+                    //full_layout: JSON.parse(fullLayout),
+                    data: volcano_plot_gd.data,
+                    layout: volcano_plot_gd.layout,
+                }
+
+                volcano_plot_parameters.group_sample_by = $("#volcano_plot_group_sample_by").val()
+                volcano_plot_parameters.main_group = $("#volcano_plot_group_sample_main").val()
+
+                if(volcano_plot_parameters.group_sample_by.length === 2){
+                    var sub_group = group_sample_by.slice(0);
+                    sub_group.splice(sub_group.indexOf(volcano_plot_parameters.main_group), 1)[0]
+                    volcano_plot_parameters.categoryarray = $("#group_sample_by_" + sub_group).val().split("||")
+                }else{
+                    volcano_plot_parameters.categoryarray = $("#group_sample_by_" + volcano_plot_parameters.main_group).val().split("||")
+                }
+                volcano_plot_parameters.main_group_split = $("#group_sample_by_" + volcano_plot_parameters.main_group).val().split("||")                
+            }
+
+
+
+        });
+
+
+
+
+
+    return ({ data: data, layout: layout })
+}
+
 
 
 

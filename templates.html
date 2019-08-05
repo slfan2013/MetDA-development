@@ -72,6 +72,26 @@
                     </div>
 
 
+                    <div class='row' id="volcano_plot_input_from_file">
+                        <div class='col-lg-6'>
+                            <div class="form-group form-file-upload form-file-simple">
+                                <input type="text" class="form-control inputFileVisible"
+                                    placeholder="Click to Selec File with p-values and fold changes...">
+                                <input type="file" class="inputFileHidden"
+                                    onchange="check_input_format_volcano_input_file('volcano_input_file')"
+                                    id='volcano_input_file'>
+                                <div class="volcano_input_file_validating"></div>
+                            </div>
+                        </div>
+                        <div class='col-lg-6'>
+                            <p>The dataset should meet the basic criterion. Or download the example dataset and see the
+                                format.</p>
+                        </div>
+                    </div>
+
+
+                    
+
 
                 </div>
                 <div class="card-footer ">

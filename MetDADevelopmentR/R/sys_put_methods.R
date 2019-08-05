@@ -26,6 +26,12 @@ sys_put_methods <- function() {
         "Description" = "To draw a beautiful boxplot for each compound.",
         "Example" = "paper2",
         "Example link" = ""
+      ),
+      "volcano" = list(
+        "Method Name" = "Volcano Plot",
+        "Description" = "To visualize the significancy and fold change at once.",
+        "Example" = "paper2",
+        "Example link" = ""
       )
     ),
     "MULTIVARIATE ANALYSIS" = list(

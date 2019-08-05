@@ -28,6 +28,8 @@ if (localStorage['big_category'] === 'project') {
     $("#templates_input_file_from_upload").hide()
     $("#templates_input_file_from_project").show()
 
+    alert("For volcano plot, I need to put a select p value and fold change from database.")
+
 
 } else if (localStorage['big_category'] === 'in_and_out') {
     $("#templates_icon_text").html("In & Out")
@@ -36,6 +38,14 @@ if (localStorage['big_category'] === 'project') {
 
     $("#templates_input_file_from_upload").show()
     $("#templates_input_file_from_project").hide()
+
+    if (window.location.href.split("#")[1] === 'volcano') {
+        $("#templates_input_file_from_upload").hide()
+        $("#volcano_plot_input_from_file").show()
+    }else{
+        $("#volcano_plot_input_from_file").hide()
+    }
+
 }
 
 
@@ -106,7 +116,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
     }
-    if(localStorage.big_category==='project'){
+    if (localStorage.big_category === 'project') {
         open_project_structure_to_select_dataset()
     }
 
@@ -144,6 +154,44 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             $(".inputFile_validating").text("Dataset file format is incorrect.")
         })
     }
+
+
+    check_input_format_volcano_input_file = function (volcano_input_file) { // this is specifically for input of the volcano plot.
+        $('#parameter_settings_card').hide();
+        $(".inputFileHidden").prop("disabled", true);
+        $(".volcano_input_file_validating").text("Validating")
+        ocpu.call("check_input_format_volcano_input_file", {
+            path: $("#" + volcano_input_file)[0].files[0]
+        }, function (session) {
+            session.getObject(function (obj) {
+                
+                oo = obj
+
+                project_id = obj.project_id[0]
+
+
+                
+                $(".inputFileHidden").prop("disabled", false);
+                var text = "<p class='text-warning'>" + obj.message.warning_message.join("</p><p class='text-warning'>") + "</p>"
+                text = text + "<p class='text-success'>" + obj.message.success_message.join("</p><p class='text-success'>") + "</p>"
+    
+                $(".volcano_input_file_validating").html(text)
+                $('#parameter_settings_card').show();
+    
+                get_parameter_settings()
+                loadjscssfile("js/" + window.location.href.split("#")[1] + ".js", 'js')
+            })
+        }).fail(function (e) {
+            Swal.fire('Oops...', e.responseText, 'error')
+            $(".inputFileHidden").prop("disabled", false);
+            $(".volcano_input_file_validating").text("Dataset file format is incorrect.")
+        })
+    }
+
+
+
+
+
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
         if (['missing_value_imputation', 'student_t_test', 'fold_change'].includes(page)) {
@@ -246,6 +294,29 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
+        } else if (['volcano'].includes(page)) {
+            obj_volcano_plot = obj
+            $("#results_card_body").append('<div id="volcano_plot_div"></div>')
+            $("#volcano_plot_div").load("volcano_plot.html", function () {
+                init_selectpicker()
+                if (localStorage['big_category'] === 'project') {
+                    $("#save_results").show();
+                    $("#only_download_result_dataset").hide();
+                    $("#download_results").removeClass("btn-primary")
+                    $("#download_results").addClass("btn-default")
+                    $("#save_results").addClass("btn-primary")
+                    $("#save_results").removeClass("btn-default")
+                } else if (localStorage['big_category'] === 'in_and_out') {
+                    $("#save_results").hide();
+                    $("#only_download_result_dataset").show();
+                    $("#download_results").addClass("btn-primary")
+                    $("#download_results").removeClass("btn-default")
+                    $("#save_results").removeClass("btn-primary")
+                    $("#save_results").addClass("btn-default")
+                }
+                var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                append_results_fun(obj, session)
+            })
         }
     }
 
@@ -290,8 +361,8 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 $("#submit").prop('disabled', false);
 
                 $("#results_card").show();
+                
                 results_card_body_load(window.location.href.split("#")[1], obj, session)
-
                 localStorage.setItem('parameter', JSON.stringify(parameter))
 
 
