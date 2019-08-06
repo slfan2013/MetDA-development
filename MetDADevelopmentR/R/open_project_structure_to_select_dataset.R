@@ -25,12 +25,8 @@ open_project_structure_to_select_dataset = function(
   parents = parent[epf %in% "e"]
 
   while(length(parents)>0){
-
     needed_id = c(needed_id, parents)
-
     parents = parent[id %in% parents]
-
-
   }
 
   if(selected_data == ""){

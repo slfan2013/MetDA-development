@@ -23,29 +23,34 @@ loadjscssfile("js/" + window.location.href.split("#")[1] + ".js", "js")
 if (localStorage['big_category'] === 'project') {
     $("#templates_icon_text").html("Projects")
     $("#templates_icon").html("library_books")
-
-
     $("#templates_input_file_from_upload").hide()
-    $("#templates_input_file_from_project").show()
+    $("#volcano_plot_input_from_file").hide()
+    $("#templates_input_file_from_project").hide()
+    $("#volcano_plot_p_value_div").hide()
+    $("#volcano_plot_fold_change_div").hide()
 
-    alert("For volcano plot, I need to put a select p value and fold change from database.")
-
+    if (window.location.href.split("#")[1] === 'volcano') {
+        $("#volcano_plot_p_value_div").show()
+        $("#volcano_plot_fold_change_div").show()
+    } else {
+        $("#templates_input_file_from_project").show()
+    }
 
 } else if (localStorage['big_category'] === 'in_and_out') {
     $("#templates_icon_text").html("In & Out")
     $("#templates_icon").html("transform")
-
-
     $("#templates_input_file_from_upload").show()
     $("#templates_input_file_from_project").hide()
+
+    $("#volcano_plot_p_value_div").hide()
+    $("#volcano_plot_fold_change_div").hide()
 
     if (window.location.href.split("#")[1] === 'volcano') {
         $("#templates_input_file_from_upload").hide()
         $("#volcano_plot_input_from_file").show()
-    }else{
+    } else {
         $("#volcano_plot_input_from_file").hide()
     }
-
 }
 
 
@@ -95,6 +100,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                         'check_callback': true
                     }
                 })
+
                 $('#project_structure_with_dataset_only').on("select_node.jstree", function (e, data) {
                     ddd = data
                     localStorage['activate_data_id'] = ddd.node.original.id[0]
@@ -102,7 +108,6 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     get_parameter_settings()
                 })
                 if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
-
                     $("#parameter_settings_card").show()
                     get_parameter_settings()
                 }
@@ -117,7 +122,78 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
     }
     if (localStorage.big_category === 'project') {
-        open_project_structure_to_select_dataset()
+
+        if(window.location.href.split("#")[1] === 'volcano'){
+            
+            ocpu.call("open_project_structure_to_select_p_value_and_fold_change",{
+                project_id: localStorage['activate_project_id']
+            }, function(session){
+                console.log(session)
+                session.getObject(function(obj){
+                    ooo = obj
+                    
+                    var volcano_plot_p_value = false;
+                    var volcano_plot_fold_change = false;
+
+                    $("#volcano_plot_p_value").jstree("destroy");
+                    $("#volcano_plot_fold_change").jstree("destroy");
+                    $("#volcano_plot_p_value").jstree({
+                        'core': {
+                            'data': obj.p_val_project_structure,
+                            'multiple': false, // cannot select multiple nodes.
+                            'expand_selected_onload': true,
+                            'check_callback': true
+                        }
+                    }).bind('loaded.jstree', function(e, data) {
+                        if(obj.p_val_project_structure.length===3){
+                            $('#volcano_plot_p_value').jstree('select_node', obj.p_val_project_structure[2].id[0]);
+                        }
+                    })
+
+                    $('#volcano_plot_p_value').on("select_node.jstree", function (e, data) {
+                        volcano_plot_p_value = true
+                        p_value_data_id = data.node.original.id[0]
+                        p_value_data_treatment =  $("#volcano_plot_p_value").jstree(true).get_node(data.node.parent).original.parameter.treatment_group[0]
+                        if(volcano_plot_p_value && volcano_plot_fold_change){
+                            $("#parameter_settings_card").show()
+                            get_parameter_settings()
+                        }                        
+                    })
+
+
+
+                    $("#volcano_plot_fold_change").jstree({
+                        'core': {
+                            'data': obj.fold_change_project_structure,
+                            'multiple': false, // cannot select multiple nodes.
+                            'expand_selected_onload': true,
+                            'check_callback': true
+                        }
+                    }).bind('loaded.jstree', function(e, data) {
+                        if(obj.p_val_project_structure.length===3){
+                            $('#volcano_plot_fold_change').jstree('select_node', obj.fold_change_project_structure[2].id[0]);
+                        }
+                    })
+
+                    $('#volcano_plot_fold_change').on("select_node.jstree", function (e, data) {
+                        volcano_plot_fold_change = true
+                        fold_change_data_id = data.node.original.id[0]
+                        fold_change_data_treatment = $("#volcano_plot_fold_change").jstree(true).get_node(data.node.parent).original.parameter.treatment_group[0]
+                        if(volcano_plot_p_value && volcano_plot_fold_change){
+                            $("#parameter_settings_card").show()
+                            get_parameter_settings()
+                        }
+                    })
+                })
+            })
+
+
+
+        }else{
+            open_project_structure_to_select_dataset()
+        }
+
+        
     }
 
     get_parameter_settings = function () {
@@ -164,20 +240,15 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             path: $("#" + volcano_input_file)[0].files[0]
         }, function (session) {
             session.getObject(function (obj) {
-                
                 oo = obj
-
                 project_id = obj.project_id[0]
-
-
-                
                 $(".inputFileHidden").prop("disabled", false);
                 var text = "<p class='text-warning'>" + obj.message.warning_message.join("</p><p class='text-warning'>") + "</p>"
                 text = text + "<p class='text-success'>" + obj.message.success_message.join("</p><p class='text-success'>") + "</p>"
-    
+
                 $(".volcano_input_file_validating").html(text)
                 $('#parameter_settings_card').show();
-    
+
                 get_parameter_settings()
                 loadjscssfile("js/" + window.location.href.split("#")[1] + ".js", 'js')
             })
@@ -339,15 +410,29 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         })
         parameter.project_id = project_id
 
-        if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
-            parameter.activate_data_id = localStorage['activate_data_id']
-        } else {
-            parameter.activate_data_id = 'e.csv'
+    
+        parameter.fun_name = window.location.href.split("#")[1]
+        if(parameter.fun_name === 'volcano'){
+            if(localStorage.big_category === 'in_and_out'){
+                parameter.activate_data_id = "e.csv" // sequence matters. See volcano.R
+            }else{
+                parameter.activate_data_id = [p_value_data_id, fold_change_data_id] // sequence matters. See volcano.R
+                parameter.p_value_data_treatment = p_value_data_treatment
+                parameter.fold_change_data_treatment = fold_change_data_treatment
+            }
+            
+            
+        }else{
+            if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
+                parameter.activate_data_id = localStorage['activate_data_id']
+            } else {
+                parameter.activate_data_id = 'e.csv'
+            }
+    
         }
 
 
 
-        parameter.fun_name = window.location.href.split("#")[1]
 
 
         console.log(parameter)
@@ -361,7 +446,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 $("#submit").prop('disabled', false);
 
                 $("#results_card").show();
-                
+
                 results_card_body_load(window.location.href.split("#")[1], obj, session)
                 localStorage.setItem('parameter', JSON.stringify(parameter))
 

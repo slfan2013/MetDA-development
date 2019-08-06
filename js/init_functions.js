@@ -315,42 +315,61 @@ download_results = function (files_names, files_sources, zipfile_name) {
     }
   }
 
-  var allResults = [];
-  for (var i = 0; i < index_of_link.length; i++) {
-    console.log(i)
-    if (index_of_link.includes(i)) {// check if this is a link.
-      Papa.parse(files_sources[index_of_link[i]], {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        error: function (err, file, inputElem, reason) {
-          console.log(reason)
-          $(".download").prop("disabled", false);
-          $("#download_results").text("Download Results")
-        },
-        complete: function (results) {
-          allResults.push(results);
-          if (allResults.length == index_of_link.length) {
-            var zip = new JSZip();
-            for (var j = 0; j < index_of_link.length; j++) {
-              zip.file(files_names[index_of_link[j]], Papa.unparse(allResults[j]))
-            }
 
-            for (var j = 0; j < index_of_not_link.length; j++) {
-              zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
-            }
+  if(index_of_link.length === 0){
+    var zip = new JSZip();
+    zip.file(files_names[index_of_not_link[0]], files_sources[index_of_not_link[0]], { base64: true });
 
-            zip.generateAsync({ type: "blob" })
-              .then(function (blob) {
-                saveAs(blob, zipfile_name + ".zip");
-                $(".download").prop("disabled", false);
-                $("#download_results").text("Download Results")
-              });
+    zip.generateAsync({ type: "blob" })
+                .then(function (blob) {
+                  if(zipfile_name.includes(".zip")){
+                    saveAs(blob, zipfile_name);
+                  }else{
+                    saveAs(blob, zipfile_name + ".zip");
+                  }
+                  $(".download").prop("disabled", false);
+                  $("#download_results").text("Download Results")
+                });
+  }else{
+    var allResults = [];
+    for (var i = 0; i < index_of_link.length; i++) {
+      console.log(i)
+      if (index_of_link.includes(i)) {// check if this is a link.
+        Papa.parse(files_sources[index_of_link[i]], {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          error: function (err, file, inputElem, reason) {
+            console.log(reason)
+            $(".download").prop("disabled", false);
+            $("#download_results").text("Download Results")
+          },
+          complete: function (results) {
+            allResults.push(results);
+            if (allResults.length == index_of_link.length) {
+              var zip = new JSZip();
+              for (var j = 0; j < index_of_link.length; j++) {
+                zip.file(files_names[index_of_link[j]], Papa.unparse(allResults[j]))
+              }
+  
+              for (var j = 0; j < index_of_not_link.length; j++) {
+                zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
+              }
+  
+              zip.generateAsync({ type: "blob" })
+                .then(function (blob) {
+                  saveAs(blob, zipfile_name + ".zip");
+                  $(".download").prop("disabled", false);
+                  $("#download_results").text("Download Results")
+                });
+            }
           }
-        }
-      })
+        })
+      }
     }
   }
+
+
 }
 
 
@@ -379,9 +398,6 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
   $(".download").prop("disabled", true);
   $("#save_results").text("Waiting User to Select a Folder ... ")
   // open a jstree.
-
-
-
 
 
   ocpu.call("open_project_structure_to_save_result", {

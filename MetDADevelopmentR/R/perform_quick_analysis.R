@@ -47,6 +47,8 @@ perform_quick_analysis <- function(
     x$id
   })
 
+  names(structure_to_be_added_parents) = structure_to_be_added_ids
+
   # i <- 1
   activate_data_id <- sapply(structure_to_be_added, function(x) {
     x$parameter$activate_data_id
@@ -76,14 +78,22 @@ perform_quick_analysis <- function(
 
 
 
-  depending <- c()
+
+
+
+  depending <- list()
   for (i in 1:length(structure_to_be_added_folders_only)) {
     temp_index <- which(structure_to_be_added_id %in% structure_to_be_added_folders_only[[i]]$parameter$activate_data_id)
 
     if (length(temp_index) == 0) {
-      depending[i] <- 0
+      depending[[i]] <- 0
     } else {
-      depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
+      # depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
+
+      depending[[i]] <- which(structure_to_be_added_folders_only_id %in% sapply(structure_to_be_added_folders_only[[i]]$parameter$activate_data_id, function(x) structure_to_be_added_parents[[x]]))
+
+
+
     }
   }
   output_file_time <- c()
@@ -108,13 +118,21 @@ perform_quick_analysis <- function(
 
 
 
-    if (!depending[i] == 0) {
+    if (any(!depending[[i]] == 0)) {
       temp_id <- current_parameter$activate_data_id
 
-      temp_split <- strsplit(temp_id, "\\.")[[1]]
+      # temp_split <- strsplit(temp_id, "\\.")[[1]]
+
+      temp_splits = sapply(temp_id, function(x){
+        strsplit(x, "\\.")[[1]]
+      }, simplify = F)
 
 
-      current_parameter$activate_data_id <- paste0(substr(temp_split[[1]], 1, nchar(temp_split[[1]]) - 11 + 1), output_file_time[depending[i]], ".", temp_split[length(temp_split)])
+      # current_parameter$activate_data_id <- paste0(substr(temp_split[[1]], 1, nchar(temp_split[[1]]) - 11 + 1), output_file_time[depending[[i]]], ".", temp_split[length(temp_split)])
+
+      current_parameter$activate_data_id <- sapply(1:length(temp_splits),function(x){
+        paste0(substr(temp_splits[[x]][1], 1, nchar(temp_splits[[x]][1]) - 11 + 1), output_file_time[depending[[i]][x]], ".", temp_splits[[x]][length(temp_splits[[x]])])
+      })
 
     }
 
@@ -162,11 +180,6 @@ perform_quick_analysis <- function(
       }
 
 
-
-
-      # stop("Needs to figure out what to do on boxplot.")
-
-
     }else{
       for (j in 1:length(current_parameter)) {
         if (current_parameter[[j]] %in% names(sample_parameters_to)) {
@@ -175,6 +188,20 @@ perform_quick_analysis <- function(
         }
       }
     }
+
+    # else if(current_parameter$fun_name %in% c("volcano")){
+    #   for (j in 1:length(current_parameter)) {
+    #
+    #     if (current_parameter[[j]] %in% names(sample_parameters_to)) {
+    #       # print(j)
+    #       current_parameter[[j]] <- plyr::revalue(current_parameter[[j]], sample_parameters_to)
+    #     }
+    #   }
+    #
+    #
+    #
+    # }
+
 
 
 
@@ -210,7 +237,7 @@ perform_quick_analysis <- function(
 
     names(sources)[1] = "quick_analysis" #this is for save_results_to_project to determin if the call is from the quick analysis.
 
-    if(current_parameter$fun_name %in% c("heatmap","pca",'boxplot')){
+    if(current_parameter$fun_name %in% c("heatmap","pca",'boxplot','volcano')){
       if(any(is.na(sources))){
         children_texts = sapply(children, function(x) x$text)
         for(j in which(is.na(sources))){
