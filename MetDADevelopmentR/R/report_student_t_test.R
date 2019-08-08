@@ -89,7 +89,7 @@ report_student_t_test <- function(project_id = "report t test11565154747", fold_
     slip_in_text(table_index, style = "Default Paragraph Font", pos = "after")%>%
     slip_in_text(" shows the 20 most significant compounds.", style = "Default Paragraph Font", pos = "after")%>%
     body_add_table(value = result_summary[order(result_summary$p_values, decreasing = FALSE)[1:20],], style = "table_template")%>%
-    body_add_par(value = paste0("Table ", table_index, ": t-test result summary (", paste0(get_fold_seq(project_id, data_ids), collapse = "->"), ")"), style = "table title")
+    body_add_par(value = paste0("Table ", table_index, ": t-test result summary (", paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), ")"), style = "table title")
 
 
 
@@ -109,7 +109,7 @@ report_student_t_test <- function(project_id = "report t test11565154747", fold_
   #     slip_in_text(table_index, style = "Default Paragraph Font", pos = "after") %>%
   #     slip_in_text(".", style = "Default Paragraph Font", pos = "after") %>%
   #     body_add_table(value = result_summary_table, style = "table_template") %>%
-  #     body_add_par(value = paste0("Table ", table_index, ": missing value summary (", paste0(get_fold_seq(project_id, data_ids[grepl("summary", data_ids)]), collapse = "->"), ")"), style = "table title")
+  #     body_add_par(value = paste0("Table ", table_index, ": missing value summary (", paste0(sapply(get_fold_seq(project_id, data_ids[grepl("summary", data_ids)]), paste0,collapse = "->"),"; "), ")"), style = "table title")
   # }
 
 

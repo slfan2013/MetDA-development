@@ -174,9 +174,9 @@ report_project_overview <- function(project_id = "report 11565112203", table_ind
 
   doc <- doc %>%
     body_add_table(value = summary_of_sample_info, style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index, ": sample info (", paste0(get_fold_seq(project_id, 'p.csv'), collapse = "->"),")"), style = "table title")%>%
+    body_add_par(value = paste0("Table ", table_index, ": sample info (", paste0(sapply(get_fold_seq(project_id, 'p.csv'), paste0,collapse = "->"),"; "),")"), style = "table title")%>%
     body_add_table(value = summary_of_compound_info, style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index+1, ": compound info (",paste0(get_fold_seq(project_id, 'f.csv'), collapse = "->"),")"), style = "table title")
+    body_add_par(value = paste0("Table ", table_index+1, ": compound info (",paste0(sapply(get_fold_seq(project_id, 'f.csv'), paste0,collapse = "->"),"; "),")"), style = "table title")
 
 
 

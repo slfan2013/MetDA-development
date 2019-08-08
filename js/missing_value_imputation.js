@@ -22,18 +22,18 @@ missing_value_imputation_append_results = function (obj, session) {
     });
 
     var files_sources = [session.loc + "files/result_dataset.csv", session.loc + "files/summary_data.csv"];
-    var files_names = ["missing_value_imputation_result_dataset.csv","missing_value_imputation_result_summary.csv"]
     var zipfile_name = "missing_value_imputation_results"
-    $("#download_results").off("click").on("click",function () {
-
-        files_sources.push(obj.report_base64[0])
-        files_names.push("report_missing_value_imputation.docx")
-        
-        download_results(files_names, files_sources, zipfile_name)
-    })
     var fold_name = "Missing Value Imputation"
     var files_names = ["result dataset.csv","result summary.csv"]
     var files_types = ["application/vnd.ms-excel","application/vnd.ms-excel"]
+    $("#download_results").off("click").on("click",function () {
+
+        //files_sources.push(obj.report_base64[0])
+        //files_names.push("report_missing_value_imputation.docx")
+        
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1])
+        //download_results(files_names, files_sources, zipfile_name)
+    })
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
         save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1])
     })

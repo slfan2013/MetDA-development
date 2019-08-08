@@ -155,3 +155,4 @@ if(exists("boxplot_plot")){# this means this call is from quick_analysis. Here w
 }else{
   result = list(results_description = "Boxplots are ready to make.",p = p, f = f, e = e)
 }
+

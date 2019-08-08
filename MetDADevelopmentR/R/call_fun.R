@@ -14,6 +14,9 @@ call_fun <- function(parameter, ...) {
   eval(parse(text = gsub("\r", "", readr::read_file(fileName))))
 
   return(result)
+
+
+
   return(TRUE)
 }
 

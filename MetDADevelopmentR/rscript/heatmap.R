@@ -52,7 +52,7 @@ if(!exists("order_compound")){
   order_compound = 'dendrogram'
 }
 if(order_sample == 'dendrogram'){
-  hc.col = hclust(dist(t(e_scale)))
+  hc.col = hclust(dist(t(e_scale),method = dist_method),method = clust_method)
   dd.col <- as.dendrogram(hc.col)
   dy <- dendro_data(dd.col)
   py <- ggdend(dy$segments) + coord_flip()
@@ -63,7 +63,7 @@ if(order_sample == 'dendrogram'){
 }
 
 if(order_compound=='dendrogram'){
-  hc.row = hclust(dist(e_scale))
+  hc.row = hclust(dist(e_scale,method = dist_method),method = clust_method)
   dd.row <- as.dendrogram(hc.row)
   dx <- dendro_data(dd.row)
   px <- ggdend(dx$segments)

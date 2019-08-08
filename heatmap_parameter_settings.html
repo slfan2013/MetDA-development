@@ -5,6 +5,35 @@
             <div id="scaling_method_div"></div>
         </div>
 
+        
+        <div class="form-group">
+            <label for="clust_method">Agglomeration Method</label>
+            <select class="form-control selectpicker parameter" data-style="btn btn-link" id="clust_method">
+                <option>ward.D</option>
+                <option>ward.D2</option>
+                <option>single</option>
+                <option>complete</option>
+                <option selected>average</option>
+                <option>mcquitty</option>
+                <option>median</option>
+                <option>centroid</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dist_method">Agglomeration Method</label>
+            <select class="form-control selectpicker parameter" data-style="btn btn-link" id="dist_method">
+                <option selected>euclidean</option>
+                <option>maximum</option>
+                <option>manhattan</option>
+                <option>canberra</option>
+                <option>binary</option>
+                <option>minkowski</option>
+            </select>
+        </div>
+
+
+
         <button type='submit' class="btn btn-primary btn-sm" id="submit">Submit</button>
     </form>
 </div>

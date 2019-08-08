@@ -239,6 +239,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         ocpu.call("check_input_format_volcano_input_file", {
             path: $("#" + volcano_input_file)[0].files[0]
         }, function (session) {
+            console.log(session)
             session.getObject(function (obj) {
                 oo = obj
                 project_id = obj.project_id[0]
@@ -414,12 +415,15 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         parameter.fun_name = window.location.href.split("#")[1]
         if(parameter.fun_name === 'volcano'){
             if(localStorage.big_category === 'in_and_out'){
-                parameter.activate_data_id = "e.csv" // sequence matters. See volcano.R
+                parameter.activate_data_id = $("#" + 'volcano_input_file')[0].files[0].name
             }else{
                 parameter.activate_data_id = [p_value_data_id, fold_change_data_id] // sequence matters. See volcano.R
                 parameter.p_value_data_treatment = p_value_data_treatment
                 parameter.fold_change_data_treatment = fold_change_data_treatment
             }
+                
+                
+            
             
             
         }else{

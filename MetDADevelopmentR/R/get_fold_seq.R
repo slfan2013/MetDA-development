@@ -12,5 +12,16 @@ get_fold_seq = function(project_id, file_id){
   }
   fold_seq <- text[match(needed_id, id)]
   fold_seq <- rev(fold_seq[!is.na(fold_seq)])
-  return(fold_seq)
+
+
+
+
+
+
+
+  return(sapply(by(fold_seq, rep(unlist(file_id)[1:length(file_id)], (length(fold_seq)/length(file_id))), function(x) x, simplify = T), function(x) as.character(x), simplify = F))
+
+
+
+
 }

@@ -8,10 +8,20 @@ download_folder_as_zip = function(
 
   load("download_folder_as_zip.RData")
   downloadFileName = paste0(path[1],".zip")
+
+
+
   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
   project = jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
-  fold_index = sapply(project$project_structure, function(x) x$icon)=="fa fa-folder"
+
+  project_structure_id = sapply(project$project_structure, function(x) x$id)
+
+
+
+
+
+  fold_index = sapply(project$project_structure[match(id, project_structure_id)], function(x) x$icon)=="fa fa-folder"
 
 
   for(i in 1:length(id)){
@@ -27,7 +37,7 @@ download_folder_as_zip = function(
 
 
   return(downloadFileName)
-  # return(TRUE)
+  return(TRUE)
 
 
 }
