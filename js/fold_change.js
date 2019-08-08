@@ -7,7 +7,7 @@ console.log("fold_change.js")
 fold_change_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
-    Papa.parse(session.loc + "files/summary_data.csv", {
+    Papa.parse(session.loc + "files/fold_change.csv", {
         download: true,
         header: false,
         complete: function (results) {
@@ -19,11 +19,18 @@ fold_change_append_results = function (obj, session) {
         }
     });
 
-    var files_sources = [session.loc + "files/summary_data.csv"];
+    var files_sources = [session.loc + "files/fold_change.csv"];
     var files_names = ["fold_change_result.csv"]
     var zipfile_name = "fold_change_result"
     $("#download_results").off("click").on("click",function () {
+
+
+        files_sources.push(obj.report_base64[0])
+        files_names.push("report_fold_change.docx")
+
         download_results(files_names, files_sources, zipfile_name)
+
+
     })
     var fold_name = "Fold Change"
     var files_names = ["fold_change_result.csv"]

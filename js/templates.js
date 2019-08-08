@@ -401,7 +401,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $(".parameter").each(function () {
             if (this.id !== '') {
                 //parameters.push({:$(this).val()})
-                if ($(this).prop("checked") === undefined) { // this means that it is a select.
+                if ($(this).attr('type') !== "checkbox") { // this means that it is a select.
                     parameter[this.id] = $(this).val()
                 } else { // this means that it is a checkbox
                     parameter[this.id] = $(this).prop("checked")

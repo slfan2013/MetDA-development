@@ -16,3 +16,5 @@ call_fun <- function(parameter, ...) {
   return(result)
   return(TRUE)
 }
+
+

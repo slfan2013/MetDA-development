@@ -252,10 +252,17 @@ var update_jstree = function (project_structure) {
         $("#project_structure").jstree("open_all");
     })
 }
+
+
 ocpu.call("get_tree_structure", {
     project_id: localStorage['activate_project_id']
 }, function (session) {
     session.getObject(function (obj) {
         update_jstree(obj)
+
+
+
+
     })
 })
+

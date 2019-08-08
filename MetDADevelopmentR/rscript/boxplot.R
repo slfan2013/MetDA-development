@@ -140,15 +140,11 @@ if(exists("boxplot_plot")){# this means this call is from quick_analysis. Here w
 
 
   result = jsonlite::toJSON(list("boxplot_plot.zip" = list(
-
     xs= xs, ys= ys, texts= texts, boxpoints= boxpoints, jitter= jitter, pointpos= pointpos, trace_names= trace_names, box_colors= box_colors,
     symbol= symbol, whiskerwidth= whiskerwidth, notched= notched, notchwidth= notchwidth, boxmean= boxmean,
     size= size, outliercolor= outliercolor, line_width= line_width, fillcolor_transparency= fillcolor_transparency, title= title, categoryarray= categoryarray,
     layout= layout, plot_id= "",
-
     main_group_values = main_group_values,main_group_levels = main_group_levels,e=e
-
-
   )
   ), auto_unbox = TRUE, force = TRUE)
 

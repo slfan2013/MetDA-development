@@ -378,18 +378,9 @@ $("#submit").click(function () {
                                                 }
                                             )
                                     })
-
-
-
-
                                 }
                                 plotting_compound_index++;
                             }, 1)
-
-
-                          
-
-
                         } else {
                             plot_fun(current_parameter)
 
