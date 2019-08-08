@@ -501,7 +501,7 @@ boxplot_plot_fun = function ({
         .then(gd => {
             boxplot_plot_gd = gd
             if (!quick_analysis) {
-                
+
                 boxplot_plot_parameters = {
                     //full_data: JSON.parse(fullData),
                     //full_layout: JSON.parse(fullLayout),
@@ -512,14 +512,14 @@ boxplot_plot_fun = function ({
                 boxplot_plot_parameters.group_sample_by = $("#boxplot_plot_group_sample_by").val()
                 boxplot_plot_parameters.main_group = $("#boxplot_plot_group_sample_main").val()
 
-                if(boxplot_plot_parameters.group_sample_by.length === 2){
+                if (boxplot_plot_parameters.group_sample_by.length === 2) {
                     var sub_group = group_sample_by.slice(0);
                     sub_group.splice(sub_group.indexOf(boxplot_plot_parameters.main_group), 1)[0]
                     boxplot_plot_parameters.categoryarray = $("#group_sample_by_" + sub_group).val().split("||")
-                }else{
+                } else {
                     boxplot_plot_parameters.categoryarray = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
                 }
-                boxplot_plot_parameters.main_group_split = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")                
+                boxplot_plot_parameters.main_group_split = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
             }
 
 
@@ -541,83 +541,174 @@ boxplot_plot_fun = function ({
 
 
 volcano_plot_fun = function ({
-    xs = undefined, ys = undefined, texts = undefined, boxpoints = undefined, jitter = undefined, pointpos = undefined, trace_names = undefined, box_colors = undefined,
-    symbol = undefined, whiskerwidth = undefined, notched = undefined, notchwidth = undefined, boxmean = undefined,
-    size = undefined, outliercolor = undefined, line_width = undefined, fillcolor_transparency = undefined, title = undefined, categoryarray = undefined,
+    p_values = undefined, label = undefined, fold_change = undefined,
+    p_value_cut_off = undefined, fold_change_cut_off = undefined,
+    colors = undefined, shapes = undefined, sizes = undefined,
+    significancy_line_color = undefined, significancy_line_dash = undefined, significancy_line_width = undefined,
+    names = undefined,
     layout = undefined, plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined } = {}
 ) {
     var myPlot = document.getElementById(plot_id)
-    var data = [];
-    for (var i = 0; i < ys.length; i++) {
-        var trace = {
-            y: ys[i],
-            type: 'box',
-            boxpoints: boxpoints,
-            jitter: jitter,
-            text: texts[i],
-            pointpos: pointpos,
-            name: trace_names[i],
+    var data = []
+    for (var i = 0; i < names.length; i++) {
+        data.push({
+            mode: 'markers',
+            x: [],
+            y: [],
+            name: names[i],
+            text: [],
             marker: {
-                color: box_colors[trace_names[i]],
-                symbol: symbol,
-                size: size,
-                outliercolor: outliercolor,
+                color: colors[i],
+                symbol: shapes[i],
+                size: sizes[i]
             },
-            line: {
-                width: line_width
-            },
-            fillcolor: transparent_rgba(box_colors[trace_names[i]], fillcolor_transparency),
-            whiskerwidth: whiskerwidth,
-            notched: notched,
-            notchwidth: notchwidth,
-            boxmean: boxmean
-        }
-        if (xs !== undefined) {
-            trace.x = xs[i]
-        }
-        data.push(trace)
+            showlegend: false
+        })
     }
 
 
-    layout.title.text = title
-    layout.xaxis.categoryorder = 'array'
-    if (xs === undefined) {
-        layout.boxmode = "overlay"
-    } else {
-        layout.boxmode = "group"
-        layout.xaxis.categoryarray = categoryarray
+    for (var i = 0; i < label.length; i++) {
+        var temp_text = "compound: "+label[i]+"<br>"+
+            "p-value: "+p_values[i]+"<br>"+
+            "fold change: "+fold_change[i]+"<br>"
+        if (p_values[i] < p_value_cut_off && fold_change[i] > fold_change_cut_off) {
+            data[0].x.push(Math.log2(fold_change[i]))
+            data[0].y.push(-Math.log10(p_values[i]))
+            data[0].text.push(temp_text)
+        } else if (p_values[i] < p_value_cut_off && fold_change[i] < (1 / fold_change_cut_off)) {
+            data[1].x.push(Math.log2(fold_change[i]))
+            data[1].y.push(-Math.log10(p_values[i]))
+            data[1].text.push(temp_text)
+        } else if (p_values[i] < p_value_cut_off) {
+            data[2].x.push(Math.log2(fold_change[i]))
+            data[2].y.push(-Math.log10(p_values[i]))
+            data[2].text.push(temp_text)
+        } else if (p_values[i] > p_value_cut_off && fold_change[i] > fold_change_cut_off) {
+            data[3].x.push(Math.log2(fold_change[i]))
+            data[3].y.push(-Math.log10(p_values[i]))
+            data[3].text.push(temp_text)
+        } else if (p_values[i] > p_value_cut_off && fold_change[i] < (1 / fold_change_cut_off)) {
+            data[4].x.push(Math.log2(fold_change[i]))
+            data[4].y.push(-Math.log10(p_values[i]))
+            data[4].text.push(temp_text)
+        } else {
+            data[5].x.push(Math.log2(fold_change[i]))
+            data[5].y.push(-Math.log10(p_values[i]))
+            data[5].text.push(temp_text)
+        }
     }
+    layout.xaxis.range = [Math.log2(jStat.min(fold_change)) - 0.1, Math.log2(jStat.max(fold_change) + 0.1)]
+    data.push({ // significant line.
+        x: layout.xaxis.range,
+        y: [-Math.log10(p_value_cut_off), -Math.log10(p_value_cut_off)],
+        mode: "lines",
+        name: "p-value cut-off",
+        line: {
+            dash: significancy_line_dash,
+            width: significancy_line_width,
+            color: significancy_line_color
+        },
+        showlegend:false
+    })
 
 
-    Plotly.newPlot(plot_id, data, layout, { showSendToCloud: false })
+
+
+
+    Plotly.newPlot(plot_id, data, layout, { editable: true })
+
 
         .then(gd => {
             volcano_plot_gd = gd
             if (!quick_analysis) {
-                
+
                 volcano_plot_parameters = {
-                    //full_data: JSON.parse(fullData),
-                    //full_layout: JSON.parse(fullLayout),
                     data: volcano_plot_gd.data,
                     layout: volcano_plot_gd.layout,
                 }
+                // volcano_plot_parameters.main_group_split = $("#group_sample_by_" + 
 
-                volcano_plot_parameters.group_sample_by = $("#volcano_plot_group_sample_by").val()
-                volcano_plot_parameters.main_group = $("#volcano_plot_group_sample_main").val()
 
-                if(volcano_plot_parameters.group_sample_by.length === 2){
-                    var sub_group = group_sample_by.slice(0);
-                    sub_group.splice(sub_group.indexOf(volcano_plot_parameters.main_group), 1)[0]
-                    volcano_plot_parameters.categoryarray = $("#group_sample_by_" + sub_group).val().split("||")
-                }else{
-                    volcano_plot_parameters.categoryarray = $("#group_sample_by_" + volcano_plot_parameters.main_group).val().split("||")
-                }
-                volcano_plot_parameters.main_group_split = $("#group_sample_by_" + volcano_plot_parameters.main_group).val().split("||")                
+
+                volcano_plot_parameters.p_value_cut_off =  $("#p_value_cut_off").val()
+
+
+                volcano_plot_parameters.fold_change_cut_off = $("#fold_change_cut_off").val()
+                volcano_plot_parameters.colors = [$("#sig_pos").spectrum("get").toRgbString(), $("#sig_neg").spectrum("get").toRgbString(), $("#sig_not_pos_neg").spectrum("get").toRgbString(), $("#not_sig_pos").spectrum("get").toRgbString(), $("#not_sig_neg").spectrum("get").toRgbString(), $("#not_sig_not_pos_neg").spectrum("get").toRgbString()]
+                volcano_plot_parameters.shapes = [$("#sig_pos_shape").val(), $("#sig_neg_shape").val(), $("#sig_not_pos_neg_shape").val(), $("#not_sig_pos_shape").val(), $("#not_sig_neg_shape").val(), $("#not_sig_not_pos_neg_shape").val()]
+                volcano_plot_parameters.sizes = [$("#sig_pos_size").val(), $("#sig_neg_size").val(), $("#sig_not_pos_neg_size").val(), $("#not_sig_pos_size").val(), $("#not_sig_neg_size").val(), $("#not_sig_not_pos_neg_size").val()]
+                volcano_plot_parameters.significancy_line_color = $("#significancy_line_color").spectrum("get").toRgbString()
+                volcano_plot_parameters.significancy_line_dash = $("#significancy_line_dash").val()
+                volcano_plot_parameters.significancy_line_width = $("#significancy_line_width").val()
+                volcano_plot_parameters.names = ["Significant + Positive", "Significant + Negative", "Significant but Small Fold Change", "Not Significant + Positive", "Not Significant + Positive", "Not Significant + Small Fold Change"]
+
+
+
+
+
+
+
             }
+
+            Plotly.toImage(gd, { format: 'svg' })
+                .then(
+                    function (url) {
+                        console.log("!!")
+                        var volcano_plot_url = url
+                        var volcano_plot_url2 = volcano_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                        volcano_plot_url2 = decodeURIComponent(volcano_plot_url2);
+                        if (!quick_analysis) {
+                            plot_url.volcano_plot = btoa(unescape(encodeURIComponent(volcano_plot_url2)))
+                            files_sources[0] = plot_url.volcano_plot
+                        } else {
+                            plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(volcano_plot_url2)))
+                        }
+
+                        
+                    }
+                )
+
+
 
 
 
         });
+
+        myPlot.on('plotly_click', function (data, event) {//https://plot.ly/javascript/text-and-annotations/
+            eee = event
+            ddd = data
+            console.log(ddd)
+            point = data.points[0]
+            newAnnotation = {
+                x: point.xaxis.d2l(point.x),
+                y: point.yaxis.d2l(point.y),
+                arrowhead: 6,
+                ax: 0,
+                ay: -80,
+                bgcolor: 'rgba(255, 255, 255, 0.9)',
+                arrowcolor: point.fullData.marker.color,
+                font: { size: 12 },
+                text: point.text.split("<br>")[0].split(": ")[1],
+                captureevents: true
+            },
+                divid = document.getElementById(plot_id)
+            newIndex = (divid.layout.annotations || []).length;
+            if (newIndex) {
+                var foundCopy = false;
+                divid.layout.annotations.forEach(function (ann, sameIndex) {
+                    if (ann.text === newAnnotation.text) {
+                        Plotly.relayout(plot_id, 'annotations[' + sameIndex + ']', 'remove');
+                        foundCopy = true;
+                    }
+                });
+                if (foundCopy) return;
+            }
+            Plotly.relayout(plot_id, 'annotations[' + newIndex + ']', newAnnotation)
+            /*.then(function(gg){
+                ggg = gg
+                save the new plot here.
+            });*/
+        })
 
 
 

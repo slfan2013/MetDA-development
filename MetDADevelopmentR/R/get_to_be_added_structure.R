@@ -1,8 +1,10 @@
 get_to_be_added_structure <- function(
-  project_id = "test21563210075",
+  project_id = "volcano b11565063656",
   selected_data = "e.csv",
-  project_id2 = "test31563293566",
+  project_id2 = "volcano a11565063515",
   selected_data2 = "e.csv") {
+
+
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
       "http://metda:metda@localhost:5985/metda_project/",
@@ -62,7 +64,9 @@ get_to_be_added_structure <- function(
   while (length(being_activated_data_id2) > 0) {
     needed_id2 <- c(needed_id2, being_activated_data_id2)
 
-    being_activated_data_id2 <- id2[activate_data_ids2 %in% being_activated_data_id2]
+    being_activated_data_id2 <- id2[sapply(activate_data_ids2, function(x){
+      any(unlist(x) %in% being_activated_data_id2)
+    })]
     round <- round + 1
   }
 

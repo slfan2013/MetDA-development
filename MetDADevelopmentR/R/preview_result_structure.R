@@ -1,7 +1,7 @@
 preview_result_structure <- function(
-                                     project_id = "heatmap 01564436472",
+                                     project_id = "volcano b11565063656",
                                      selected_data = "e.csv",
-                                     project_id2 = "project done41564443096",
+                                     project_id2 = "volcano a21565064215",
                                      selected_data2 = "e.csv") {
 
   save(project_id, selected_data, project_id2, selected_data2, file = "preview_result_structure.RData")
@@ -49,7 +49,7 @@ preview_result_structure <- function(
 
 
 
-  f2 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/f.csv"))
+  f2 <- data.table::fread(paste0("http://localhost:5985/metda_project/", project_id2, "/f.csv"))
   colnames_f2 <- colnames(f2)
 
 

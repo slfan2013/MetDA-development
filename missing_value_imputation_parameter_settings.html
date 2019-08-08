@@ -6,16 +6,16 @@
             <select class="form-control selectpicker parameter" data-style="btn btn-link" id="defination_of_missing_value"
                 multiple onchange="defination_of_missing_value_onchange()">
                 <option selected="selected">empty cells</option>
+                <option selected="selected">characters</option>
                 <option>zeros</option>
                 <option>negative values</option>
                 <option>values less than ... </option>
-                <option>other</option>
             </select>
         </div>
         <div class="form-group" style="display:none" id="defination_of_missing_value_values_less_than_form_group">
             <label for="defination_of_missing_value_values_less_than">VALUES LESS THAN ... </label>
             <input type="number" class="form-control parameter" id="defination_of_missing_value_values_less_than"
-                placeholder="Enter a Value" aria-describedby="defination_of_missing_values_less_than_text">
+                placeholder="Enter a Value" aria-describedby="defination_of_missing_values_less_than_text" value="500">
             <small id="defination_of_missing_values_less_than_text" class="form-text text-muted">Values less than this
                 entered value will be treated as missing values</small>
         </div>
@@ -56,7 +56,7 @@
             </tbody>
         </table>
         <div class="form-group">
-            <label for="missing_value_imputation_method">Step 3: Missing Value Imputation Method </label>
+            <label for="missing_value_imputation_method">Step 3: Missing Value Imputation Method (with a disturb)</label>
             <select class="form-control selectpicker parameter" data-style="btn btn-link" id="missing_value_imputation_method">
                 <option selected="selected">replace by half minimum</option>
                 <option>replace by 1/10 minimum</option>
@@ -64,6 +64,11 @@
                 <option>replace by mean</option>
                 <option>replace by median</option>
                 <option>imputed by kNN</option>
+                <option>Bayesian PCA missing value estimation (BPCA)</option>
+                <option>probabilistic PCA (PPCA)</option>
+                <option>Single Value Decomposition imputation (SVD)</option>
+                <option>missForest</option>
+                <option>QRILC</option>
             </select>
         </div>
 

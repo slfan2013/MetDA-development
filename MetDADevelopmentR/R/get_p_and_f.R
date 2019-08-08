@@ -17,5 +17,5 @@ get_p_and_f = function(project_id){
   f = data.table::fread(paste0(projectUrl, "/",projectList$project_structure[[which_f]]$id))
 
 
-  return(list(p = p, f = f))
+  return(list(p = p, f = f, projectList= projectList))
 }

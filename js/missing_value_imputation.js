@@ -3,6 +3,10 @@ console.log("missing_value_imputation.js")
 
 
 missing_value_imputation_append_results = function (obj, session) {
+
+    console.log(obj)
+    console.log(session)
+
     $("#results_description").html(obj.results_description)
 
     Papa.parse(session.loc + "files/summary_data.csv", {
@@ -21,6 +25,10 @@ missing_value_imputation_append_results = function (obj, session) {
     var files_names = ["missing_value_imputation_result_dataset.csv","missing_value_imputation_result_summary.csv"]
     var zipfile_name = "missing_value_imputation_results"
     $("#download_results").off("click").on("click",function () {
+
+        files_sources.push(obj.report_base64[0])
+        files_names.push("report_missing_value_imputation.docx")
+        
         download_results(files_names, files_sources, zipfile_name)
     })
     var fold_name = "Missing Value Imputation"
