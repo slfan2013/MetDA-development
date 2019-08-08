@@ -1,6 +1,8 @@
 check_input_format_volcano_input_file <- function(path = "volcano_plot_input.csv") {
 
+  save(path, file = "check_input_format_volcano_input_file.RData")
 
+  load("check_input_format_volcano_input_file.RData")
   result = data.table::fread(path)
 
   if(sum(!c("label", "p_values", "fold_changes") %in% colnames(result))>1){
@@ -19,10 +21,10 @@ check_input_format_volcano_input_file <- function(path = "volcano_plot_input.csv
   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", temp_project_id))
   projectList <- jsonlite::fromJSON(projectUrl)
   e <- result
-  write.csv(e, "e.csv", row.names = FALSE)
-  projectList[["_attachments"]][["e.csv"]] <- list(
+  write.csv(e, path, row.names = FALSE)
+  projectList[["_attachments"]][[path]] <- list(
     content_type = "application/vnd.ms-excel",
-    data = gsub("data:text/csv;base64,", "", markdown:::.b64EncodeFile("e.csv"))
+    data = gsub("data:text/csv;base64,", "", markdown:::.b64EncodeFile(path))
   )
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
 
@@ -34,4 +36,5 @@ check_input_format_volcano_input_file <- function(path = "volcano_plot_input.csv
   result$message$warning_message = ""
 
   return(list(message = result$message, project_id = temp_project_id))
+  return(TRUE)
 }

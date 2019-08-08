@@ -73,123 +73,123 @@ result = list(results_description = report_html)
 
 
 
-if(grepl("temp_project_", project_id)){
-
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
-  projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
-  temp_time = substr(project_id, nchar(project_id)-10+1, nchar(project_id))
-
-  fold_id = paste0("Fold Change", temp_time)
-  data1_id = "fold_change.csv"
-
-
-  projectList[["project_structure"]] <- list(
-    list(
-      id = project_id,
-      parent = "#",
-      text = "",
-      icon = "fa fa-folder"
-    ),
-    list(
-      id = "e.csv",
-      parent = project_id,
-      text = "e.csv",
-      icon = "fa fa-file-excel-o",
-      with_attachment = TRUE,
-      epf = "e",
-      parameter = list(
-        r_function = "create_new_project",
-        parameters = ""
-      )
-    ),
-    list(
-      id = "f.csv",
-      parent = project_id,
-      text = "f.csv",
-      icon = "fa fa-file-excel-o",
-      with_attachment = TRUE,
-      epf = "f",
-      parameter = list(
-        r_function = "create_new_project",
-        parameters = ""
-      )
-    ),
-    list(
-      id = "p.csv",
-      parent = project_id,
-      text = "p.csv",
-      icon = "fa fa-file-excel-o",
-      with_attachment = TRUE,
-      epf = "p",
-      parameter = list(
-        r_function = "create_new_project",
-        parameters = ""
-      )
-    ),
-    list(
-      id = fold_id,
-      parent = project_id,
-      text = "Student t-test",
-      icon = "fa fa-folder",
-      with_attachment = TRUE,
-      epf = "p",
-      parameter = list(
-        treatment_group = treatment_group,
-        treatment_group_levels = treatment_group_levels,
-        mean_or_median = mean_or_median,
-        project_id = project_id,
-        fun_name = fun_name,
-        activate_data_id = activate_data_id
-      ),
-      files_sources = "",
-      files_types = "",
-      epf_index = 1
-    ),
-    list(
-      id = data1_id,
-      parent = fold_id,
-      text = data1_id,
-      icon = "fa fa-file-excel-o",
-      with_attachment = TRUE,
-      epf = "e",
-      parameter = list(
-        activate_data_id= "e.csv"
-      )
-    )
-  )
-
-
-  attname = c('p.csv', 'f.csv', 'e.csv', data1_id)
-  write.csv(p, 'p.csv')
-  write.csv(f, 'f.csv')
-  write.csv(e, 'e.csv')
-  content_types = c("application/vnd.ms-excel","application/vnd.ms-excel","application/vnd.ms-excel","application/vnd.ms-excel")
-  projectList[["_attachments"]] <- list()
-  for (i in 1:length(attname)) {
-    projectList[["_attachments"]][[attname[i]]] <- list(
-      content_type = content_types[i],
-      data = strsplit(markdown:::.b64EncodeFile(attname[i]), "base64,")[[1]][2]
-    )
-  }
-  RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
-
-  report_fold_change(project_id, fold_id)
-
-
-  filename = "report_fold_change"
-  suffix = '.docx'
-
-
-
-
-
-  result = list(results_description = report_html, report_base64 = as.character(RCurl::base64Encode(readBin(paste0(filename, suffix), "raw", file.info(paste0(filename, suffix))[1, "size"]), "txt")))
-
-
-
-}else{
-  result = list(results_description = report_html)
-}
+# if(grepl("temp_project_", project_id)){
+#
+#   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+#   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
+#   temp_time = substr(project_id, nchar(project_id)-10+1, nchar(project_id))
+#
+#   fold_id = paste0("Fold Change", temp_time)
+#   data1_id = "fold_change.csv"
+#
+#
+#   projectList[["project_structure"]] <- list(
+#     list(
+#       id = project_id,
+#       parent = "#",
+#       text = "",
+#       icon = "fa fa-folder"
+#     ),
+#     list(
+#       id = "e.csv",
+#       parent = project_id,
+#       text = "e.csv",
+#       icon = "fa fa-file-excel-o",
+#       with_attachment = TRUE,
+#       epf = "e",
+#       parameter = list(
+#         r_function = "create_new_project",
+#         parameters = ""
+#       )
+#     ),
+#     list(
+#       id = "f.csv",
+#       parent = project_id,
+#       text = "f.csv",
+#       icon = "fa fa-file-excel-o",
+#       with_attachment = TRUE,
+#       epf = "f",
+#       parameter = list(
+#         r_function = "create_new_project",
+#         parameters = ""
+#       )
+#     ),
+#     list(
+#       id = "p.csv",
+#       parent = project_id,
+#       text = "p.csv",
+#       icon = "fa fa-file-excel-o",
+#       with_attachment = TRUE,
+#       epf = "p",
+#       parameter = list(
+#         r_function = "create_new_project",
+#         parameters = ""
+#       )
+#     ),
+#     list(
+#       id = fold_id,
+#       parent = project_id,
+#       text = "Student t-test",
+#       icon = "fa fa-folder",
+#       with_attachment = TRUE,
+#       epf = "p",
+#       parameter = list(
+#         treatment_group = treatment_group,
+#         treatment_group_levels = treatment_group_levels,
+#         mean_or_median = mean_or_median,
+#         project_id = project_id,
+#         fun_name = fun_name,
+#         activate_data_id = activate_data_id
+#       ),
+#       files_sources = "",
+#       files_types = "",
+#       epf_index = 1
+#     ),
+#     list(
+#       id = data1_id,
+#       parent = fold_id,
+#       text = data1_id,
+#       icon = "fa fa-file-excel-o",
+#       with_attachment = TRUE,
+#       epf = "e",
+#       parameter = list(
+#         activate_data_id= "e.csv"
+#       )
+#     )
+#   )
+#
+#
+#   attname = c('p.csv', 'f.csv', 'e.csv', data1_id)
+#   write.csv(p, 'p.csv')
+#   write.csv(f, 'f.csv')
+#   write.csv(e, 'e.csv')
+#   content_types = c("application/vnd.ms-excel","application/vnd.ms-excel","application/vnd.ms-excel","application/vnd.ms-excel")
+#   projectList[["_attachments"]] <- list()
+#   for (i in 1:length(attname)) {
+#     projectList[["_attachments"]][[attname[i]]] <- list(
+#       content_type = content_types[i],
+#       data = strsplit(markdown:::.b64EncodeFile(attname[i]), "base64,")[[1]][2]
+#     )
+#   }
+#   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
+#
+#   report_fold_change(project_id, fold_id)
+#
+#
+#   filename = "report_fold_change"
+#   suffix = '.docx'
+#
+#
+#
+#
+#
+#   result = list(results_description = report_html, report_base64 = as.character(RCurl::base64Encode(readBin(paste0(filename, suffix), "raw", file.info(paste0(filename, suffix))[1, "size"]), "txt")))
+#
+#
+#
+# }else{
+#   result = list(results_description = report_html)
+# }
 
 
 

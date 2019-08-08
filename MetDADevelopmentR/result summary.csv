@@ -1,151 +1,149 @@
-index,Sepal.Length,Sepal.Width,Petal.Length,Petal.Width,Species
-1,5.1,3.5,1.4,0.2,setosa
-2,4.9,3,1.4,0.2,setosa
-3,4.7,3.2,1.3,0.2,setosa
-4,4.6,3.1,1.5,0.2,setosa
-5,5,3.6,1.4,0.2,setosa
-6,5.4,3.9,1.7,0.4,setosa
-7,4.6,3.4,1.4,0.3,setosa
-8,5,3.4,1.5,0.2,setosa
-9,4.4,2.9,1.4,0.2,setosa
-10,4.9,3.1,1.5,0.1,setosa
-11,5.4,3.7,1.5,0.2,setosa
-12,4.8,3.4,1.6,0.2,setosa
-13,4.8,3,1.4,0.1,setosa
-14,4.3,3,1.1,0.1,setosa
-15,5.8,4,1.2,0.2,setosa
-16,5.7,4.4,1.5,0.4,setosa
-17,5.4,3.9,1.3,0.4,setosa
-18,5.1,3.5,1.4,0.3,setosa
-19,5.7,3.8,1.7,0.3,setosa
-20,5.1,3.8,1.5,0.3,setosa
-21,5.4,3.4,1.7,0.2,setosa
-22,5.1,3.7,1.5,0.4,setosa
-23,4.6,3.6,1,0.2,setosa
-24,5.1,3.3,1.7,0.5,setosa
-25,4.8,3.4,1.9,0.2,setosa
-26,5,3,1.6,0.2,setosa
-27,5,3.4,1.6,0.4,setosa
-28,5.2,3.5,1.5,0.2,setosa
-29,5.2,3.4,1.4,0.2,setosa
-30,4.7,3.2,1.6,0.2,setosa
-31,4.8,3.1,1.6,0.2,setosa
-32,5.4,3.4,1.5,0.4,setosa
-33,5.2,4.1,1.5,0.1,setosa
-34,5.5,4.2,1.4,0.2,setosa
-35,4.9,3.1,1.5,0.2,setosa
-36,5,3.2,1.2,0.2,setosa
-37,5.5,3.5,1.3,0.2,setosa
-38,4.9,3.6,1.4,0.1,setosa
-39,4.4,3,1.3,0.2,setosa
-40,5.1,3.4,1.5,0.2,setosa
-41,5,3.5,1.3,0.3,setosa
-42,4.5,2.3,1.3,0.3,setosa
-43,4.4,3.2,1.3,0.2,setosa
-44,5,3.5,1.6,0.6,setosa
-45,5.1,3.8,1.9,0.4,setosa
-46,4.8,3,1.4,0.3,setosa
-47,5.1,3.8,1.6,0.2,setosa
-48,4.6,3.2,1.4,0.2,setosa
-49,5.3,3.7,1.5,0.2,setosa
-50,5,3.3,1.4,0.2,setosa
-51,7,3.2,4.7,1.4,versicolor
-52,6.4,3.2,4.5,1.5,versicolor
-53,6.9,3.1,4.9,1.5,versicolor
-54,5.5,2.3,4,1.3,versicolor
-55,6.5,2.8,4.6,1.5,versicolor
-56,5.7,2.8,4.5,1.3,versicolor
-57,6.3,3.3,4.7,1.6,versicolor
-58,4.9,2.4,3.3,1,versicolor
-59,6.6,2.9,4.6,1.3,versicolor
-60,5.2,2.7,3.9,1.4,versicolor
-61,5,2,3.5,1,versicolor
-62,5.9,3,4.2,1.5,versicolor
-63,6,2.2,4,1,versicolor
-64,6.1,2.9,4.7,1.4,versicolor
-65,5.6,2.9,3.6,1.3,versicolor
-66,6.7,3.1,4.4,1.4,versicolor
-67,5.6,3,4.5,1.5,versicolor
-68,5.8,2.7,4.1,1,versicolor
-69,6.2,2.2,4.5,1.5,versicolor
-70,5.6,2.5,3.9,1.1,versicolor
-71,5.9,3.2,4.8,1.8,versicolor
-72,6.1,2.8,4,1.3,versicolor
-73,6.3,2.5,4.9,1.5,versicolor
-74,6.1,2.8,4.7,1.2,versicolor
-75,6.4,2.9,4.3,1.3,versicolor
-76,6.6,3,4.4,1.4,versicolor
-77,6.8,2.8,4.8,1.4,versicolor
-78,6.7,3,5,1.7,versicolor
-79,6,2.9,4.5,1.5,versicolor
-80,5.7,2.6,3.5,1,versicolor
-81,5.5,2.4,3.8,1.1,versicolor
-82,5.5,2.4,3.7,1,versicolor
-83,5.8,2.7,3.9,1.2,versicolor
-84,6,2.7,5.1,1.6,versicolor
-85,5.4,3,4.5,1.5,versicolor
-86,6,3.4,4.5,1.6,versicolor
-87,6.7,3.1,4.7,1.5,versicolor
-88,6.3,2.3,4.4,1.3,versicolor
-89,5.6,3,4.1,1.3,versicolor
-90,5.5,2.5,4,1.3,versicolor
-91,5.5,2.6,4.4,1.2,versicolor
-92,6.1,3,4.6,1.4,versicolor
-93,5.8,2.6,4,1.2,versicolor
-94,5,2.3,3.3,1,versicolor
-95,5.6,2.7,4.2,1.3,versicolor
-96,5.7,3,4.2,1.2,versicolor
-97,5.7,2.9,4.2,1.3,versicolor
-98,6.2,2.9,4.3,1.3,versicolor
-99,5.1,2.5,3,1.1,versicolor
-100,5.7,2.8,4.1,1.3,versicolor
-101,6.3,3.3,6,2.5,virginica
-102,5.8,2.7,5.1,1.9,virginica
-103,7.1,3,5.9,2.1,virginica
-104,6.3,2.9,5.6,1.8,virginica
-105,6.5,3,5.8,2.2,virginica
-106,7.6,3,6.6,2.1,virginica
-107,4.9,2.5,4.5,1.7,virginica
-108,7.3,2.9,6.3,1.8,virginica
-109,6.7,2.5,5.8,1.8,virginica
-110,7.2,3.6,6.1,2.5,virginica
-111,6.5,3.2,5.1,2,virginica
-112,6.4,2.7,5.3,1.9,virginica
-113,6.8,3,5.5,2.1,virginica
-114,5.7,2.5,5,2,virginica
-115,5.8,2.8,5.1,2.4,virginica
-116,6.4,3.2,5.3,2.3,virginica
-117,6.5,3,5.5,1.8,virginica
-118,7.7,3.8,6.7,2.2,virginica
-119,7.7,2.6,6.9,2.3,virginica
-120,6,2.2,5,1.5,virginica
-121,6.9,3.2,5.7,2.3,virginica
-122,5.6,2.8,4.9,2,virginica
-123,7.7,2.8,6.7,2,virginica
-124,6.3,2.7,4.9,1.8,virginica
-125,6.7,3.3,5.7,2.1,virginica
-126,7.2,3.2,6,1.8,virginica
-127,6.2,2.8,4.8,1.8,virginica
-128,6.1,3,4.9,1.8,virginica
-129,6.4,2.8,5.6,2.1,virginica
-130,7.2,3,5.8,1.6,virginica
-131,7.4,2.8,6.1,1.9,virginica
-132,7.9,3.8,6.4,2,virginica
-133,6.4,2.8,5.6,2.2,virginica
-134,6.3,2.8,5.1,1.5,virginica
-135,6.1,2.6,5.6,1.4,virginica
-136,7.7,3,6.1,2.3,virginica
-137,6.3,3.4,5.6,2.4,virginica
-138,6.4,3.1,5.5,1.8,virginica
-139,6,3,4.8,1.8,virginica
-140,6.9,3.1,5.4,2.1,virginica
-141,6.7,3.1,5.6,2.4,virginica
-142,6.9,3.1,5.1,2.3,virginica
-143,5.8,2.7,5.1,1.9,virginica
-144,6.8,3.2,5.9,2.3,virginica
-145,6.7,3.3,5.7,2.5,virginica
-146,6.7,3,5.2,2.3,virginica
-147,6.3,2.5,5,1.9,virginica
-148,6.5,3,5.2,2,virginica
-149,6.2,3.4,5.4,2.3,virginica
-150,5.9,3,5.1,1.8,virginica
+index,label,empty.cells,zeros,negative.values,characters,values.less.than.500,total,excluded
+1,xylose,0,0,0,0,0,0,No
+2,xylitol,0,0,0,0,0,0,No
+3,xanthine,0,0,0,0,0,0,No
+4,valine,0,0,0,0,0,0,No
+5,uridine,0,0,0,0,0,0,No
+6,uric acid,0,0,0,0,1,1,No
+7,urea,0,0,0,0,0,0,No
+8,uracil,0,0,0,0,0,0,No
+9,UDP GlcNAc,0,0,0,0,3,3,No
+10,tyrosine,0,0,0,0,0,0,No
+11,tryptophan,0,0,0,0,0,0,No
+12,tocopherol alpha-,0,0,0,0,0,0,No
+13,thymine,0,0,0,0,1,1,No
+14,threonine,0,0,0,0,0,0,No
+15,threonic acid,0,0,0,0,0,0,No
+16,terephthalic acid,0,0,0,0,0,0,No
+17,taurine,0,0,0,0,0,0,No
+18,tagatose,0,0,0,0,1,1,No
+19,sucrose,0,0,0,0,7,7,No
+20,succinic acid,0,0,0,0,0,0,No
+21,succinate semialdehyde,0,0,0,0,0,0,No
+22,squalene,0,0,0,0,0,0,No
+23,sorbitol,0,0,0,0,0,0,No
+24,shikimic acid,0,0,0,0,0,0,No
+25,serine,0,0,0,0,0,0,No
+26,ribose,0,0,0,0,1,1,No
+27,ribonic acid,0,0,0,0,8,8,Yes
+28,ribitol,0,0,0,0,0,0,No
+29,pyruvic acid,0,0,0,0,0,0,No
+30,pyrophosphate,0,0,0,0,0,0,No
+31,pseudo uridine,0,0,0,0,0,0,No
+32,proline,0,0,0,0,0,0,No
+33,p-hydroxylphenyllactic acid,0,0,0,0,13,13,Yes
+34,phosphoethanolamine,0,0,0,0,0,0,No
+35,phosphate,0,0,0,0,0,0,No
+36,phenylalanine,0,0,0,0,0,0,No
+37,pentadecanoic acid,0,0,0,0,0,0,No
+38,pantothenic acid,0,0,0,0,0,0,No
+39,palmitoleic acid,0,0,0,0,0,0,No
+40,oxoproline,0,0,0,0,0,0,No
+41,oxalic acid,0,0,0,0,1,1,No
+42,ornithine,0,0,0,0,0,0,No
+43,oleic acid,0,0,0,0,0,0,No
+44,noradrenaline,0,0,0,0,0,0,No
+45,nonadecanoic acid,0,0,0,0,0,0,No
+46,nicotinamide,0,0,0,0,0,0,No
+47,N-acetylputrescine,0,0,0,0,0,0,No
+48,n-acetyl-d-hexosamine,0,0,0,0,16,16,Yes
+49,N-acetylaspartic acid,0,0,0,0,0,0,No
+50,myristic acid,0,0,0,0,0,0,No
+51,myo-inositol,0,0,0,0,0,0,No
+52,methionine sulfoxide,0,0,0,0,0,0,No
+53,methionine,0,0,0,0,0,0,No
+54,methanolphosphate,0,0,0,0,0,0,No
+55,melibiose,0,0,0,0,16,16,Yes
+56,mannose,0,0,0,0,0,0,No
+57,maltotriose,0,0,0,0,6,6,No
+58,maltose,0,0,0,0,0,0,No
+59,malic acid,0,0,0,0,0,0,No
+60,lyxose,0,0,0,0,0,0,No
+61,lyxitol,0,0,0,0,0,0,No
+62,lysine,0,0,0,0,0,0,No
+63,linoleic acid,0,0,0,0,0,0,No
+64,levoglucosan,0,0,0,0,0,0,No
+65,leucine,0,0,0,0,0,0,No
+66,lauric acid,0,0,0,0,0,0,No
+67,lactic acid,0,0,0,0,0,0,No
+68,isothreonic acid,0,0,0,0,0,0,No
+69,isoleucine,0,0,0,0,0,0,No
+70,isohexonic acid,0,0,0,0,5,5,No
+71,inositol-4-monophosphate,0,0,0,0,0,0,No
+72,inosine-5'-monophosphate,0,0,0,0,0,0,No
+73,inosine,0,0,0,0,0,0,No
+74,indole-3-lactate,0,0,0,0,0,0,No
+75,hypoxanthine,0,0,0,0,0,0,No
+76,hydroxycarbamate NIST,0,0,0,0,0,0,No
+77,homoserine,0,0,0,0,1,1,No
+78,hexose-6-phosphate,0,0,0,0,1,1,No
+79,hexitol,0,0,0,0,0,0,No
+80,hexadecylglycerol NIST,0,0,0,0,0,0,No
+81,heptadecanoic acid,0,0,0,0,0,0,No
+82,guanosine,0,0,0,0,6,6,No
+83,glycolic acid,0,0,0,0,0,0,No
+84,glycine,0,0,0,0,0,0,No
+85,glycerol-alpha-phosphate,0,0,0,0,0,0,No
+86,glycerol-3-galactoside,0,0,0,0,0,0,No
+87,glycerol,0,0,0,0,0,0,No
+88,glyceric acid,0,0,0,0,1,1,No
+89,glutathione,0,0,0,0,0,0,No
+90,glutaric acid,0,0,0,0,16,16,Yes
+91,glutamine,0,0,0,0,0,0,No
+92,glutamate,0,0,0,0,0,0,No
+93,glucose-6-phosphate,0,0,0,0,3,3,No
+94,glucose-1-phosphate,0,0,0,0,0,0,No
+95,glucose,0,0,0,0,0,0,No
+96,galactonic acid,0,0,0,0,0,0,No
+97,galactitol,0,0,0,0,10,10,Yes
+98,fumaric acid,0,0,0,0,0,0,No
+99,fucose,0,0,0,0,0,0,No
+100,fructose-6-phosphate,0,0,0,0,2,2,No
+101,fructose,0,0,0,0,1,1,No
+102,ethanol phosphate NIST,0,0,0,0,0,0,No
+103,erythronic acid lactone,0,0,0,0,0,0,No
+104,erythritol,0,0,0,0,0,0,No
+105,docosahexaenoic acid,0,0,0,0,0,0,No
+106,dihydrocholesterol,0,0,0,0,0,0,No
+107,dehydroascorbic acid,0,0,0,0,0,0,No
+108,cysteine-glycine,0,0,0,0,16,16,Yes
+109,cysteine,0,0,0,0,0,0,No
+110,creatinine,0,0,0,0,0,0,No
+111,conduritol-beta-epoxide,0,0,0,0,8,8,Yes
+112,citrulline,0,0,0,0,0,0,No
+113,citric acid,0,0,0,0,0,0,No
+114,cis-gondoic acid,0,0,0,0,0,0,No
+115,cholesterol,0,0,0,0,0,0,No
+116,capric acid,0,0,0,0,0,0,No
+117,beta-sitosterol,0,0,0,0,0,0,No
+118,beta-gentiobiose,0,0,0,0,0,0,No
+119,beta-alanine,0,0,0,0,0,0,No
+120,benzoic acid,0,0,0,0,0,0,No
+121,behenic acid,0,0,0,0,0,0,No
+122,aspartic acid,0,0,0,0,0,0,No
+123,ascorbic acid,0,0,0,0,0,0,No
+124,arachidonic acid,0,0,0,0,0,0,No
+125,arachidic acid,0,0,0,0,1,1,No
+126,aminomalonate,0,0,0,0,0,0,No
+127,alpha-ketoglutarate,0,0,0,0,2,2,No
+128,alanine,0,0,0,0,0,0,No
+129,adipic acid,0,0,0,0,0,0,No
+130,adenosine-5-monophosphate,0,0,0,0,4,4,No
+131,adenosine,0,0,0,0,0,0,No
+132,adenine,0,0,0,0,0,0,No
+133,5-methoxytryptamine,0,0,0,0,0,0,No
+134,5'-deoxy-5'-methylthioadenosine,0,0,0,0,0,0,No
+135,4-hydroxybutyric acid,0,0,0,0,0,0,No
+136,3-hydroxybutyric acid,0,0,0,0,0,0,No
+137,"3,6-anhydro-D-galactose",0,0,0,0,3,3,No
+138,2-picolinic acid,0,0,0,0,1,1,No
+139,2-monopalmitin,0,0,0,0,0,0,No
+140,2-monoolein,0,0,0,0,0,0,No
+141,2-ketoisocaproic acid,0,0,0,0,0,0,No
+142,2-hydroxyglutaric acid,0,0,0,0,0,0,No
+143,"2,5-dihydroxypyrazine NIST",0,0,0,0,0,0,No
+144,1-monostearin,0,0,0,0,0,0,No
+145,1-monopalmitin,0,0,0,0,0,0,No
+146,1-kestose,0,0,0,0,13,13,Yes
+147,"1,5-anhydroglucitol",0,0,0,0,0,0,No
+148,"1,2,4-benzenetriol",0,0,0,0,10,10,Yes

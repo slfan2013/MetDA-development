@@ -97,9 +97,9 @@ report_fold_change <- function(project_id = "report fold change21565219216", fol
     slip_in_text(table_index, style = "Default Paragraph Font", pos = "after")%>%
     slip_in_text(" show the 10 compounds increased and decreased the most.", style = "Default Paragraph Font", pos = "after")%>%
     body_add_table(value = result_summary[order(result_summary$fold_changes, decreasing = TRUE)[1:10],], style = "table_template")%>%
-    body_add_par(value = paste0("Table ", table_index-1, ": most increased compounds (", paste0(get_fold_seq(project_id, data_ids), collapse = "->"), ")"), style = "table title")%>%
+    body_add_par(value = paste0("Table ", table_index-1, ": most increased compounds (", paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), ")"), style = "table title")%>%
     body_add_table(value = result_summary[order(result_summary$fold_changes, decreasing = FALSE)[1:10],], style = "table_template")%>%
-    body_add_par(value = paste0("Table ", table_index, ": most decreased compounds (", paste0(get_fold_seq(project_id, data_ids), collapse = "->"), ")"), style = "table title")
+    body_add_par(value = paste0("Table ", table_index, ": most decreased compounds (", paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), ")"), style = "table title")
 
 
 

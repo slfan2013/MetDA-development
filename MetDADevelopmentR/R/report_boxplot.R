@@ -1,4 +1,4 @@
-report_boxplot <- function(project_id = "report boxploot21565233588", fold_id = "Boxplot1565239035", table_index = 1, figure_index = 1, doc = NULL) {
+report_boxplot <- function(project_id = "temp_project_1565290950", fold_id = "Boxplot1565290950", table_index = 1, figure_index = 1, doc = NULL) {
   pacman::p_load(data.table, officer, magrittr)
 
   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
@@ -142,7 +142,7 @@ report_boxplot <- function(project_id = "report boxploot21565233588", fold_id = 
 
   doc <- doc %>%
     body_add_par("Output file: ", style = "Normal")%>%
-    slip_in_text(paste0(get_fold_seq(project_id, data_ids), collapse ="->"), style = "Default Paragraph Font", pos = "after")%>%
+    slip_in_text(paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), style = "Default Paragraph Font", pos = "after")%>%
     slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
 
 

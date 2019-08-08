@@ -18,13 +18,22 @@ volcano_append_results = function (obj, session) {
     files_sources = [plot_url.volcano_plot];
     files_names = ['volcano_plot.svg']
     zipfile_name = "volcano_plot.zip"
+    fold_name = "Volcano Plot"
+    files_types = ["image/svg+xml"]
     $("#download_results").off("click").on("click", function () {
-        download_results(files_names, files_sources, zipfile_name)
+
+
+        //download_results(files_names, files_sources, zipfile_name)
+        parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.volcano_plot = volcano_plot_parameters
+        parameters.fun_name = "volcano"
+        parameters.activate_data_id = $("#" + 'volcano_input_file')[0].files[0].name
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+
     })
 
 
-    fold_name = "Volcano Plot"
-    files_types = ["image/svg+xml"]
+    
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.volcano_plot = volcano_plot_parameters

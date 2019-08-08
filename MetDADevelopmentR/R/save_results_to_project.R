@@ -9,10 +9,12 @@ save_results_to_project <- function(project_id = "aaa1560462496",
                                     epf_index = c(1)) {
   save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, files_sources_data, file = "test.RData")
 
-  load('test.RData')
-  if (class(files_sources_data) %in% c("list",'data.frame')) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
+  load("test.RData")
+  if (class(files_sources_data) %in% c("list", "data.frame")) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
     for (file_source in 1:length(files_sources_data)) {
       if (is.null(ncol(files_sources_data[[file_source]]))) { # this means this is a base6 (pca score plot)
+
+
 
       } else {
         if (ncol(files_sources_data[[file_source]]) > 1) {
@@ -39,20 +41,15 @@ save_results_to_project <- function(project_id = "aaa1560462496",
       }
     }
   } else {
-    if (!identical(names(files_sources)[1],'quick_analysis')) {
+    if (!identical(names(files_sources)[1], "quick_analysis")) {
       # !!! base64 (pca score plot) may not work for this.
       for (file_source in 1:length(files_sources)) {
         download.file(URLencode(files_sources[file_source]), files_names[file_source], mode = "wb")
       }
     } else { # this means it is from the perform_quick_analysis.
       for (file_source in 1:length(files_sources)) {
-
-        if (nchar(files_sources[file_source])>100) { # this means this is a base6 (pca score plot)。 Maybe there can be a better criterion.
-
-
-
-
-        }else{
+        if (nchar(files_sources[file_source]) > 100) { # this means this is a base6 (pca score plot)<U+3002> Maybe there can be a better criterion.
+        } else {
           dta <- data.table::fread(files_sources[file_source])
           if (colnames(dta)[1] == "V1") { # this means that the first column of the csv is the rownames of the data.
             rownames(dta) <- dta$V1
@@ -63,12 +60,6 @@ save_results_to_project <- function(project_id = "aaa1560462496",
             data.table::fwrite(dta, files_names[file_source], row.names = FALSE, col.names = TRUE)
           }
         }
-
-
-
-
-
-
       }
     }
   }
@@ -78,7 +69,82 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = FALSE)
 
-  current_time <- as.integer(Sys.time())
+  is_temp_project <- grepl("temp_project_", project_id)
+  if (is_temp_project) {
+    current_time <- gsub("temp_project_", "", project_id)
+
+
+    if(parameters$fun_name == 'volcano'){
+      projectList$project_structure <- list(
+        list(
+          id = project_id,
+          parent = "#",
+          text = "",
+          icon = "fa fa-folder"
+        ),
+        list(
+          id = parameters$activate_data_id,
+          parent = project_id,
+          text = parameters$activate_data_id,
+          icon = "fa fa-file-excel-o",
+          with_attachment = TRUE,
+          epf = "e",
+          parameter = list(
+            r_function = "create_new_project",
+            parameters = ""
+          )
+        )
+      )
+    }else{
+      projectList$project_structure <- list(
+        list(
+          id = project_id,
+          parent = "#",
+          text = "",
+          icon = "fa fa-folder"
+        ),
+        list(
+          id = "e.csv",
+          parent = project_id,
+          text = "e.csv",
+          icon = "fa fa-file-excel-o",
+          with_attachment = TRUE,
+          epf = "e",
+          parameter = list(
+            r_function = "create_new_project",
+            parameters = ""
+          )
+        ),
+        list(
+          id = "f.csv",
+          parent = project_id,
+          text = "f.csv",
+          icon = "fa fa-file-excel-o",
+          with_attachment = TRUE,
+          epf = "f",
+          parameter = list(
+            r_function = "create_new_project",
+            parameters = ""
+          )
+        ),
+        list(
+          id = "p.csv",
+          parent = project_id,
+          text = "p.csv",
+          icon = "fa fa-file-excel-o",
+          with_attachment = TRUE,
+          epf = "p",
+          parameter = list(
+            r_function = "create_new_project",
+            parameters = ""
+          )
+        )
+      )
+    }
+
+  } else {
+    current_time <- as.integer(Sys.time())
+  }
 
   suffix <- paste0(".", sapply(files_names, function(x) {
     tail(strsplit(x, "\\.")[[1]], n = 1)
@@ -93,15 +159,14 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   # stringr::str_replace(string = c("abc","abc"), pattern = c("a","b"), replacement = "")
 
   for (file_source in 1:length(files_names)) {
-    if(grepl(".svg|.png|.zip",files_names[file_source])){
+    if (grepl(".svg|.png|.zip", files_names[file_source])) {
       projectList$`_attachments`[[attachments_ids[file_source]]] <- list(
         content_type = files_types[file_source],
-        data =
-          files_sources[file_source]
-          # strsplit(markdown:::.b64EncodeFile(files_names[1]), "base64,")[[1]][2]
+        data = files_sources[file_source]
+        # strsplit(markdown:::.b64EncodeFile(files_names[1]), "base64,")[[1]][2]
         # paste0("'data:image/svg+xml;base64,'",files_sources[file_source])
       )
-    }else{
+    } else {
       projectList$`_attachments`[[attachments_ids[file_source]]] <- list(
         content_type = files_types[file_source],
         data = strsplit(markdown:::.b64EncodeFile(files_names[file_source]), "base64,")[[1]][2]
@@ -115,15 +180,16 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   # folder_id <- paste0(fold_name, current_time)
 
 
-  from_fun_name_to_folder_id = c("fold_change"="Fold Change","heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA", "missing_value_imputation" = 'Missing Value Imputation', "student_t_test" = "Student t-test")
+  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test")
 
-  folder_id = paste0(plyr::revalue(parameters$fun_name,from_fun_name_to_folder_id), current_time)
+  folder_id <- paste0(plyr::revalue(parameters$fun_name, from_fun_name_to_folder_id), current_time)
 
 
   # check if the fold_name is taken.
 
-
-
+  if(is_temp_project){
+    selected_folder = project_structure[[1]]$id
+  }
 
   project_structure[[length(project_structure) + 1]] <- list(
     id = folder_id,
@@ -138,13 +204,13 @@ save_results_to_project <- function(project_id = "aaa1560462496",
 
 
   for (file_source in 1:length(files_sources)) {
-    parameters_for_chilren = list()
-    parameters_for_chilren$activate_data_id= parameters$activate_data_id # this will be used in the quick analysis line 45
+    parameters_for_chilren <- list()
+    parameters_for_chilren$activate_data_id <- parameters$activate_data_id # this will be used in the quick analysis line 45
     project_structure[[length(project_structure) + 1]] <- list(
       id = attachments_ids[file_source],
       parent = folder_id,
       text = files_names[file_source],
-      icon = plyr::revalue(files_types[file_source], c("application/vnd.ms-excel" = "fa fa-file-excel-o","image/svg+xml"="fa fa-file-image-o","application/x-zip-compressed" = "file-archive-o")),
+      icon = plyr::revalue(files_types[file_source], c("application/vnd.ms-excel" = "fa fa-file-excel-o", "image/svg+xml" = "fa fa-file-image-o", "application/x-zip-compressed" = "file-archive-o")),
       with_attachment = TRUE,
       parameter = parameters_for_chilren
       # since the parameters are already saved in the folder. We may do not need to save it in these children.
@@ -159,6 +225,27 @@ save_results_to_project <- function(project_id = "aaa1560462496",
   #
   #
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
-  return(list(status = TRUE, current_time = current_time))
+
+
+  if(is_temp_project){
+
+    for (file_source in 1:length(files_names)) {
+
+      download.file(URLencode(paste0("http://localhost:5985/metda_project/", project_id, "/", gsub("\\+", "%2B", attachments_ids[file_source]))), files_names[file_source], mode = "wb")
+
+    }
+
+
+
+    report_fun = get(paste0("report_", parameters$fun_name))
+    report_fun(project_id, folder_id)
+
+    zip_file_name = paste0(parameters$fun_name, " - result.zip")
+    zip(zipfile = zip_file_name, files = c(files_names, paste0("report_",parameters$fun_name,".docx")))
+
+  }else{
+    zip_file_name = "none"
+  }
+  return(list(status = TRUE, current_time = current_time, zip_file_name = zip_file_name))
   return(TRUE)
 }

@@ -49,29 +49,27 @@ boxplot_append_results = function (obj, session) {
                         zip.file((i + 1) + "th " + f_label[i].replace(/[^0-9a-zA-Z _().]/g, "_") + ".svg", btoa(unescape(plot_url[i].replace("data:image/svg+xml,", ""))), { base64: true });
                     }
 
-                    if (type === 'download') {
-                        zip.generateAsync({ type: "blob" })
-                            .then(function (blob) {
-                                saveAs(blob, "Boxplot - Plots.zip");
+                    zip.generateAsync({ type: "base64" }).then(function (base64) {
+                        bbb = base64
+                        console.log("done")
+
+                        files_sources = [base64];
+                        files_names = ["boxplot_plot.zip"]
+                        fold_name = "Boxplot"
+                        files_types = ["application/x-zip-compressed"]
+
+                        parameters = JSON.parse(localStorage.getItem('parameter'))
+                        parameters.boxplot_plot = boxplot_plot_parameters
+
+                        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+                        if(type === 'download'){
+                            setTimeout(() => {
                                 $(".download").prop("disabled", false);
                                 $("#download_results").text("Download Results")
-                            });
-                    } else {
-                        zip.generateAsync({ type: "base64" }).then(function (base64) {
-                            bbb = base64
-                            console.log("done")
+                            }, 2000);
+                        }
 
-                            files_sources = [base64];
-                            files_names = ["boxplot_plot.zip"]
-                            fold_name = "Boxplot"
-                            files_types = ["application/x-zip-compressed"]
-
-                            parameters = JSON.parse(localStorage.getItem('parameter'))
-                            parameters.boxplot_plot = boxplot_plot_parameters
-
-                            save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
-                        })
-                    }
+                    })
 
                 } else {
                     var y = obj.e[plotting_compound_index]
