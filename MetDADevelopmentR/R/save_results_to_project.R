@@ -28,7 +28,11 @@ save_results_to_project <- function(project_id = "aaa1560462496",
           if (file_source %in% epf_index) {
             data.table::fwrite(data.table::fread(text = current_string), files_names[file_source], col.names = FALSE)
 
-            inputFile(files_names[file_source])
+            # inputFile(files_names[file_source])
+            call_fun(parameter = list(
+              path = files_names[file_source],
+              fun_name = "inputFile"
+            ))
 
             e <- read.csv("e.csv")[, -1]
             rownames(e) <- read.csv("f.csv")$label

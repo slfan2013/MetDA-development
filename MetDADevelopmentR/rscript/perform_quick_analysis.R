@@ -1,10 +1,10 @@
-perform_quick_analysis <- function(
-                                   project_id = "boxplot b41564966343",
-                                   selected_data = "e.csv",
-                                   project_id2 = "boxplot a41564966178",
-                                   selected_data2 = "e.csv",
-                                   parameter) {
-  save(project_id, selected_data, project_id2, selected_data2, parameter, file = "local.RData") # for debugging
+# perform_quick_analysis <- function(
+#   project_id = "boxplot b41564966343",
+#   selected_data = "e.csv",
+#   project_id2 = "boxplot a41564966178",
+#   selected_data2 = "e.csv",
+#   parameters) {
+  save(project_id, selected_data, project_id2, selected_data2, parameters, file = "local.RData") # for debugging
 
 
   load("local.RData")
@@ -65,13 +65,13 @@ perform_quick_analysis <- function(
   })
 
   # addjust the parameter according to users input.
-  sample_parameters_from <- gsub("sample_parameters_global_id_", "", names(parameter))
-  sample_parameters_to <- unlist(parameter)
+  sample_parameters_from <- gsub("sample_parameters_global_id_", "", names(parameters))
+  sample_parameters_to <- unlist(parameters)
   names(sample_parameters_to) <- sample_parameters_from
 
 
-  compound_parameters_from <- gsub("compound_parameters_global_id_", "", names(parameter))
-  compound_parameters_to <- unlist(parameter)
+  compound_parameters_from <- gsub("compound_parameters_global_id_", "", names(parameters))
+  compound_parameters_to <- unlist(parameters)
   names(compound_parameters_to) <- compound_parameters_from
 
 
@@ -162,7 +162,7 @@ perform_quick_analysis <- function(
           if (current_parameter$heatmap_plot[[j]] %in% names(sample_parameters_to)) {
             current_parameter$heatmap_plot[[j]] <- plyr::revalue(unlist(current_parameter$heatmap_plot[[j]]), sample_parameters_to)
           }
-         }
+        }
       }
 
 
@@ -294,18 +294,21 @@ perform_quick_analysis <- function(
     }
 
   }
-  return(results)
+
+
+  result = results
+  # return(results)
 
   # print(round)
   # # print(being_activated_data_id2)
   # being_activated_data_id2 <- id2[activate_data_ids2 %in% being_activated_data_id2]
   # round <- round + 1
 
-return(TRUE)
+  # return(TRUE)
 
 
 
 
 
 
-}
+# }

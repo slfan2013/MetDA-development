@@ -5,6 +5,7 @@ call_fun <- function(parameter, ...) {
   load("call_fun.RData")
   parameter_names <- names(parameter)
 
+
   for (i in 1:length(parameter)) {
     assign(parameter_names[i], parameter[[parameter_names[i]]])
   }

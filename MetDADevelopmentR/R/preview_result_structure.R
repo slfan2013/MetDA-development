@@ -7,10 +7,17 @@ preview_result_structure <- function(
   save(project_id, selected_data, project_id2, selected_data2, file = "preview_result_structure.RData")
 
   load("preview_result_structure.RData")
-  structures = get_to_be_added_structure(project_id,
-                            selected_data,
-                            project_id2,
-                            selected_data2)
+  # structures = get_to_be_added_structure(project_id,
+  #                           selected_data,
+  #                           project_id2,
+  #                           selected_data2)
+  structures = call_fun(parameter = list(
+    project_id = project_id,
+    selected_data = selected_data,
+    project_id2 = project_id2,
+    selected_data2 = selected_data2,
+    fun_name = "get_to_be_added_structure"
+  ))
   project_structure = structures$project_structure
   structure_to_be_added = structures$structure_to_be_added
   result_project_structure <- c(project_structure, structure_to_be_added)

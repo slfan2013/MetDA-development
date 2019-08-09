@@ -11,9 +11,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         eval(adjusted_volcano_plot_layout_adjuster1)
 
         // assign the default value for volcano plot
-        ocpu.call("get_volcano_plot_style", {
-            user_id: localStorage.user_id
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            user_id: localStorage.user_id,
+            fun_name:"get_volcano_plot_style"
+        }}, function (session) {
             session.getObject(function (volcano_plot_obj) {
                 oo = volcano_plot_obj
                 volcano_plot_traces = volcano_plot_obj.traces

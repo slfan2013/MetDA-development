@@ -8,7 +8,6 @@ $("#create_new_project").click(function () {
 
 
 create_new_project_check_input_format = function (inputFile) {
-    console.log($("#" + inputFile)[0].files[0])
     $(".inputFileHidden").prop("disabled", true);
     $(".inputFile_validating").text("Validating")
     ocpu.call("inputFile", {
@@ -110,19 +109,24 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
 
 create_project = function () {
     // use R to validate the new project name.
-    ocpu.call("check_new_project_name", {
+
+    ocpu.call("call_fun", {parameter:{
         user_id: localStorage['user_id'],
-        new_name: $("#new_project_name").val()
-    }, function (session) {
+        new_name: $("#new_project_name").val(),
+        fun_name:"check_new_project_name"
+    }}, function (session) {
+        console.log(session)
         session.getObject(function (obj) {
+            ooo = obj
             console.log(obj)
             // if success, then make the temprary project_id a new id and associated new project to this temp.
             if (obj[0] === 'good') {
-                ocpu.call("create_new_project", {
+                ocpu.call("call_fun", {parameter:{
                     user_id: localStorage['user_id'],
                     new_name: $("#new_project_name").val(),
-                    temp_project_id: localStorage['temp_project_id']
-                }, function (session2) {
+                    temp_project_id: localStorage['temp_project_id'],
+                    fun_name:"create_new_project"
+                }}, function (session2) {
                     console.log(session2)
                     session2.getObject(function (obj2) {
                         ooo = obj2
@@ -133,11 +137,13 @@ create_project = function () {
                 }).fail(function (e2) {
                     Swal.fire('Oops...', e2.responseText, 'error')
                 })
+
             }
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')
     })
+
 
 }
 
@@ -149,9 +155,10 @@ when_projects_table_clicked = function () {
     localStorage['activate_project_id'] = project_id
     localStorage['activate_data_id']='e.csv'
     // here change the p and f.
-    ocpu.call("get_p_and_f",{
-        project_id:localStorage['activate_project_id']
-    },function(session){
+    ocpu.call("call_fun",{parameter:{
+        project_id:localStorage['activate_project_id'],
+        fun_name:"get_p_and_f"
+    }},function(session){
         session.getObject(function(obj){
             change_big_category('project')
             localStorage['p'] = JSON.stringify(obj.p) 

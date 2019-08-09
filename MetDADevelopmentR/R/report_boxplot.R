@@ -43,7 +43,9 @@ report_boxplot <- function(project_id = "temp_project_1565290950", fold_id = "Bo
 
 
 
-  fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
+
+
 
   if (is.null(doc)) {
     doc <- read_docx()
@@ -142,7 +144,7 @@ report_boxplot <- function(project_id = "temp_project_1565290950", fold_id = "Bo
 
   doc <- doc %>%
     body_add_par("Output file: ", style = "Normal")%>%
-    slip_in_text(paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), style = "Default Paragraph Font", pos = "after")%>%
+    slip_in_text(paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0,collapse = "->"),"; "), style = "Default Paragraph Font", pos = "after")%>%
     slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
 
 

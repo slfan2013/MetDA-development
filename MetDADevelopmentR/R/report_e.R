@@ -12,7 +12,8 @@ report_e <- function(project_id = "report 11565112203", e_id = "e.csv", table_in
 
 
 
-  fold_seq <- get_fold_seq(project_id, e_id)
+  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = e_id, fun_name="get_fold_seq"))
+
 
 
   num_of_character <- sum(is.na(as.numeric(data.matrix(e))))

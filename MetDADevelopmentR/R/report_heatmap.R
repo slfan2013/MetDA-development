@@ -48,7 +48,8 @@ report_heatmap <- function(project_id = "report heatmap21565307593", fold_id = "
 
 
 
-  fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  # fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
 
   # paste0(sapply(get_fold_seq(project_id, parameters$activate_data_id), paste0, collapse = "->"), "; ")
 
@@ -136,9 +137,8 @@ report_heatmap <- function(project_id = "report heatmap21565307593", fold_id = "
   doc <- doc %>%
     body_add_img(src = data_ids_name, width = image_info(figure)$width/72, height = image_info(figure)$height/72) %>%
     body_add_par(value = paste0("Figure ", figure_index, ": Heatmap Plot ("), style = "table title")%>%
-    body_add_par(value = paste0(sapply(get_fold_seq(project_id, data_ids), paste0, collapse = "->"), "; "), style = "table title") %>%
+    body_add_par(value = paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0, collapse = "->"), "; "), style = "table title") %>%
     body_add_par(value = ". ", style = "table title")
-
 
 
 

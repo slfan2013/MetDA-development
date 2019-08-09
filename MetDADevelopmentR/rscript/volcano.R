@@ -88,8 +88,11 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
 if(exists("volcano_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
-  volcano_plot_style = get_volcano_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
-
+  # volcano_plot_style = get_volcano_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  volcano_plot_style = call_fun(parameter = list(
+    user_id='slfan',
+    fun_name = "get_volcano_plot_style"
+  ))
 
 
 

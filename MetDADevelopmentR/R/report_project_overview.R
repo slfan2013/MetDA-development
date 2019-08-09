@@ -1,8 +1,8 @@
-report_project_overview <- function(project_id = "report 11565112203", table_index = 1, figure_index = 1,doc = NULL) {
+report_project_overview <- function(project_id = "heatmap b1565369952", table_index = 1, figure_index = 1,doc = NULL) {
 
   pacman::p_load(data.table, officer, magrittr)
 
-  p_and_f <- get_p_and_f(project_id)
+  p_and_f <- call_fun(parameter = list(project_id = project_id, fun_name = "get_p_and_f"))
 
 
   p <- p_and_f$p
@@ -174,9 +174,9 @@ report_project_overview <- function(project_id = "report 11565112203", table_ind
 
   doc <- doc %>%
     body_add_table(value = summary_of_sample_info, style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index, ": sample info (", paste0(sapply(get_fold_seq(project_id, 'p.csv'), paste0,collapse = "->"),"; "),")"), style = "table title")%>%
+    body_add_par(value = paste0("Table ", table_index, ": sample info (", paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = 'p.csv', fun_name="get_fold_seq")), paste0,collapse = "->"),"; "),")"), style = "table title")%>%
     body_add_table(value = summary_of_compound_info, style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index+1, ": compound info (",paste0(sapply(get_fold_seq(project_id, 'f.csv'), paste0,collapse = "->"),"; "),")"), style = "table title")
+    body_add_par(value = paste0("Table ", table_index+1, ": compound info (",paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = 'f.csv', fun_name="get_fold_seq")), paste0,collapse = "->"),"; "),")"), style = "table title")
 
 
 

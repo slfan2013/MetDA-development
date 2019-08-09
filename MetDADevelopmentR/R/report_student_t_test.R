@@ -25,7 +25,8 @@ report_student_t_test <- function(project_id = "report t test11565154747", fold_
 
 
 
-  fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  # fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
 
   if (is.null(doc)) {
     doc <- read_docx()
@@ -89,8 +90,7 @@ report_student_t_test <- function(project_id = "report t test11565154747", fold_
     slip_in_text(table_index, style = "Default Paragraph Font", pos = "after")%>%
     slip_in_text(" shows the 20 most significant compounds.", style = "Default Paragraph Font", pos = "after")%>%
     body_add_table(value = result_summary[order(result_summary$p_values, decreasing = FALSE)[1:20],], style = "table_template")%>%
-    body_add_par(value = paste0("Table ", table_index, ": t-test result summary (", paste0(sapply(get_fold_seq(project_id, data_ids), paste0,collapse = "->"),"; "), ")"), style = "table title")
-
+    body_add_par(value = paste0("Table ", table_index, ": t-test result summary (", paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0,collapse = "->"),"; "), ")"), style = "table title")
 
 
 

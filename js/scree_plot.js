@@ -13,9 +13,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
         // assign the default value for pca scree plot
-        ocpu.call("get_pca_scree_plot_style", {
-            user_id: localStorage.user_id
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            user_id: localStorage.user_id,
+            fun_name:"get_pca_scree_plot_style"
+        }}, function (session) {
             session.getObject(function (scree_plot_obj) {
                 console.log(scree_plot_obj)
                 oo = scree_plot_obj

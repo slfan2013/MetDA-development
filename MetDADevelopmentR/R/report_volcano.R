@@ -25,7 +25,8 @@ report_volcano <- function(project_id = "report volcano1565300102", fold_id = "V
 
 
 
-  fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  # fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
 
   # paste0(sapply(get_fold_seq(project_id, parameters$activate_data_id), paste0, collapse = "->"), "; ")
 
@@ -111,7 +112,7 @@ report_volcano <- function(project_id = "report volcano1565300102", fold_id = "V
   doc <- doc %>%
     body_add_img(src = data_ids_name, width = 5, height = 4) %>%
     body_add_par(value = paste0("Figure ", figure_index, ": Volcano Plot ("), style = "table title")%>%
-    body_add_par(value = paste0(sapply(get_fold_seq(project_id, data_ids), paste0, collapse = "->"), "; "), style = "table title") %>%
+    body_add_par(value = paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0, collapse = "->"), "; "), style = "table title") %>%
     body_add_par(value = ". ", style = "table title")
 
 

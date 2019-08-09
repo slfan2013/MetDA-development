@@ -11,9 +11,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         eval(adjusted_score_plot_layout_adjuster1)
 
         // assign the default value for pca score plot
-        ocpu.call("get_pca_score_plot_style", {
-            user_id: localStorage.user_id
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            user_id: localStorage.user_id,
+            fun_name:"get_pca_score_plot_style"
+        }}, function (session) {
             session.getObject(function (score_plot_obj) {
                 console.log(score_plot_obj)
                 oo = score_plot_obj

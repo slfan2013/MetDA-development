@@ -60,7 +60,11 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   #   data[[i]]$text = unlist(data[[i]]$text)
   # }
 
-  score_plot_style = get_pca_score_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  # score_plot_style = get_pca_score_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+
+
+  score_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_score_plot_style"))
+
 
   x = sample_scores$PC1
   y = sample_scores$PC2

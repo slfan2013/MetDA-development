@@ -11,16 +11,16 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         eval(adjusted_boxplot_plot_layout_adjuster1)
 
         // assign the default value for boxplot plot
-        ocpu.call("get_boxplot_plot_style", {
-            user_id: localStorage.user_id
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            user_id: localStorage.user_id,
+            fun_name:"get_boxplot_plot_style"
+        }}, function (session) {
             session.getObject(function (boxplot_plot_obj) {
                 oo = boxplot_plot_obj
                 boxplot_plot_traces = boxplot_plot_obj.traces
                 p_column_names = Object.keys(obj_boxplot_plot.p[0])
                 p_column_unique = {}
                 p_column_unique_length = {}
-
 
                 for (var i = 0; i < p_column_names.length; i++) {
                     p_column_unique[p_column_names[i]] = unpack(obj_boxplot_plot.p, p_column_names[i]).filter(unique)

@@ -25,8 +25,8 @@ report_missing_value_imputation <- function(project_id = "report 31565132374", f
 
 
 
-  fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
-
+  # fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
+  fold_seq = call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
 
 
   defination_of_missing_value <- unlist(parameters$defination_of_missing_value)
@@ -81,7 +81,7 @@ report_missing_value_imputation <- function(project_id = "report 31565132374", f
       slip_in_text(table_index, style = "Default Paragraph Font", pos = "after") %>%
       slip_in_text(".", style = "Default Paragraph Font", pos = "after") %>%
       body_add_table(value = result_summary_table, style = "table_template") %>%
-      body_add_par(value = paste0("Table ", table_index, ": missing value summary (", paste0(sapply(get_fold_seq(project_id, data_ids[grepl("summary", data_ids)]), paste0,collapse = "->"),"; "), ")"), style = "table title")
+      body_add_par(value = paste0("Table ", table_index, ": missing value summary (", paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids[grepl("summary", data_ids)], fun_name="get_fold_seq")), paste0,collapse = "->"),"; "), ")"), style = "table title")
   }
 
 
@@ -99,7 +99,7 @@ report_missing_value_imputation <- function(project_id = "report 31565132374", f
 
   doc <- doc %>%
     body_add_par("Output Dataset: ", style = "Normal") %>%
-    slip_in_text(paste0(sapply(get_fold_seq(project_id, data_ids[!grepl("summary", data_ids)]), paste0,collapse = "->"),"; "), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids[!grepl("summary", data_ids)], fun_name="get_fold_seq")), paste0,collapse = "->"),"; "), style = "Default Paragraph Font", pos = "after") %>%
     slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
 
 

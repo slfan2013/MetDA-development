@@ -81,10 +81,11 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     open_project_structure_to_select_dataset = function () {
         // open the data select collapse.
         // id：project_structure_with_dataset_only
-        ocpu.call("open_project_structure_to_select_dataset", {
+        ocpu.call("call_fun", {parameter:{
             project_id: localStorage['activate_project_id'],
-            selected_data: localStorage['activate_data_id']
-        }, function (session) {
+            selected_data: localStorage['activate_data_id'],
+            fun_name:"open_project_structure_to_select_dataset"
+        }}, function (session) {
 
             console.log(session)
             session.getObject(function (obj) {
@@ -125,8 +126,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
         if(window.location.href.split("#")[1] === 'volcano'){
             
-            ocpu.call("open_project_structure_to_select_p_value_and_fold_change",{
-                project_id: localStorage['activate_project_id']
+            ocpu.call("call_fun",{
+                project_id: localStorage['activate_project_id'],
+                fun_name:"open_project_structure_to_select_p_value_and_fold_change"
             }, function(session){
                 console.log(session)
                 session.getObject(function(obj){
@@ -206,9 +208,10 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $('#parameter_settings_card').hide();
         $(".inputFileHidden").prop("disabled", true);
         $(".inputFile_validating").text("Validating")
-        ocpu.call("inputFile", {
-            path: $("#" + inputFile)[0].files[0]
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            path: $("#" + inputFile)[0].files[0],
+            fun_name:"inputFile"
+        }}, function (session) {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p
@@ -236,6 +239,8 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $('#parameter_settings_card').hide();
         $(".inputFileHidden").prop("disabled", true);
         $(".volcano_input_file_validating").text("Validating")
+
+
         ocpu.call("check_input_format_volcano_input_file", {
             path: $("#" + volcano_input_file)[0].files[0]
         }, function (session) {
@@ -410,8 +415,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             }
         })
         parameter.project_id = project_id
-
-    
+            
         parameter.fun_name = window.location.href.split("#")[1]
         if(parameter.fun_name === 'volcano'){
             if(localStorage.big_category === 'in_and_out'){
@@ -421,11 +425,6 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 parameter.p_value_data_treatment = p_value_data_treatment
                 parameter.fold_change_data_treatment = fold_change_data_treatment
             }
-                
-                
-            
-            
-            
         }else{
             if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
                 parameter.activate_data_id = localStorage['activate_data_id']

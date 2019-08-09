@@ -112,7 +112,9 @@ fwrite(compound_order, "compound_order.csv", col.names = TRUE,row.names = TRUE)
 
 if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
-  heatmap_plot_style = get_heatmap_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  # heatmap_plot_style = get_heatmap_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  heatmap_plot_style = call_fun(parameter = list(user_id="slfan",fun_name="get_heatmap_plot_style"))
+
 
   show_sample_label = heatmap_plot$show_sample_label
   show_compound_label = heatmap_plot$show_compound_label

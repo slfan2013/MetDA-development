@@ -5,9 +5,10 @@ $("#upload_a_file").click(function () {
     $("#inputFile").off("change").on("change", function () {
         $(".inputFileHidden").prop("disabled", true);
         $(".inputFile_validating").text("Validating")
-        ocpu.call("inputFile", {
-            path: $("#inputFile")[0].files[0]
-        }, function (session) {
+        ocpu.call("call_fun", {parameter:{
+            path: $("#inputFile")[0].files[0],
+            fun_name:"inputFile"
+        }}, function (session) {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p
@@ -41,10 +42,11 @@ when_projects_table_clicked = function () {
      localStorage['activate_data_id']='e.csv'*/
     // when the project_id is selected. We need to display the project tree so that the user could select dataset.
 
-    ocpu.call("open_project_structure_to_select_dataset", {
+    ocpu.call("call_fun", {parameter:{
         project_id: project_id,
-        selected_data: selected_data
-    }, function (session) {
+        selected_data: selected_data,
+        fun_name:"open_project_structure_to_select_dataset"
+    }}, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             ooo = obj
@@ -80,19 +82,7 @@ when_projects_table_clicked = function () {
     })
 
 
-    /*localStorage['activate_data_id']='e.csv'
-    // here change the p and f.
-    ocpu.call("get_p_and_f",{
-        project_id:localStorage['activate_project_id']
-    },function(session){
-        session.getObject(function(obj){
-            localStorage['p'] = JSON.stringify(obj.p) 
-            localStorage['f'] = JSON.stringify(obj.f) 
-            window.location.href = "#project_overview";
-        })
-    }).fail(function (e) {
-        Swal.fire('Oops...', e.responseText, 'error')
-    }) */
+  
 }
 update_projects_table()
 
@@ -105,10 +95,11 @@ when_projects_table_clicked2 = function () {
     console.log(project_id2)
 
 
-    ocpu.call("open_project_structure", {
+    ocpu.call("call_fun", {parameter:{
         project_id: project_id2,
-        selected_data: 'e.csv'
-    }, function (session) {
+        selected_data: 'e.csv',
+        fun_name:"open_project_structure"
+    }}, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             $("#selected_project_structure2").jstree("destroy");
@@ -263,13 +254,14 @@ $("#submit").click(function () {
     })
     console.log(parameter)
 
-    ocpu.call("perform_quick_analysis", {
+    ocpu.call("call_fun", {parameter:{
         project_id: project_id,
         selected_data: selected_data,
         project_id2: project_id2,
         selected_data2: selected_data2,
-        parameter: parameter
-    }, function (session) {
+        parameters: parameter,
+        fun_name:"perform_quick_analysis"
+    }}, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             console.log(obj)

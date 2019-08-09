@@ -38,9 +38,10 @@ var update_jstree = function (project_structure) {
                                 console.log("trying to rename.")
                                 //start_cal()
                                 old_node = JSON.parse(JSON.stringify(node))
-                                ocpu.call("get_tree_structure", {
-                                    project_id: localStorage.activate_project_id
-                                }, function (session) {
+                                ocpu.call("call_fun", {parameter:{
+                                    project_id: localStorage.activate_project_id,
+                                    fun_name:"get_tree_structure"
+                                }}, function (session) {
                                     console.log(session)
                                     session.getObject(function (obj) {
                                         jjj = obj
@@ -130,9 +131,10 @@ var update_jstree = function (project_structure) {
                                 if (result.value) {
                                     var selected_node_id = obj.reference[0].id.substring(0, obj.reference[0].id.length - '_anchor'.length);
                                     start_cal()
-                                    ocpu.call("get_tree_structure", {
-                                        project_id: localStorage.activate_project_id
-                                    }, function (session) {
+                                    ocpu.call("call_fun", {parameter:{
+                                        project_id: localStorage.activate_project_id,
+                                        fun_name:"get_tree_structure"
+                                    }}, function (session) {
                                         session.getObject(function (obj) {
                                             var remove_index = [];
                                             var bad_id = [];
@@ -223,11 +225,13 @@ var update_jstree = function (project_structure) {
                                     unincluded_folder = update_unincluded_folder
                                 }
 
-                                ocpu.call("download_folder_as_zip", {
+                                
+                                ocpu.call("call_fun", {parameter:{
                                     project_id: localStorage.activate_project_id,
                                     id: included_id,
-                                    path: included_path
-                                }, function (session) {
+                                    path: included_path,
+                                    fun_name:"download_folder_as_zip"
+                                }}, function (session) {
                                     console.log(session)
                                     session.getObject(function (obj) {
                                         window.open(session.loc + "files/" + obj[0])
@@ -237,6 +241,9 @@ var update_jstree = function (project_structure) {
                                     Swal.fire('Oops...', e.responseText, 'error')
                                     end_cal()
                                 })
+
+
+
                             } else {
                                 window.open("http://localhost:5985/metda_project/" + localStorage.activate_project_id + "/" + $node.original.id)
                                 end_cal()
@@ -254,9 +261,10 @@ var update_jstree = function (project_structure) {
 }
 
 
-ocpu.call("get_tree_structure", {
-    project_id: localStorage['activate_project_id']
-}, function (session) {
+ocpu.call("call_fun", {parameter:{
+    project_id: localStorage['activate_project_id'],
+    fun_name:"get_tree_structure"
+}}, function (session) {
     session.getObject(function (obj) {
         update_jstree(obj)
 
