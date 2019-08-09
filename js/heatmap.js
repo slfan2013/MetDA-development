@@ -17,13 +17,17 @@ heatmap_append_results = function (obj, session) {
     files_sources = [session.loc + "files/sample_order.csv", session.loc + "files/compound_order.csv",plot_url.heatmap_plot];
     files_names = ['sample_order.csv','compound_order.csv','heatmap_plot.svg']
     zipfile_name = "heatmap_results.zip"
+    fold_name = "Heatmap"
+    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel","image/svg+xml"]
+
     $("#download_results").off("click").on("click", function () {
-        download_results(files_names, files_sources, zipfile_name)
+        parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.heatmap_plot = heatmap_plot_parameters
+        //download_results(files_names, files_sources, zipfile_name)
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
     })
 
 
-    fold_name = "Heatmap"
-    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel","image/svg+xml"]
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.heatmap_plot = heatmap_plot_parameters

@@ -1,149 +1,149 @@
 "",compound_order
-xylose,83
-xylitol,92
-xanthine,7
-valine,29
-uridine,30
-uric acid,110
-urea,126
-uracil,77
-UDP GlcNAc,136
-tyrosine,133
-tryptophan,32
-tocopherol alpha-,99
-thymine,51
-threonine,66
-threonic acid,35
-terephthalic acid,139
-taurine,144
-tagatose,80
-sucrose,48
-succinic acid,116
-succinate semialdehyde,120
-squalene,135
-sorbitol,55
-shikimic acid,138
-serine,88
-ribose,76
-ribonic acid,141
-ribitol,121
-pyruvic acid,4
-pyrophosphate,128
-pseudo uridine,14
-proline,84
-p-hydroxylphenyllactic acid,36
-phosphoethanolamine,91
-phosphate,147
-phenylalanine,131
-pentadecanoic acid,113
-pantothenic acid,146
-palmitoleic acid,53
-oxoproline,103
-oxalic acid,41
-ornithine,52
-oleic acid,19
-noradrenaline,64
-nonadecanoic acid,65
-nicotinamide,69
-N-acetylputrescine,31
-n-acetyl-d-hexosamine,100
-N-acetylaspartic acid,78
-myristic acid,93
-myo-inositol,137
-methionine sulfoxide,57
-methionine,89
-methanolphosphate,1
-melibiose,2
-mannose,18
-maltotriose,101
-maltose,58
-malic acid,94
-lyxose,56
-lyxitol,95
-lysine,20
-linoleic acid,127
-levoglucosan,122
-leucine,13
-lauric acid,82
-lactic acid,49
-isothreonic acid,68
-isoleucine,111
-isohexonic acid,119
-inositol-4-monophosphate,17
-inosine-5'-monophosphate,70
-inosine,33
-indole-3-lactate,59
-hypoxanthine,98
-hydroxycarbamate NIST,23
-homoserine,109
-hexose-6-phosphate,61
-hexitol,97
-hexadecylglycerol NIST,105
-heptadecanoic acid,140
-guanosine,39
-glycolic acid,145
-glycine,45
-glycerol-alpha-phosphate,22
-glycerol-3-galactoside,118
-glycerol,90
-glyceric acid,125
-glutathione,63
-glutaric acid,81
-glutamine,87
-glutamate,102
-glucose-6-phosphate,16
-glucose-1-phosphate,129
-glucose,148
-galactonic acid,43
-galactitol,130
-fumaric acid,86
-fucose,108
-fructose-6-phosphate,38
-fructose,96
-ethanol phosphate NIST,28
-erythronic acid lactone,44
-erythritol,21
-docosahexaenoic acid,104
-dihydrocholesterol,5
-dehydroascorbic acid,50
-cysteine-glycine,37
-cysteine,67
-creatinine,79
-conduritol-beta-epoxide,117
-citrulline,8
-citric acid,26
-cis-gondoic acid,3
-cholesterol,75
-capric acid,73
-beta-sitosterol,114
-beta-gentiobiose,124
-beta-alanine,15
-benzoic acid,12
-behenic acid,106
-aspartic acid,115
-ascorbic acid,142
-arachidonic acid,60
-arachidic acid,134
-aminomalonate,25
-alpha-ketoglutarate,74
-alanine,24
-adipic acid,132
-adenosine-5-monophosphate,27
-adenosine,6
-adenine,46
-5-methoxytryptamine,107
-5'-deoxy-5'-methylthioadenosine,123
-4-hydroxybutyric acid,143
-3-hydroxybutyric acid,10
-"3,6-anhydro-D-galactose",42
-2-picolinic acid,62
-2-monopalmitin,112
-2-monoolein,40
-2-ketoisocaproic acid,47
-2-hydroxyglutaric acid,11
-"2,5-dihydroxypyrazine NIST",54
-1-monostearin,34
-1-monopalmitin,85
-1-kestose,9
-"1,5-anhydroglucitol",71
-"1,2,4-benzenetriol",72
+xylose,88
+xylitol,133
+xanthine,13
+valine,82
+uridine,35
+uric acid,139
+urea,144
+uracil,76
+UDP GlcNAc,141
+tyrosine,55
+tryptophan,138
+tocopherol alpha-,120
+thymine,135
+threonine,80
+threonic acid,48
+terephthalic acid,116
+taurine,117
+tagatose,51
+sucrose,66
+succinic acid,32
+succinate semialdehyde,99
+squalene,7
+sorbitol,29
+shikimic acid,30
+serine,110
+ribose,126
+ribonic acid,83
+ribitol,92
+pyruvic acid,19
+pyrophosphate,70
+pseudo uridine,38
+proline,96
+p-hydroxylphenyllactic acid,17
+phosphoethanolamine,77
+phosphate,136
+phenylalanine,111
+pentadecanoic acid,119
+pantothenic acid,143
+palmitoleic acid,49
+oxoproline,68
+oxalic acid,37
+ornithine,67
+oleic acid,40
+noradrenaline,47
+nonadecanoic acid,123
+nicotinamide,27
+N-acetylputrescine,6
+n-acetyl-d-hexosamine,46
+N-acetylaspartic acid,134
+myristic acid,142
+myo-inositol,25
+methionine sulfoxide,74
+methionine,9
+methanolphosphate,71
+melibiose,72
+mannose,34
+maltotriose,85
+maltose,125
+malic acid,5
+lyxose,50
+lyxitol,21
+lysine,104
+linoleic acid,90
+levoglucosan,87
+leucine,63
+lauric acid,81
+lactic acid,43
+isothreonic acid,130
+isoleucine,102
+isohexonic acid,16
+inositol-4-monophosphate,129
+inosine-5'-monophosphate,148
+inosine,39
+indole-3-lactate,86
+hypoxanthine,108
+hydroxycarbamate NIST,8
+homoserine,26
+hexose-6-phosphate,60
+hexitol,73
+hexadecylglycerol NIST,114
+heptadecanoic acid,124
+guanosine,11
+glycolic acid,3
+glycine,75
+glycerol-alpha-phosphate,145
+glycerol-3-galactoside,105
+glycerol,140
+glyceric acid,12
+glutathione,106
+glutaric acid,115
+glutamine,45
+glutamate,54
+glucose-6-phosphate,22
+glucose-1-phosphate,118
+glucose,107
+galactonic acid,122
+galactitol,61
+fumaric acid,97
+fucose,23
+fructose-6-phosphate,109
+fructose,36
+ethanol phosphate NIST,91
+erythronic acid lactone,147
+erythritol,10
+docosahexaenoic acid,42
+dihydrocholesterol,62
+dehydroascorbic acid,112
+cysteine-glycine,24
+cysteine,132
+creatinine,33
+conduritol-beta-epoxide,59
+citrulline,98
+citric acid,15
+cis-gondoic acid,41
+cholesterol,53
+capric acid,103
+beta-sitosterol,52
+beta-gentiobiose,131
+beta-alanine,28
+benzoic acid,44
+behenic acid,84
+aspartic acid,14
+ascorbic acid,121
+arachidonic acid,4
+arachidic acid,128
+aminomalonate,64
+alpha-ketoglutarate,65
+alanine,69
+adipic acid,20
+adenosine-5-monophosphate,127
+adenosine,1
+adenine,2
+5-methoxytryptamine,18
+5'-deoxy-5'-methylthioadenosine,101
+4-hydroxybutyric acid,58
+3-hydroxybutyric acid,94
+"3,6-anhydro-D-galactose",56
+2-picolinic acid,95
+2-monopalmitin,79
+2-monoolein,113
+2-ketoisocaproic acid,146
+2-hydroxyglutaric acid,31
+"2,5-dihydroxypyrazine NIST",100
+1-monostearin,78
+1-monopalmitin,93
+1-kestose,137
+"1,5-anhydroglucitol",57
+"1,2,4-benzenetriol",89
