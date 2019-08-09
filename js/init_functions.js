@@ -412,7 +412,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
   }
   call_save_results_to_project_to_save = function(is_temp_project,selected_folder){
-    ocpu.call("save_results_to_project", {
+    ocpu.call("call_fun", {parameter:{
       files_names: files_names,
       files_sources: files_sources,
       files_sources_data: allResults,
@@ -421,8 +421,9 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
       parameters: parameters,
       epf_index: epf_index,
       project_id: project_id,
-      selected_folder: selected_folder
-    }, function (session) {
+      selected_folder: selected_folder,
+      fun_name:"save_results_to_project"
+    }}, function (session) {
       console.log("save_results_to_project")
       console.log(session)
       session.getObject(function (obj) {

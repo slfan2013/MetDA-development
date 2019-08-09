@@ -69,7 +69,7 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
   fwrite(data, "data.csv", col.names = TRUE,row.names = TRUE)
 }
 
-# data = read_data_from_projects(project_id, activate_data_id)
+# data = call_fun(parameter = list(project_id=project_id,activate_data_id=activate_data_id,fun_name="read_data_from_projects"))
 # e = data$e
 # f = data$f
 # p = data$p

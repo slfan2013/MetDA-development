@@ -81,10 +81,11 @@ var update_jstree = function (project_structure) {
                                             for (var i = 0; i < children_node_indexes.length; i++) {
                                                 obj[children_node_indexes[i]].parent = new_id
                                             }*/
-                                            ocpu.call("update_tree_structure", {
+                                            ocpu.call("call_fun", {parameter:{
                                                 project_id: localStorage.activate_project_id,
-                                                project_structure: obj
-                                            }, function (session) {
+                                                project_structure: obj,
+                                                fun_name:"update_tree_structure"
+                                            }}, function (session) {
                                                 console.log(session)
                                                 session.getObject(function (obj) {
                                                     uu = obj
@@ -157,9 +158,10 @@ var update_jstree = function (project_structure) {
                                                 obj.splice(remove_index[i], 1)
                                             }
 
-                                            ocpu.call("update_tree_structure", {
+                                            ocpu.call("call_fun", {
                                                 project_id: localStorage.activate_project_id,
-                                                project_structure: obj
+                                                project_structure: obj,
+                                                fun_name:"update_tree_structure"
                                             }, function (session) {
                                                 session.getObject(function (obj) {
                                                     update_jstree(obj)

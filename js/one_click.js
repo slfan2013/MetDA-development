@@ -137,12 +137,13 @@ $("#confirm_selected_project").click(function () {
 
 
     // 1. Mimic the result stucture.
-    ocpu.call("preview_result_structure", {
+    ocpu.call("call_fun", {parameter:{
         project_id: project_id,
         selected_data: selected_data,
         project_id2: project_id2,
-        selected_data2: selected_data2
-    }, function (session) {
+        selected_data2: selected_data2,
+        fun_name:"preview_result_structure"
+    }}, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             console.log("Good")
@@ -417,7 +418,7 @@ $("#submit").click(function () {
 
                     } else {
                         clearInterval(myVar)
-                        ocpu.call("save_plots", { plot_base64: plot_base64, project_id: project_id }, function (session) {
+                        ocpu.call("call_fun", {parameter:{ plot_base64: plot_base64, project_id: project_id, fun_name:"save_plots" }}, function (session) {
                             console.log(session)
                             session.getObject(function (obj) {
                                 console.log(obj)

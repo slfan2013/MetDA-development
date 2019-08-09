@@ -66,9 +66,10 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     $("#template_overview_div").hide()
 
 
-    ocpu.call("templates_contents", {
-        id: window.location.href.split("#")[1]
-    }, function (session) {
+    ocpu.call("call_fun", {parameter:{
+        id: window.location.href.split("#")[1],
+        fun_name:"templates_contents"
+    }}, function (session) {
         session.getObject(function (obj) {
             ooo = obj
             $("#method_name").text(obj.method_name)
@@ -126,10 +127,10 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
         if(window.location.href.split("#")[1] === 'volcano'){
             
-            ocpu.call("call_fun",{
+            ocpu.call("call_fun",{parameter:{
                 project_id: localStorage['activate_project_id'],
                 fun_name:"open_project_structure_to_select_p_value_and_fold_change"
-            }, function(session){
+            }}, function(session){
                 console.log(session)
                 session.getObject(function(obj){
                     ooo = obj
@@ -208,10 +209,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $('#parameter_settings_card').hide();
         $(".inputFileHidden").prop("disabled", true);
         $(".inputFile_validating").text("Validating")
-        ocpu.call("call_fun", {parameter:{
-            path: $("#" + inputFile)[0].files[0],
-            fun_name:"inputFile"
-        }}, function (session) {
+        ocpu.call("inputFile", {
+            path: $("#" + inputFile)[0].files[0]
+        }, function (session) {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p

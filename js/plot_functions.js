@@ -970,16 +970,7 @@ scatter_by_group = function ({ x = undefined, y = undefined, color_by = undefine
                 }
 
 
-                /*
-                                ocpu.call("test_pca", {
-                                    full_data:JSON.parse(fullData),
-                                    full_layout:JSON.parse(fullLayout),
-                                    data: ggg.data,
-                                    layout: ggg.layout
-                                }, function (session) {
-                                    console.log(session)
-                                })
-                */
+                
 
 
                 // here click to add annotations.

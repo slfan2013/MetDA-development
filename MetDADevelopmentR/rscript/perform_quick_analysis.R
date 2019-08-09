@@ -273,8 +273,21 @@
 
 
 
-    saved_result <- save_results_to_project(
-      project_id ,
+    # saved_result <- save_results_to_project(
+    #   project_id ,
+    #   selected_folder = plyr::revalue(structure_to_be_added_folders_only_parents[[i]],old_id_to_new_id_matches),
+    #   files_names = children_file_names,
+    #   files_sources = sources,
+    #   files_sources_data = "not_useful",
+    #   files_types = unlist(structure_to_be_added[[index]]$files_types),
+    #   fold_name = structure_to_be_added[[index]]$text,
+    #   parameters = current_parameter,
+    #   epf_index = structure_to_be_added[[index]]$epf_index
+    # )
+
+
+    saved_result = call_fun(parameter = list(
+      project_id = project_id,
       selected_folder = plyr::revalue(structure_to_be_added_folders_only_parents[[i]],old_id_to_new_id_matches),
       files_names = children_file_names,
       files_sources = sources,
@@ -282,8 +295,9 @@
       files_types = unlist(structure_to_be_added[[index]]$files_types),
       fold_name = structure_to_be_added[[index]]$text,
       parameters = current_parameter,
-      epf_index = structure_to_be_added[[index]]$epf_index
-    )
+      epf_index = structure_to_be_added[[index]]$epf_index,
+      fun_name = "save_results_to_project"
+    ))
     output_file_time[i] <- saved_result$current_time
 
 

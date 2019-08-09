@@ -241,8 +241,9 @@ save_results_to_project <- function(project_id = "aaa1560462496",
 
 
 
-    report_fun = get(paste0("report_", parameters$fun_name))
-    report_fun(project_id, folder_id)
+	call_fun(parameter = list(project_id = project_id, fold_id = folder_id, table_index=1,figure_index=1,doc=NULL,fun_name=paste0("report_", parameters$fun_name)))
+    #report_fun = get(paste0("report_", parameters$fun_name))
+    #report_fun(project_id, folder_id)
 
     zip_file_name = paste0(parameters$fun_name, " - result.zip")
     zip(zipfile = zip_file_name, files = c(files_names, paste0("report_",parameters$fun_name,".docx")))
