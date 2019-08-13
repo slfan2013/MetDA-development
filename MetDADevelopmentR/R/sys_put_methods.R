@@ -47,6 +47,21 @@ sys_put_methods <- function() {
         "Example" = "paper2",
         "Example link" = ""
       )
+    ),
+    "POWER ANALYSIS" = list(
+      "sample_size_calculator" = list(
+        "Method Name" = "Sample Size Calculator",
+        "Description" = "Calculate Sample Size for an Individual Variable.",
+        "Example" = "paper3",
+        "Example link" = ""
+      ),
+      "ssize" = list(
+        "Method Name" = "Sample Size Estimation for Microarray Experiments",
+        "Description" = "Sample Size Estimation for Microarray Experiments. Post-hoc power analysis.",
+        "Example" = "paper3",
+        "Example link" = ""
+      )
+
     )
   )
 

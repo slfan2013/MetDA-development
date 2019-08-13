@@ -11,31 +11,25 @@ pacman::p_load(jsonlite, xml2, httr, XML, data.table, textreadr, gsubfn)
 
 
 
-interested_term = " metabolomics "
-interested_term_url = GET(URLencode(paste0('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term="',interested_term,'"&retmax=100000')))$content
+interested_term = " ssize "
+interested_term_url = GET(URLencode(paste0('https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term="',interested_term,'"&retmax=100')))$content
 interested_term_obj = read_xml(interested_term_url)
 # interested_term_text = xml_text(, trim= TRUE)
 
 interested_term_list = as_list(interested_term_obj)
 
 interested_term_id_list = unlist(interested_term_list $eSearchResult$IdList)
-
-# interested_term_id_list = interested_term_id_list[1:artical_limitation]
-
-
-# interested_term_id_list_power = interested_term_id_list
-interested_term_id_list_metabolomics = interested_term_id_list
-# interested_term_id_list_FDR = interested_term_id_list
-
-intersect(intersect(interested_term_id_list_power, interested_term_id_list_metabolomics), interested_term_id_list_FDR)
+interested_term_id_list = interested_term_id_list[1:artical_limitation]
 
 
-'5974217' %in% interested_term_id_list_power
-
-
-
-
-
+# # interested_term_id_list_power = interested_term_id_list
+# # interested_term_id_list_metabolomics = interested_term_id_list
+# # interested_term_id_list_FDR = interested_term_id_list
+#
+# intersect(intersect(interested_term_id_list_power, interested_term_id_list_metabolomics), interested_term_id_list_FDR)
+#
+#
+# '5974217' %in% interested_term_id_list_power
 
 
 
@@ -87,7 +81,7 @@ for(i in 1:length(interested_term_id_list)){
 }
 
 pacman::p_load(officer, magrittr)
-doc <- read_docx()
+doc <- officer::read_docx()
 for(i in 1:length(paper_texts)){
    doc = doc %>%
     body_add_par(value = names(paper_texts)[i], style = "heading 1")

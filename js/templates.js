@@ -293,7 +293,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
-        } else if (['pca'].includes(page)) {
+        } else if (['pca', 'ssize'].includes(page)) {
             obj_score_loading_plot = obj
             obj_scree_plot = obj
 

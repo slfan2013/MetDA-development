@@ -63,6 +63,9 @@ title("Fold Change to Achieve 80% Power")
 
 
 
+
+
+
 # 1 https://cran.r-project.org/web/packages/ssize.fdr/ssize.fdr.pdf
 pacman::p_load(ssize.fdr)
 # In words, (4.2) says the q-value is a measure of the strength of an observed
@@ -94,6 +97,18 @@ osv<-ssize.oneSampVary(deltaMean=dm,deltaSE=ds,a=alph,b=beta,fdr=a,power=pwr,pi0
 osv$ssize ##first sample sizes to reach desired power
 osv$power ##calculated power for each sample size
 osv$crit.vals ##calculated critical value for each sample size
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

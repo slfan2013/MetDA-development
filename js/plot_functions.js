@@ -719,6 +719,32 @@ volcano_plot_fun = function ({
 
 
 
+sample_size_plot_fun = function({ ns=undefined,powers=undefined,effect_sizes = undefined,sample_size_plot_layout= undefined, plot_id= undefined }){
+    //sample_size_plot_fun
+
+    data = []
+    //https://stackoverflow.com/questions/45555266/plotly-legend-title dummy legend.
+    data[0] = {
+        x:[0],y:[0],name:'<b>Effect Sizes</b>',line:{'color': 'rgba(0, 0, 0, 0)'}
+    }
+    for(var i=0; i<effect_sizes.length; i++){
+
+        data.push({
+            x: ns[effect_sizes[i]],
+            y: powers[effect_sizes[i]],
+            mode:'lines+markers',
+            type:'scatter',
+            name:effect_sizes[i]
+        })
+
+    }
+
+    sample_size_plot_layout.yaxis.range=[0,1]
+
+
+    Plotly.newPlot(plot_id, data,sample_size_plot_layout);
+}
+
 
 
 

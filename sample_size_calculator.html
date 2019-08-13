@@ -1,0 +1,392 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1>Sample Size Calculator</h1>
+        <p style='font-family: "Trebuchet MS", Arial, Helvetica, Tahoma, sans-serif;'>Calculate the sample size for
+            different hypothesis testing.</p>
+        <hr />
+        <h3><strong>1. What would you like to test?</strong></h3>
+        <p>This is the first thing you need to know. There are different kinds of statistical tests correspondnig to
+            different experimental hypothesis.
+            For example, you may assume that the average salary of males is higher than female. In this case, you are
+            comparing two group means. Then
+            you should choose <em>'one factor --> two_independent_groups --> t-test'</em>.</p>
+        <p>Sometimes people are interested in the interaction between two factors. For example, you may be interested in
+            whether the education level, say 'school',
+            'collage' and 'university', has different influence on salary of male and female. You have two factors, one
+            is education and the other one is
+            sex. In this case, you should select <em>'two factors --> independent_independent --> two-way ANOVA'</em>.
+            More explanation are given
+            <a href="url" target="_blank">here</a>.</p>
+        <div class="well">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Factors</label>
+                    <div class="radio">
+                        <label><input type="radio" name="factors" value="one factor" checked>one factor</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="factors" value="two factors">two factors</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+
+                    <form><label>Groups</label>
+                        <div id="one_factor_show_index">
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="two_independent_groups"
+                                        onchange="calculatesamplesize();calculateeffectsize();" checked>two independent groups</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="two_paired_groups"
+                                        onchange="calculatesamplesize();calculateeffectsize();">two paired groups</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="multiple_independent_groups"
+                                        onchange="calculatesamplesize();">multiple independent groups</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="multiple_paired_groups"
+                                        onchange="calculatesamplesize();">multiple paired groups</label>
+                            </div>
+                        </div>
+
+                        <div id="two_factor_show_index">
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="independent_independent" onchange="calculatesamplesize();">independent * independent</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="independent_paired"
+                                        onchange="calculatesamplesize();">independent * paired</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="test_groups" value="paired_paired" disabled>paired *
+                                    paired</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <br />
+                    <div id="two_independent_groups" class="hide_all two_independent_groups_show">
+                        <h1><em>t test</em></h1>
+                    </div>
+                    <div id="two_paired_groups" class="hide_all two_paired_groups_show">
+                        <h1><em>paired t test</em></h1>
+                    </div>
+                    <div id="multiple_independent_groups" class="hide_all multiple_independent_groups_show">
+                        <h1><em>ANOVA</em></h1>
+                    </div>
+                    <div id="multiple_paired_groups" class="hide_all multiple_paired_groups_show">
+                        <h1><em>repeated ANOVA</em></h1>
+                    </div>
+                    <div id="independent_independent" class="hide_all independent_independent_show">
+                        <h1><em>two-way ANOVA</em></h1>
+                    </div>
+                    <div id="independent_paired" class="hide_all independent_paired_show">
+                        <h1><em>mixed ANOVA</em></h1>
+                    </div>
+                    <div id="paired_paired" class="hide_all paired_paired_show">
+                        <h1><em>two-way repeated ANOVA</em></h1>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <h3><strong>2. Hyper Parameters.</strong></h3>
+        <p>Usualy in statistical power analysis involved are four elements, sample size, type I error rate (&alpha;),
+            power and effect size. Given any three of them,
+            we can calculate the fourth one. In our case, we are interested in sample size, thus we also need to know
+            the &alpha; and power. In addition, other parameter
+            may serve, like number of groups, Nonsphericity correction (&epsilon;), for complex hypothesis testing.
+            Detail information are available
+            <a href="http://www.gpower.hhu.de/fileadmin/redaktion/Fakultaeten/Mathematisch-Naturwissenschaftliche_Fakultaet/Psychologie/AAP/gpower/GPower3-BRM-Paper.pdf"
+                target="_blank">here</a>.</p>
+        <div class="well">
+            <div class="row">
+                <div class="col-lg-2 offset-lg-4">
+                    <label class="col-md-4 control-label">α:</label>
+                    <input id="alpha" type="number" placeholder="" class="form-control input-md" required="" min="0" step="0.005" max="1" onchange="calculatesamplesize();" value="0.05">
+                </div>
+                <div class="col-lg-2">
+                    <label class="col-md-4 control-label">Power:</label>
+                    <input id="power" type="number" placeholder="" class="form-control input-md" required="" min="0" name="power" step="0.005" max="1" onchange="calculatesamplesize();" value="0.8">
+                </div>
+            </div>
+            <hr />
+                <div class="hide_all multiple_independent_groups_show">
+                    <div class="row">
+                        <div class="col-lg-4 offset-lg-4">
+                            <label>Number of Groups:</label>
+                            <input type="number" class="form-control input-md" id="multiple_independent_groups_numgroups" min="3" value="3" onchange="calculatesamplesize();multiple_independent_groups_numgroups_change_determine()"; />
+                        </div>
+                    </div>
+                </div>
+                <div class="hide_all multiple_paired_groups_show">
+                    <div class="row">
+                        <div class="col-lg-2 offset-lg-3">
+                            <label>Number of Paired Groups:</label>
+                            <input type="number" class="form-control input-md" id="multiple_paired_groups_numgroups" min="3" value="3" onchange="calculatesamplesize();multiple_paired_groups_numgroups_change_determine();" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Correlation among groups:</label><span class="pull-right"><a
+                                    href="http://rpsychologist.com/d3/correlation/" target="_blank"><i
+                                        class="fa fa-question-circle"></i></a></span>
+                            <input type="number" class="form-control input-md" id="multiple_paired_groups_correlation" min="0" max="1"
+                                step="0.01" onchange="calculatesamplesize();" value="0.5"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Nonsphericity Correction(&epsilon;):</label><span class="pull-right"><a
+                                    href="http://user.qzone.qq.com/412276225/blog/1471916501" target="_blank"><i
+                                        class="fa fa-question-circle"></i></a></span>
+                            <input type="number" class="form-control input-md" id="multiple_paired_groups_epsilon" min="0" max="1"
+                                step="0.01" onchange="calculatesamplesize();" value="0.75"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="hide_all independent_independent_show">
+                    <div class="row">
+                        <div class="col-lg-2 offset-lg-4">
+                            <label>Number of groups1:</label>
+                            <input type="number" class="form-control input-md" id="independent_independent_numgroups1" min="2" value="2"
+                                onchange="calculatesamplesize();" />
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Number of groups2:</label>
+                            <input type="number" class="form-control input-md" id="independent_independent_numgroups2" min="2" value="2"
+                                onchange="calculatesamplesize();" />
+                        </div>
+                    </div>
+                </div>
+                <div class="hide_all independent_paired_show">
+                    <div class="row">
+                        <div class="col-lg-2 offset-lg-2">
+                            <label>Number of independent groups:</label>
+                            <input type="number" class="form-control input-md" id="independent_paired_numgroups1" min="2"
+                                onchange="calculatesamplesize();"  value="2"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Number of paired groups:</label>
+                            <input type="number" class="form-control input-md" id="independent_paired_numgroups2" min="2"
+                                onchange="calculatesamplesize();" value="2"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Correlation among groups:</label><span class="pull-right"><a
+                                    href="http://rpsychologist.com/d3/correlation/" target="_blank"><i
+                                        class="fa fa-question-circle"></i></a></span>
+                            <input type="number" class="form-control input-md" id="independent_paired_correlation" min="0" max="1"
+                                step="0.01" onchange="calculatesamplesize();" value="0.5"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Nonsphericity Correction(&epsilon;):</label><span class="pull-right"><a
+                                    href="http://user.qzone.qq.com/412276225/blog/1471916501" target="_blank"><i
+                                        class="fa fa-question-circle"></i></a></span>
+                            <input type="number" class="form-control input-md" id="independent_paired_epsilon" min="0" max="1"
+                                step="0.01" value="0.75" onchange="calculatesamplesize();" />
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+
+        <h3><strong>3. What is the effect size of populations?</strong></h3>
+        <p>In statistics, effect size (d) is a conscept to quantify how distinguish populations are. Different test has
+            different ways of measuring the effect size but usually effect size envolves with population means and
+            population standard deviations. If you cannot estimate the effect size, you can determine it using means and
+            standard deviations <span class="text-muted">(click the <em>determine!</em> button)</span>. </p>
+        <div class="well">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-4">
+                    <div class="form-group">
+                        <label style="margin-bottom:2">Effect Size: </label>
+                        <em class="text-muted hide_all two_independent_groups_show  two_paired_groups_show">small (0.2),
+                            medium (0.5) and large (0.8) </em>
+                        <em class="text-muted hide_all multiple_paired_groups_show multiple_independent_groups_show">small
+                            (0.1), medium (0.25) and large (0.4) </em>
+                        <span class="pull-right hide_all two_independent_groups_show  two_paired_groups_show"><a
+                                href="http://rpsychologist.com/d3/cohend/" target="_blank"><i
+                                    class="fa fa-question-circle"></i></a></span>
+                        <input class="form-control" id='effectsize_samplesize' type='number' name="effectsizevalue" onchange="calculatesamplesize();">
+                    </div>
+                    <div class="collapse fade" id="effectsizecollapse">
+                        <div class="hide_all two_independent_groups_show">
+                            <h3><em>t test</em></h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Mean 1</label>
+                                    <input class="form-control" type='number' name="caleffectsize.mean1"
+                                        onchange="calculateeffectsize();" value="1">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>SD 1</label>
+                                    <input class="form-control" type='number' name="caleffectsize.sd1"
+                                        onchange="calculateeffectsize();" value="1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Mean 2</label>
+                                    <input class="form-control" type='number' name="caleffectsize.mean2"
+                                        onchange="calculateeffectsize();" value="2">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>SD 2</label>
+                                    <input class="form-control" type='number' name="caleffectsize.sd2"
+                                        onchange="calculateeffectsize();" value="1">
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="hide_all two_paired_groups_show">
+                            <h3><em>paired t test</em></h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Mean 1</label>
+                                    <input class="form-control" type='number' name="caleffectsize.mean1"
+                                        onchange="calculateeffectsize();" value="1">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>SD 1</label>
+                                    <input class="form-control" type='number' name="caleffectsize.sd1"
+                                        onchange="calculateeffectsize();" value="1">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Mean 2</label>
+                                    <input class="form-control" type='number' name="caleffectsize.mean2"
+                                        onchange="calculateeffectsize();" value="2">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>SD 2</label>
+                                    <input class="form-control" type='number' name="caleffectsize.sd2"
+                                        onchange="calculateeffectsize();" value="2">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" align="center">
+                                    <label>correlation between two groups</label><span class="pull-right"><a
+                                            href="http://rpsychologist.com/d3/correlation/" target="_blank"><i
+                                                class="fa fa-question-circle"></i></a></span>
+                                    <input class="form-control" type='number' name="caleffectsize.corr"
+                                        onchange="calculateeffectsize();" min="0" max="1" step="0.05" value="0.5">
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="hide_all multiple_independent_groups_show" id="multiple_independent_groups_determine_div">
+                        </div>
+                        <div class="hide_all multiple_paired_groups_show" id="multiple_paired_groups_determine_div">
+                        </div>
+                        <div class="hide_all independent_independent_show">
+                            <h3><em>two-way ANOVA</em></h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Variance explained</label>
+                                    <input class="form-control varianceexplained" type='number' onchange="calculateeffectsize();" min="0" value="1">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Total variance</label>
+                                    <input class="form-control totalvariance" type='number' onchange="calculateeffectsize();" min="0" value="2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hide_all independent_paired_show">
+                            <h3><em>mixed ANOVA</em></h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Variance explained</label>
+                                    <input class="form-control varianceexplained" type='number' onchange="calculateeffectsize();" min="0" value="1">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Total variance</label>
+                                    <input class="form-control totalvariance" type='number' onchange="calculateeffectsize();" min="0" value="2">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hide_all paired_paired_show">
+                            <h3><em>two-way repeated ANOVA</em></h3>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <label>Variance explained</label>
+                                    <input class="form-control varianceexplained" type='number' onchange="calculateeffectsize();" min="0" value="1">
+                                </div>
+                                <div class="col-lg-6">
+                                    <label>Total variance</label>
+                                    <input class="form-control totalvariance" type='number'  name="caleffectsize.totalvariance" onchange="calculateeffectsize();" min="0" value="2">
+                                </div>
+                            </div>
+                        </div>
+                        
+                      <!--
+                          <div class="row">
+                            <div class="col-lg-12 effectsizedetermined" align="center">
+                              Effect size: <em id="effectsizevalue"></em>
+                            </div>
+                          </div>
+                      -->  
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-dismiss="modal"
+                                ng-click="calculatesamplesize();">Push it!</button>
+                            <button type="button" class="btn btn-warning" ng-click="visualizeeffectsize();"
+                                data-toggle="modal" data-target="#visualizeeffectsizemodal">Visualize
+                                it!</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>
+                            &nbsp;
+                        </label><br />
+                        <button type="button" class="btn btn-outline btn-default" data-toggle="collapse"
+                            data-target="#effectsizecollapse">
+                            <i class="fa fa-angle-double-left"></i> Determine!</button>
+                    </div>
+
+
+                    <div class="modal fade" id="visualizeeffectsizemodal" tabindex="-1" role="dialog"
+                        aria-labelledby="visualizepowerlabel">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="visualizepowerlabel"><i class="fa fa-lightbulb-o"></i>
+                                        Visualization of Effect Size</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="visualizeeffectsize_samplesize" style="width:800;height:600">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-Warning" data-dismiss="modal">Got it!</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <hr />
+        <div id="section2">
+            <center>
+                <h3><strong>Based on the information you provided, the sample size for each group must be at
+                        least:</strong></h3>
+            </center>
+            <center>
+                <h1><strong><span id="samplesize" ng-click="calculatesamplesize();"></span></strong></h1>
+            </center>
+            <button class="btn btn-primary pull-right" id="requestplot"
+                onclick="powersampleplot();">Power-Sample plot</button>
+        </div>
+    </div>
+</div>
+<div id="sample_size_plot_div"></div>
+
+
+<script src="js/sample_size_calculator.js"></script>
