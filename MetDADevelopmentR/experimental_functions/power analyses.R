@@ -16,15 +16,15 @@ n=6; fold.change=2.0; power=0.8; sig.level=0.05;
 #
 all.power <- pow(sd=exp.sd, n=n, delta=log2(fold.change),
                  sig.level=sig.level)
-power.plot(all.power, lwd=2, col="blue")
+power.plot(all.power, lwd=2, col="blue", ylab  = "Proportion of Compounds with Power >= x")
 xmax <- par("usr")[2]-0.05; ymax <- par("usr")[4]-0.05
 legend(x=xmax, y=ymax,
        legend= strsplit( paste("n=",n,",",
                                "fold change=",fold.change,",",
                                "alpha=", sig.level, ",",
-                               "# genes=", nobs(exp.sd), sep=''), "," )[[1]],
+                               "# compounds=", nobs(exp.sd), sep=''), "," )[[1]],
        xjust=1, yjust=1, cex=1.0)
-title("Power to Detect 2-Fold Change")
+title("Power to Detect 2-Size of Difference")
 
 
 # 2) What is necessary sample size for 80% power using 3 measurements/patient
@@ -33,15 +33,15 @@ title("Power to Detect 2-Fold Change")
 
 all.size <- ssize(sd=exp.sd, delta=log2(fold.change),
                   sig.level=sig.level, power=power)
-ssize.plot(all.size, lwd=2, col="magenta", xlim=c(1,20))
+ssize.plot(all.size, lwd=2, col="magenta", xlim=c(1,20), ylab = "Proportion of Compounds Needing Sample Size <= n")
 xmax <- par("usr")[2]-1; ymin <- par("usr")[3] + 0.05
 legend(x=xmax, y=ymin,
-       legend= strsplit( paste("fold change=",fold.change,",",
+       legend= strsplit( paste("delta=",fold.change,",",
                                "alpha=", sig.level, ",",
                                "power=",power,",",
-                               "# genes=", nobs(exp.sd), sep=''), "," )[[1]],
+                               "# compounds=", nobs(exp.sd), sep=''), "," )[[1]],
        xjust=1, yjust=0, cex=1.0)
-title("Sample Size to Detect 2-Fold Change")
+title("Sample Size to Detect 2-Size of Difference")
 
 
 # 3) What is necessary fold change to achieve 80% power using 3
@@ -50,15 +50,15 @@ title("Sample Size to Detect 2-Fold Change")
 #
 all.delta <- delta(sd=exp.sd, power=power, n=n,
                    sig.level=sig.level)
-delta.plot(all.delta, lwd=2, col="magenta", xlim=c(1,10))
+delta.plot(all.delta, lwd=2, col="magenta", xlim=c(1,10), ylab = "Proportion of Compounds with Power >= 80% at Size of Difference=delta")
 xmax <- par("usr")[2]-1; ymin <- par("usr")[3] + 0.05
 legend(x=xmax, y=ymin,
        legend= strsplit( paste("n=",n,",",
                                "alpha=", sig.level, ",",
                                "power=",power,",",
-                               "# genes=", nobs(exp.sd), sep=''), "," )[[1]],
+                               "# compounds=", nobs(exp.sd), sep=''), "," )[[1]],
        xjust=1, yjust=0, cex=1.0)
-title("Fold Change to Achieve 80% Power")
+title("Size of Difference to Achieve 80% Power")
 
 
 
@@ -115,9 +115,12 @@ osv$crit.vals ##calculated critical value for each sample size
 ##Example of function ssize.twoSamp
 ##Calculates sample sizes for two-sample microarray experiments
 ##See Figure 1.(a) of Liu & Hwang (2007)
+
 d1<-1 ##difference in differentially expressed genes to be detected
 s1<-0.5 ##standard deviation
 ts<-ssize.twoSamp(delta=d1,sigma=s1,fdr=a,power=pwr,pi0=p0,maxN=N,side="two-sided")
+
+
 ts$ssize ##first sample sizes to reach desired power
 ts$power ##calculated power for each sample size
 ts$crit.vals ##calculated critical value for each sample size
