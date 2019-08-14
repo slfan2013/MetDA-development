@@ -440,7 +440,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
         console.log(parameter)
 
-        ocpu.call("call_fun", { parameter: parameter }, function (session) {
+        ocpu.call("call_fun_temp", { parameter: parameter }, function (session) {
             sss = session
             console.log(session)
             session.getObject(function (obj) {

@@ -24,6 +24,12 @@
 
   e = data.matrix(e)
 
+  e = call_fun(parameter = list(e = e, fun_name="deal_with_missing_values"))
+
+
+  f = f[f$label %in% rownames(e),]
+  p = p[p$label %in% colnames(e),]
+
   result = list(f=f,p=p,e=e)
 
 # }
