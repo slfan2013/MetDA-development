@@ -72,6 +72,10 @@ if(test_type == "t-test"){
 }else{
 
 }
+inv <- list()
+inv$x <- sort(powers)
+inv$y <- ecdf(powers)(inv$x)
+inv_power = inv
 
 #2 ns
 if(test_type == "t-test"){
@@ -83,17 +87,31 @@ if(test_type == "t-test"){
 }else{
 
 }
+inv <- list()
+inv$x <- sort(ns)
+inv$y <- ecdf(ns)(inv$x)
+inv_n = inv
 
 
 
 
-result = data.table(index = 1:nrow(f), label = f$label, powers = powers, ns = ns)
+
+
+
+result = data.table(index = 1:nrow(f), label = f$label, powers = powers, ns = ns, p = p, f = f)
 colnames(result)[3] = paste0("power (n=",n,")")
 colnames(result)[4] = paste0("n (power=",power,")")
 
 fwrite(result, "ssize.csv", col.names = TRUE)
 
+if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
+  # heatmap_plot_style = get_heatmap_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
+  ssize_plot_style = call_fun(parameter = list(user_id="slfan",fun_name="get_ssize_plot_style"))
 
+
+}else{
+  result = list(results_description = "Here is the heatmap summary.",p = p, f = f, ns = ns, powers = powers, inv_power = inv_power, inv_n = inv_n, n_title = paste0("Sample Size needed for ",power*100,"%"),n_ylab = paste0("Proportion of Compounds with Power >= ",power*100,"%"))
+}
 
 
 

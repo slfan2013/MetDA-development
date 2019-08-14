@@ -293,7 +293,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
-        } else if (['pca', 'ssize'].includes(page)) {
+        } else if (['pca'].includes(page)) {
             obj_score_loading_plot = obj
             obj_scree_plot = obj
 
@@ -324,6 +324,29 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     append_results_fun(obj, session)
                 })
 
+            })
+        } else if (['ssize'].includes(page)) {
+            obj_ssize_plot = obj
+            $("#results_card_body").append('<div id="ssize_plot_div"></div>')
+            $("#ssize_plot_div").load("ssize_plot.html", function () {
+                init_selectpicker()
+                if (localStorage['big_category'] === 'project') {
+                    $("#save_results").show();
+                    $("#only_download_result_dataset").hide();
+                    $("#download_results").removeClass("btn-primary")
+                    $("#download_results").addClass("btn-default")
+                    $("#save_results").addClass("btn-primary")
+                    $("#save_results").removeClass("btn-default")
+                } else if (localStorage['big_category'] === 'in_and_out') {
+                    $("#save_results").hide();
+                    $("#only_download_result_dataset").show();
+                    $("#download_results").addClass("btn-primary")
+                    $("#download_results").removeClass("btn-default")
+                    $("#save_results").removeClass("btn-primary")
+                    $("#save_results").addClass("btn-default")
+                }
+                var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                append_results_fun(obj, session)
             })
         } else if (['heatmap'].includes(page)) {
             obj_heatmap_plot = obj
@@ -440,7 +463,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
         console.log(parameter)
 
-        ocpu.call("call_fun_temp", { parameter: parameter }, function (session) {
+        ocpu.call("call_fun", { parameter: parameter }, function (session) {
             sss = session
             console.log(session)
             session.getObject(function (obj) {

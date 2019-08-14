@@ -5,9 +5,8 @@
 $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
     $("#score_plot_to_be_loaded").append($.parseHTML(plot_layout_adjuster_string.replaceAll("PLOT_NAME", "score_plot")));
 
-    $.getScript("js/plot_layout_adjuster1.js", function (plot_layout_adjuster1) {
+    $.ajax({url:"js/plot_layout_adjuster1.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster1) {
         adjusted_score_plot_layout_adjuster1 = plot_layout_adjuster1.replaceAll("PLOT_NAME", "score_plot")
-        console.log(adjusted_score_plot_layout_adjuster1)
         eval(adjusted_score_plot_layout_adjuster1)
 
         // assign the default value for pca score plot
@@ -16,17 +15,15 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             fun_name:"get_pca_score_plot_style"
         }}, function (session) {
             session.getObject(function (score_plot_obj) {
-                console.log(score_plot_obj)
-                oo = score_plot_obj
+                score_plot_obj_global = score_plot_obj
                 score_plot_traces = score_plot_obj.traces
 
-                $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
+                $.ajax({url:"js/plot_layout_adjuster2.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster2) {
                     adjusted_score_plot_layout_adjuster2 = plot_layout_adjuster2.replaceAll("PLOT_NAME", "score_plot")
 
 
 
 
-                    console.log(adjusted_score_plot_layout_adjuster2) // THIS console log is neccessary. 
                     eval(adjusted_score_plot_layout_adjuster2)
                     $("#score_plot_layout_yaxis_title_text").val("PC" + $("#score_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#score_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")
                     $("#score_plot_layout_yaxis_title_text").val("PC" + $("#score_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#score_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")
@@ -59,7 +56,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                             }
                         }
                     }
-                })
+                }})
 
             })
         }).fail(function (e2) {
@@ -76,7 +73,6 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             })*/
 
         gather_page_information_to_score_plot = function () {
-            console.log($("#score_plot_plot_bgcolor").spectrum("get").toRgbString())
 
             x = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcx").val())
             y = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcy").val())
@@ -122,9 +118,9 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-            $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+            $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                 adjusted_score_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "score_plot")
-                console.log(adjusted_score_plot_layout_adjuster3) // THIS console log is neccessary.
+               
                 eval(adjusted_score_plot_layout_adjuster3)
                 save_score_plot_style = function () {
 
@@ -154,11 +150,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         score_plot_layout.traces.scatter_sizes[1] = $("#score_plot_size_option").val()
                     }
 
-                    $.getScript("js/plot_layout_adjuster4.js", function (plot_layout_adjuster4) {
+                    $.ajax({url:"js/plot_layout_adjuster4.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster4) {
                         adjusted_score_plot_layout_adjuster4 = plot_layout_adjuster4.replaceAll("PLOT_NAME", "score_plot")
-                        console.log(adjusted_score_plot_layout_adjuster4)
                         eval(adjusted_score_plot_layout_adjuster4)
-                    })
+                    }})
 
 
 
@@ -174,7 +169,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     plot_id: score_plot_plot_id
                 })
 
-            })
+            }})
 
 
 
@@ -364,7 +359,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-    }, 'js')
+    }})
 
 
 

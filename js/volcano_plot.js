@@ -5,7 +5,7 @@
 $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
     $("#volcano_plot_to_be_loaded").append($.parseHTML(plot_layout_adjuster_string.replaceAll("PLOT_NAME", "volcano_plot")));
 
-    $.getScript("js/plot_layout_adjuster1.js", function (plot_layout_adjuster1) {
+    $.ajax({url:"js/plot_layout_adjuster1.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster1) {
 
         adjusted_volcano_plot_layout_adjuster1= plot_layout_adjuster1.replace(/PLOT_NAME/g, 'volcano_plot')
         eval(adjusted_volcano_plot_layout_adjuster1)
@@ -16,12 +16,12 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             fun_name:"get_volcano_plot_style"
         }}, function (session) {
             session.getObject(function (volcano_plot_obj) {
-                oo = volcano_plot_obj
+                volcano_plot_obj_global = volcano_plot_obj
                 volcano_plot_traces = volcano_plot_obj.traces
 
 
 
-                $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
+                $.ajax({url:"js/plot_layout_adjuster2.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster2) {
                     adjusted_volcano_plot_layout_adjuster2 = plot_layout_adjuster2.replace(/PLOT_NAME/g, 'volcano_plot')
                     //console.log(adjusted_volcano_plot_layout_adjuster2)
                     console.log("here")
@@ -106,7 +106,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
                     volcano_plot_debounced()
-                })
+                }})
 
             })
         }).fail(function (e2) {
@@ -118,7 +118,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-            $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+            $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                 console.log("!!")
                 adjusted_volcano_plot_layout_adjuster3 = plot_layout_adjuster3.replace(/PLOT_NAME/g, 'volcano_plot')
                 //console.log(adjusted_volcano_plot_layout_adjuster3)
@@ -162,11 +162,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     volcano_plot_layout.traces.significancy_line_width = $("#significancy_line_width").val()
                     volcano_plot_layout.traces.significancy_line_dash = $("#significancy_line_dash").val()
 
-                    $.getScript("js/plot_layout_adjuster4.js", function (plot_layout_adjuster4) {
+                    $.ajax({url:"js/plot_layout_adjuster4.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster4) {
                         adjusted_volcano_plot_layout_adjuster4 = plot_layout_adjuster4.replace(/PLOT_NAME/g, 'volcano_plot')
                         console.log(adjusted_volcano_plot_layout_adjuster4)
                         eval(adjusted_volcano_plot_layout_adjuster4)
-                    })
+                    }})
 
 
                 }
@@ -202,13 +202,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     names: names,
                     layout: layout, plot_id: plot_id
                 })
-            })
+            }})
         }
         volcano_plot_debounced = _.debounce(gather_page_information_to_volcano_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
 
 
 
-    }, 'js')
+    }})
 }, 'html');
 
 

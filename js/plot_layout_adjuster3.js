@@ -1,4 +1,7 @@
-PLOT_NAME_layout = {
+PLOT_NAME_layout1 = PLOT_NAME_obj_global
+console.log("HERE")
+console.log(PLOT_NAME_layout1.xaxis.autorange)
+PLOT_NAME_layout2 = {
     plot_bgcolor: $("#PLOT_NAME_plot_bgcolor").spectrum("get").toRgbString(),
     paper_bgcolor: $("#PLOT_NAME_paper_bgcolor").spectrum("get").toRgbString(),
     /*font: {
@@ -86,3 +89,8 @@ PLOT_NAME_layout = {
     hovermode: "closest",
     traces: PLOT_NAME_traces
 }
+PLOT_NAME_layout = mergeDeep(PLOT_NAME_layout1,PLOT_NAME_layout2)
+console.log("HERE2")
+console.log(PLOT_NAME_layout1.xaxis.autorange)
+console.log("HERE3")
+console.log(PLOT_NAME_layout.xaxis.autorange)

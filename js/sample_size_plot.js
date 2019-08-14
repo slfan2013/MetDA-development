@@ -9,7 +9,7 @@ color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
 $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
     $("#sample_size_plot_to_be_loaded").append($.parseHTML(plot_layout_adjuster_string.replaceAll("PLOT_NAME", "sample_size_plot")));
 
-    $.getScript("js/plot_layout_adjuster1.js", function (plot_layout_adjuster1) {
+    $.ajax({url:"js/plot_layout_adjuster1.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster1) {
         var adjusted_sample_size_plot_layout_adjuster1 = plot_layout_adjuster1.replaceAll("PLOT_NAME", "sample_size_plot")
         console.log(adjusted_sample_size_plot_layout_adjuster1)
         eval(adjusted_sample_size_plot_layout_adjuster1)
@@ -23,16 +23,16 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         }}, function (session) {
             session.getObject(function (sample_size_plot_obj) {
                 console.log(sample_size_plot_obj)
-                oo = sample_size_plot_obj
+                sample_size_plot_obj_global = sample_size_plot_obj
                 sample_size_plot_traces = sample_size_plot_obj.traces
 
-                $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
+                $.ajax({url:"js/plot_layout_adjuster2.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster2) {
                     adjusted_sample_size_plot_layout_adjuster2 = plot_layout_adjuster2.replaceAll("PLOT_NAME", "sample_size_plot")
                     console.log(adjusted_sample_size_plot_layout_adjuster2) // THIS console log is neccessary. 
                     eval(adjusted_sample_size_plot_layout_adjuster2)
 
 
-                    $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+                    $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                         adjusted_sample_size_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "sample_size_plot")
                         console.log(adjusted_sample_size_plot_layout_adjuster3) // THIS console log is neccessary.
                         eval(adjusted_sample_size_plot_layout_adjuster3)
@@ -40,10 +40,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                         //sample_size_plot_debounced()
 
-                    })
+                    }})
 
 
-                })
+                }})
 
             })
         }).fail(function (e2) {
@@ -65,7 +65,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                    
     
                 plot_id = "sample_size_plot"
-                $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+                $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                     adjusted_sample_size_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "sample_size_plot")
                     console.log(adjusted_sample_size_plot_layout_adjuster3) // THIS console log is neccessary.
                     eval(adjusted_sample_size_plot_layout_adjuster3)
@@ -73,17 +73,17 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     save_sample_size_plot_style = function () {
     
     
-                        $.getScript("js/plot_layout_adjuster4.js", function (plot_layout_adjuster4) {
+                        $.ajax({url:"js/plot_layout_adjuster4.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster4) {
                             adjusted_sample_size_plot_layout_adjuster4 = plot_layout_adjuster4.replaceAll("PLOT_NAME", "sample_size_plot")
                             console.log(adjusted_sample_size_plot_layout_adjuster4)
                             eval(adjusted_sample_size_plot_layout_adjuster4)
-                        })
+                        }})
     
                     }
     
                     sample_size_plot_fun({ ns:ns, powers:powers, effect_sizes:effect_sizes,sample_size_plot_layout: sample_size_plot_layout, plot_id: plot_id })
     
-                })
+                }})
 
                 
     
@@ -101,7 +101,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-    })
+    }})
 
 
 })

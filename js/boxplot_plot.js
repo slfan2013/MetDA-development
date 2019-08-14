@@ -5,7 +5,7 @@
 $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
     $("#boxplot_plot_to_be_loaded").append($.parseHTML(plot_layout_adjuster_string.replaceAll("PLOT_NAME", "boxplot_plot")));
 
-    $.getScript("js/plot_layout_adjuster1.js", function (plot_layout_adjuster1) {
+    $.ajax({url:"js/plot_layout_adjuster1.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster1) {
 
         adjusted_boxplot_plot_layout_adjuster1 = plot_layout_adjuster1.replace(/PLOT_NAME/g, 'boxplot_plot')
         eval(adjusted_boxplot_plot_layout_adjuster1)
@@ -16,7 +16,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             fun_name:"get_boxplot_plot_style"
         }}, function (session) {
             session.getObject(function (boxplot_plot_obj) {
-                oo = boxplot_plot_obj
+                boxplot_plot_obj_global = boxplot_plot_obj
                 boxplot_plot_traces = boxplot_plot_obj.traces
                 p_column_names = Object.keys(obj_boxplot_plot.p[0])
                 p_column_unique = {}
@@ -122,10 +122,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 $("#compound").selectpicker('refresh')
 
 
-                $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
+                $.ajax({url:"js/plot_layout_adjuster2.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster2) {
                     adjusted_boxplot_plot_layout_adjuster2 = plot_layout_adjuster2.replace(/PLOT_NAME/g, 'boxplot_plot')
                     //console.log(adjusted_boxplot_plot_layout_adjuster2)
-                    console.log("here")
+                    console.log("here!!!!!!!!!!!!!!!!!!!!!!")
                     eval(adjusted_boxplot_plot_layout_adjuster2)
                     // initialize the traces on HTML.
                     console.log(boxplot_plot_obj)
@@ -153,7 +153,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     $("#notchwidth").val(boxplot_plot_obj.traces.notchwidth)
                     $("#boxmean").val(boxplot_plot_obj.traces.boxmean)
                     boxplot_plot_debounced()
-                })
+                }})
 
             })
         }).fail(function (e2) {
@@ -165,7 +165,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-            $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+            $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                 console.log("!!")
                 adjusted_boxplot_plot_layout_adjuster3 = plot_layout_adjuster3.replace(/PLOT_NAME/g, 'boxplot_plot')
                 //console.log(adjusted_boxplot_plot_layout_adjuster3)
@@ -200,11 +200,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     boxplot_plot_layout.traces.notchwidth = $("#notchwidth").val()
                     boxplot_plot_layout.traces.boxmean = $("#boxmean").val()
 
-                    $.getScript("js/plot_layout_adjuster4.js", function (plot_layout_adjuster4) {
+                    $.ajax({url:"js/plot_layout_adjuster4.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster4) {
                         adjusted_boxplot_plot_layout_adjuster4 = plot_layout_adjuster4.replace(/PLOT_NAME/g, 'boxplot_plot')
                         console.log(adjusted_boxplot_plot_layout_adjuster4)
                         eval(adjusted_boxplot_plot_layout_adjuster4)
-                    })
+                    }})
 
 
                 }
@@ -302,13 +302,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-            })
+            }})
         }
         boxplot_plot_debounced = _.debounce(gather_page_information_to_boxplot_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
 
 
 
-    }, 'js')
+    }})
 }, 'html');
 
 

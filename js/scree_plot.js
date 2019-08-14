@@ -5,9 +5,9 @@ console.log("scree.plot");
 $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
     $("#scree_plot_to_be_loaded").append($.parseHTML(plot_layout_adjuster_string.replaceAll("PLOT_NAME", "scree_plot")));
 
-    $.getScript("js/plot_layout_adjuster1.js", function (plot_layout_adjuster1) {
+    $.ajax({url:"js/plot_layout_adjuster1.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster1) {
         var adjusted_scree_plot_layout_adjuster1 = plot_layout_adjuster1.replaceAll("PLOT_NAME", "scree_plot")
-        console.log(adjusted_scree_plot_layout_adjuster1)
+
         eval(adjusted_scree_plot_layout_adjuster1)
 
 
@@ -19,12 +19,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         }}, function (session) {
             session.getObject(function (scree_plot_obj) {
                 console.log(scree_plot_obj)
-                oo = scree_plot_obj
+                scree_plot_obj_global = scree_plot_obj
                 scree_plot_traces = scree_plot_obj.traces
 
-                $.getScript("js/plot_layout_adjuster2.js", function (plot_layout_adjuster2) {
+                $.ajax({url:"js/plot_layout_adjuster2.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster2) {
                     adjusted_scree_plot_layout_adjuster2 = plot_layout_adjuster2.replaceAll("PLOT_NAME", "scree_plot")
-                    console.log(adjusted_scree_plot_layout_adjuster2) // THIS console log is neccessary. 
                     eval(adjusted_scree_plot_layout_adjuster2)
 
                     $("#scree_plot_layout_xaxis_title_text").val("Number of Principal Components")
@@ -32,18 +31,17 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-                    $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+                    $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                         adjusted_scree_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "scree_plot")
-                        console.log(adjusted_scree_plot_layout_adjuster3) // THIS console log is neccessary.
                         eval(adjusted_scree_plot_layout_adjuster3)
 
 
                         scree_plot_debounced()
 
-                    })
+                    }})
 
 
-                })
+                }})
 
             })
         }).fail(function (e2) {
@@ -76,24 +74,22 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             plot_id = "scree_plot"
 
 
-            $.getScript("js/plot_layout_adjuster3.js", function (plot_layout_adjuster3) {
+            $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                 adjusted_scree_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "scree_plot")
-                console.log(adjusted_scree_plot_layout_adjuster3) // THIS console log is neccessary.
                 eval(adjusted_scree_plot_layout_adjuster3)
                 save_scree_plot_style = function () {
 
 
-                    $.getScript("js/plot_layout_adjuster4.js", function (plot_layout_adjuster4) {
+                    $.ajax({url:"js/plot_layout_adjuster4.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster4) {
                         adjusted_scree_plot_layout_adjuster4 = plot_layout_adjuster4.replaceAll("PLOT_NAME", "scree_plot")
-                        console.log(adjusted_scree_plot_layout_adjuster4)
-                        eval(adjusted_scree_plot_layout_adjuster4)
-                    })
+                         eval(adjusted_scree_plot_layout_adjuster4)
+                    }})
 
                 }
 
                 scree_plot_fun({ ys: ys, texts: texts, hovertexts: hovertexts, names: names, add_line_trace: add_line_trace, line_trace_index: line_trace_index, scree_plot_layout: scree_plot_layout, plot_id: plot_id })
 
-            })
+            }})
 
 
 
@@ -104,7 +100,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-    })
+    }})
 
 
 })

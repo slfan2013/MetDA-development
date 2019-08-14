@@ -1,3 +1,8 @@
+console.log("boxplot.js")
+color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
+["rgb(152, 78, 163)", "rgb(242, 126, 51)", "rgb(254, 248, 64)"],
+["rgb(166, 86, 41)", "rgb(241, 128, 191)", "rgb(153, 153, 153)"],
+["rgb(0,0,0)", "rgb(255,255,255)"]]
 heatmap_plot_fun = function ({
     heatmap_x = undefined, heatmap_y = undefined, heatmap_z = undefined, sample_label = undefined, heatmap_x_text = undefined, heatmap_y_text = undefined, tickvals = undefined,
     colorscale = undefined,
