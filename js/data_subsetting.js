@@ -1,13 +1,13 @@
-console.log("student_t_test.js")
+console.log("data_subsetting.js")
 
 
 
 
 
-student_t_test_append_results = function (obj, session) {
+data_subsetting_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
-    Papa.parse(session.loc + "files/student_t_test.csv", {
+    Papa.parse(session.loc + "files/data_subsetting.csv", {
         download: true,
         header: false,
         complete: function (results) {
@@ -19,21 +19,21 @@ student_t_test_append_results = function (obj, session) {
         }
     });
 
-    var files_sources = [session.loc + "files/student_t_test.csv"];
-    var files_names = ["student_t_test.csv"]
-    var zipfile_name = "student_t_test.csv"
-    var fold_name = "Student t-test"
+    var files_sources = [session.loc + "files/data_subsetting.csv"];
+    var files_names = ["data_subsetting.csv"]
+    var zipfile_name = "data_subsetting.csv"
+    var fold_name = "Data Subset"
     var files_types = ["application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {
 
         //files_sources.push(obj.report_base64[0])
-        //files_names.push("report_student_t_test.docx")
+        //files_names.push("report_data_subsetting.docx")
 
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0], ['sample'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['none'])
     })
    
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0], ['sample'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['none'])
     })
 
 }

@@ -24,14 +24,14 @@ heatmap_append_results = function (obj, session) {
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.heatmap_plot = heatmap_plot_parameters
         //download_results(files_names, files_sources, zipfile_name)
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
     })
 
 
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.heatmap_plot = heatmap_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
     })
 
 

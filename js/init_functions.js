@@ -394,7 +394,7 @@ function mergeDeep(target, ...sources) {
 }
 
 
-save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index) {
+save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index,compound_sample_index) {
     // 2. What to do after get all the Results.
   // if it is a project, need to ask user to select a folder first. Otherwise, just call save_results_to_project to save in a temp project.
   when_get_allResults_done = function(){
@@ -438,6 +438,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
       fold_name: fold_name,
       parameters: parameters,
       epf_index: epf_index,
+      compound_sample_index:compound_sample_index,
       project_id: project_id,
       selected_folder: selected_folder,
       fun_name:"save_results_to_project"

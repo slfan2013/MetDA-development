@@ -1,13 +1,13 @@
-console.log("fold_change.js")
+console.log("mann_whitney_test.js")
 
 
 
 
 
-fold_change_append_results = function (obj, session) {
+mann_whitney_test_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
-    Papa.parse(session.loc + "files/fold_change.csv", {
+    Papa.parse(session.loc + "files/mann_whitney_test.csv", {
         download: true,
         header: false,
         complete: function (results) {
@@ -19,21 +19,19 @@ fold_change_append_results = function (obj, session) {
         }
     });
 
-    var files_sources = [session.loc + "files/fold_change.csv"];
-    var files_names = ["fold_change.csv"]
-    var zipfile_name = "fold_change"
-    var fold_name = "Fold Change"
+    var files_sources = [session.loc + "files/mann_whitney_test.csv"];
+    var files_names = ["mann_whitney_test.csv"]
+    var zipfile_name = "mann_whitney_test.csv"
+    var fold_name = "Mann-Whitney U test"
     var files_types = ["application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {
 
-
         //files_sources.push(obj.report_base64[0])
-        //files_names.push("report_fold_change.docx")
+        //files_names.push("report_mann_whitney_test.docx")
 
         save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['sample'])
-
-
     })
+   
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
         save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['sample'])
     })

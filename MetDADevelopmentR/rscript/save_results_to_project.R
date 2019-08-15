@@ -7,7 +7,7 @@
 #                                     fold_name = "Missing Value Imputation",
 #                                     parameters = '"defination_of_missing_value":["empty cells"],"defination_of_missing_value_values_less_than":"","defination_of_missing_other_than":"","remove_missing_values_more_than":"on","remove_missing_values_more_than_value":"50","missing_value_imputation_method":"replace by half minimum","project_id":"dadfasfdas1560556027","fun_name":"missing_value_imputation"',
 #                                     epf_index = c(1)) {
-  save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, files_sources_data, file = "test.RData")
+  save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index,files_sources_data, file = "test.RData")
 
   load("test.RData")
   if (class(files_sources_data) %in% c("list", "data.frame")) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
@@ -33,6 +33,7 @@
               path = files_names[file_source],
               fun_name = "inputFile"
             ))
+			stop("!!! The above code is too slow. Change to a new one.")
 
             e <- read.csv("e.csv")[, -1]
             rownames(e) <- read.csv("f.csv")$label
@@ -129,7 +130,8 @@
           parameter = list(
             r_function = "create_new_project",
             parameters = ""
-          )
+          ),
+          subset = c("compound")
         ),
         list(
           id = "p.csv",
@@ -141,7 +143,8 @@
           parameter = list(
             r_function = "create_new_project",
             parameters = ""
-          )
+          ),
+          subset = c("sample")
         )
       )
     }
@@ -184,7 +187,7 @@
   # folder_id <- paste0(fold_name, current_time)
 
 
-  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA","plsda" = "PLSDA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "ssize" = "post-hoc Sample Size Analysis")
+  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA","plsda" = "PLSDA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "data_subsetting" = "Data Subsetting","mann_whitney_test" = "Mann-Whitney U test", "ssize" = "post-hoc Sample Size Analysis")
 
   folder_id <- paste0(plyr::revalue(parameters$fun_name, from_fun_name_to_folder_id), current_time)
 
@@ -223,6 +226,20 @@
     if (file_source %in% epf_index) {
       project_structure[[length(project_structure)]]$epf <- "e"
     }
+
+
+    if(compound_sample_index[file_source] == 'compound'){
+      project_structure[[length(project_structure)]]$subset = "compound"
+    }else if(compound_sample_index[file_source] == 'sample'){
+      project_structure[[length(project_structure)]]$subset = "sample"
+    }
+
+
+
+
+
+
+
   }
   projectList$project_structure <- project_structure
   #

@@ -28,7 +28,7 @@ volcano_append_results = function (obj, session) {
         parameters.volcano_plot = volcano_plot_parameters
         parameters.fun_name = "volcano"
         parameters.activate_data_id = $("#" + 'volcano_input_file')[0].files[0].name
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
 
     })
 
@@ -37,7 +37,7 @@ volcano_append_results = function (obj, session) {
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.volcano_plot = volcano_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
     })
 
 

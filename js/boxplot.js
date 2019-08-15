@@ -61,7 +61,7 @@ boxplot_append_results = function (obj, session) {
                         parameters = JSON.parse(localStorage.getItem('parameter'))
                         parameters.boxplot_plot = boxplot_plot_parameters
 
-                        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+                        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
                         if(type === 'download'){
                             setTimeout(() => {
                                 $(".download").prop("disabled", false);
@@ -126,7 +126,7 @@ boxplot_append_results = function (obj, session) {
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.boxplot_plot = boxplot_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
     })*/
 
 

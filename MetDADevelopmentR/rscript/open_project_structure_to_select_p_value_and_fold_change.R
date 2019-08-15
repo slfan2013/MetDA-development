@@ -27,9 +27,9 @@
 
 
 
-  p_val_folder_id = id[functions %in% c("student_t_test","mann_whitney_u_test)")]
-  p_val_needed_id = id[functions %in% c("student_t_test","mann_whitney_u_test)")]
-  p_val_parents = parent[functions %in% c("student_t_test","mann_whitney_u_test)")]
+  p_val_folder_id = id[functions %in% c("student_t_test","mann_whitney_test)")]
+  p_val_needed_id = id[functions %in% c("student_t_test","mann_whitney_test)")]
+  p_val_parents = parent[functions %in% c("student_t_test","mann_whitney_test)")]
 
   fold_change_folder_id = id[functions %in% "fold_change"]
   fold_change_needed_id = id[functions %in% "fold_change"]

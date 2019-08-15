@@ -32,6 +32,7 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
 
     })
+  stop("check row 29. mann_whitney not allowed.")
 
 
   fold_change_data = tryCatch(read.csv(

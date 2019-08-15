@@ -1,5 +1,13 @@
 sys_put_methods <- function() {
   methods_structure <- list(
+    "Data Subsetting" = list(
+      "data_subsetting" = list(
+        "Method Name" = "Data Subsetting",
+        "Description" = "Subset your data according to criterions (e.g. p-values).",
+        "Example" = "paper1",
+        "Example link" = ""
+      )
+    ),
     "DATA PROCESSING" = list(
       "missing_value_imputation" = list(
         "Method Name" = "Missing Value Imputation",
@@ -18,6 +26,12 @@ sys_put_methods <- function() {
       "student_t_test" = list(
         "Method Name" = "Student's t-test",
         "Description" = "The Student's t-test is for testing if the two group means are statistically siginificantly different.",
+        "Example" = "paper3",
+        "Example link" = ""
+      ),
+      "mann_whitney_test" = list(
+        "Method Name" = "Mann-Whitney U test",
+        "Description" = "The Mann-Whitney U test is for testing if the two group medians are statistically siginificantly different.",
         "Example" = "paper3",
         "Example link" = ""
       ),

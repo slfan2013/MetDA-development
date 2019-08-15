@@ -45,6 +45,60 @@ inputFile <- function(path = "D:\\MetDA-development\\MetDADevelopmentR\\GCTOF_Ab
     content_type = "application/vnd.ms-excel",
     data = gsub("data:text/csv;base64,", "", markdown:::.b64EncodeFile("p.csv"))
   )
+
+
+
+  current_parameters <- call_fun(list(current_parameters = as.list(match.call())[-1], fun_name = "get_current_parameters"))
+  projectList[["project_structure"]] <- list(
+    list(
+      id = temp_project_id,
+      parent = "#",
+      text = temp_project_id,
+      icon = "fa fa-folder"
+    ),
+    list(
+      id = "e.csv",
+      parent = temp_project_id,
+      text = "e.csv",
+      icon = "fa fa-file-excel-o",
+      with_attachment = TRUE,
+      epf = "e",
+      parameter = list(
+        r_function = "create_new_project",
+        parameters = current_parameters
+      )
+    ),
+    list(
+      id = "f.csv",
+      parent = temp_project_id,
+      text = "f.csv",
+      icon = "fa fa-file-excel-o",
+      with_attachment = TRUE,
+      epf = "f",
+      parameter = list(
+        r_function = "create_new_project",
+        parameters = current_parameters
+      ),
+      subset = c("compound")
+    ),
+    list(
+      id = "p.csv",
+      parent = temp_project_id,
+      text = "p.csv",
+      icon = "fa fa-file-excel-o",
+      with_attachment = TRUE,
+      epf = "p",
+      parameter = list(
+        r_function = "create_new_project",
+        parameters = current_parameters
+      ),
+      subset = c("sample")
+    )
+  )
+
+
+
+
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
 
 

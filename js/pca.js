@@ -44,7 +44,7 @@ pca_append_results = function (obj, session) {
         parameters.score_plot = score_plot_parameters
         parameters.loading_plot = loading_plot_parameters
         parameters.scree_plot = scree_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none'])
     })
 
 

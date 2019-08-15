@@ -63,7 +63,8 @@ projectList[["project_structure"]] <- list(
     parameter = list(
       r_function = "create_new_project",
       parameters = current_parameters
-    )
+    ),
+    subset = c("compound")
   ),
   list(
     id = "p.csv",
@@ -75,7 +76,8 @@ projectList[["project_structure"]] <- list(
     parameter = list(
       r_function = "create_new_project",
       parameters = current_parameters
-    )
+    ),
+    subset = c("sample")
   )
 )
 #   print(jsonlite::toJSON(projectList,auto_unbox = TRUE, force = TRUE))

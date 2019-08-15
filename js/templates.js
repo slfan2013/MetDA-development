@@ -201,7 +201,11 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
     get_parameter_settings = function () {
         $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", init_selectpicker)
-        $("#parameter_settings_description").html('loaded')
+        //$("#parameter_settings_description").html('loaded')
+        $("#parameter_settings_description").load(window.location.href.split("#")[1] + "_parameter_settings_description.html", init_selectpicker)
+
+
+
     }
 
     project_id = localStorage["activate_project_id"] // this will be erased by project_id = obj.project_id[0]
@@ -271,7 +275,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-        if (['missing_value_imputation', 'student_t_test', 'fold_change'].includes(page)) {
+        if (['missing_value_imputation', 'student_t_test', 'mann_whitney_test','data_subsetting', 'fold_change'].includes(page)) {
             $("#results_card_body").load("one_top_description_bottom_table.html", function () {
                 init_selectpicker()
 
