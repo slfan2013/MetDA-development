@@ -93,37 +93,17 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         var plot_id = "ssize_plot"
                         //obj_ssize_plot
 
-                        var myPlot = document.getElementById(plot_id)
-                        ssize_plot_data = [{
-                            x: obj_ssize_plot.inv_n.x,
-                            y: obj_ssize_plot.inv_n.y,
-                            text: "",
-                            type: 'scatter',
-                            showlegend: false,
-                            mode: 'lines'
-                        }]
-
-
-                        Plotly.newPlot(plot_id, ssize_plot_data, ssize_plot_layout).then(gd => {
-
-                        });
+                        var x = Object.values(obj_ssize_plot.inv_n).map(o=>o.x)
+                        var y = Object.values(obj_ssize_plot.inv_n).map(o=>o.y)
+                        var names = Object.keys(obj_ssize_plot.inv_n)
+                        var title = $("#ssize_plot_layout_title_text").val();
+                        var y_lab = $("#ssize_plot_layout_yaxis_title_text").val();
 
 
 
-
-                        /*ssize_plot_fun({
-                            ssize_x: ssize_x, ssize_y: ssize_y, ssize_z: ssize_z, sample_label: sample_label, ssize_x_text: ssize_x_text, ssize_y_text: ssize_y_text, tickvals: tickvals,
-                            colorscale: colorscale,
-                            show_sample_dendrogram: show_sample_dendrogram, sample_dendro_trace_x: sample_dendro_trace_x, sample_dendro_trace_y: sample_dendro_trace_y,
-                            show_compound_dendrogram: show_compound_dendrogram, compound_dendro_trace_x: compound_dendro_trace_x, compound_dendro_trace_y: compound_dendro_trace_y,
-                            sample_annotations: sample_annotations, order_sample_by: order_sample_by, order_compound_by: order_compound_by,
-                            sample_level_options: sample_level_options, p: p, sample_order: sample_order,
-                            sample_tree_height: sample_tree_height, sample_annotation_height: sample_annotation_height, show_sample_label: show_sample_label,
-                            compound_annotations: compound_annotations,
-                            compound_level_options: compound_level_options, f: f, compound_order: compound_order,
-                            compound_tree_height: compound_tree_height, compound_annotation_height: compound_annotation_height, show_compound_label: show_compound_label,
+                        ssize_plot_fun({x:x,y:y,title:title,y_lab:y_lab,names:names,
                             layout: layout, plot_id: plot_id
-                        })*/
+                        })
 
 
 

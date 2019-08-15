@@ -184,7 +184,7 @@
   # folder_id <- paste0(fold_name, current_time)
 
 
-  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "ssize" = "post-hoc Sample Size Analysis")
+  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA","plsda" = "PLSDA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "ssize" = "post-hoc Sample Size Analysis")
 
   folder_id <- paste0(plyr::revalue(parameters$fun_name, from_fun_name_to_folder_id), current_time)
 

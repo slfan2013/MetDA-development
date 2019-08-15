@@ -76,28 +76,7 @@ if(order_compound=='dendrogram'){
 
 hc.col.order = hc.col$order
 hc.row.order = hc.row$order
-# result = list(
-#   # temp_data = t(e_scale[hc.row.order,hc.col.order]),
-#   temp_data = t(e_scale),
-#   report_html =report_html,
-#   sx = xx$x$data[[1]]$x,
-#   sy = xx$x$data[[1]]$y,
-#   cx = yy$x$data[[1]]$x,
-#   cy = yy$x$data[[1]]$y,
-#   max = max(e_scale, na.rm = TRUE),
-#   median = median(e_scale, na.rm = TRUE),
-#   min = min(e_scale, na.rm = TRUE),
-#   hc_col_order = hc.col.order-1,
-#   hc_row_order = hc.row.order-1
-# )
 
-
-# sample_scores = pca$x[,1:min(15,ncol(pca$x))]
-# sample_scores = data.table(sample_scores)
-# rownames(sample_scores) = make.unique(p$label)
-#
-# fwrite(sample_scores, "sample_scores.csv", col.names = TRUE,row.names = TRUE)
-# fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = TRUE)
 
 sample_order = data.table(sample_order = hc.row.order)
 rownames(sample_order) = make.unique(p$label)
