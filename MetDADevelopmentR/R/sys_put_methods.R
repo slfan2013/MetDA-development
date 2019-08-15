@@ -41,6 +41,12 @@ sys_put_methods <- function() {
         "Example" = "paper2",
         "Example link" = ""
       ),
+      "plsda" = list(
+        "Method Name" = "Partial Least Square - Discriminant Analysis (PLSDA)",
+        "Description" = "Prediction",
+        "Example" = "paper2",
+        "Example link" = ""
+      ),
 	  "heatmap" = list(
         "Method Name" = "Heatmap",
         "Description" = "To draw a beautiful heatmap.",

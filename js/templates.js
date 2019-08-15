@@ -293,17 +293,54 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
-        } else if (['pca'].includes(page)) {
+        } else if (['pca','plsda'].includes(page)) {
             obj_score_loading_plot = obj
             obj_scree_plot = obj
+            obj_loading_plot = obj
 
 
             $("#results_card_body").append('<div id="score_loading_plot_div"></div>')
+            $("#results_card_body").append('<div id="loading_plot_div"></div>')
             $("#results_card_body").append('<div id="scree_plot_div"></div>')
 
             $("#score_loading_plot_div").load("score_loading_plot.html", function () {
                 init_selectpicker()
-                $("#scree_plot_div").load("scree_plot.html", function () {
+                $("#loading_plot_div").load("loading_plot.html", function () {
+                    init_selectpicker()
+                    $("#scree_plot_div").load("scree_plot.html", function () {
+                        init_selectpicker()
+                        if (localStorage['big_category'] === 'project') {
+                            $("#save_results").show();
+                            $("#only_download_result_dataset").hide();
+                            $("#download_results").removeClass("btn-primary")
+                            $("#download_results").addClass("btn-default")
+                            $("#save_results").addClass("btn-primary")
+                            $("#save_results").removeClass("btn-default")
+                        } else if (localStorage['big_category'] === 'in_and_out') {
+                            $("#save_results").hide();
+                            $("#only_download_result_dataset").show();
+                            $("#download_results").addClass("btn-primary")
+                            $("#download_results").removeClass("btn-default")
+                            $("#save_results").removeClass("btn-primary")
+                            $("#save_results").addClass("btn-default")
+                        }
+                        var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                        append_results_fun(obj, session)
+                    })
+                })
+            })
+        } else if (['ssize'].includes(page)) {
+            obj_ssize_plot = obj
+            obj_power_plot = obj
+            $("#results_card_body").append('<div id="ssize_plot_div"></div>')
+            $("#results_card_body").append('<div id="power_plot_div"></div>')
+
+
+
+
+            $("#ssize_plot_div").load("ssize_plot.html", function () {
+                init_selectpicker()
+                $("#power_plot_div").load("power_plot.html", function () {
                     init_selectpicker()
                     if (localStorage['big_category'] === 'project') {
                         $("#save_results").show();
@@ -323,30 +360,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                     append_results_fun(obj, session)
                 })
-
-            })
-        } else if (['ssize'].includes(page)) {
-            obj_ssize_plot = obj
-            $("#results_card_body").append('<div id="ssize_plot_div"></div>')
-            $("#ssize_plot_div").load("ssize_plot.html", function () {
-                init_selectpicker()
-                if (localStorage['big_category'] === 'project') {
-                    $("#save_results").show();
-                    $("#only_download_result_dataset").hide();
-                    $("#download_results").removeClass("btn-primary")
-                    $("#download_results").addClass("btn-default")
-                    $("#save_results").addClass("btn-primary")
-                    $("#save_results").removeClass("btn-default")
-                } else if (localStorage['big_category'] === 'in_and_out') {
-                    $("#save_results").hide();
-                    $("#only_download_result_dataset").show();
-                    $("#download_results").addClass("btn-primary")
-                    $("#download_results").removeClass("btn-default")
-                    $("#save_results").removeClass("btn-primary")
-                    $("#save_results").addClass("btn-default")
-                }
-                var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
-                append_results_fun(obj, session)
+                
             })
         } else if (['heatmap'].includes(page)) {
             obj_heatmap_plot = obj
@@ -449,6 +463,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 parameter.fold_change_data_treatment = fold_change_data_treatment
             }
         }else{
+            if(['t-test','ANOVA'].includes(parameter.test_type)){
+                delete parameter.sample_id;
+            }
             if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
                 parameter.activate_data_id = localStorage['activate_data_id']
             } else {

@@ -254,7 +254,7 @@ $("#submit").click(function () {
         }
     })
     console.log(parameter)
-
+    console.log("HERE")
     ocpu.call("call_fun", {parameter:{
         project_id: project_id,
         selected_data: selected_data,

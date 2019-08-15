@@ -31,7 +31,7 @@
                }else if(window.location.href.split("#")[1] === 'sample_size_calculator'){
                   $("#sample_size_calculator_content").load("sample_size_calculator.html")
                }else{
-                  if (["pca","missing_value_imputation","project_overview","student_t_test","fold_change","heatmap",'boxplot','volcano','ssize'].includes(window.location.href.split("#")[1])) {
+                  if (["pca","plsda","missing_value_imputation","project_overview","student_t_test","fold_change","heatmap",'boxplot','volcano','ssize'].includes(window.location.href.split("#")[1])) {
                      //$("#templates_content").show();
                      $("#templates_content").load("templates.html", init_ripples)
                   } else {
