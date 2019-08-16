@@ -3,7 +3,7 @@
 
         <div class="form-check">
             <label class="form-check-label">
-                <input class="form-check-input parameter" type="checkbox" value="" id="subset_by_sample">
+                <input class="form-check-input parameter" type="checkbox" value="" id="subset_by_sample" onchange="subset_by_sample_change()">
                 Subset Data By Samples
                 <span class="form-check-sign">
                     <span class="check"></span>
@@ -13,104 +13,9 @@
 
 
         <div id="subset_by_sample_checked">
-            <div id='sample_criterion_div'>
-                <div class='row'>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Example select</label>
-                            <select class="form-control selectpicker" data-style="btn btn-link"
-                                id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect2">Example multiple select</label>
-                            <select multiple class="form-control selectpicker" data-style="btn btn-link"
-                                id="exampleFormControlSelect2">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class='col-lg-4'>
-                        
-                        
-                            <div class="form-group">
-                                    <label for="exampleFormControlSelect3">Type</label>
-                                    <select multiple class="form-control selectpicker" data-style="btn btn-link"
-                                        id="exampleFormControlSelect3">
-                                        <option>Categorical</option>
-                                        <option>Numerical</option>
-                                    </select>
-                                </div>
-
-
-                    </div>
-                </div>
-
-
-                <div class='row'>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label for="exampleFormControlSelect1">Example select</label>
-                                <select class="form-control selectpicker" data-style="btn btn-link"
-                                    id="exampleFormControlSelect1">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-2">
-                                <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                      </div>
-    
-                        </div>
-                        <div class="col-lg-2">
-                                <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                                      </div>
-    
-                        </div>
-
-                        <div class='col-lg-4'>
-                            
-                            
-                                <div class="form-group">
-                                        <label for="exampleFormControlSelect3">Type</label>
-                                        <select multiple class="form-control selectpicker" data-style="btn btn-link"
-                                            id="exampleFormControlSelect3">
-                                            <option>Categorical</option>
-                                            <option>Numerical</option>
-                                        </select>
-                                    </div>
-    
-    
-                        </div>
-                    </div>
-
-
-
-            </div>
-            <button onclick="add_sample_criterion()">+</button>
-            <button onclick="remove_sample_criterion()">-</button>
+            <div id="subset_by_sample_criterions_div"></div>
+            <button onclick="add_sample_criterion()" type="button">+</button>
+            <button onclick="remove_sample_criterion()" type="button">-</button>
         </div>
 
 
@@ -120,7 +25,7 @@
 
         <div class="form-check">
             <label class="form-check-label">
-                <input class="form-check-input parameter" type="checkbox" value="" id="subset_by_compound">
+                <input class="form-check-input parameter" type="checkbox" value="" id="subset_by_compound" onchange="subset_by_compound_change()">
                 Subset Data By Compounds
                 <span class="form-check-sign">
                     <span class="check"></span>
@@ -128,6 +33,13 @@
             </label>
         </div>
 
+        <div id="subset_by_compound_checked">
+                <div id="subset_by_compound_criterions_div"></div>
+                <button onclick="add_compound_criterion()" type="button">+</button>
+                <button onclick="remove_compound_criterion()" type="button">-</button>
+            </div>
+
+            
 
 
         <button type='submit' class="btn btn-primary btn-sm" id="submit">Submit</button>

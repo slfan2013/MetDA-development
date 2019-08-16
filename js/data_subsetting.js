@@ -27,13 +27,12 @@ data_subsetting_append_results = function (obj, session) {
     $("#download_results").off("click").on("click",function () {
 
         //files_sources.push(obj.report_base64[0])
-        //files_names.push("report_data_subsetting.docx")
-
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['none'])
+        //files_names.push("report_data_subsetting.docx")\
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['none'])
     })
    
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['none'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['none'])
     })
 
 }

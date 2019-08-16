@@ -38,7 +38,7 @@
             e <- read.csv("e.csv")[, -1]
             rownames(e) <- read.csv("f.csv")$label
 
-            data.table::fwrite(e, files_names[file_source], col.names = TRUE, row.names = TRUE)
+            write.csv(e, files_names[file_source], col.names = TRUE, row.names = TRUE)
           } else {
             data.table::fwrite(data.table::fread(text = current_string), files_names[file_source], col.names = FALSE)
           }

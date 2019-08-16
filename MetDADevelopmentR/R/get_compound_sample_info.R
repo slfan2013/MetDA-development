@@ -24,7 +24,7 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
       id = sample_id[i],
       text = paste0(call_fun(parameter = list(project_id=project_id, file_id = sample_id[i], fun_name="get_fold_seq"))[[1]], collapse = "->"),
       column_names = colnames(temp_data),
-      column_levels = sapply(temp_data, unique),
+      column_levels = sapply(temp_data, unique, simplify = FALSE),
       column_type = sapply(temp_data, function(x){
         if(class(x) %in% c('factor','character')){
           return('character')
@@ -53,7 +53,7 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
       id = compound_id[i],
       text = paste0(call_fun(parameter = list(project_id=project_id, file_id = compound_id[i], fun_name="get_fold_seq"))[[1]], collapse = "->"),
       column_names = colnames(temp_data),
-      column_levels = sapply(temp_data, unique),
+      column_levels = sapply(temp_data, unique, simplify = FALSE),
       column_type = sapply(temp_data, function(x){
         if(class(x) %in% c('factor','character')){
           return('character')

@@ -31,11 +31,11 @@ missing_value_imputation_append_results = function (obj, session) {
         //files_sources.push(obj.report_base64[0])
         //files_names.push("report_missing_value_imputation.docx")
         
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['sample','none'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['compound','none'])
         //download_results(files_names, files_sources, zipfile_name)
     })
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['sample','none'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['compound','none'])
     })
 
 }

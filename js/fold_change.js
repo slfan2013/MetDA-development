@@ -30,12 +30,12 @@ fold_change_append_results = function (obj, session) {
         //files_sources.push(obj.report_base64[0])
         //files_names.push("report_fold_change.docx")
 
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['sample'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['compound'])
 
 
     })
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['sample'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0],['compound'])
     })
 
 }
