@@ -25,10 +25,8 @@ student_t_test_append_results = function (obj, session) {
     var fold_name = "Student t-test"
     var files_types = ["application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {
-
         //files_sources.push(obj.report_base64[0])
         //files_names.push("report_student_t_test.docx")
-
         save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [0], ['compound'])
     })
    

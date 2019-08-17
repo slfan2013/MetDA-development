@@ -234,12 +234,6 @@
       project_structure[[length(project_structure)]]$subset = "sample"
     }
 
-
-
-
-
-
-
   }
   projectList$project_structure <- project_structure
   #
@@ -258,7 +252,17 @@
 
 
 
-    call_fun(parameter = list(project_id = project_id, fold_id = folder_id, table_index=1,figure_index=1,doc=NULL,fun_name=paste0("report_", parameters$fun_name)))
+
+
+
+
+
+    call_fun(parameter = list(project_id = project_id, fold_id = folder_id, table_index=1,figure_index=1,type = "all", doc=NULL,fun_name=paste0("report_", parameters$fun_name)))
+
+
+
+
+
     #report_fun = get(paste0("report_", parameters$fun_name))
     #report_fun(project_id, folder_id)
 

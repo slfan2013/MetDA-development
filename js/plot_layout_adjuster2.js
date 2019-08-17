@@ -131,3 +131,34 @@ $("#PLOT_NAME_layout_yaxis_zerolinecolor").spectrum({
     palette: color_pallete
 });
 $("#PLOT_NAME_layout_yaxis_zerolinewidth").val(PLOT_NAME_obj.yaxis.zerolinewidth)
+
+
+
+$("#PLOT_NAME_legend_font .form-group .selectpicker").val(PLOT_NAME_obj.legend.font.family)
+$("#PLOT_NAME_legend_font .form-group .selectpicker").selectpicker('refresh')
+$("#PLOT_NAME_legend_font .input-group .size").val(PLOT_NAME_obj.legend.font.size)
+$("#PLOT_NAME_legend_font .input-group .spectrums").spectrum({
+    color: PLOT_NAME_obj.legend.font.color[0],
+    showPalette: true,
+    palette: color_pallete
+});
+
+
+$("#PLOT_NAME_legend_bgcolor").spectrum({
+    color: PLOT_NAME_obj.legend.bgcolor[0],
+    showPalette: true,
+    palette: color_pallete
+});
+$("#PLOT_NAME_legend_bordercolor").spectrum({
+    color: PLOT_NAME_obj.legend.bordercolor[0],
+    showPalette: true,
+    palette: color_pallete
+});
+$("#PLOT_NAME_legend_borderwidth").val(PLOT_NAME_obj.legend.borderwidth)
+
+$("#PLOT_NAME_legend_orientation").val(PLOT_NAME_obj.legend.orientation)
+$("#PLOT_NAME_legend_orientation").selectpicker('refresh')
+
+$("#PLOT_NAME_legend_x").val(PLOT_NAME_obj.legend.x)
+$("#PLOT_NAME_legend_y").val(PLOT_NAME_obj.legend.y)
+

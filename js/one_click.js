@@ -148,7 +148,7 @@ $("#confirm_selected_project").click(function () {
         session.getObject(function (obj) {
             console.log("Good")
             console.log(obj)
-            ooo = obj
+            ob = obj
             $("#preview_result_structure").jstree("destroy");
             $("#preview_result_structure").jstree({
                 'core': {
@@ -164,22 +164,24 @@ $("#confirm_selected_project").click(function () {
             sample_parameters_global_index = 1
             sample_parameters_global_nodes = []
             // now we need to ask the users to specified some parameters. 
-            para_index = 0
+            sample_para_index = 0
             sample_para = obj.to_be_specified["sample_info"]
             sample_para_keys = Object.keys(sample_para)
             if (sample_para_keys[0] === '0') {
                 sample_para_keys = []
             }
             interval_sample = setInterval(function () {
-                if (para_index === sample_para_keys.length) {
+                if (sample_para_index === sample_para_keys.length) {
                     clearInterval(interval_sample)
                 } else {
-                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' + sample_para_keys[para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[para_index] + '">' + '</div>');
+                    $('#parameters_to_be_specified').append(sample_parameters_global_index + '. Select the Sample Info corresponding to <b>' + sample_para_keys[sample_para_index] + '</b> for <span style="color:blue;text-decoration:underline;cursor:pointer" id="sample_parameters_global_span' + sample_parameters_global_index + '">these nodes</span>.' + '<div id="sample_parameters_global_id_' + sample_para_keys[sample_para_index] + '">' + '</div>');
 
-                    div_id = "sample_parameters_global_id_" + sample_para_keys[para_index]
-                    id = "sample_parameters_global_id_" + sample_para_keys[para_index]
+                    sample_parameters_global_nodes[sample_parameters_global_index] = sample_para[sample_para_keys[sample_para_index]]
+                    //!!! currently, cannot subset by sample or compound info.
+                    div_id = "sample_parameters_global_id_" + sample_para_keys[sample_para_index]
+                    id = "sample_parameters_global_id_" + sample_para_keys[sample_para_index]
                     $("#" + div_id).load("sample_information_non_changing_levels_select.html", init_selectpicker)
-                    sample_parameters_global_nodes[sample_parameters_global_index] = sample_para[sample_para_keys[para_index]]
+                   
 
                     $("#sample_parameters_global_span" + sample_parameters_global_index).hover(function () {
                         sample_parameters_global_span_hovered = this
@@ -188,9 +190,11 @@ $("#confirm_selected_project").click(function () {
                         }).css('background-color', "yellow");
                     }, function () {
                         $('#preview_result_structure a').removeAttr('style')
+
+
                     })
                     sample_parameters_global_index++;
-                    para_index++
+                    sample_para_index++
                 }
             }, 100)
 

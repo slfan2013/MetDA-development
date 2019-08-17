@@ -34,6 +34,9 @@
   structure_to_be_added_folders_only <- structure_to_be_added[added_icons == "fa fa-folder"]
   structure_to_be_added_folders_only_ids <- sapply(structure_to_be_added_folders_only, function(x) x$id)
 
+  structure_to_be_added_folders_only_fun_names = sapply(structure_to_be_added_folders_only, function(x) x$parameter$fun_name)
+  names(structure_to_be_added_folders_only_fun_names) = structure_to_be_added_folders_only_ids
+
   included_sample_info <- sapply(structure_to_be_added_folders_only, function(x) intersect(unlist(x$parameter), colnames_p2), simplify = F)
 
 
@@ -46,8 +49,21 @@
 
   if(length(structure_to_be_added_folders_only_ids)==0){
     to_be_specified[["sample_info"]] <- ""
+    p1 = ""
   }else{
-    to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
+    to_be_specified[["sample_info"]] <- c(to_be_specified[["sample_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_sample_info), function(x) {
+      x
+    }, simplify = FALSE), function(x) x, simplify = F))
+
+
+    if(any(grepl("Data Subsetting",structure_to_be_added_folders_only_ids))){
+      stop("Sorry. The Project has a data subset by the sample info, thus is cannot be performed automatically using one-click module. Please manually create these datasets and use them for one-click module.")
+      p1 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/p.csv"))
+    }else{
+      p1 = ""
+    }
+
+
   }
 
 
@@ -73,12 +89,21 @@
 
   if(length(structure_to_be_added_folders_only_ids)==0){
     to_be_specified[["compound_info"]] <- ""
+    f1 = ""
   }else{
     to_be_specified[["compound_info"]] <- c(to_be_specified[["compound_info"]], sapply(by(structure_to_be_added_folders_only_ids, unlist(included_compound_info), function(x) x, simplify = FALSE), function(x) x, simplify = F))
+
+    if(any(grepl("Data Subsetting",structure_to_be_added_folders_only_ids))){
+      stop("Sorry. The Project has a data subset by the compound info, thus is cannot be performed automatically using one-click module. Please manually create these datasets and use them for one-click module.")
+      f1 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/f.csv"))
+    }else{
+      f1 = ""
+    }
+
   }
 
 
-  result = list(result_project_structure = result_project_structure, to_be_specified = to_be_specified)
+  result = list(result_project_structure = result_project_structure, to_be_specified = to_be_specified, p1 = p1, f1 = f1)
 
 
 #   return(TRUE)

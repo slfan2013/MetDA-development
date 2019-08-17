@@ -100,6 +100,8 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
 
   # here I need to re-generate the data according to user's new dataset.
   colorscale = heatmap_plot$colorscale
+  cell_height = heatmap_plot$cell_height
+  cell_width = heatmap_plot$cell_width
   sample_tree_height = as.numeric(heatmap_plot$sample_tree_height)
   sample_annotation_height = as.numeric(heatmap_plot$sample_annotation_height)
   compound_tree_height = as.numeric(heatmap_plot$compound_tree_height)
@@ -234,7 +236,7 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
 
   result = jsonlite::toJSON(list("heatmap_plot.svg" = list(
     heatmap_x= heatmap_x, heatmap_y= heatmap_y, heatmap_z= heatmap_z, sample_label= sample_label, heatmap_x_text= heatmap_x_text, heatmap_y_text= heatmap_y_text, tickvals= tickvals,
-    colorscale= colorscale,
+    colorscale= colorscale,cell_height=cell_height,cell_width=cell_width,
     show_sample_dendrogram= show_sample_dendrogram, sample_dendro_trace_x= sample_dendro_trace_x,sample_dendro_trace_y= sample_dendro_trace_y,
     show_compound_dendrogram= show_compound_dendrogram, compound_dendro_trace_x= compound_dendro_trace_x,compound_dendro_trace_y= compound_dendro_trace_y,
     sample_annotations= sample_annotations,order_sample_by=order_sample_by,order_compound_by=order_compound_by,

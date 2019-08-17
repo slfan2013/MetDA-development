@@ -29,10 +29,10 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
         "/",paste0("student_t_test_result", substr(fold_change_data_id,nchar(fold_change_data_id) - 14 + 1,nchar(fold_change_data_id)))
       ))
 
-
+      stop("check row 29. mann_whitney not allowed.")
 
     })
-  stop("check row 29. mann_whitney not allowed.")
+
 
 
   fold_change_data = tryCatch(read.csv(

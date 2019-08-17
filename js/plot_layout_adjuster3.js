@@ -87,6 +87,19 @@ PLOT_NAME_layout2 = {
         zerolinewidth: $("#PLOT_NAME_layout_yaxis_zerolinewidth").val()
     },
     hovermode: "closest",
+    legend:{
+        bgcolor:$("#PLOT_NAME_legend_bgcolor").spectrum("get").toRgbString(),
+        bordercolor:$("#PLOT_NAME_legend_bordercolor").spectrum("get").toRgbString(),
+        borderwidth:$("#PLOT_NAME_legend_borderwidth").val(),
+        font:{
+            family: $("#PLOT_NAME_legend_font .form-group .selectpicker").val(),
+            size: $("#PLOT_NAME_legend_font .input-group .size").val(),
+            color: $("#PLOT_NAME_legend_font .input-group .spectrums").spectrum("get").toRgbString(),
+        },
+        orientation:$("#PLOT_NAME_legend_orientation"),
+        x: $("#PLOT_NAME_legend_x").val(),
+        y: $("#PLOT_NAME_legend_y").val(),
+    },
     traces: PLOT_NAME_traces
 }
 PLOT_NAME_layout = mergeDeep(PLOT_NAME_layout1,PLOT_NAME_layout2)

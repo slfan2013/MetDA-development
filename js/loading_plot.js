@@ -42,9 +42,9 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     $("#loading_plot_size_option").val(loading_plot_traces.scatter_sizes[1][0])
                     $("#loading_plot_size_option").change(loading_plot_debounced)
 
-                    if (f_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
+                    if (f_column_unique_length.some(function (x) { return (x > 1 && x < 3) })) {
                         for (var i = 0; i < f_column_unique_length.length; i++) {
-                            if (f_column_unique_length[i] > 1 && f_column_unique_length[i] < 6) {
+                            if (f_column_unique_length[i] > 1 && f_column_unique_length[i] < 3) {
                                 $("#loading_plot_color_levels").val(f_column_names[i])
                                 $("#loading_plot_color_levels").selectpicker('refresh')
                                 //$("#loading_plot_traces_color_by_info").prop("checked", true).change();

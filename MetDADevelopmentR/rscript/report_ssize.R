@@ -1,75 +1,228 @@
-# report_volcano <- function(project_id = "report volcano1565300102", fold_id = "Volcano Plot1565300147", table_index = 1, figure_index = 1, doc = NULL) {
+# report_ssize = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
+
+if (!exists("treatment_group")) {
+  treatment_group <- NULL
+}
+if (!exists("equal_variance_assumption")) {
+  equal_variance_assumption <- NULL
+}
+if (!exists("type")) {
+  type <- NULL
+}
+if (!exists("fdr")) {
+  fdr <- NULL
+}
+if (!exists("result")) {
+  result <- NULL
+}
+if (!exists("levels")) {
+  levels <- NULL
+}
+if (!exists("alternative")) {
+  alternative <- NULL
+}
+if (!exists("doc")) {
+  doc <- NULL
+}
+if (!exists("table_index")) {
+  table_index <- 1
+}
+if (!exists("figure_index")) {
+  figure_index <- 1
+}
+if (!exists("project_id")) {
+  project_id <- ""
+}
+if (!exists("fold_id")) {
+  fold_id <- NULL
+}
+text_html <- ""
+
+
+
+
+save(treatment_group, equal_variance_assumption, type, fdr, result, levels, alternative, doc, table_index, figure_index, file = "report_ssize.RData")
+
+# load("report_ssize.RData")
 pacman::p_load(data.table, officer, magrittr)
 
-projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
-projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
-
-id <- sapply(projectList$project_structure, function(x) x$id)
-parent <- sapply(projectList$project_structure, function(x) x$parent)
-
-data_ids <- id[parent == fold_id]
 
 
-# result_summary <- read.csv(
-#   paste0(
-#     "http://metda:metda@localhost:5985/metda_project/",
-#     project_id,
-#     "/", data_ids
-#   ),
-#   row.names = 1
-# )
+if (type == "all") {
+  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
+
+  id <- sapply(projectList$project_structure, function(x) x$id)
+  parent <- sapply(projectList$project_structure, function(x) x$parent)
+
+  data_ids <- id[parent == fold_id]
 
 
+  result <- read.csv(
+    paste0(
+      "http://metda:metda@localhost:5985/metda_project/",
+      project_id,
+      "/", data_ids
+    ),
+    row.names = 1
+  )
 
-parameters <- projectList$project_structure[[which(id %in% fold_id)]]$parameter
+  input_file_path <- paste0(sapply(call_fun(parameter = list(project_id = project_id, file_id = parameters$activate_data_id, fun_name = "get_fold_seq")), paste0, collapse = "->"), "; ")
+  output_file_path <- paste0(sapply(call_fun(parameter = list(project_id = project_id, file_id = data_ids, fun_name = "get_fold_seq")), paste0, collapse = "->"), "; ")
 
 
+  treatment_group <- parameters$treatment_group
+  equal_variance_assumption <- parameters$equal_variance_assumption
+  fdr <- parameters$fdr
+  alternative <- "two.sided"
 
-# fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
-fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
-
-# paste0(sapply(get_fold_seq(project_id, parameters$activate_data_id), paste0, collapse = "->"), "; ")
-
-
-
-if (is.null(doc)) {
-  doc <- read_docx()
+  levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
 }
 
 
 
+if (type %in% c("method_description", "all")) {
+  if (is.null(doc)) {
+    doc <- read_docx()
+  }
+  if (type %in% "all") {
+    doc <- doc %>%
+      body_add_par("Sample Size Estimation & Power Analysis Summary: ", style = "heading 1")
+  }
 
-doc <- doc %>%
-  body_add_par("Post-hoc Power Analysis Summary ", style = "heading 1") %>%
-  body_add_par("Input Statistics: ", style = "Normal") %>%
-  slip_in_text(paste0(sapply(fold_seq, paste0, collapse = "->"), "; "), style = "Default Paragraph Font", pos = "after") %>%
-  slip_in_text(".", style = "Default Paragraph Font", pos = "after")
+  doc <- doc %>%
+    body_add_par("Warnes and Liu (2006) provide a simple method for computing sample size for microarray experiments, and reports on a series of simulations demonstrating its performance. Surprisingly, despite its simplicity, the method performs exceptionally well even for data with very high correlation between measurements.
+", style = "Normal", pos = "after") %>%
+    body_add_par("The key component of this method is the generation of a cumulative plot of the proportion of compounds achieving a desired power as a function of sample size, based on simple gene-by-gene calculations. While this mechanism can be used to select a sample size numerically based on pre-specified conditions, its real utility is as a visual tool for understanding the trade off between sample size and power. In our consulting work, this latter use as a visual tool has been exceptionally valuable in helping scientific clients to make the difficult trade offs between experiment cost and statistical power. ", style = "Normal", pos = "after")%>%
+    body_add_par("Multiple comparison problem can also be taken into account in this method. The criterion rate for each compounds can be estiamted using qvalue package.", style = "Normal", pos = "after")
+
+  if (type %in% "method_description") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+  }
+}
+if (type %in% c("parameter_settings_description", "all")) {
+  if (is.null(doc)) {
+    doc <- read_docx()
+  }
+
+  if (type == "all") {
+    doc <- doc %>%
+      body_add_par("Input Summary: ", style = "heading 3") %>%
+      body_add_par("Input Dataset: ", style = "Normal") %>%
+      slip_in_text(input_file_path, style = "Default Paragraph Font", pos = "after")
+
+    doc <- doc %>%
+      body_add_par("Output Dataset: ", style = "Normal") %>%
+      slip_in_text(output_file_path, style = "Default Paragraph Font", pos = "after")
+  }
 
 
 
-data_ids_name_split <- strsplit(data_ids, "\\.")[[1]]
-data_ids_name_split1 <- paste0(data_ids_name_split[1:(length(data_ids_name_split) - 1)])
-data_ids_name <- paste0(substr(data_ids_name_split1, 1, nchar(data_ids_name_split1) - 11 + 1), ".", data_ids_name_split[length(data_ids_name_split)])
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Treatment Group: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(treatment_group, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(paste0(". The student t-test will be performed on each compound to detect those significantly altered by ", treatment_group, "."), style = "Default Paragraph Font", pos = "after")
 
-download.file(URLencode(paste0(
-  "http://metda:metda@localhost:5985/metda_project/",
-  project_id,
-  "/", data_ids
-)), destfile = data_ids_name)
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Variance Equality Assumption: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(equal_variance_assumption, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(paste0(". If TRUE, the equality of variance is assumed, and the tests are Student's t-test, otherwise Welch t-test."), style = "Default Paragraph Font", pos = "after")
 
-doc <- doc %>%
-  body_add_img(src = data_ids_name, width = 5, height = 4) %>%
-  body_add_par(value = paste0("Figure ", figure_index, ": Volcano Plot ("), style = "table title")%>%
-  body_add_par(value = paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0, collapse = "->"), "; "), style = "table title") %>%
-  body_add_par(value = ". ", style = "table title")
-
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Correct the False Discovery Rate: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(as.character(plyr::revalue(fdr, c("fdr" = "Benjamini & Hochberg (1995)", "bonferroni" = "Bonferroni correction", "holm" = "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(paste0(". When conducting multiple tests, the rate of incorrectly reject a null hypothesis will increase. FDR-controlling procedures are designed to control the expected proportion of \"discoveries\" (rejected null hypotheses) that are false (incorrect rejections). The suggested method for metabolomics is the Benjamini & Hochberg procedure. For more information, please visit https://en.wikipedia.org/wiki/False_discovery_rate."), style = "Default Paragraph Font", pos = "after")
 
 
+  if (type == "parameter_settings_description") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+  }
+}
+if (type %in% c("result_summary", "all")) {
+  if (is.null(doc)) {
+    doc <- read_docx()
+  }
+
+  doc <- doc %>%
+    body_add_par("Result Summary: ", style = "heading 3") %>%
+    body_add_par(ifelse(equal_variance_assumption, "Student's ", "Welch "), style = "Normal", pos = "after") %>%
+    slip_in_text("t-test (", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(ifelse(equal_variance_assumption, "assuming equal variance", "not assuming equal variance"), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(") was performed on each compound to test if the mean average of ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(levels[1], style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(ifelse(alternative == "two.sided", "different from", ifelse(alternative == "greater", "greater than", "less than")), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(levels[2], style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(".", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" Out of ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(nrow(result), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" compounds, ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(sum(result$p_values < 0.05, na.rm = TRUE), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" are significant with p-value < 0.05. To control the false discovery rate (FDR), the ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(as.character(plyr::revalue(fdr, c("fdr" = "Benjamini & Hochberg (1995)", "bonferroni" = "Bonferroni correction", "holm" = "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" procedure was used. After FDR correction, ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(sum(result$p_values_adjusted < 0.05, na.rm = TRUE), style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" compounds are still significant. See Table ", style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(table_index, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(" for more detail.", style = "Default Paragraph Font", pos = "after")
+
+  doc <- doc %>%
+    body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
+    body_add_par(" - index: the index of compounds, mainly for sorting the table.", style = "Normal", pos = "after") %>%
+    body_add_par(" - label: compound labels.", style = "Normal", pos = "after") %>%
+    body_add_par(" - p_values: p-values from t-tests.", style = "Normal", pos = "after") %>%
+    body_add_par(" - p_values_adjusted: p-values adjusted by the FDR correction procedure.", style = "Normal", pos = "after")
 
 
-doc %>% print(target = "report_ssize.docx")
+
+  if (type == "result_summary") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+  }
+}
+
+
+if(type == "all"){
+  doc <- doc %>%
+    body_add_table(value = result[order(result$p_values, decreasing = FALSE)[1:10], ], style = "table_template") %>%
+    body_add_par(value = paste0("Table ", table_index, ": most significant compounds (i.e. small p-values)"), style = "table title")
+
+  doc %>% print(target = "report_ssize.docx")
+}
 
 
 
-result = list(doc = doc, table_index = table_index, figure_index = figure_index)
+result <- list(text_html = text_html, method_name = "Sample Size Estimation & Power Analysis", table_index = table_index + 1, figure_index = figure_index)
+
+
 # }

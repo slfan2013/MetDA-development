@@ -66,14 +66,14 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     $("#template_overview_div").hide()
 
 
-    ocpu.call("call_fun", {parameter:{
-        id: window.location.href.split("#")[1],
-        fun_name:"templates_contents"
-    }}, function (session) {
+    ocpu.call("call_fun",{parameter:{
+        type:"method_description",
+        fun_name:"report_"+window.location.href.split("#")[1]
+    }},function(session){
         session.getObject(function (obj) {
             ooo = obj
             $("#method_name").text(obj.method_name)
-            $("#method_description").html(obj.method_description)
+            $("#method_description").html(obj.text_html)
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')
@@ -200,10 +200,13 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     }
 
     get_parameter_settings = function () {
-        $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", init_selectpicker)
-        //$("#parameter_settings_description").html('loaded')
-        $("#parameter_settings_description").load(window.location.href.split("#")[1] + "_parameter_settings_description.html", init_selectpicker)
+        $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", function(){
+            init_selectpicker
+            
 
+        })
+        
+        
 
 
     }

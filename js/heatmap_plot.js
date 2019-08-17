@@ -172,10 +172,21 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     $("#show_compound_label").prop("checked", heatmap_plot_obj.traces.show_compound_label[0]).change();
                     $("#colorscale").val(heatmap_plot_obj.traces.colorscale)
                     $("#colorscale").selectpicker('refresh')
+                    $("#cell_height").val(heatmap_plot_obj.traces.cell_height)
+                    $("#cell_width").val(heatmap_plot_obj.traces.cell_width)
                     $("#sample_tree_height").val(heatmap_plot_obj.traces.sample_tree_height)
                     $("#sample_annotation_height").val(heatmap_plot_obj.traces.sample_annotation_height)
                     $("#compound_tree_height").val(heatmap_plot_obj.traces.compound_tree_height)
                     $("#compound_annotation_height").val(heatmap_plot_obj.traces.compound_annotation_height)
+                    $("#heatmap_plot_layout_height").val(0)
+                    $("#heatmap_plot_layout_height").attr('title', 'to adjust heatmap height, please use Traces -> Other Options -> Cell Height');
+                    $("#heatmap_plot_layout_height").prop( "disabled", true );
+
+                    
+                    $("#heatmap_plot_legend_orientation").attr('title', 'Only Vertical is allowed for heatmap.');
+                    $("#heatmap_plot_legend_orientation").prop( "disabled", true );
+                    $("#heatmap_plot_legend_orientation").selectpicker('refresh')
+                    
 
 
 
@@ -205,6 +216,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     heatmap_plot_layout.traces.show_compound_label = $("#show_compound_label").prop("checked")
 
                     heatmap_plot_layout.traces.colorscale = $("#colorscale").val()
+                    heatmap_plot_layout.traces.cell_height = $("#cell_height").val()
+                    heatmap_plot_layout.traces.cell_width = $("#cell_width").val()
                     heatmap_plot_layout.traces.sample_tree_height = $("#sample_tree_height").val()
                     heatmap_plot_layout.traces.sample_annotation_height = $("#sample_annotation_height").val()
                     heatmap_plot_layout.traces.compound_tree_height = $("#compound_tree_height").val()
@@ -292,8 +305,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 var sample_label = unpack(p, "label")
                 var compound_label = unpack(f, "label")
 
-                var heatmap_x = Array.apply(null, { length: dta[0].length }).map(Number.call, Number)
-                var heatmap_y = Array.apply(null, { length: dta.length }).map(Number.call, Number)
+                heatmap_x = Array.apply(null, { length: dta[0].length }).map(Number.call, Number)
+                heatmap_y = Array.apply(null, { length: dta.length }).map(Number.call, Number)
                 var heatmap_x_text = sample_order.map(x => sample_label[x])
                 var heatmap_y_text = compound_order.map(x => compound_label[x])
                 var tickvals = [obj_heatmap_plot.min[0], obj_heatmap_plot.median[0], obj_heatmap_plot.max[0]]
@@ -342,6 +355,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                 var layout = heatmap_plot_layout
                 var colorscale = $("#colorscale").val()
+                var cell_height = $("#cell_height").val()
+                var cell_width = $("#cell_width").val()
                 var plot_id = "heatmap_plot"
 
 
@@ -349,7 +364,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 show_sample_label = $("#show_sample_label").is(':checked')
                 heatmap_plot_fun({
                     heatmap_x: heatmap_x, heatmap_y: heatmap_y, heatmap_z: heatmap_z, sample_label: sample_label, heatmap_x_text: heatmap_x_text, heatmap_y_text: heatmap_y_text, tickvals: tickvals,
-                    colorscale: colorscale,
+                    colorscale: colorscale,cell_height:cell_height,cell_width:cell_width,
                     show_sample_dendrogram: show_sample_dendrogram, sample_dendro_trace_x: sample_dendro_trace_x, sample_dendro_trace_y: sample_dendro_trace_y,
                     show_compound_dendrogram: show_compound_dendrogram, compound_dendro_trace_x: compound_dendro_trace_x, compound_dendro_trace_y: compound_dendro_trace_y,
                     sample_annotations: sample_annotations, order_sample_by: order_sample_by, order_compound_by: order_compound_by,

@@ -5,7 +5,7 @@ color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
 ["rgb(0,0,0)", "rgb(255,255,255)"]]
 heatmap_plot_fun = function ({
     heatmap_x = undefined, heatmap_y = undefined, heatmap_z = undefined, sample_label = undefined, heatmap_x_text = undefined, heatmap_y_text = undefined, tickvals = undefined,
-    colorscale = undefined,
+    colorscale = undefined,cell_height=undefined,cell_width=undefined,
     show_sample_dendrogram = undefined, sample_dendro_trace_x = undefined, sample_dendro_trace_y = undefined, order_sample_by = undefined,
     show_compound_dendrogram = undefined, compound_dendro_trace_x = undefined, compound_dendro_trace_y = undefined, order_compound_by = undefined,
     sample_annotations = undefined,
@@ -25,9 +25,14 @@ heatmap_plot_fun = function ({
         showscale: true,
         colorbar: {
             thicknessmode: "fraction",
-            thickness: 0.01,
+            thickness: 0.05,
             lenmode: "fraction",
             len: 0.3,
+            x:layout.legend.x,
+            y:layout.legend.y,
+            bordercolor:layout.legend.bordercolor,
+            borderwidth:layout.legend.borderwidth,
+            bgcolor:layout.legend.bgcolor,
             outlinecolor: "white",
             nticks: 2,
             ticklen: 0,
@@ -35,9 +40,9 @@ heatmap_plot_fun = function ({
             ticktext: ["low", "median", "high"],
             tickcolor: "black",
             tickfont: {
-                family: "Dorid Sans",
-                color: "black",
-                size: 10
+                family: layout.legend.font.family,
+                color: layout.legend.font.color,
+                size: layout.legend.font.size
             }
         },
         //autocolorscale:false,
@@ -51,6 +56,8 @@ heatmap_plot_fun = function ({
         ygap: 1
     }
 
+    layout.height = heatmap_y.length * cell_height
+    //layout.width = heatmap_x.length * cell_width
     if (show_sample_dendrogram) {
         var sample_dendro_trace = {
             x: sample_dendro_trace_x,
@@ -168,6 +175,7 @@ heatmap_plot_fun = function ({
             ygap: 1,
             zmin: 0,
             zmax: jStat.max(compound_order.map(x => temp_z[x]).map(x => compound_level_options[compound_annotations[i].column].indexOf(x)))
+
         }
     }
 
@@ -317,6 +325,10 @@ heatmap_plot_fun = function ({
     data = data.concat(sample_annotation_traces).concat(compound_annotation_traces)
     lll = layout
 
+    layout.showlegend = false
+
+    
+
     Plotly.newPlot(plot_id, data, layout, { editable: false })
 
 
@@ -382,6 +394,8 @@ heatmap_plot_fun = function ({
 
 
                 heatmap_plot_parameters.colorscale = $("#colorscale").val()
+                heatmap_plot_parameters.cell_height = $("#cell_height").val()
+                heatmap_plot_parameters.cell_width = $("#cell_width").val()
                 heatmap_plot_parameters.sample_tree_height = $("#sample_tree_height").val()
                 heatmap_plot_parameters.sample_annotation_height = $("#sample_annotation_height").val()
                 heatmap_plot_parameters.compound_tree_height = $("#compound_tree_height").val()

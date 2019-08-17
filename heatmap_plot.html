@@ -155,7 +155,7 @@
                                     <h5 class="mb-0">
                                         <a data-toggle="collapse" href="#heatmap_plot_traces_colors_collapse"
                                             aria-expanded="false" aria-controls="heatmap_plot_traces_colors_collapse">
-                                            Colors
+                                            Other Options
                                             <i class="material-icons">keyboard_arrow_down</i>
                                         </a>
                                     </h5>
@@ -175,6 +175,17 @@
                                             <option>Jet</option>
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="cell_height">Cell Height</label>
+                                        <input type="number" class="form-control" id="cell_height" placeholder="The heigh of each cell" step="any" onchange="heatmap_plot_debounced()">
+                                      </div>
+                                      <!--<div class="form-group">
+                                          <label for="cell_height">Cell Width</label>
+                                          <input type="number" class="form-control" id="cell_width" placeholder="The width of each cell" step="any" onchange="heatmap_plot_debounced()">
+                                        </div>-->
+
+                                    
                                 </div>
                             </div>
 

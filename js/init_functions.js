@@ -430,7 +430,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
   }
   call_save_results_to_project_to_save = function(is_temp_project,selected_folder){
-    ocpu.call("call_fun", {parameter:{
+    ocpu.call("call_fun_temp", {parameter:{
       files_names: files_names,
       files_sources: files_sources,
       files_sources_data: allResults,
@@ -531,16 +531,13 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
       });
     }
   }
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
 
 sequence = function(from = 0, to = 10){
   var N = to-from;
