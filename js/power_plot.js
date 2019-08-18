@@ -46,7 +46,26 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                             $("#power_plot_layout_title_text").prop("disabled", true);
                             $("#power_plot_layout_yaxis_title_text").prop("disabled", true);
 
-                            power_plot_debounced()
+                            $("#power_plot_traces_line").load("line_style.html", function () {
+                                init_selectpicker();
+
+                                $("#power_plot_traces_line .input-group .spectrums").spectrum({
+                                    color: power_plot_obj.traces.line.color,
+                                    showPalette: true,
+                                    palette: color_pallete
+                                });
+                                $("#power_plot_traces_line .input-group .spectrums").change(power_plot_debounced);
+                                $("#power_plot_traces_line .form-control.width").val(power_plot_obj.traces.line.width)
+                                $("#power_plot_traces_line .form-control.width").change(power_plot_debounced);
+                                $("#power_plot_traces_line .form-group .selectpicker").val(power_plot_obj.traces.line.shape)
+                                $("#power_plot_traces_line .form-group .selectpicker").change(power_plot_debounced);
+                                $("#power_plot_traces_line .form-group .selectpicker").selectpicker('refresh')
+                                $("#power_plot_traces_line .form-control.smoothing").val(power_plot_obj.traces.line.smoothing)
+                                $("#power_plot_traces_line .form-control.smoothing").change(power_plot_debounced);
+                                power_plot_debounced()
+                            })
+
+
                         }
                     })
 
@@ -70,6 +89,17 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                         save_power_plot_style = function () {
                             // save the traces on HTML
+                            
+                            power_plot_layout.traces.line = {
+                                color: $("#power_plot_traces_line .input-group .spectrums").spectrum("get").toRgbString(),
+                                width: $("#power_plot_traces_line .form-control.width").val(),
+                                shape:$("#power_plot_traces_line .form-group .selectpicker").val(),
+                                smoothing:$("#power_plot_traces_line .form-control.smoothing").val()
+                            }
+                            
+                              
+
+
                             $.ajax({
                                 url: "js/plot_layout_adjuster4.js", converters: { 'text script': function (text) { return text; } }, success: function (plot_layout_adjuster4) {
                                     adjusted_power_plot_layout_adjuster4 = plot_layout_adjuster4.replace(/PLOT_NAME/g, 'power_plot')
@@ -80,26 +110,31 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         }
 
                         // collect traces info for plot.
-
-
-
                         //power_plot_layout.xaxis.autorange = false
                         //power_plot_layout.xaxis.range = [0,1]
+                        power_plot_layout.traces.line = {
+                            color: $("#power_plot_traces_line .input-group .spectrums").spectrum("get").toRgbString(),
+                            width: $("#power_plot_traces_line .form-control.width").val(),
+                            shape:$("#power_plot_traces_line .form-group .selectpicker").val(),
+                            smoothing:$("#power_plot_traces_line .form-control.smoothing").val()
+                        }
 
                         console.log(power_plot_layout.xaxis.autorange)
                         var layout = power_plot_layout
                         var plot_id = "power_plot"
                         //obj_power_plot
 
-                        var x = Object.values(obj_power_plot.inv_power).map(o=>o.x)
-                        var y = Object.values(obj_power_plot.inv_power).map(o=>o.y)
+                        var x = Object.values(obj_power_plot.inv_power).map(o => o.x)
+                        var y = Object.values(obj_power_plot.inv_power).map(o => o.y)
                         var names = Object.keys(obj_power_plot.inv_power)
                         var title = $("#power_plot_layout_title_text").val();
                         var y_lab = $("#power_plot_layout_yaxis_title_text").val();
 
+                        $("#power_plot_explanation").append(obj_power_plot.results_description[2])
 
 
-                        power_plot_fun({x:x,y:y,title:title,y_lab:y_lab,names:names,
+                        power_plot_fun({
+                            x: x, y: y, title: title, y_lab: y_lab, names: names,
                             layout: layout, plot_id: plot_id
                         })
 

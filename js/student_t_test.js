@@ -5,7 +5,7 @@ console.log("student_t_test.js")
 
 
 student_t_test_append_results = function (obj, session) {
-    $("#results_description").html(obj.results_description)
+    $("#results_description").html(obj.results_description[0])
 
     Papa.parse(session.loc + "files/student_t_test.csv", {
         download: true,

@@ -5,9 +5,20 @@ plot_url = {}
 
 
 ssize_append_results = function (obj, session) {
-    $("#results_description").html(obj.results_description)
+    $("#results_description").html(obj.results_description[0])
 
-    
+    Papa.parse(session.loc + "files/ssize.csv", {
+        download: true,
+        header: false,
+        complete: function (results) {
+            data = results.data
+            $('#results_dataset_table').DataTable({
+                data: data.slice(1, data.length - 1),
+                columns: data[0].map(function (x) { return ({ title: x }) })
+            });
+        }
+    });
+
 
     // for downloads.
     files_sources = [plot_url.ssize_plot];

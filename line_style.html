@@ -1,0 +1,35 @@
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Color
+        </span>
+    </div>
+    
+    <input type='text' class="spectrums" data-show-alpha="true" />
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Width
+        </span>
+    </div>
+    <input type="number" class="form-control width" placeholder="the width of the line" min="0" value="1">
+</div>
+
+<div class="form-group" style="margin:0;border:0;padding:0">
+    <label>Shape</label>
+    <select class="form-control selectpicker shape" data-style="btn btn-link">
+        <option selected>linear</option>
+        <option>spline</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            Smoothing
+        </span>
+    </div>
+    <input type="number" class="form-control smoothing" placeholder="the smoothing of the line" min="0" title="Only available for Shape = spline" value = "1">
+</div>

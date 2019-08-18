@@ -11,12 +11,12 @@ $("#"+div_id).load("sample_information_non_changing_levels_select.html", functio
         
         $("#test_type").change(function(){
             if(['paired t-test','repeated ANOVA'].includes($("#test_type").val())){
-                $("#sample_information_non_changing_levels_select_div_sample_id").show()
+                $("#sample_information_non_changing_levels_select_div_sample_id_show_hide").show()
             }else{
-                $("#sample_information_non_changing_levels_select_div_sample_id").hide()
+                $("#sample_information_non_changing_levels_select_div_sample_id_show_hide").hide()
             }
         })
-        $("#sample_information_non_changing_levels_select_div_sample_id").hide()
+        $("#sample_information_non_changing_levels_select_div_sample_id_show_hide").hide()
         
 
 

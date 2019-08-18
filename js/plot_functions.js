@@ -5,7 +5,7 @@ color_pallete = [["rgb(228, 59, 45)", "rgb(55, 126, 183)", "rgb(77, 175, 74)"],
 ["rgb(0,0,0)", "rgb(255,255,255)"]]
 heatmap_plot_fun = function ({
     heatmap_x = undefined, heatmap_y = undefined, heatmap_z = undefined, sample_label = undefined, heatmap_x_text = undefined, heatmap_y_text = undefined, tickvals = undefined,
-    colorscale = undefined,cell_height=undefined,cell_width=undefined,
+    colorscale = undefined, cell_height = undefined, cell_width = undefined,
     show_sample_dendrogram = undefined, sample_dendro_trace_x = undefined, sample_dendro_trace_y = undefined, order_sample_by = undefined,
     show_compound_dendrogram = undefined, compound_dendro_trace_x = undefined, compound_dendro_trace_y = undefined, order_compound_by = undefined,
     sample_annotations = undefined,
@@ -22,17 +22,17 @@ heatmap_plot_fun = function ({
         y: heatmap_y,
         z: heatmap_z,
         type: "heatmap",
-        showscale: true,
+        showscale: layout.legend.showlegend[0],
         colorbar: {
             thicknessmode: "fraction",
             thickness: 0.05,
             lenmode: "fraction",
             len: 0.3,
-            x:layout.legend.x,
-            y:layout.legend.y,
-            bordercolor:layout.legend.bordercolor,
-            borderwidth:layout.legend.borderwidth,
-            bgcolor:layout.legend.bgcolor,
+            x: layout.legend.x,
+            y: layout.legend.y,
+            bordercolor: layout.legend.bordercolor,
+            borderwidth: layout.legend.borderwidth,
+            bgcolor: layout.legend.bgcolor,
             outlinecolor: "white",
             nticks: 2,
             ticklen: 0,
@@ -327,7 +327,7 @@ heatmap_plot_fun = function ({
 
     layout.showlegend = false
 
-    
+
 
     Plotly.newPlot(plot_id, data, layout, { editable: false })
 
@@ -444,7 +444,7 @@ heatmap_plot_fun = function ({
         });
 }
 
-ssize_plot_fun = function ({ x = undefined,y=undefined,title = undefined,y_lab = undefined,names=undefined,
+ssize_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_lab = undefined, names = undefined,
     layout = undefined, plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined
 } = {}) {
 
@@ -453,7 +453,7 @@ ssize_plot_fun = function ({ x = undefined,y=undefined,title = undefined,y_lab =
     ssize_plot_data[0] = {
         x: [0], y: [0], name: '<b>Powers</b>', line: { 'color': 'rgba(0, 0, 0, 0)' }
     }
-    for(var i=0;i<x.length;i++){
+    for (var i = 0; i < x.length; i++) {
         ssize_plot_data.push({
             x: x[i],
             y: y[i],
@@ -461,53 +461,59 @@ ssize_plot_fun = function ({ x = undefined,y=undefined,title = undefined,y_lab =
             type: 'scatter',
             showlegend: true,
             mode: 'lines',
-            name:names[i]
+            name: names[i],
+            line:{
+                color:layout.traces.line.color,
+                width:layout.traces.line.width,
+                shape:layout.traces.line.shape,
+                smoothing:Number(layout.traces.line.smoothing)
+            }
         })
     }
 
     layout.title.text = title
     layout.yaxis.title.text = y_lab
     Plotly.newPlot(plot_id, ssize_plot_data, layout)
-    .then(gd => {
-        ssize_plot_gd = gd
-        
-        ssize_plot_parameters = {
-            data: ssize_plot_gd.data,
-            layout: ssize_plot_gd.layout,
-        }
+        .then(gd => {
+            ssize_plot_gd = gd
+
+            ssize_plot_parameters = {
+                data: ssize_plot_gd.data,
+                layout: ssize_plot_gd.layout,
+            }
 
 
-        Plotly.toImage(gd, { format: 'svg' })
-            .then(
-                function (url) {
-                    var ssize_plot_url = url
-                    var ssize_plot_url2 = ssize_plot_url.replace(/^data:image\/svg\+xml,/, '');
-                    ssize_plot_url2 = decodeURIComponent(ssize_plot_url2);
+            Plotly.toImage(gd, { format: 'svg' })
+                .then(
+                    function (url) {
+                        var ssize_plot_url = url
+                        var ssize_plot_url2 = ssize_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                        ssize_plot_url2 = decodeURIComponent(ssize_plot_url2);
 
 
-                    if (!quick_analysis) {
-                        plot_url.ssize_plot = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
-                        files_sources[0] = plot_url.ssize_plot
-                    } else {
-                        plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
+                        if (!quick_analysis) {
+                            plot_url.ssize_plot = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
+                            files_sources[0] = plot_url.ssize_plot
+                        } else {
+                            plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
+                        }
                     }
-                }
-            )
-    });
+                )
+        });
 }
 
 
 
-power_plot_fun = function ({ x = undefined,y=undefined,title = undefined,y_lab = undefined,names=undefined,
+power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_lab = undefined, names = undefined,
     layout = undefined, plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined
 } = {}) {
 
     var myPlot = document.getElementById(plot_id)
-    power_plot_data =[]
+    power_plot_data = []
     power_plot_data[0] = {
         x: [0], y: [0], name: '<b>Sample Sizes</b>', line: { 'color': 'rgba(0, 0, 0, 0)' }
     }
-    for(var i=0;i<x.length;i++){
+    for (var i = 0; i < x.length; i++) {
         power_plot_data.push({
             x: x[i],
             y: y[i],
@@ -515,40 +521,49 @@ power_plot_fun = function ({ x = undefined,y=undefined,title = undefined,y_lab =
             type: 'scatter',
             showlegend: true,
             mode: 'lines',
-            name:names[i]
+            name: names[i],
+            line:{
+                color:layout.traces.line.color,
+                width:layout.traces.line.width,
+                shape:layout.traces.line.shape,
+                smoothing:Number(layout.traces.line.smoothing)
+            }
         })
     }
 
-
+    console.log(Number(layout.traces.line.smoothing))
     layout.title.text = title
     layout.yaxis.title.text = y_lab
+
+
+
     Plotly.newPlot(plot_id, power_plot_data, layout)
-    .then(gd => {
-        power_plot_gd = gd
-        
-        power_plot_parameters = {
-            data: power_plot_gd.data,
-            layout: power_plot_gd.layout,
-        }
+        .then(gd => {
+            power_plot_gd = gd
+
+            power_plot_parameters = {
+                data: power_plot_gd.data,
+                layout: power_plot_gd.layout,
+            }
 
 
-        Plotly.toImage(gd, { format: 'svg' })
-            .then(
-                function (url) {
-                    var power_plot_url = url
-                    var power_plot_url2 = power_plot_url.replace(/^data:image\/svg\+xml,/, '');
-                    power_plot_url2 = decodeURIComponent(power_plot_url2);
+            Plotly.toImage(gd, { format: 'svg' })
+                .then(
+                    function (url) {
+                        var power_plot_url = url
+                        var power_plot_url2 = power_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                        power_plot_url2 = decodeURIComponent(power_plot_url2);
 
 
-                    if (!quick_analysis) {
-                        plot_url.power_plot = btoa(unescape(encodeURIComponent(power_plot_url2)))
-                        files_sources[1] = plot_url.power_plot
-                    } else {
-                        plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(power_plot_url2)))
+                        if (!quick_analysis) {
+                            plot_url.power_plot = btoa(unescape(encodeURIComponent(power_plot_url2)))
+                            files_sources[1] = plot_url.power_plot
+                        } else {
+                            plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(power_plot_url2)))
+                        }
                     }
-                }
-            )
-    });
+                )
+        });
 }
 
 
@@ -1443,7 +1458,7 @@ loading_plot_fun = function ({ x = undefined, y = undefined, color_by = undefine
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(uuu)))
                         }
 
-                    
+
                     }
                 )
 
@@ -1631,7 +1646,7 @@ scree_plot_fun = function ({ ys = undefined, texts = undefined, hovertexts = und
 
         .then(gd => {
             scree_plot_gd = gd
-            
+
             scree_plot_parameters = {
                 data: scree_plot_gd.data,
                 layout: scree_plot_gd.layout,

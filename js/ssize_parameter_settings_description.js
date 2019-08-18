@@ -19,8 +19,11 @@ get_parameter_description = function(){
     console.log("!")
     ocpu.call("call_fun",{parameter:{
         treatment_group:parameter.treatment_group,
-        equal_variance_assumption:parameter.equal_variance_assumption,
-        fdr:parameter.fdr,
+        test_type:parameter.test_type,
+        sample_id:parameter.sample_id,
+        n:parameter.n,
+        sig_level:parameter.sig_level,
+        power:parameter.power,
         type:"parameter_settings_description",
         fun_name:"report_ssize"
     }},function(session){

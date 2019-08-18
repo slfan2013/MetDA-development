@@ -89,6 +89,14 @@ text_html = ""
       for(i in 1:length(par_data$style_name)){
         text_html = paste0(text_html,tags_begin[i],par_data$text[i],tags_end[i])
       }
+      text_html = strsplit(text_html,"<p>Figure")[[1]]
+      text_html = unname(sapply(text_html, function(x){
+        if(!is.na(as.numeric(substr(x,1,2)))){
+          return(paste0("<p>Figure",x))
+        }else{
+          return(x)
+        }
+      }))
     }
 
 
@@ -141,6 +149,14 @@ text_html = ""
       for(i in 1:length(par_data$style_name)){
         text_html = paste0(text_html,tags_begin[i],par_data$text[i],tags_end[i])
       }
+      text_html = strsplit(text_html,"<p>Figure")[[1]]
+      text_html = unname(sapply(text_html, function(x){
+        if(!is.na(as.numeric(substr(x,1,2)))){
+          return(paste0("<p>Figure",x))
+        }else{
+          return(x)
+        }
+      }))
 
     }
 
@@ -197,6 +213,14 @@ text_html = ""
       for(i in 1:length(par_data$style_name)){
         text_html = paste0(text_html,tags_begin[i],par_data$text[i],tags_end[i])
       }
+      text_html = strsplit(text_html,"<p>Figure")[[1]]
+      text_html = unname(sapply(text_html, function(x){
+        if(!is.na(as.numeric(substr(x,1,2)))){
+          return(paste0("<p>Figure",x))
+        }else{
+          return(x)
+        }
+      }))
 
     }
 

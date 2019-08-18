@@ -41,11 +41,35 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                             eval(adjusted_ssize_plot_layout_adjuster2)
                             // initialize the traces on HTML.
 
+
                             $("#ssize_plot_layout_title_text").val(obj_ssize_plot.n_title);
                             $("#ssize_plot_layout_yaxis_title_text").val(obj_ssize_plot.n_ylab);
                             $("#ssize_plot_layout_title_text").prop("disabled", true);
                             $("#ssize_plot_layout_yaxis_title_text").prop("disabled", true);
                             $("#sample_size_range").val(ssize_plot_obj.traces.sample_size_range)
+
+
+
+                            $("#ssize_plot_traces_line").load("line_style.html", function () {
+                                init_selectpicker();
+
+                                $("#ssize_plot_traces_line .input-group .spectrums").spectrum({
+                                    color: ssize_plot_obj.traces.line.color,
+                                    showPalette: true,
+                                    palette: color_pallete
+                                });
+                                $("#ssize_plot_traces_line .input-group .spectrums").change(ssize_plot_debounced);
+                                $("#ssize_plot_traces_line .form-control.width").val(ssize_plot_obj.traces.line.width)
+                                $("#ssize_plot_traces_line .form-control.width").change(ssize_plot_debounced);
+                                $("#ssize_plot_traces_line .form-group .selectpicker").val(ssize_plot_obj.traces.line.shape)
+                                $("#ssize_plot_traces_line .form-group .selectpicker").change(ssize_plot_debounced);
+                                $("#ssize_plot_traces_line .form-group .selectpicker").selectpicker('refresh')
+                                $("#ssize_plot_traces_line .form-control.smoothing").val(ssize_plot_obj.traces.line.smoothing)
+                                $("#ssize_plot_traces_line .form-control.smoothing").change(ssize_plot_debounced);
+                                ssize_plot_debounced()
+                            })
+
+
 
                             ssize_plot_debounced()
                         }
@@ -72,6 +96,17 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         save_ssize_plot_style = function () {
                             // save the traces on HTML
                             ssize_plot_layout.traces.sample_size_range = $("#sample_size_range").val()
+
+
+                            ssize_plot_layout.traces.line = {
+                                color: $("#ssize_plot_traces_line .input-group .spectrums").spectrum("get").toRgbString(),
+                                width: $("#ssize_plot_traces_line .form-control.width").val(),
+                                shape:$("#ssize_plot_traces_line .form-group .selectpicker").val(),
+                                smoothing:$("#ssize_plot_traces_line .form-control.smoothing").val()
+                            }
+
+
+
                             $.ajax({
                                 url: "js/plot_layout_adjuster4.js", converters: { 'text script': function (text) { return text; } }, success: function (plot_layout_adjuster4) {
                                     adjusted_ssize_plot_layout_adjuster4 = plot_layout_adjuster4.replace(/PLOT_NAME/g, 'ssize_plot')
@@ -82,7 +117,12 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         }
 
                         // collect traces info for plot.
-
+                        ssize_plot_layout.traces.line = {
+                            color: $("#ssize_plot_traces_line .input-group .spectrums").spectrum("get").toRgbString(),
+                            width: $("#ssize_plot_traces_line .form-control.width").val(),
+                            shape:$("#ssize_plot_traces_line .form-group .selectpicker").val(),
+                            smoothing:$("#ssize_plot_traces_line .form-control.smoothing").val()
+                        }
 
 
                         ssize_plot_layout.xaxis.autorange = false
@@ -99,6 +139,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         var title = $("#ssize_plot_layout_title_text").val();
                         var y_lab = $("#ssize_plot_layout_yaxis_title_text").val();
 
+                        $("#ssize_plot_explanation").append(obj_ssize_plot.results_description[1])
 
 
                         ssize_plot_fun({x:x,y:y,title:title,y_lab:y_lab,names:names,

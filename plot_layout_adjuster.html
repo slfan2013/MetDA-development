@@ -513,7 +513,15 @@
             <div class="card-body">
 
 
-
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" onchange="PLOT_NAME_debounced()" id="PLOT_NAME_legend_showlegend">
+                        Show Legend
+                        <span class="form-check-sign">
+                            <span class="check"></span>
+                        </span>
+                    </label>
+                </div>
 
                 <div class="input-group">
                     <div class="input-group-prepend">
@@ -565,19 +573,19 @@
                             Legend Position - x
                         </span>
                     </div>
-                    <input type="number" class="form-control" id="PLOT_NAME_legend_x"
-                        placeholder="horizontal position" min="-2" max="3" step="0.1" onchange="PLOT_NAME_debounced()">
+                    <input type="number" class="form-control" id="PLOT_NAME_legend_x" placeholder="horizontal position"
+                        min="-2" max="3" step="0.1" onchange="PLOT_NAME_debounced()">
                 </div>
 
                 <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                Legend Position - y
-                            </span>
-                        </div>
-                        <input type="number" class="form-control" id="PLOT_NAME_legend_y"
-                            placeholder="horizontal position" min="-2" max="3" step="0.1" onchange="PLOT_NAME_debounced()">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            Legend Position - y
+                        </span>
                     </div>
+                    <input type="number" class="form-control" id="PLOT_NAME_legend_y" placeholder="horizontal position"
+                        min="-2" max="3" step="0.1" onchange="PLOT_NAME_debounced()">
+                </div>
 
 
 

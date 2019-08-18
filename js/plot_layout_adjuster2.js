@@ -144,6 +144,9 @@ $("#PLOT_NAME_legend_font .input-group .spectrums").spectrum({
 });
 
 
+$("#PLOT_NAME_legend_showlegend").prop("checked", PLOT_NAME_obj.legend.showlegend[0])
+
+
 $("#PLOT_NAME_legend_bgcolor").spectrum({
     color: PLOT_NAME_obj.legend.bgcolor[0],
     showPalette: true,

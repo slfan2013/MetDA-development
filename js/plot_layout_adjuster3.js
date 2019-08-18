@@ -87,6 +87,7 @@ PLOT_NAME_layout2 = {
         zerolinewidth: $("#PLOT_NAME_layout_yaxis_zerolinewidth").val()
     },
     hovermode: "closest",
+	showlegend:$("#PLOT_NAME_legend_showlegend").is(":checked"),
     legend:{
         bgcolor:$("#PLOT_NAME_legend_bgcolor").spectrum("get").toRgbString(),
         bordercolor:$("#PLOT_NAME_legend_bordercolor").spectrum("get").toRgbString(),

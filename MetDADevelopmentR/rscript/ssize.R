@@ -93,10 +93,11 @@ if (test_type %in% c("t-test", "paired t-test")) {
 } else {
 
 }
-n_seq = round(c(n*0.8, n, n*1.2))
+# n_seq = round(c(n*0.8, n, n*1.2))
+n_seq = round(n)
 
-power_seq = c(max(power-0.1,0), power, min(power+0.1,1))
-
+# power_seq = c(max(power-0.1,0), power, min(power+0.1,1))
+power_seq = power
 
 # 1 power
 powers = list()
@@ -213,11 +214,48 @@ inv_n = sapply(ns, function(n_){
 
 
 
-result <- data.table(index = 1:nrow(f), label = f$label, powers = powers, ns = ns)
+result <- data.table(index = 1:nrow(f), label = f$label, powers = unlist(powers[[as.character(n)]]), ns = unlist(ns[[as.character(power)]]))
 colnames(result)[3] <- paste0("power (n=", n, ")")
 colnames(result)[4] <- paste0("n (power=", power, ")")
 
 fwrite(result, "ssize.csv", col.names = TRUE)
+
+
+
+
+
+
+if (!exists("sample_id")) {
+  sample_id <- NULL
+}
+report_html = call_fun(parameter = list(
+  treatment_group = treatment_group,
+  test_type = test_type,
+  n = n,
+  sig_level = sig_level,
+  power = power,
+  sample_id = sample_id,
+  result = result,
+  groups = groups,
+  type = "result_summary",
+  fun_name = "report_ssize"
+))$text_html
+
+if(grepl("temp_project_",project_id)){
+  # report_html = ""
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
   # heatmap_plot_style = get_heatmap_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
@@ -231,7 +269,7 @@ if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here 
     x = sapply(inv_n,function(x) x$x),
     y =  sapply(inv_n,function(x) x$y),
     names = names(inv_n),
-    title = paste0("Sample Size needed for ", power * 100, "%"),
+    title = paste0("Sample Size for ", power * 100, "% Power"),
     y_lab = paste0("Proportion of Compounds with Power >= ", power * 100, "%"),
     layout = layout,
     plot_id = ""
@@ -239,7 +277,7 @@ if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here 
     x = sapply(inv_power,function(x) x$x),
     y =  sapply(inv_power,function(x) x$y),
     names = names(inv_power),
-    title = paste0("Power of ", n, " samples"),
+    title = paste0("Power of ", n, " Samples"),
     y_lab = paste0("Proportion of Compounds with sample size >= ", n, ""),
     layout = layout,
     plot_id = ""
@@ -247,5 +285,5 @@ if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here 
 
 
 } else {
-  result <- list(results_description = "Here is the heatmap summary.", p = p, f = f, ns = ns, powers = powers, inv_power = inv_power, inv_n = inv_n, n_title = paste0("Sample Size needed for ", power * 100, "%"), n_ylab = paste0("Proportion of Compounds with Power >= ", power * 100, "%"), power_title = paste0("Power of ", n, " samples"), power_ylab = paste0("Proportion of Compounds with sample size >= ", n, ""))
+  result <- list(results_description = report_html, p = p, f = f, ns = ns, powers = powers, inv_power = inv_power, inv_n = inv_n, n_title = paste0("Sample Size needed for ", power * 100, "%"), n_ylab = paste0("Proportion of Compounds with Power >= ", power * 100, "%"), power_title = paste0("Power of ", n, " samples"), power_ylab = paste0("Proportion of Compounds with sample size >= ", n, ""))
 }

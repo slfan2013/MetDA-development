@@ -3,24 +3,25 @@
 if (!exists("treatment_group")) {
   treatment_group <- NULL
 }
-if (!exists("equal_variance_assumption")) {
-  equal_variance_assumption <- NULL
+if (!exists("test_type")) {
+  test_type <- NULL
 }
-if (!exists("type")) {
-  type <- NULL
+if (!exists("n")) {
+  n <- NULL
 }
-if (!exists("fdr")) {
-  fdr <- NULL
+if (!exists("power")) {
+  power <- NULL
 }
-if (!exists("result")) {
-  result <- NULL
+if (!exists("sample_id")) {
+  sample_id <- NULL
 }
-if (!exists("levels")) {
-  levels <- NULL
+if (!exists("sig_level")) {
+  sig_level <- NULL
 }
-if (!exists("alternative")) {
-  alternative <- NULL
-}
+
+if(!exists("groups")){groups=NULL}
+
+
 if (!exists("doc")) {
   doc <- NULL
 }
@@ -41,7 +42,7 @@ text_html <- ""
 
 
 
-save(treatment_group, equal_variance_assumption, type, fdr, result, levels, alternative, doc, table_index, figure_index, file = "report_ssize.RData")
+save(parameter, file = "report_ssize.RData")
 
 # load("report_ssize.RData")
 pacman::p_load(data.table, officer, magrittr)
@@ -93,7 +94,7 @@ if (type %in% c("method_description", "all")) {
   doc <- doc %>%
     body_add_par("Warnes and Liu (2006) provide a simple method for computing sample size for microarray experiments, and reports on a series of simulations demonstrating its performance. Surprisingly, despite its simplicity, the method performs exceptionally well even for data with very high correlation between measurements.
 ", style = "Normal", pos = "after") %>%
-    body_add_par("The key component of this method is the generation of a cumulative plot of the proportion of compounds achieving a desired power as a function of sample size, based on simple gene-by-gene calculations. While this mechanism can be used to select a sample size numerically based on pre-specified conditions, its real utility is as a visual tool for understanding the trade off between sample size and power. In our consulting work, this latter use as a visual tool has been exceptionally valuable in helping scientific clients to make the difficult trade offs between experiment cost and statistical power. ", style = "Normal", pos = "after")%>%
+    body_add_par("The key component of this method is the generation of a cumulative plot of the proportion of compounds achieving a desired power as a function of sample size, based on simple gene-by-gene calculations. While this mechanism can be used to select a sample size numerically based on pre-specified conditions, its real utility is as a visual tool for understanding the trade off between sample size and power. In our consulting work, this latter use as a visual tool has been exceptionally valuable in helping scientific clients to make the difficult trade offs between experiment cost and statistical power. ", style = "Normal", pos = "after") %>%
     body_add_par("Multiple comparison problem can also be taken into account in this method. The criterion rate for each compounds can be estiamted using qvalue package.", style = "Normal", pos = "after")
 
   if (type %in% "method_description") {
@@ -108,6 +109,14 @@ if (type %in% c("method_description", "all")) {
     for (i in 1:length(par_data$style_name)) {
       text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
     }
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
   }
 }
 if (type %in% c("parameter_settings_description", "all")) {
@@ -126,22 +135,43 @@ if (type %in% c("parameter_settings_description", "all")) {
       slip_in_text(output_file_path, style = "Default Paragraph Font", pos = "after")
   }
 
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Test Type: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(test_type, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
+  test_name <- revalue(test_type, c("t-test", "paired t-test", "ANOVA", "repeated ANOVA"), c("two-tailed student t-test", "two-tailed paired t-test", "one-way ANOVA", "repeated ANOVA"))
+
+
+  doc <- doc %>%
+    slip_in_text(paste0("Compute the statistical power of the ", test_name, " given a sample size, and determines the sample size to obtain a target statistical power."), style = "Default Paragraph Font", pos = "after")
+
+
 
 
   doc <- doc %>%
     body_add_fpar(fpar(ftext(" - Treatment Group: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
     slip_in_text(treatment_group, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(paste0(". The student t-test will be performed on each compound to detect those significantly altered by ", treatment_group, "."), style = "Default Paragraph Font", pos = "after")
+    slip_in_text(paste0(". The effect size, an input parameter for power analysis, will be estimated by the ", treatment_group, ". Then the statistical power will be calculated based on the sample size in your dataset and the estimated sample size will be calculated based on the target statistical power."), style = "Default Paragraph Font", pos = "after")
+
+
+  if (test_type %in% c("paired t-test", "repeated ANOVA")) {
+    doc <- doc %>%
+      body_add_fpar(fpar(ftext(" - Sample ID information: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+      slip_in_text(paste0(sample_id,". The ",sample_id," is used to paired the samples. Samples with same Sample ID are treated as from a same subject."), style = "Default Paragraph Font", pos = "after")
+  }
+
 
   doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Variance Equality Assumption: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(equal_variance_assumption, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(paste0(". If TRUE, the equality of variance is assumed, and the tests are Student's t-test, otherwise Welch t-test."), style = "Default Paragraph Font", pos = "after")
+    body_add_fpar(fpar(ftext(" - Interested Number of Observations (per group): ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(" the given sample size. The statistical power will be estimated based on the given sample size.", style = "Default Paragraph Font", pos = "after")
 
   doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Correct the False Discovery Rate: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(as.character(plyr::revalue(fdr, c("fdr" = "Benjamini & Hochberg (1995)", "bonferroni" = "Bonferroni correction", "holm" = "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(paste0(". When conducting multiple tests, the rate of incorrectly reject a null hypothesis will increase. FDR-controlling procedures are designed to control the expected proportion of \"discoveries\" (rejected null hypotheses) that are false (incorrect rejections). The suggested method for metabolomics is the Benjamini & Hochberg procedure. For more information, please visit https://en.wikipedia.org/wiki/False_discovery_rate."), style = "Default Paragraph Font", pos = "after")
+    body_add_fpar(fpar(ftext(" - Target Power (%): ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(" the target statistical power. The sample size to achieve the target power will be calculated.", style = "Default Paragraph Font", pos = "after")
+
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Significance Level: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(" Type I error rate (the significant criterion), the rate of falsely reject a true null hypothesis.", style = "Default Paragraph Font", pos = "after")
 
 
   if (type == "parameter_settings_description") {
@@ -156,6 +186,14 @@ if (type %in% c("parameter_settings_description", "all")) {
     for (i in 1:length(par_data$style_name)) {
       text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
     }
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
   }
 }
 if (type %in% c("result_summary", "all")) {
@@ -165,35 +203,30 @@ if (type %in% c("result_summary", "all")) {
 
   doc <- doc %>%
     body_add_par("Result Summary: ", style = "heading 3") %>%
-    body_add_par(ifelse(equal_variance_assumption, "Student's ", "Welch "), style = "Normal", pos = "after") %>%
-    slip_in_text("t-test (", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(ifelse(equal_variance_assumption, "assuming equal variance", "not assuming equal variance"), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(") was performed on each compound to test if the mean average of ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(levels[1], style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(ifelse(alternative == "two.sided", "different from", ifelse(alternative == "greater", "greater than", "less than")), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(levels[2], style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" Out of ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(nrow(result), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" compounds, ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(sum(result$p_values < 0.05, na.rm = TRUE), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" are significant with p-value < 0.05. To control the false discovery rate (FDR), the ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(as.character(plyr::revalue(fdr, c("fdr" = "Benjamini & Hochberg (1995)", "bonferroni" = "Bonferroni correction", "holm" = "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" procedure was used. After FDR correction, ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(sum(result$p_values_adjusted < 0.05, na.rm = TRUE), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" compounds are still significant. See Table ", style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(table_index, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(" for more detail.", style = "Default Paragraph Font", pos = "after")
+    body_add_par(paste0("The statistical powers were estimated for each compound given a sample size of ",n,", and the sample size was estimated based on a target power of ",power,". The effect size of each compound was calculated from the dataset using the treatment group ", treatment_group, '. A significant level of ',sig_level," was used. See Table ",table_index, ",  Figure ", figure_index, " and ", figure_index+1, " for more detail. "), style = "Normal", pos = "after")
+
+  # index	label	power (n=12)	n (power=0.8)
 
   doc <- doc %>%
     body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
     body_add_par(" - index: the index of compounds, mainly for sorting the table.", style = "Normal", pos = "after") %>%
     body_add_par(" - label: compound labels.", style = "Normal", pos = "after") %>%
-    body_add_par(" - p_values: p-values from t-tests.", style = "Normal", pos = "after") %>%
-    body_add_par(" - p_values_adjusted: p-values adjusted by the FDR correction procedure.", style = "Normal", pos = "after")
+    body_add_par(paste0(" - power (n=",n,"): the estimated statistical power given sample size of ",n,"."), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" - n (power=",power,"): the estimated sample size for the target power of ",power*100,"%."), style = "Normal", pos = "after")
 
+
+
+
+  doc <- doc %>%
+    body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" answers the question of What is the necessary per-group sample size for ",power*100,"% powe with the observed effect size and at significant level of ",sig_level,"?."), style = "Normal", pos = "after") %>%
+    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power,"% power."), style = "Normal", pos = "after")
+
+
+  doc <- doc %>%
+    body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" answers the question of What is the power for ",n," parients per group with the observed effect size and significant level of ", sig_level,'?. '), style = "Normal", pos = "after") %>%
+    body_add_par(paste0("From the plot, ",signif(sum(result[[3]]>0.8)/nrow(result),digits = 4)*100,"% of compounds achieve at ",power*100,"% statistical power at the sample size of ",n," and significant level of ",sig_level,". "), style = "Normal", pos = "after")
 
 
   if (type == "result_summary") {
@@ -208,11 +241,22 @@ if (type %in% c("result_summary", "all")) {
     for (i in 1:length(par_data$style_name)) {
       text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
     }
+
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
+
+
   }
 }
 
 
-if(type == "all"){
+if (type == "all") {
   doc <- doc %>%
     body_add_table(value = result[order(result$p_values, decreasing = FALSE)[1:10], ], style = "table_template") %>%
     body_add_par(value = paste0("Table ", table_index, ": most significant compounds (i.e. small p-values)"), style = "table title")
@@ -221,8 +265,7 @@ if(type == "all"){
 }
 
 
-
-result <- list(text_html = text_html, method_name = "Sample Size Estimation & Power Analysis", table_index = table_index + 1, figure_index = figure_index)
+result <- list(text_html = text_html, method_name = "Sample Size Estimation & Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
 
 
 # }
