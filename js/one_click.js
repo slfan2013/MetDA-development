@@ -384,15 +384,6 @@ $("#submit").click(function () {
                         }
 
 
-
-
-
-                        /*current_parameter_keys = Object.keys(current_parameter)
-                        current_parameter_values = Object.values(current_parameter)
-
-                        for(var k=0; k<current_parameter_keys.length; k++){
-                            window[current_parameter_keys[k]] = current_parameter_values[k]
-                        }*/
                         number_of_plots++;
                     }
                 }

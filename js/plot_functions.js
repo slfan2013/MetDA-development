@@ -493,7 +493,7 @@ ssize_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
 
                         if (!quick_analysis) {
                             plot_url.ssize_plot = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
-                            files_sources[0] = plot_url.ssize_plot
+                            files_sources[1] = plot_url.ssize_plot
                         } else {
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(ssize_plot_url2)))
                         }
@@ -557,7 +557,7 @@ power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
 
                         if (!quick_analysis) {
                             plot_url.power_plot = btoa(unescape(encodeURIComponent(power_plot_url2)))
-                            files_sources[1] = plot_url.power_plot
+                            files_sources[2] = plot_url.power_plot
                         } else {
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(power_plot_url2)))
                         }

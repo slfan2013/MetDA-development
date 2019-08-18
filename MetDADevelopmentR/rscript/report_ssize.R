@@ -63,7 +63,7 @@ if (type == "all") {
     paste0(
       "http://metda:metda@localhost:5985/metda_project/",
       project_id,
-      "/", data_ids
+      "/", data_ids[grepl("csv",data_ids)]
     ),
     row.names = 1
   )
@@ -220,7 +220,7 @@ if (type %in% c("result_summary", "all")) {
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
     body_add_par(paste0(" answers the question of What is the necessary per-group sample size for ",power*100,"% powe with the observed effect size and at significant level of ",sig_level,"?."), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power,"% power."), style = "Normal", pos = "after")
+    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power*100,"% power."), style = "Normal", pos = "after")
 
 
   doc <- doc %>%

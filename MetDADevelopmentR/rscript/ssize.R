@@ -218,9 +218,9 @@ result <- data.table(index = 1:nrow(f), label = f$label, powers = unlist(powers[
 colnames(result)[3] <- paste0("power (n=", n, ")")
 colnames(result)[4] <- paste0("n (power=", power, ")")
 
+# fread(result, "ssize.csv", col.names = TRUE)
+
 fwrite(result, "ssize.csv", col.names = TRUE)
-
-
 
 
 
@@ -278,7 +278,7 @@ if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here 
     y =  sapply(inv_power,function(x) x$y),
     names = names(inv_power),
     title = paste0("Power of ", n, " Samples"),
-    y_lab = paste0("Proportion of Compounds with sample size >= ", n, ""),
+    y_lab = paste0("Proportion of Compounds with Sample Size >= ", n, ""),
     layout = layout,
     plot_id = ""
   )), auto_unbox = TRUE, force = TRUE)
