@@ -1,7 +1,7 @@
 # report_boxplot <- function(project_id = "temp_project_1565290950", fold_id = "Boxplot1565290950", table_index = 1, figure_index = 1, doc = NULL) {
   pacman::p_load(data.table, officer, magrittr)
 
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
   id <- sapply(projectList$project_structure, function(x) x$id)
@@ -12,21 +12,21 @@
 
   # result_summary <- read.csv(
   #   paste0(
-  #     "http://metda:metda@localhost:5985/metda_project/",
+  #     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
   #     project_id,
   #     "/", data_ids
   #   ),
   #   row.names = 1
   # )
   # unzip(URLencode(paste0(
-  #   "http://metda:metda@localhost:5985/metda_project/",
+  #   "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
   #   project_id,
   #   "/", data_ids
   # )), list = TRUE)
 
 
   download.file(URLencode(paste0(
-    "http://metda:metda@localhost:5985/metda_project/",
+    "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/", data_ids
   )), destfile = "boxplot.zip")

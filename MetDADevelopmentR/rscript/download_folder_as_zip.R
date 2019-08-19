@@ -11,7 +11,7 @@
 
 
 
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   project = jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
 
@@ -28,7 +28,7 @@
     if(fold_index[i]){ # this means that the ith element is a folder.
       dir.create(path[i],recursive = T, showWarnings  = F)
     }else{ # this means that the ith element is a file.
-      download.file(URLencode(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/",gsub("\\+","%2B",id[i]))),path[i],mode = 'wb')
+      download.file(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/",project_id,"/",gsub("\\+","%2B",id[i]))),path[i],mode = 'wb')
     }
   }
 

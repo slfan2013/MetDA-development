@@ -4,7 +4,7 @@ open_project_structure_after_save_result <- function(
   saved_folder_id) {
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id
     )
   ), simplifyVector = FALSE)

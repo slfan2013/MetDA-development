@@ -6,7 +6,7 @@ open_project_structure_to_select_dataset = function(
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id
     )
   ),simplifyVector = FALSE)
@@ -44,9 +44,9 @@ open_project_structure_to_select_dataset = function(
 
   }
 
-  p = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/p.csv"))
-  f = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/f.csv"))
-  e = data.table::fread(paste0("http://metda:metda@localhost:5985/metda_project/",project_id,"/",selected_data))
+  p = data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/",project_id,"/p.csv"))
+  f = data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/",project_id,"/f.csv"))
+  e = data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/",project_id,"/",selected_data))
 
   p = p[p$label %in% colnames(e),]
   f = f[f$label %in% e[[1]],]

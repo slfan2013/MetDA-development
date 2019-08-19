@@ -42,14 +42,8 @@
                   }else{
                      $("#navbarDropdownMenuLink").show()
                      $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview','one_click','missing_value_imputation', 'pca', 'student_t_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'mann_whitney_test', 'data_subsetting'], ['Project Overview','One-Click Automated Analysis','Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
-
                      initialize_nav_link()
-
-
                   }
-                  
-
-
                }
                load_page_by_url();
                window.addEventListener('hashchange', load_page_by_url, false);

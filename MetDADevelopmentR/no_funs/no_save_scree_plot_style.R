@@ -2,7 +2,7 @@ save_scree_plot_style <- function(method, style, user_id) {
   save(method, style,user_id,file = "test.RData")
   userURL <- URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_userinfo/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/",
       user_id
     )
   )

@@ -3,7 +3,7 @@ save_plots = function(plot_base64, project_id="boxplot b31564960713"){
 
 
   load("plot_base64.RData")
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = FALSE)
 
   attachments_ID = names(projectList$`_attachments`)

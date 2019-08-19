@@ -1,7 +1,7 @@
 # get_boxplot_plot_style = function(user_id){
   userURL <- URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_userinfo/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/",
       user_id
     )
   )

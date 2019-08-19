@@ -443,7 +443,7 @@ if(!window.jQuery) {
   ocpu.call = r_fun_call;
   ocpu.rpc = rpc;
 
-  ocpu.seturl = seturl("https://metda.fiehnlab.ucdavis.edu/ocpu/library/metabox/R");
+  ocpu.seturl = seturl("https://metda.fiehnlab.ucdavis.edu/ocpu/library/MetDA-Development/R");
   console.log(ocpu.seturl)
   //exported constructors
   ocpu.Snippet = Snippet;

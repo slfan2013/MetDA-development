@@ -2,7 +2,7 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
 
 
 
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
   result = projectList$project_structure
 
@@ -13,7 +13,7 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
   for(i in 1:length(sample_id)){
     temp_data = read.csv(
       paste0(
-        "http://metda:metda@localhost:5985/metda_project/",
+        "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/", sample_id[i]
       ),
@@ -42,7 +42,7 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
   for(i in 1:length(compound_id)){
     temp_data = read.csv(
       paste0(
-        "http://metda:metda@localhost:5985/metda_project/",
+        "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/", compound_id[i]
       ),

@@ -1,5 +1,5 @@
 # get_fold_seq = function(project_id, file_id){
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
   id <- projectList$project_structure$id
   parent <- projectList$project_structure$parent

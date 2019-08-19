@@ -1,7 +1,7 @@
 # report_e <- function(project_id = "report 11565112203", e_id = "e.csv", table_index = 0,figure_index = 1, doc = NULL) {
   e <- read.csv(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/", e_id
     ),

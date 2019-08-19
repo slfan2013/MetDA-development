@@ -85,7 +85,7 @@ sys_put_methods <- function() {
     )
   )
 
-  methodsUrl <- URLencode(paste0("http://metda:metda@localhost:5985/templates/methods"))
+  methodsUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/templates/methods"))
   methodsList <- jsonlite::fromJSON(methodsUrl)
   methodsList[["methods_structure"]] <- methods_structure
 

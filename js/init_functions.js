@@ -56,8 +56,6 @@ initialize_nav_link = function () {
     $("#navbarDropdownMenuLink_items").html(sidebar_ul)
   
     $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function(e) {
-      console.log("!")
-      console.log("!!")
       var $el = $(this);
       var $parent = $(this).offsetParent(".dropdown-menu");
       if (!$(this).next().hasClass('show')) {

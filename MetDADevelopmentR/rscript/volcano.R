@@ -17,14 +17,14 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
   p_value_data = tryCatch(read.csv(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",p_value_data_id
     )
     ,row.names  = 1), error = function(e){
       read.csv(
       paste0(
-        "http://metda:metda@localhost:5985/metda_project/",
+        "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/",paste0("student_t_test_result", substr(fold_change_data_id,nchar(fold_change_data_id) - 14 + 1,nchar(fold_change_data_id)))
       ))
@@ -37,7 +37,7 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
   fold_change_data = tryCatch(read.csv(
       paste0(
-        "http://metda:metda@localhost:5985/metda_project/",
+        "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/",fold_change_data_id
       )
@@ -45,7 +45,7 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
         read.csv(
           paste0(
-            "http://metda:metda@localhost:5985/metda_project/",
+            "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
             project_id,
             "/",paste0("fold_change_result", substr(p_value_data_id,nchar(p_value_data_id) - 14 + 1,nchar(p_value_data_id)))
           ))
@@ -60,7 +60,7 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
   data = read.csv(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",activate_data_id
     )

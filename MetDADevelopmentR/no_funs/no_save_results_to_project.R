@@ -70,7 +70,7 @@ save_results_to_project <- function(project_id = "aaa1560462496",
 
 
   # 2 put the attachments
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = FALSE)
 
   is_temp_project <- grepl("temp_project_", project_id)

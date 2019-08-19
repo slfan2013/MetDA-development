@@ -140,7 +140,7 @@ fwrite(summary_data, "summary_data.csv", col.names = TRUE)
 #   # RCurl::base64Encode(readBin('temp_e.csv', "raw", file.info('temp_e.csv')[1, "size"]), "txt")
 #   # RCurl::base64Encode(readBin(paste0(filename, suffix), "raw", file.info(paste0(filename, suffix))[1, "size"]), "txt")
 #
-#   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+#   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
 #   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
 #   temp_time = substr(project_id, nchar(project_id)-10+1, nchar(project_id))
 #

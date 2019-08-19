@@ -20,7 +20,7 @@ if(subset_by_sample){
   sample_i = sample_i-1
   for(i in 1:sample_i){
     sample_criterion_data = read.csv(paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",eval(parse(text = paste0("sample_criterion_data_id__",i)))
     ), stringsAsFactors = FALSE)
@@ -47,7 +47,7 @@ if(subset_by_compound){
   compound_i = compound_i-1
   for(i in 1:compound_i){
     compound_criterion_data = read.csv(paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",eval(parse(text = paste0("compound_criterion_data_id__",i)))
     ), stringsAsFactors = FALSE)

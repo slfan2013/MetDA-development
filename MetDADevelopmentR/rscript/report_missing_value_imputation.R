@@ -1,7 +1,7 @@
 # report_missing_value_imputation <- function(project_id = "report 31565132374", fold_id = "Missing Value Imputation1565132404", table_index = 1, figure_index = 1,doc = NULL) {
   pacman::p_load(data.table, officer, magrittr)
 
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
   id <- sapply(projectList$project_structure, function(x) x$id)
@@ -12,7 +12,7 @@
 
   result_summary <- read.csv(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/", data_ids[grepl("summary", data_ids)]
     ),

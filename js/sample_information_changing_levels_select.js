@@ -15,7 +15,7 @@ for (var i = 0; i < p_column_names.length; i++) {
 
 
 
-sample_information_changing_levels_select_div = '<div class="form-group" style="padding-bottom:0"><label>Treatment Groups</label><select class="form-control selectpicker parameter" id="' + id + '" data-style="btn btn-link">'
+sample_information_changing_levels_select_div = '<div class="form-group" style="padding-bottom:0"><select class="form-control selectpicker parameter" id="' + id + '" data-style="btn btn-link">'
 for (var i = 0; i < p_column_names.length; i++) {
     if (p_column_names[i] !== 'label') {
         sample_information_changing_levels_select_div = sample_information_changing_levels_select_div + '<option>' + p_column_names[i] + '</option>'

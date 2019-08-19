@@ -6,17 +6,17 @@
 
 
 # 1 read the old project.
-projectUrl_old <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", temp_project_id))
+projectUrl_old <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", temp_project_id))
 projectList_old <- jsonlite::fromJSON(projectUrl_old, simplifyVector = F)
 
 # 2 create a new project
 new_id <- paste0(new_name, as.integer(Sys.time()))
-projectUrl_new <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", new_id))
+projectUrl_new <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", new_id))
 projectList_new <- list(a = new_id, b = "1-967a00dff5e02add41819138abb3284f")
 names(projectList_new)[1:2] <- c("_id", "_rev")
 RCurl::getURL(projectUrl_new, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList_new, auto_unbox = TRUE, force = TRUE))
 
-projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", new_id))
+projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", new_id))
 projectList <- jsonlite::fromJSON(projectUrl)
 
 attname <- names(projectList_old$`_attachments`)
@@ -92,12 +92,12 @@ RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" =
 
 
 # 3. update the userinfo slfan
-userinfo <- data.table::fread(paste0("http://metda:metda@localhost:5985/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv"))
+userinfo <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv"))
 
 # new project table
 new_project_table <- data.table::data.table(project_id = new_id, project_name = new_name, create_time = as.character(Sys.time()))
 userinfo <- rbind(userinfo, new_project_table)
-userinfoUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_userinfo/", user_id))
+userinfoUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id))
 userinfoList <- jsonlite::fromJSON(userinfoUrl)
 names(userinfoList)[1:2] <- c("_id", "_rev")
 

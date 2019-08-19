@@ -26,7 +26,7 @@ text_html = ""
 
   if(type == "all"){
 
-    projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+    projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
     projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
     id <- sapply(projectList$project_structure, function(x) x$id)
@@ -37,7 +37,7 @@ text_html = ""
 
     result <- read.csv(
       paste0(
-        "http://metda:metda@localhost:5985/metda_project/",
+        "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/", data_ids
       ),

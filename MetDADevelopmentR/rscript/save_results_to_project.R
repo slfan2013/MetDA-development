@@ -7,9 +7,9 @@
 #                                     fold_name = "Missing Value Imputation",
 #                                     parameters = '"defination_of_missing_value":["empty cells"],"defination_of_missing_value_values_less_than":"","defination_of_missing_other_than":"","remove_missing_values_more_than":"on","remove_missing_values_more_than_value":"50","missing_value_imputation_method":"replace by half minimum","project_id":"dadfasfdas1560556027","fun_name":"missing_value_imputation"',
 #                                     epf_index = c(1)) {
-  save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index,files_sources_data, file = "test.RData")
+  # save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index,files_sources_data, file = "test.RData")
 
-  load("test.RData")
+  # load("test.RData")
   if (class(files_sources_data) %in% c("list", "data.frame")) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
     for (file_source in 1:length(files_sources_data)) {
       if (is.null(ncol(files_sources_data[[file_source]]))) { # this means this is a base6 (pca score plot)
@@ -71,7 +71,7 @@
 
 
   # 2 put the attachments
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = FALSE)
 
   is_temp_project <- grepl("temp_project_", project_id)

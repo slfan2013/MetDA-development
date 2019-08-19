@@ -59,7 +59,7 @@ fwrite(result, "mann_whitney_test.csv", col.names = TRUE)
 
 # if(grepl("temp_project_", project_id)){
 #
-#   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+#   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
 #   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
 #   temp_time = substr(project_id, nchar(project_id)-10+1, nchar(project_id))
 #

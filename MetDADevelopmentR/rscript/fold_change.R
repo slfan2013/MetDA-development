@@ -52,7 +52,21 @@ fold_changes = means1/means2
 result = data.table(index = 1:nrow(f), label = f$label, fold_changes = fold_changes)
 
 
-report_html = paste0("<h4>Fold Change was calculated using the ",mean_or_median, " average.")
+
+
+report_html = call_fun(parameter = list(
+  treatment_group = treatment_group,
+  treatment_group_levels = treatment_group_levels,
+  mean_or_median = mean_or_median,
+  type = "result_summary",
+  result = result,
+  fun_name = "report_fold_change"
+))$text_html
+
+
+
+
+# report_html = paste0("<h4>Fold Change was calculated using the ",mean_or_median, " average.")
 
 
 
@@ -72,10 +86,9 @@ result = list(results_description = report_html)
 
 
 
-
 # if(grepl("temp_project_", project_id)){
 #
-#   projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+#   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
 #   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = T)
 #   temp_time = substr(project_id, nchar(project_id)-10+1, nchar(project_id))
 #

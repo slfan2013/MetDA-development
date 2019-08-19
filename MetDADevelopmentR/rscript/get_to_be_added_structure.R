@@ -7,7 +7,7 @@
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id
     )
   ), simplifyVector = FALSE)
@@ -32,7 +32,7 @@
 
   projectList2 <- jsonlite::fromJSON(URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id2
     )
   ), simplifyVector = FALSE)

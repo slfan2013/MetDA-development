@@ -3,7 +3,7 @@ update_tree_structure = function(project_id, project_structure){
   save(project_id, project_structure, file = "update_tree_structure.RData")
 
   load("update_tree_structure.RData")
-  projectUrl <- URLencode(paste0("http://metda:metda@localhost:5985/metda_project/", project_id))
+  projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
 

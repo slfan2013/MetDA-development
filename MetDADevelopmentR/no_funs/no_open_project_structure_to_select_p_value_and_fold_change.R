@@ -5,7 +5,7 @@ open_project_structure_to_select_p_value_and_fold_change = function(
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id
     )
   ),simplifyVector = FALSE)

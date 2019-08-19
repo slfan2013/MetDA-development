@@ -1,27 +1,14 @@
-# report_ssize = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
+# report_pca = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
 
-if (!exists("treatment_group")) {
-  treatment_group <- NULL
-}
-if (!exists("test_type")) {
-  test_type <- NULL
-}
-if (!exists("n")) {
-  n <- NULL
-}
-if (!exists("power")) {
-  power <- NULL
-}
-if (!exists("sample_id")) {
-  sample_id <- NULL
-}
-if (!exists("sig_level")) {
-  sig_level <- NULL
+if (!exists("scaling_method")) {
+  scaling_method <- NULL
 }
 
-if(!exists("groups")){groups=NULL}
-if(!exists("fdr_check")){fdr_check=NULL}
-if(!exists("fdr_criterion")){fdr_criterion=NULL}
+
+
+
+
+
 
 
 if (!exists("doc")) {
@@ -44,9 +31,9 @@ text_html <- ""
 
 
 
-save(parameter, file = "report_ssize.RData")
+save(parameter, file = "report_pca.RData")
 
-# load("report_ssize.RData")
+# load("report_pca.RData")
 pacman::p_load(data.table, officer, magrittr)
 
 
@@ -96,14 +83,13 @@ if (type %in% c("method_description", "all")) {
   }
   if (type %in% "all") {
     doc <- doc %>%
-      body_add_par("Sample Size Estimation & Power Analysis Summary: ", style = "heading 1")
+      body_add_par("Principal Component Analysis (PCA) Summary: ", style = "heading 1")
   }
 
   doc <- doc %>%
-    body_add_par("Warnes and Liu (2006) provide a simple method for computing sample size for microarray experiments, and reports on a series of simulations demonstrating its performance. Surprisingly, despite its simplicity, the method performs exceptionally well even for data with very high correlation between measurements.
-", style = "Normal", pos = "after") %>%
-    body_add_par("The key component of this method is the generation of a cumulative plot of the proportion of compounds achieving a desired power as a function of sample size, based on simple gene-by-gene calculations. While this mechanism can be used to select a sample size numerically based on pre-specified conditions, its real utility is as a visual tool for understanding the trade off between sample size and power. In our consulting work, this latter use as a visual tool has been exceptionally valuable in helping scientific clients to make the difficult trade offs between experiment cost and statistical power. ", style = "Normal", pos = "after") %>%
-    body_add_par("Multiple comparison problem can also be taken into account with a correction of Benjamini-Hochberg Procedure. The proportion of true null hypothesis in your data can be estiamted using qvalue package.", style = "Normal", pos = "after")
+    body_add_par("The high-dimensional and wide data tables that are encountered in metabolomics can be difficult to analyse, but the metabolomics community is now routinely applying many techniques to interrogate these large data sets and increase our understanding of the changes in metabolism. The use of data reduction or dimension reduction methods to reduce the size of the data table (while minimizing information loss) before further statistical analysis takes place is extremely important in this respect. The previous step discussed a popular dimension reduction method, namely principal component analysis (PCA). [https://www.futurelearn.com/courses/metabolomics/0/steps/25039]", style = "Normal", pos = "after") %>%
+    body_add_par("PCA is an example of a so-called unsupervised technique. This means that the method does not use class label information (i.e. to which group does each sample in the data table belong). This has important consequences for dimension reduction. Dimension reduction is achieved by a rotation of the data followed by mathematical projection to a lower dimension resulting in a small data table. PCA rotates (i.e. linearly transforms) the variables (i.e. compound values) such that the largest differences between the samples are highlighted. This is very useful for explorative analysis of the data, for example, to detect outliers.", style = "Normal", pos = "after")
+
 
   if (type %in% "method_description") {
     content <- docx_summary(doc)
@@ -321,11 +307,11 @@ if (type == "all") {
 
 
 
-  doc %>% print(target = "report_ssize.docx")
+  doc %>% print(target = "report_pca.docx")
 }
 
 
-result <- list(text_html = text_html, method_name = "Sample Size Estimation & Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
+result <- list(text_html = text_html, method_name = "Principal Component Analysis (PCA)", table_index = table_index + 1, figure_index = figure_index+2)
 
 
 # }

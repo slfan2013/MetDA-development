@@ -10,7 +10,7 @@ call_fun <- function(parameter, ...) {
     assign(parameter_names[i], parameter[[parameter_names[i]]])
   }
 
-  fileName <- URLencode(paste0("http://metda:metda@localhost:5985/metda_rscript/rscript/", fun_name, ".R"))
+  fileName <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_rscript/rscript/", fun_name, ".R"))
 
   eval(parse(text = gsub("\r", "", readr::read_file(fileName))))
 

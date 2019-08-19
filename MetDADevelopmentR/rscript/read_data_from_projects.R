@@ -1,18 +1,18 @@
 # read_data_from_projects = function(project_id, activate_data_id){
   f = read.csv(paste0(
-    "http://metda:metda@localhost:5985/metda_project/",
+    "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/f.csv"
   ), stringsAsFactors = FALSE)
   p = read.csv(paste0(
-    "http://metda:metda@localhost:5985/metda_project/",
+    "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/p.csv"
   ), stringsAsFactors = FALSE)
 
   e = read.csv(
     paste0(
-      "http://metda:metda@localhost:5985/metda_project/",
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",activate_data_id
     )
