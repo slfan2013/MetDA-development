@@ -19,7 +19,7 @@
 
   fold_seq_folders = paste0(fold_seq[1:(length(fold_seq)-length(file_id))], collapse = " -> ")
 
-  fold_seq_files = paste0(fold_seq[((length(fold_seq)-length(file_id))+1):length(fold_seq)], collapse = " & ")
+  fold_seq_files = paste0(fold_seq[((length(fold_seq)-length(file_id))+1):length(fold_seq)], collapse = " -- ")
 
 
   result = paste0(fold_seq_folders, " -> ", fold_seq_files)

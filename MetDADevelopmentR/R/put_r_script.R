@@ -2,7 +2,7 @@
 put_r_script = function(){
   all_r_files <- list.files("rscript")
 
-  # projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_rscript/rscript/"))
+
 
   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_rscript/rscript/"))
 

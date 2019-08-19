@@ -96,7 +96,7 @@ if (type %in% c("method_description", "all")) {
   }
   if (type %in% "all") {
     doc <- doc %>%
-      body_add_par("Sample Size Estimation & Power Analysis Summary: ", style = "heading 1")
+      body_add_par("Sample Size Estimation -- Power Analysis Summary: ", style = "heading 1")
   }
 
   doc <- doc %>%
@@ -137,6 +137,7 @@ if (type %in% c("parameter_settings_description", "all")) {
       body_add_par("Input Summary: ", style = "heading 3") %>%
       body_add_par("Input Dataset: ", style = "Normal") %>%
       slip_in_text(input_file_path, style = "Default Paragraph Font", pos = "after")
+
 
     doc <- doc %>%
       body_add_par("Output Datasets and Files: ", style = "Normal") %>%
@@ -325,7 +326,7 @@ if (type == "all") {
 }
 
 
-result <- list(text_html = text_html, method_name = "Sample Size Estimation & Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
+result <- list(text_html = text_html, method_name = "Sample Size Estimation -- Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
 
 
 # }
