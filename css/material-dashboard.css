@@ -19969,7 +19969,7 @@ a .material-icons {
 }
 
 .off-canvas-sidebar .navbar-collapse:after {
-  background-color: #282828;
+  background-color: #ececec;
 }
 
 .offline-doc .navbar .navbar-nav .nav-item .nav-link {
@@ -28830,7 +28830,7 @@ select.selectpicker {
     height: 100%;
     width: 100%;
     position: absolute;
-    background-color: #282828;
+    background-color: #757575;
     display: block;
     content: "";
     z-index: 1;
