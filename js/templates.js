@@ -528,4 +528,4 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 }
 
 
-$("#sidebar").load("sidebar.html")
+//$("#sidebar").load("sidebar.html")

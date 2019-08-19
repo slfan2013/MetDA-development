@@ -31,12 +31,6 @@ initialize_nav_link = function () {
       } else {
         sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
           '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
-        //+
-        //'<ul class="dropdown-menu">'+
-        //'<li><a class="dropdown-item" href="#">Submenu action</a></li>'+
-        //'<li><a class="dropdown-item" href="#">Another submenu action</a></li>'+
-        //'</ul>'+
-        //'</li>'
       }
 
       sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
@@ -44,7 +38,7 @@ initialize_nav_link = function () {
       for (var it = 0; it < current_items.length; it++) {
 
 
-        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
+        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#'+current_items[it]+'">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
 
 
 

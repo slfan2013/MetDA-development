@@ -49,6 +49,7 @@ $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data)
         sidebar_ul = sidebar_ul +
             '<a class="nav-link" data-toggle="collapse" href="#' + current_cat.replace(' ', '_') + '">' +
             ' <i class="material-icons">'
+            
         if (current_cat === "DATA PROCESSING") {
             sidebar_ul = sidebar_ul + 'donut_large'
         } else if (current_cat === 'MULTIVARIATE ANALYSIS') {
