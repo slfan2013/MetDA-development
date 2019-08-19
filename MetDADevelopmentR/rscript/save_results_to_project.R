@@ -246,7 +246,7 @@
 
     for (file_source in 1:length(files_names)) {
 
-      download.file(URLencode(paste0("http://localhost:5985/metda_project/", project_id, "/", gsub("\\+", "%2B", attachments_ids[file_source]))), files_names[file_source], mode = "wb")
+      download.file(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id, "/", gsub("\\+", "%2B", attachments_ids[file_source]))), files_names[file_source], mode = "wb")
 
     }
 

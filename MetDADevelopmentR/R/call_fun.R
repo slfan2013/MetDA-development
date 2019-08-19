@@ -12,6 +12,8 @@ call_fun <- function(parameter, ...) {
 
   fileName <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_rscript/rscript/", fun_name, ".R"))
 
+
+
   eval(parse(text = gsub("\r", "", readr::read_file(fileName))))
 
   return(result)

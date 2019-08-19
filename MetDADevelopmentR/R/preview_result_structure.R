@@ -56,7 +56,7 @@ preview_result_structure <- function(
 
 
 
-  f2 <- data.table::fread(paste0("http://localhost:5985/metda_project/", project_id2, "/f.csv"))
+  f2 <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id2, "/f.csv"))
   colnames_f2 <- colnames(f2)
 
 

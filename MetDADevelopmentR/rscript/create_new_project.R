@@ -22,7 +22,7 @@ projectList <- jsonlite::fromJSON(projectUrl)
 attname <- names(projectList_old$`_attachments`)
 projectList[["_attachments"]] <- list()
 for (i in 1:length(attname)) {
-  download.file(URLencode(paste0("http://localhost:5985/metda_project/", temp_project_id, "/", gsub("\\+", "%2B", attname[i]))), attname[i], mode = "wb")
+  download.file(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", temp_project_id, "/", gsub("\\+", "%2B", attname[i]))), attname[i], mode = "wb")
   projectList[["_attachments"]][[attname[i]]] <- list(
     content_type = projectList_old[["_attachments"]][[i]]$content_type,
     data = strsplit(markdown:::.b64EncodeFile(attname[i]), "base64,")[[1]][2]
