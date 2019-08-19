@@ -1,7 +1,7 @@
 initialize_nav_link = function () {
   console.log("trying to initialize the links")
 
-  $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data) {
+  $.getJSON("http://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
     ddd = data
     sidebar_ul = ""
 
@@ -585,7 +585,7 @@ function sort(arr, desending = false) {
 update_projects_table = function (id = "projects_table", call_back = when_projects_table_clicked) {
   console.log("HERE")
   console.log($("#projects_table").length)
-  Papa.parse("http://localhost:5985/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
+  Papa.parse("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
     download: true,
     complete: function (results) {
       var table_html = "<thead>"

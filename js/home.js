@@ -33,7 +33,7 @@ create_new_project_check_input_format = function (inputFile) {
 
 
 
-$.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data) {
+$.getJSON("http://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
     //ddd = data
     category_names = Object.keys(data.methods_structure)
     headers = Object.keys(data.methods_structure[category_names[0]].data_subsetting)

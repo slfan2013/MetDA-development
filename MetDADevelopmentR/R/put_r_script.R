@@ -1,5 +1,5 @@
 # put the rscript to the project.
-put_r_script = function(){
+# put_r_script = function(){
   all_r_files <- list.files("rscript")
 
 
@@ -19,4 +19,4 @@ put_r_script = function(){
   result <- RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = T, force = T))
 
 
-}
+# }

@@ -247,7 +247,7 @@ var update_jstree = function (project_structure) {
 
 
                             } else {
-                                window.open("http://localhost:5985/metda_project/" + localStorage.activate_project_id + "/" + $node.original.id)
+                                window.open("http://metda.fiehnlab.ucdavis.edu/db/metda_project/" + localStorage.activate_project_id + "/" + $node.original.id)
                                 end_cal()
                             }
                         }

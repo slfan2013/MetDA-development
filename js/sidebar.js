@@ -12,7 +12,7 @@ if (localStorage['big_category'] === 'project') {
 sidebar_ul = ""
 
 
-$.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data) {
+$.getJSON("http://metda.fiehnlab.ucdavis.edu/db:5985/templates/methods", function (data) {
     ddd = data
 
     if (window.location.href.split("#")[1] === 'project_overview') {

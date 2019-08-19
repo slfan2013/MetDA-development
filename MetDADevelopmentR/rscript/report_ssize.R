@@ -233,7 +233,7 @@ if (type %in% c("result_summary", "all")) {
   }
 
   doc <- doc %>%
-    slip_in_text(paste0(" See Table ",table_index, ", Figure ", figure_index, " and ", figure_index+1, " for more detail"), style = "Default Paragraph Font", pos = "after")
+    slip_in_text(paste0(" See Table ",table_index, ", Figure ", figure_index, " and ", figure_index+1, " for more detail."), style = "Default Paragraph Font", pos = "after")
 
   doc <- doc %>%
     body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
