@@ -14988,6 +14988,7 @@ label {
   color: #FFFFFF;
 }
 
+
 a[data-toggle="collapse"][aria-expanded="true"] .caret,
 a[aria-expanded="true"] .caret,
 .dropdown.open .caret,
@@ -29290,3 +29291,4 @@ select.selectpicker {
 }
 
 /*# sourceMappingURL=dashboard-pro.css.map */
+

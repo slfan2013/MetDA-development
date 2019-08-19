@@ -67,8 +67,9 @@ $(document).ready(function() {
   md.initMinimizeSidebar();
 
   // Multilevel Dropdown menu
-
-  $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function(e) {
+    console.log("!")
+    console.log("!!")
     var $el = $(this);
     var $parent = $(this).offsetParent(".dropdown-menu");
     if (!$(this).next().hasClass('show')) {

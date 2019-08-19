@@ -1,14 +1,108 @@
+initialize_nav_link = function () {
+  console.log("trying to initialize the links")
 
-start_cal = function(){
+  $.getJSON("http://metda:metda@localhost:5985/templates/methods", function (data) {
+    ddd = data
+    sidebar_ul = ""
+
+
+    sidebar_ul = sidebar_ul + '<li class="nav-item active"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
+
+    category_names = Object.keys(data.methods_structure)
+
+    for (cat = 0; cat < category_names.length; cat++) {
+      current_cat = category_names[cat]
+
+      // check which is active.
+      current_items = Object.keys(data.methods_structure[category_names[cat]])
+      console.log(current_items)
+
+
+
+      if (current_items.includes(window.location.href.split("#")[1])) {
+        being_active = true
+      } else {
+        being_active = false
+      }
+      console.log(being_active)
+
+      if (being_active) {
+
+      } else {
+        sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
+          '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
+        //+
+        //'<ul class="dropdown-menu">'+
+        //'<li><a class="dropdown-item" href="#">Submenu action</a></li>'+
+        //'<li><a class="dropdown-item" href="#">Another submenu action</a></li>'+
+        //'</ul>'+
+        //'</li>'
+      }
+
+      sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
+
+      for (var it = 0; it < current_items.length; it++) {
+
+
+        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
+
+
+
+
+      }
+
+
+
+
+      sidebar_ul = sidebar_ul + '</ul>'
+      sidebar_ul = sidebar_ul + '</li>'
+
+
+    }
+    $("#navbarDropdownMenuLink_items").html(sidebar_ul)
+  
+    $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function(e) {
+      console.log("!")
+      console.log("!!")
+      var $el = $(this);
+      var $parent = $(this).offsetParent(".dropdown-menu");
+      if (!$(this).next().hasClass('show')) {
+        $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+      }
+      var $subMenu = $(this).next(".dropdown-menu");
+      $subMenu.toggleClass('show');
+
+      $(this).closest("a").toggleClass('open');  
+      $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+        $('.dropdown-menu .show').removeClass("show");
+      });
+      if (!$parent.parent().hasClass('navbar-nav')) {
+        $el.next().css({
+          "top": $el[0].offsetTop,
+          "left": $parent.outerWidth() - 4
+        });
+      }
+      return false;
+    });
+
+
+
+  })
+
+}
+
+
+
+start_cal = function () {
   $("body").append('<div id="overlay" style="background-color:rgba(0,0,0,0.5);position:absolute;top:0;left:0;height:100%;width:100%;z-index:999"></div>');
 }
-end_cal = function(){
+end_cal = function () {
   $("#overlay").remove();
 }
 
-get_time_string = function(){
-	var d = new Date();var time_string = d.getTime().toString()
-	return(time_string)
+get_time_string = function () {
+  var d = new Date(); var time_string = d.getTime().toString()
+  return (time_string)
 }
 
 init_ripples = function () {
@@ -42,6 +136,8 @@ function groupData(labels, values) {
 function unique(value, index, self) {
   return self.indexOf(value) === index;
 } // [].filter(unique)
+
+
 revalue = function (array, old_val, new_val) {
   var result = [];
 
@@ -157,14 +253,14 @@ transparent_rgba = function (rgba, alpha = 0.1) {
 function trim(str) {
   return str.replace(/^\s+|\s+$/gm, '');
 }
-array_split_by_one_factor = function(array,fac,lev){
+array_split_by_one_factor = function (array, fac, lev) {
   //fac = unpack(p.data,"species")
   var result = [];
-  for(var l1=0; l1<lev.length;l1++){
-      var target_level = lev[l1]
-      result.push(getAllIndexes(fac,target_level).map(ind => array[ind]))
+  for (var l1 = 0; l1 < lev.length; l1++) {
+    var target_level = lev[l1]
+    result.push(getAllIndexes(fac, target_level).map(ind => array[ind]))
   }
-  return(result)
+  return (result)
 }
 function hexToRgb(hex, alpha) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -300,78 +396,6 @@ loadjscssfile = function (filename, filetype) {
 
 
 
-/*download_results = function (files_names, files_sources, zipfile_name) {
-  $(".download").prop("disabled", true);
-  $("#download_results").text("Downloading ... ")
-
-  index_of_link = []
-  index_of_not_link = []
-  // check how many are links. not links include base64 plots.
-  for (var i = 0; i < files_names.length; i++) {
-    if (files_sources[i].substring(0, 4) === 'http') {
-      index_of_link.push(i)
-    } else {
-      index_of_not_link.push(i)
-    }
-  }
-
-
-  if(index_of_link.length === 0){
-    var zip = new JSZip();
-    zip.file(files_names[index_of_not_link[0]], files_sources[index_of_not_link[0]], { base64: true });
-
-    zip.generateAsync({ type: "blob" })
-                .then(function (blob) {
-                  if(zipfile_name.includes(".zip")){
-                    saveAs(blob, zipfile_name);
-                  }else{
-                    saveAs(blob, zipfile_name + ".zip");
-                  }
-                  $(".download").prop("disabled", false);
-                  $("#download_results").text("Download Results")
-                });
-  }else{
-    var allResults = [];
-    for (var i = 0; i < index_of_link.length; i++) {
-      console.log(i)
-      if (index_of_link.includes(i)) {// check if this is a link.
-        Papa.parse(files_sources[index_of_link[i]], {
-          download: true,
-          header: true,
-          skipEmptyLines: true,
-          error: function (err, file, inputElem, reason) {
-            console.log(reason)
-            $(".download").prop("disabled", false);
-            $("#download_results").text("Download Results")
-          },
-          complete: function (results) {
-            allResults.push(results);
-            if (allResults.length == index_of_link.length) {
-              var zip = new JSZip();
-              for (var j = 0; j < index_of_link.length; j++) {
-                zip.file(files_names[index_of_link[j]], Papa.unparse(allResults[j]))
-              }
-  
-              for (var j = 0; j < index_of_not_link.length; j++) {
-                zip.file(files_names[index_of_not_link[j]], files_sources[index_of_not_link[j]], { base64: true });
-              }
-  
-              zip.generateAsync({ type: "blob" })
-                .then(function (blob) {
-                  saveAs(blob, zipfile_name + ".zip");
-                  $(".download").prop("disabled", false);
-                  $("#download_results").text("Download Results")
-                });
-            }
-          }
-        })
-      }
-    }
-  }
-
-
-}*/
-
 function isObject(item) {
   return (item && typeof item === 'object' && !Array.isArray(item));
 }
@@ -394,18 +418,20 @@ function mergeDeep(target, ...sources) {
 }
 
 
-save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index,compound_sample_index) {
-    // 2. What to do after get all the Results.
+save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index) {
+  // 2. What to do after get all the Results.
   // if it is a project, need to ask user to select a folder first. Otherwise, just call save_results_to_project to save in a temp project.
-  when_get_allResults_done = function(){
+  when_get_allResults_done = function () {
     var is_temp_project = parameter.project_id.includes("temp_project_")
-    if(!is_temp_project){
-      ocpu.call("call_fun", {parameter:{
-        project_id: parameter.project_id,
-        selected_data: localStorage['activate_data_id'],
-        fun_name:"open_project_structure_to_save_result"
-      }}, function (session) {
-        session.getObject(function(obj){
+    if (!is_temp_project) {
+      ocpu.call("call_fun", {
+        parameter: {
+          project_id: parameter.project_id,
+          selected_data: localStorage['activate_data_id'],
+          fun_name: "open_project_structure_to_save_result"
+        }
+      }, function (session) {
+        session.getObject(function (obj) {
           ooo = obj
           console.log(obj)
           $("#save_results_tree").jstree("destroy");
@@ -419,42 +445,46 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
           })
           $('#save_results_tree').on("select_node.jstree", function (e, data) {
             var selected_folder = data.node.original.id
-            call_save_results_to_project_to_save(is_temp_project,selected_folder)
+            call_save_results_to_project_to_save(is_temp_project, selected_folder)
           })
         })
       })
-    }else{
+    } else {
       var selected_folder = 'to_be_determined'
-      call_save_results_to_project_to_save(is_temp_project,selected_folder)
+      call_save_results_to_project_to_save(is_temp_project, selected_folder)
     }
 
   }
-  call_save_results_to_project_to_save = function(is_temp_project,selected_folder){
-    ocpu.call("call_fun", {parameter:{
-      files_names: files_names,
-      files_sources: files_sources,
-      files_sources_data: allResults,
-      files_types: files_types,
-      fold_name: fold_name,
-      parameters: parameters,
-      epf_index: epf_index,
-      compound_sample_index:compound_sample_index,
-      project_id: project_id,
-      selected_folder: selected_folder,
-      fun_name:"save_results_to_project"
-    }}, function (session) {
+  call_save_results_to_project_to_save = function (is_temp_project, selected_folder) {
+    ocpu.call("call_fun", {
+      parameter: {
+        files_names: files_names,
+        files_sources: files_sources,
+        files_sources_data: allResults,
+        files_types: files_types,
+        fold_name: fold_name,
+        parameters: parameters,
+        epf_index: epf_index,
+        compound_sample_index: compound_sample_index,
+        project_id: project_id,
+        selected_folder: selected_folder,
+        fun_name: "save_results_to_project"
+      }
+    }, function (session) {
       console.log("save_results_to_project")
       console.log(session)
       session.getObject(function (obj) {
         if (obj.status) {
           console.log("success")
-          if(!is_temp_project){
-            ocpu.call("call_fun", {parameter:{
-              project_id: parameter.project_id,
-              selected_data: localStorage['activate_data_id'],
-              saved_folder_id: selected_folder,
-              fun_name:"open_project_structure_after_save_result"
-            }}, function (session) {
+          if (!is_temp_project) {
+            ocpu.call("call_fun", {
+              parameter: {
+                project_id: parameter.project_id,
+                selected_data: localStorage['activate_data_id'],
+                saved_folder_id: selected_folder,
+                fun_name: "open_project_structure_after_save_result"
+              }
+            }, function (session) {
               session.getObject(function (obj) {
                 ooo = obj
                 $("#save_results_tree").jstree("destroy");
@@ -470,8 +500,8 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
             }).fail(function (e3) {
               Swal.fire('Oops...', e3.responseText, 'error')
             })
-          }else{            
-            window.open(session.loc + "files/"+parameter.fun_name+" - result.zip");
+          } else {
+            window.open(session.loc + "files/" + parameter.fun_name + " - result.zip");
           }
         }
       })
@@ -496,20 +526,20 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
   // 1. Get the allResults first.
   var files = files_sources;
   allResults = [];
-  if(index_of_link.length===0){ // if there is no csv files.
+  if (index_of_link.length === 0) { // if there is no csv files.
     //index_of_link[0] = 0
     console.log("no csv files detected")
     for (var j = 0; j < index_of_not_link.length; j++) {
-      allResults.push({fake:files_sources[index_of_not_link[j]]})
+      allResults.push({ fake: files_sources[index_of_not_link[j]] })
     }
     when_get_allResults_done()
-  }else{
+  } else {
     for (var i = 0; i < index_of_link.length; i++) {
       Papa.parse(files[index_of_link[i]], {
         download: true,
         header: true,
         skipEmptyLines: true,
-        error: function (err, file, inputElem, reason) { 
+        error: function (err, file, inputElem, reason) {
           console.log("save_results Error: ")
           console.log(err)
         },
@@ -539,23 +569,23 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 
 
-sequence = function(from = 0, to = 10){
-  var N = to-from;
-  var seq = Array.apply(null, {length: N}).map(Function.call, Number);
-  var result = seq.map(x=>x+from)
-  return(result)
+sequence = function (from = 0, to = 10) {
+  var N = to - from;
+  var seq = Array.apply(null, { length: N }).map(Function.call, Number);
+  var result = seq.map(x => x + from)
+  return (result)
 }
 function getAllIndexes(arr, val) {
   var indexes = [], i;
-  for(i = 0; i < arr.length; i++)
-      if (arr[i] === val)
-          indexes.push(i);
+  for (i = 0; i < arr.length; i++)
+    if (arr[i] === val)
+      indexes.push(i);
   return indexes;
 } // get all the indexes of value in an array https://stackoverflow.com/questions/20798477/how-to-find-index-of-all-occurrences-of-element-in-array
-function sort(arr,desending=false) {
-  if(desending){
-    return arr.concat().sort(function(a, b){return b-a});
-  }else{
+function sort(arr, desending = false) {
+  if (desending) {
+    return arr.concat().sort(function (a, b) { return b - a });
+  } else {
     return arr.concat().sort();
   }
 
