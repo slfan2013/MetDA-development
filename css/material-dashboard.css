@@ -29190,7 +29190,7 @@ select.selectpicker {
   [class*="navbar-"] .navbar-nav .open .dropdown-menu>li>a:hover,
   [class*="navbar-"] .navbar-nav .open .dropdown-menu>li>a:focus,
   [class*="navbar-"] .navbar-nav .navbar-nav .open .dropdown-menu>li>a:active {
-    color: white;
+    color: black;
   }
   [class*="navbar-"] .navbar-nav>li>a,
   [class*="navbar-"] .navbar-nav>li>a:hover,
