@@ -467,7 +467,8 @@ ssize_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
                 width:layout.traces.line.width,
                 shape:layout.traces.line.shape,
                 smoothing:Number(layout.traces.line.smoothing)
-            }
+            },
+            hovertemplate:"%{y:.0%} of compounds achieves "+ssize_plot_layout.title.text.match(/\d+/g).map(Number)[0]+"% statistical power when having %{x:.0f} samples."
         })
     }
 
@@ -508,6 +509,8 @@ power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
     layout = undefined, plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined
 } = {}) {
 
+    //var y = y.map(x=>x*100)
+    console.log(y)
     var myPlot = document.getElementById(plot_id)
     power_plot_data = []
     power_plot_data[0] = {
@@ -527,7 +530,8 @@ power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
                 width:layout.traces.line.width,
                 shape:layout.traces.line.shape,
                 smoothing:Number(layout.traces.line.smoothing)
-            }
+            },
+            hovertemplate:"%{y:.0%} of compounds achieves %{x:.2f} statistical power when having "+layout.title.text.match(/\d+/g).map(Number)[0]+" samples."
         })
     }
 

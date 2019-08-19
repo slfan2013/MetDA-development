@@ -14,12 +14,16 @@
   fold_seq <- rev(fold_seq[!is.na(fold_seq)])
 
 
+  fold_seq = unique(fold_seq)
 
 
+  fold_seq_folders = paste0(fold_seq[1:(length(fold_seq)-length(file_id))], collapse = " -> ")
+
+  fold_seq_files = paste0(fold_seq[((length(fold_seq)-length(file_id))+1):length(fold_seq)], collapse = " & ")
 
 
-
-  result = sapply(by(fold_seq, rep(unlist(file_id)[1:length(file_id)], (length(fold_seq)/length(file_id))), function(x) x, simplify = T), function(x) as.character(x), simplify = F)
+  result = paste0(fold_seq_folders, " -> ", fold_seq_files)
+  # result = sapply(by(fold_seq, rep(unlist(file_id)[1:length(file_id)], (length(fold_seq)/length(file_id))), function(x) x, simplify = T), function(x) as.character(x), simplify = F)
 
 
 

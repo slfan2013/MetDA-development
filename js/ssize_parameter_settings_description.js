@@ -24,6 +24,8 @@ get_parameter_description = function(){
         n:parameter.n,
         sig_level:parameter.sig_level,
         power:parameter.power,
+        fdr_check:parameter.fdr_check,
+        fdr_criterion:parameter.fdr_criterion,
         type:"parameter_settings_description",
         fun_name:"report_ssize"
     }},function(session){

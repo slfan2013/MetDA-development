@@ -430,7 +430,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
   }
   call_save_results_to_project_to_save = function(is_temp_project,selected_folder){
-    ocpu.call("call_fun_temp", {parameter:{
+    ocpu.call("call_fun", {parameter:{
       files_names: files_names,
       files_sources: files_sources,
       files_sources_data: allResults,

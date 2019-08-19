@@ -3,7 +3,7 @@
 
 # http://localhost:5656/ocpu/tmp/x08f655c87c/
 
-pacman::p_load(data.table)
+pacman::p_load(data.table, qvalue)
 
 
 data <- call_fun(parameter = list(project_id = project_id, activate_data_id = activate_data_id, fun_name = "read_data_from_projects"))
@@ -38,7 +38,7 @@ n <- as.numeric(n)
 
 sig.level <- as.numeric(sig_level)
 power <- as.numeric(power) / 100
-
+fdr_criterion = as.numeric(fdr_criterion)
 
 # p_val = apply(e,1,function(x){
 #   t.test(x~groups, var.equal = TRUE)$p.value
@@ -48,9 +48,15 @@ power <- as.numeric(power) / 100
 
 # sd
 if (test_type == "t-test") {
-  sd <- sqrt(apply(e, 1, function(x) {
-    anova(lm(x ~ groups))["Residuals", "Mean Sq"]
+
+  model_anovas = apply(e,1,function(x){
+    anova(lm(x ~ groups))
+  })
+
+  sd = sqrt(sapply(model_anovas, function(x){
+    x["Residuals", "Mean Sq"]
   }))
+
 } else if (test_type == "paired t-test") {
   sample_id <- factor(p[[sample_id]])
 
@@ -65,24 +71,13 @@ if (test_type == "t-test") {
 
   sd <- apply(e_diff, 1, sd, na.rm = TRUE)
 } else if (test_type == "ANOVA") {
-
-  # summary_lm = apply(e, 1, function(x){
-  #   summary(lm(x ~ groups))
-  # })
-
-  # sd = sapply(summary_lm,function(x){
-  #   x$sigma
-  # })
-
-  # f = sapply(summary_lm,function(x){
-  #   x$fstatistic
-  # })
-
-
+  stop("We are still developing the ANOVA power analysis.")
   within_between_var <- t(apply(e, 1, function(x) {
     temp_anova <- anova(lm(x ~ groups))
     return(c(temp_anova["Residuals", "Mean Sq"], temp_anova["group", "Mean Sq"]))
   }))
+}else if (test_type == 'repeated ANOVA'){
+  stop("We are still developing the repeated ANOVA power analysis.")
 }
 
 
@@ -98,6 +93,58 @@ n_seq = round(n)
 
 # power_seq = c(max(power-0.1,0), power, min(power+0.1,1))
 power_seq = power
+
+
+if(fdr_check){
+
+  if (test_type == "t-test") {
+
+
+    p_vals = sapply(model_anovas, function(x){
+      x$`Pr(>F)`[1]
+    })
+    pi0 = pi0est(p_vals)$pi0
+    #https://www4.stat.ncsu.edu/~jaosborn/research/microarray/software/usses-ky.pdf
+
+    alpha_adjusted = sig.level
+    FDR_alphas = c()
+    FDR_alpha = (pi0 * length(p_vals) * alpha_adjusted)/sum(p_vals<alpha_adjusted)
+    while(FDR_alpha>fdr_criterion){
+
+      alpha_adjusted = alpha_adjusted - 0.00001
+
+      FDR_alpha = (pi0 * length(p_vals) * alpha_adjusted)/sum(p_vals<alpha_adjusted)
+      # print(alpha_adjusted)
+      # print(FDR_alpha)
+
+      FDR_alphas[length(FDR_alphas)+1] = FDR_alpha
+
+    }
+
+    sig.level = alpha_adjusted
+
+
+
+
+  } else if (test_type == "paired t-test") {
+
+
+   stop("CHECK HERE")
+
+
+  } else if (test_type == "ANOVA"){
+
+  } else if (test_type == "repeated ANOVA"){
+
+  }
+
+
+
+
+
+}
+
+
 
 # 1 power
 powers = list()
@@ -237,6 +284,8 @@ report_html = call_fun(parameter = list(
   sample_id = sample_id,
   result = result,
   groups = groups,
+  fdr_check = fdr_check,
+  fdr_criterion = fdr_criterion,
   type = "result_summary",
   fun_name = "report_ssize"
 ))$text_html
@@ -244,15 +293,6 @@ report_html = call_fun(parameter = list(
 if(grepl("temp_project_",project_id)){
   # report_html = ""
 }
-
-
-
-
-
-
-
-
-
 
 
 
@@ -285,5 +325,5 @@ if (exists("ssize_plot")) { # this means this call is from quick_analysis. Here 
 
 
 } else {
-  result <- list(results_description = report_html, p = p, f = f, ns = ns, powers = powers, inv_power = inv_power, inv_n = inv_n, n_title = paste0("Sample Size needed for ", power * 100, "%"), n_ylab = paste0("Proportion of Compounds with Power >= ", power * 100, "%"), power_title = paste0("Power of ", n, " samples"), power_ylab = paste0("Proportion of Compounds with sample size >= ", n, ""))
+  result <- list(results_description = report_html, p = p, f = f, ns = ns, powers = powers, inv_power = inv_power, inv_n = inv_n, n_title = paste0("Sample Size for ", power * 100, "% Power"), n_ylab = paste0("Proportion of Compounds with Power >= ", power * 100, "%"), power_title = paste0("Power of ", n, " Samples"), power_ylab = paste0("Proportion of Compounds with Sample Size >= ", n, ""))
 }

@@ -33,6 +33,22 @@
             <input type="number" class="form-control parameter" id="sig_level" placeholder="Enter a Interested Number of Observations" value="0.05">
         </div>
 
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input parameter" type="checkbox" id='fdr_check' checked>
+                Apply Benjamini-Hochberg FDR Correction.
+                <span class="form-check-sign">
+                    <span class="check"></span>
+                </span>
+            </label>
+        </div>
+
+        <div class="form-group" id="fdr_check_show">
+            <label for="fdr_criterion">FDR criterion</label>
+            <input type="number" class="form-control parameter" id="fdr_criterion" placeholder="Enter a Criterion for FDR" value='0.05'>
+          </div>
+
+
 
         <button type='submit' class="btn btn-primary btn-sm" id="submit">Submit</button>
     </form>

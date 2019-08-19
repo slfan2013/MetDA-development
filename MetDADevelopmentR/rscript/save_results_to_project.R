@@ -257,7 +257,7 @@
 
 
 
-    call_fun(parameter = list(project_id = project_id, fold_id = folder_id, table_index=1,figure_index=1,type = "all", doc=NULL,fun_name=paste0("report_", parameters$fun_name)))
+    call_fun(parameter = list(project_id = project_id, fold_id = folder_id, table_index=1,figure_index=1,type = "all", doc=NULL,parameters = parameters,fun_name=paste0("report_", parameters$fun_name)))
 
 
 

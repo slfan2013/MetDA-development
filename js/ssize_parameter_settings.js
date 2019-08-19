@@ -17,7 +17,14 @@ $("#"+div_id).load("sample_information_non_changing_levels_select.html", functio
             }
         })
         $("#sample_information_non_changing_levels_select_div_sample_id_show_hide").hide()
-        
+
+        $("#fdr_check").change(function() {
+            if(this.checked) {
+                $("#fdr_check_show").show()
+            }else{
+                $("#fdr_check_show").hide()
+            }
+        });
 
 
 

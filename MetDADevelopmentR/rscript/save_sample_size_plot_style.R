@@ -12,11 +12,17 @@ userList <- jsonlite::fromJSON(userURL, simplifyVector = FALSE)
 for(i in 1:length(style$traces)){
   style$traces[[names(style$traces)[i]]] = sapply(style$traces[[i]], function(x){
     if(class(x) == "character"){
+
       return(c(x))
+
     }else if(class(x) == "matrix"){
       return(x[,1])
     }
-  })
+  }, simplify = F)
+
+  if(length(style$traces[[names(style$traces)[i]]])==1){
+    style$traces[[names(style$traces)[i]]] = as.character(style$traces[[names(style$traces)[i]]])
+  }
 }
 
 userList$sample_size_plot_layout <- style

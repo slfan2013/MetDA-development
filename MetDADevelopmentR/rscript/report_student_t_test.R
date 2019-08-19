@@ -44,8 +44,8 @@ text_html = ""
       row.names = 1
     )
 
-    input_file_path <- paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq")), paste0,collapse = "->"),"; ")
-    output_file_path = paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0,collapse = "->"),"; ")
+    input_file_path <- sapply(call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq")), paste0,collapse = "->")
+    output_file_path = sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0,collapse = "->")
 
 
     treatment_group = parameters$treatment_group
@@ -115,7 +115,7 @@ text_html = ""
         slip_in_text(input_file_path, style = "Default Paragraph Font", pos = "after")
 
       doc <- doc %>%
-        body_add_par("Output Dataset: ", style = "Normal")%>%
+        body_add_par("Output Datasets and Files: ", style = "Normal")%>%
         slip_in_text(output_file_path, style = "Default Paragraph Font", pos = "after")
     }
 
