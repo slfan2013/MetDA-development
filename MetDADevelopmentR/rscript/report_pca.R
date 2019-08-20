@@ -130,7 +130,7 @@ if (type %in% c("parameter_settings_description", "all")) {
   }
 
   doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Test Type: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
     slip_in_text(test_type, style = "Default Paragraph Font", pos = "after") %>%
     slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
   test_name <- revalue(test_type, c("t-test", "paired t-test", "ANOVA", "repeated ANOVA"), c("two-tailed student t-test", "two-tailed paired t-test", "one-way ANOVA", "repeated ANOVA"))
