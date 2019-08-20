@@ -25,7 +25,7 @@ var defination_of_missing_value_onchange = function () {
 }
 
 pca_append_results = function (obj, session) {
-    $("#results_description").html(obj.results_description)
+    $("#results_description").html(obj.results_description[0])
 
 
     // for downloads.
@@ -33,7 +33,11 @@ pca_append_results = function (obj, session) {
     files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg', 'loading_plot.svg', 'scree_plot.svg']
     zipfile_name = "pca_results.zip"
     $("#download_results").off("click").on("click", function () {
-        download_results(files_names, files_sources, zipfile_name)
+        parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.score_plot = score_plot_parameters
+        parameters.loading_plot = loading_plot_parameters
+        parameters.scree_plot = scree_plot_parameters
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none'])
     })
 
 

@@ -48,30 +48,21 @@ if (type == "all") {
   data_ids <- id[parent == fold_id]
 
 
-  result <- fread(
-    paste0(
-      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-      project_id,
-      "/", data_ids[grepl("csv",data_ids)]
-    )
-  )
+  # result <- fread(
+  #   paste0(
+  #     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
+  #     project_id,
+  #     "/", data_ids[grepl("csv",data_ids)]
+  #   )
+  # )
 
   input_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = parameters$activate_data_id, fun_name = "get_fold_seq")), paste0, collapse = "->")
   output_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = data_ids, fun_name = "get_fold_seq")), paste0, collapse = "->")
 
 
-  test_type <- parameters$test_type
-  treatment_group <- parameters$treatment_group
-  n <- as.numeric(parameters$n)
-  power <- as.numeric(parameters$power)
+  scaling_method <- parameters$scaling_method
 
-  fdr_check <- parameters$fdr_check
-  fdr_criterion <- as.numeric(parameters$fdr_criterion)
 
-  if(power>1){
-    power = power/100
-  }
-  sig_level <- as.numeric(parameters$sig_level)
   # levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
 }
 
@@ -176,7 +167,8 @@ if (type %in% c("result_summary", "all")) {
   }
   doc <- doc %>%
     body_add_par("Result Summary: ", style = "heading 3") %>%
-    body_add_par(paste0("The dataset was first scaled using ",scaling_method_name,". Then the Principal Component Analysis (PCA) was performed on the scaled dataset."), style = "Normal", pos = "after")
+    body_add_par(paste0("The dataset was first scaled using ",scaling_method_name,". Then the Principal Component Analysis (PCA) was performed on the scaled dataset. "), style = "Normal", pos = "after") %>%
+    slip_in_text(paste0("See Figure ",figure_index,", Figure ",figure_index+1, " and Figure ",figure_index+2," for more details."), style = "Default Paragraph Font", pos = "after")
 
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
@@ -185,6 +177,13 @@ if (type %in% c("result_summary", "all")) {
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
     body_add_par(paste0("Loadings plot. It summarizes the linear relationship/similarity between the compounds. Compounds colors/shapes/sizes with 95% confidence intervals can be added afterwards to visualize the compound clusters. Together with the scores plot (Figure ",figure_index,"), loadings plot can help to understand the relationship between the compounds and samples. For example, the compounds with loadings in the first quadrant in the loadings plot is positively correlated with the samples with scores in the first quadrant in the scores plot. The further the loadings from the origin, the higher the correlation. On the other hand, the compounds with loadings in the third quadrant are negatively correlated with samples in the first quadrant in the score plot."), style = "Normal", pos = "after")
+
+
+
+  if(type == "all"){
+    variance = parameters$scree_plot$data$y[[1]]
+  }
+
 
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index+2), style = "Normal", pos = "after") %>%
@@ -220,10 +219,6 @@ if (type %in% c("result_summary", "all")) {
 
 # if this is all, put all the tables and figures here.
 if (type == "all") {
-  doc <- doc %>%
-    body_add_table(value = result[1:10, ], style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index, ": First 10 compounds and their estimated statistial powers of having ",n," samples and required sample size for ",power*100,"% power."), style = "table title")
-
 
 
   figures_paths = data_ids[grepl("svg",data_ids)]
@@ -236,14 +231,18 @@ if (type == "all") {
     )), destfile = figures_paths[i])
 
 
-    if(grepl("power",figures_paths[i])){
+    if(grepl("score",figures_paths[i])){
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds having x% statistical power when having ",n," samples."), style = "table title")
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$score_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": PCA Scores Plot."), style = "table title")
+    }else if(grepl("loading",figures_paths[i])){
+      doc <- doc %>%
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$loading_plot$layout$width)/100*0.8, height = as.numeric(parameters$loading_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": PCA Loadings Plot."), style = "table title")
     }else{
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds needing x samples to achieve a ",power*100,"% statistical power."), style = "table title")
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": PCA Scree Plot."), style = "table title")
     }
 
   }
@@ -261,7 +260,7 @@ if (type == "all") {
 }
 
 
-result <- list(text_html = text_html, method_name = "Principal Component Analysis (PCA)", table_index = table_index + 1, figure_index = figure_index+2)
+result <- list(text_html = text_html, method_name = "Principal Component Analysis (PCA)", table_index = table_index, figure_index = figure_index+3)
 
 
 # }

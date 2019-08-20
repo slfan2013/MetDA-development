@@ -306,6 +306,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             obj_loading_plot = obj
 
 
+            $("#results_card_body").append('<div id="results_description"></div>')
             $("#results_card_body").append('<div id="score_loading_plot_div"></div>')
             $("#results_card_body").append('<hr />')
             $("#results_card_body").append('<div id="loading_plot_div"></div>')
