@@ -50,6 +50,34 @@ fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE,row.names = 
 
 
 
+
+
+report_html = call_fun(parameter = list(
+  scaling_method = scaling_method,
+  variance = variance,
+  type = "result_summary",
+  fun_name = "report_pca"
+))$text_html
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if(exists("score_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
 
@@ -230,52 +258,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   loading_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_loading_plot_style"))
 
 
@@ -427,80 +409,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   layout = scree_plot$layout
 
 
@@ -529,7 +437,7 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 }else{
-  result = list(results_description = "Here is the PCA summary.",p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
+  result = list(results_description = report_html,p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
 
 }
 

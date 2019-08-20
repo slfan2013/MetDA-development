@@ -167,6 +167,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                         }
 
+                        if($("#score_plot_explanation_html").length==0){
+                            $("#score_plot_explanation").append("<div id='score_plot_explanation_html'></div>")
+                        }
+                        $("#score_plot_explanation_html").html(obj_score_loading_plot.results_description[1])
+
                         scatter_by_group({
                             x: x, y: y, color_by: score_plot_color_by, color_values: score_plot_color_values, color_levels: score_plot_color_levels,
                             shape_by: score_plot_shape_by, shape_values: score_plot_shape_values, shape_levels: score_plot_shape_levels,

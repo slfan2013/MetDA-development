@@ -139,7 +139,12 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         var title = $("#ssize_plot_layout_title_text").val();
                         var y_lab = $("#ssize_plot_layout_yaxis_title_text").val();
 
-                        $("#ssize_plot_explanation").append(obj_ssize_plot.results_description[1])
+                       
+                        if($("#ssize_plot_explanation_html").length==0){
+                            $("#ssize_plot_explanation").append("<div id='ssize_plot_explanation_html'></div>")
+                        }
+                        $("#ssize_plot_explanation_html").html(obj_ssize_plot.results_description[2])
+
 
 
                         ssize_plot_fun({x:x,y:y,title:title,y_lab:y_lab,names:names,

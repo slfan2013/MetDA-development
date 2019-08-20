@@ -492,14 +492,10 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         }
 
 
-
-
-
-        console.log(parameter)
-
         ocpu.call("call_fun", { parameter: parameter }, function (session) {
             sss = session
             console.log(session)
+            console.log("SUBMIT")
             session.getObject(function (obj) {
                 o = obj
                 $("#submit").text("Submit")

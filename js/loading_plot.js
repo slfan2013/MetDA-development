@@ -159,6 +159,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                 }
 
+                if($("#loading_plot_explanation_html").length==0){
+                    $("#loading_plot_explanation").append("<div id='loading_plot_explanation_html'></div>")
+                }
+                $("#loading_plot_explanation_html").html(obj_loading_plot.results_description[2])
+
+
+
                 loading_plot_fun({
                     x: x, y: y, color_by: loading_plot_color_by, color_values: loading_plot_color_values, color_levels: loading_plot_color_levels,
                     shape_by: loading_plot_shape_by, shape_values: loading_plot_shape_values, shape_levels: loading_plot_shape_levels,

@@ -86,6 +86,15 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     }})
 
                 }
+                
+
+                
+                if($("#scree_plot_explanation_html").length==0){
+                    $("#scree_plot_explanation").append("<div id='scree_plot_explanation_html'></div>")
+                }
+                $("#scree_plot_explanation_html").html(obj_scree_plot.results_description[3])
+
+
 
                 scree_plot_fun({ ys: ys, texts: texts, hovertexts: hovertexts, names: names, add_line_trace: add_line_trace, line_trace_index: line_trace_index, scree_plot_layout: scree_plot_layout, plot_id: plot_id })
 

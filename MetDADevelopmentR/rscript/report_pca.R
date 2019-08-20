@@ -129,53 +129,17 @@ if (type %in% c("parameter_settings_description", "all")) {
       slip_in_text(output_file_path, style = "Default Paragraph Font", pos = "after")
   }
 
+
+  if(!exists("scaling_method_name")){
+    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
+  }
+
+
+
   doc <- doc %>%
     body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(test_type, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(". ", style = "Default Paragraph Font", pos = "after")
-  test_name <- revalue(test_type, c("t-test", "paired t-test", "ANOVA", "repeated ANOVA"), c("two-tailed student t-test", "two-tailed paired t-test", "one-way ANOVA", "repeated ANOVA"))
-
-
-  doc <- doc %>%
-    slip_in_text(paste0("Compute the statistical power of the ", test_name, " given a sample size, and determines the sample size to obtain a target statistical power."), style = "Default Paragraph Font", pos = "after")
-
-
-
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Treatment Group: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(treatment_group, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(paste0(". The effect size, an input parameter for power analysis, will be estimated by the ", treatment_group, ". Then the statistical power will be calculated based on the sample size in your dataset and the estimated sample size will be calculated based on the target statistical power."), style = "Default Paragraph Font", pos = "after")
-
-
-  if (test_type %in% c("paired t-test", "repeated ANOVA")) {
-    doc <- doc %>%
-      body_add_fpar(fpar(ftext(" - Sample ID information: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-      slip_in_text(paste0(sample_id,". The ",sample_id," is used to paired the samples. Samples with same Sample ID are treated as from a same subject."), style = "Default Paragraph Font", pos = "after")
-  }
-
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Interested Number of Observations (per group): ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(" the given sample size. The statistical power will be estimated based on the given sample size.", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Target Power (%): ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(" the target statistical power. The sample size to achieve the target power will be calculated.", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Significance Level: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(" Type I error rate (the significant criterion), the rate of falsely reject a true null hypothesis.", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - FDR Correction: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(" perform the sample size estimation and power analysis considering the FDR (False Discovery Rate) correction", style = "Default Paragraph Font", pos = "after")
-
-  if(fdr_check){
-    doc <- doc %>%
-      body_add_fpar(fpar(ftext(" - FDR Criterion: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-      slip_in_text(paste0(" estimate the sample size and perform the power anlaysis while controlling the FDR at ",fdr_criterion," level."), style = "Default Paragraph Font", pos = "after")
-  }
+    slip_in_text(scaling_method_name, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". Scaling methods are data pretreatment approaches that divide each variable by a factor, the scaling factor, which is different for each variable. They aim to adjust for the differences in fold differences between the different metabolites by converting the data into differences in concentration relative to the scaling factor. It is highly recommended for multivariate statistical analyses. More information is available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/.", style = "Default Paragraph Font", pos = "after")
 
 
 
@@ -207,39 +171,25 @@ if (type %in% c("result_summary", "all")) {
   if (is.null(doc)) {
     doc <- read_docx()
   }
-
+  if(!exists("scaling_method_name")){
+    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
+  }
   doc <- doc %>%
     body_add_par("Result Summary: ", style = "heading 3") %>%
-    body_add_par(paste0("The statistical powers were estimated for each compound given a sample size of ",n,", and the sample size was estimated based on a target power of ",power,". The effect size of each compound was calculated from the dataset using the treatment group ", treatment_group, '. A significant level of ',sig_level," was used. "), style = "Normal", pos = "after")
-
-  if(fdr_check){
-    doc <- doc %>%
-      slip_in_text(paste0(" Multiple comparision (or false discovery rate, FDR) problem was also taken into account with Benjamini-Hochberg procedure. The FDR was controlled at the level of ",fdr_criterion,". The significant level for each compounds was adjusted accordingly."), style = "Default Paragraph Font", pos = "after")
-  }
-
-  doc <- doc %>%
-    slip_in_text(paste0(" See Table ",table_index, ", Figure ", figure_index, " and ", figure_index+1, " for more detail"), style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
-    body_add_par(" - index: the index of compounds, mainly for sorting the table.", style = "Normal", pos = "after") %>%
-    body_add_par(" - label: compound labels.", style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" - power (n=",n,"): the estimated statistical power given sample size of ",n,"."), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" - n (power=",power,"): the estimated sample size for the target power of ",power*100,"%."), style = "Normal", pos = "after")
-
-
-
+    body_add_par(paste0("The dataset was first scaled using ",scaling_method_name,". Then the Principal Component Analysis (PCA) was performed on the scaled dataset."), style = "Normal", pos = "after")
 
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" answers the question of What is the necessary per-group sample size for ",power*100,"% powe with the observed effect size and at significant level of ",sig_level,"?."), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power*100,"% power."), style = "Normal", pos = "after")
-
+    body_add_par(paste0("Scores plot. It summarizes the linear relationship/similarity between the samples. Samples colors/shapes/sizes with 95% confidence intervals can be added afterwards to visualize the sample clusters. The confidence interval can also be used for outlier detection."), style = "Normal", pos = "after")
 
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" answers the question of What is the power for ",n," parients per group with the observed effect size and significant level of ", sig_level,'?. '), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("From the plot, ",signif(sum(result[[3]]>0.8)/nrow(result),digits = 4)*100,"% of compounds achieve at ",power*100,"% statistical power at the sample size of ",n," and significant level of ",sig_level,". "), style = "Normal", pos = "after")
+    body_add_par(paste0("Loadings plot. It summarizes the linear relationship/similarity between the compounds. Compounds colors/shapes/sizes with 95% confidence intervals can be added afterwards to visualize the compound clusters. Together with the scores plot (Figure ",figure_index,"), loadings plot can help to understand the relationship between the compounds and samples. For example, the compounds with loadings in the first quadrant in the loadings plot is positively correlated with the samples with scores in the first quadrant in the scores plot. The further the loadings from the origin, the higher the correlation. On the other hand, the compounds with loadings in the third quadrant are negatively correlated with samples in the first quadrant in the score plot."), style = "Normal", pos = "after")
+
+  doc <- doc %>%
+    body_add_par(paste0("Figure ", figure_index+2), style = "Normal", pos = "after") %>%
+    body_add_par(paste0("Screes plot. It visualizes the percentage of variance explained by each of the principal components. Variance can be deemed as 'information' in the dataset. The first two principal components summarize a total of ",signif(sum(variance[1:2])/sum(variance),4)*100,"% variation in the dataset."), style = "Normal", pos = "after")
+
 
 
   if (type == "result_summary") {

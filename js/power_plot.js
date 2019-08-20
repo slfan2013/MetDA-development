@@ -130,7 +130,13 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         var title = $("#power_plot_layout_title_text").val();
                         var y_lab = $("#power_plot_layout_yaxis_title_text").val();
 
-                        $("#power_plot_explanation").append(obj_power_plot.results_description[2])
+                        
+
+
+                        if($("#power_plot_explanation_html").length==0){
+                            $("#power_plot_explanation").append("<div id='power_plot_explanation_html'></div>")
+                        }
+                        $("#power_plot_explanation_html").html(obj_power_plot.results_description[2])
 
 
                         power_plot_fun({
