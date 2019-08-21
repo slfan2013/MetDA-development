@@ -101,11 +101,14 @@ userinfoUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_user
 userinfoList <- jsonlite::fromJSON(userinfoUrl)
 names(userinfoList)[1:2] <- c("_id", "_rev")
 
-write.csv(userinfo, "metda_userinfo_slfan.csv", row.names = FALSE)
 
-userinfoList$`_attachments`[["metda_userinfo_slfan.csv"]] <- list(
+table_name = paste("metda_userinfo_",user_id,".csv")
+
+write.csv(userinfo, table_name, row.names = FALSE)
+
+userinfoList$`_attachments`[[table_name]] <- list(
   content_type = "application/vnd.ms-excel",
-  data = strsplit(markdown:::.b64EncodeFile("metda_userinfo_slfan.csv"), "base64,")[[1]][2]
+  data = strsplit(markdown:::.b64EncodeFile(table_name), "base64,")[[1]][2]
 )
 
 RCurl::getURL(userinfoUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(userinfoList, auto_unbox = TRUE, force = TRUE))

@@ -9,6 +9,80 @@
          if (typeof loaded === "undefined") {
             console.log("waiting")
          } else {
+
+            // check if this is a new user.
+            if (localStorage['user_id'] === undefined) {
+
+               console.log('user_id not found. Creating new user_id!!!!!!!!!!!!!!!!!!!!!!!!')
+               var new_user_id = "user" + get_time_string()
+               ocpu.call("call_fun", {
+                  parameter: {
+                     new_user_id: new_user_id,
+                     fun_name: "create_new_user"
+                  }
+               }, function (session) {
+                  console.log("create_new_user")
+                  console.log(session)
+                  session.getObject(function (obj) {
+                     console.log(obj)
+                     localStorage['user_id'] = new_user_id
+                     //location.reload();
+                  })
+               }).fail(function (e) {
+                Swal.fire('Oops...', e.responseText, 'error')
+            })
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             //$("#home_content").load("home.html")
             $("nav").load("nav.html", function () {
                init_ripples()
@@ -36,12 +110,12 @@
                   }
                   setTimeout(function () { init_fileInput() }, 500)
 
-                  if(['home','one_click'].includes(window.location.href.split("#")[1]) || localStorage['big_category'] === 'in_and_out'){
+                  if (['home', 'one_click'].includes(window.location.href.split("#")[1]) || localStorage['big_category'] === 'in_and_out') {
                      $("#navbarDropdownMenuLink").hide()
-                     
-                  }else{
+
+                  } else {
                      $("#navbarDropdownMenuLink").show()
-                     $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview','one_click','missing_value_imputation', 'pca', 'student_t_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'mann_whitney_test', 'data_subsetting'], ['Project Overview','One-Click Automated Analysis','Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
+                     $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview', 'one_click', 'missing_value_imputation', 'pca', 'student_t_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'mann_whitney_test', 'data_subsetting'], ['Project Overview', 'One-Click Automated Analysis', 'Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
                      initialize_nav_link()
                   }
                }

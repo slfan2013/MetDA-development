@@ -588,23 +588,31 @@ update_projects_table = function (id = "projects_table", call_back = when_projec
   Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
     download: true,
     complete: function (results) {
-      var table_html = "<thead>"
-      for (var i = 0; i < results.data[0].length; i++) {
-        table_html = table_html + "<th>" + results.data[0][i] + "</th>"
-      }
-      table_html = table_html + "</thead>"
-      table_html = table_html + "<tbody>"
-      for (var i = 1; i < results.data.length; i++) {
-        table_html = table_html + "<tr>"
-        for (var j = 0; j < results.data[i].length; j++) {
-          table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+      rrr = results
+
+      if(results.data[1][0] === ""){
+        table_html = "<small>You don't have any project yet. Create One!</small>"
+      }else{
+        var table_html = "<thead>"
+        for (var i = 0; i < results.data[0].length; i++) {
+          table_html = table_html + "<th>" + results.data[0][i] + "</th>"
         }
-        table_html = table_html + "</tr>"
+        table_html = table_html + "</thead>"
+        table_html = table_html + "<tbody>"
+        for (var i = 1; i < results.data.length; i++) {
+          table_html = table_html + "<tr>"
+          for (var j = 0; j < results.data[i].length; j++) {
+            table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+          }
+          table_html = table_html + "</tr>"
+        }
+        table_html = table_html + "</tbody>"
+        console.log(table_html)
       }
-      table_html = table_html + "</tbody>"
-      //console.log(table_html)
+      
       $("#" + id).html(table_html)
       $("#" + id + " tr").click(call_back);
+
     }
   });
 }

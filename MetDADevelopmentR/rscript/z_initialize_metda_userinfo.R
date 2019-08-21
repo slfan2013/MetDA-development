@@ -1,0 +1,44 @@
+new_user_id = 'initiate'
+
+# get the list (including styles) first.
+initiateUrl <- URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/slfan")
+initiateList <- jsonlite::fromJSON(initiateUrl, simplifyVector = FALSE)
+table_name = paste0("metda_userinfo_",new_user_id,".csv")
+
+
+
+
+metda_userinfo_data = data.table::fread(URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/slfan/metda_userinfo_slfan.csv"))
+
+metda_userinfo_data = metda_userinfo_data[0,]
+
+data.table::fwrite(metda_userinfo_data,table_name)
+
+
+projectUrl <- URLencode(paste0("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo"))
+
+new_user_list = initiateList
+new_user_list$`_id` = new_user_id
+new_user_list$`_rev` = NULL
+new_user_list$`_attachments`[["metda_userinfo_slfan.csv"]] = NULL
+
+
+new_user_list$`_attachments`[[table_name]] <- list(
+  content_type = "application/vnd.ms-excel",
+  data = strsplit(markdown:::.b64EncodeFile(table_name), "base64,")[[1]][2]
+)
+
+
+
+RCurl::getURL(projectUrl, customrequest = "POST", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(new_user_list, auto_unbox = TRUE, force = TRUE))
+
+
+result = TRUE
+
+
+
+########## DELETE THE PREVIOUS DEFAULT ##########
+
+# initiateUrl <- URLencode("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate")
+# initiateList <- jsonlite::fromJSON(initiateUrl, simplifyVector = FALSE)
+# RCurl::getURL(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate?rev=",initiateList$`_rev`), customrequest = "DELETE", httpheader = c("Content-Type" = "application/json"))
