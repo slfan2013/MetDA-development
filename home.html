@@ -1,4 +1,3 @@
-
 <div class="row" style="margin-bottom:10vh;">
     <div class="col-lg-6">
         <div class="card-body">
@@ -10,7 +9,11 @@
     </div>
     <div class="col-lg-6">
         <div class="banner-type">
-            <img class="img-fluid banner-round wow fadeIn bounce slower animated" src="img/card-3.jpeg">
+            <img class="img-fluid banner-round wow fadeIn animated bounce slower" src="img/02.png" style="position: absolute;">
+            <div class="wow fadeInRight">
+                <img class="img-fluid" src="img/03.png" style="position:relative;z-index:9;overflow-y: hidden">
+            </div>
+
         </div>
     </div>
 </div>
@@ -45,18 +48,21 @@
             <br />
             <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist" onclick="change_big_category('')">
-                        <i class="material-icons">info</i> Description
+                    <a class="nav-link" data-toggle="tab" href="#link7" role="tablist"
+                        onclick="change_big_category('')">
+                        <i class="material-icons">flash_auto</i> Quick Analysis
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#projects" role="tablist" onclick="change_big_category('projects')">
+                    <a class="nav-link active" data-toggle="tab" href="#projects" role="tablist"
+                        onclick="change_big_category('projects')">
                         <i class="material-icons">library_books</i> Projects
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#in_and_out_link" role="tablist" onclick="change_big_category('in_and_out')">
-                        <i class="material-icons">transform</i> In & Out
+                    <a class="nav-link" data-toggle="tab" href="#in_and_out_link" role="tablist"
+                        onclick="change_big_category('in_and_out')">
+                        <i class="material-icons">swap_vert</i> In & Out
                     </a>
                 </li>
             </ul>
@@ -74,7 +80,8 @@
                             procrastinate B2C users after installed base benefits.
                             <br>
                             <br> Dramatically visualize customer directed convergence without revolutionary ROI.
-                            <button type="button" class="btn btn-primary" onclick="go_to_one_click()">go to one-click</button>
+                            <button type="button" class="btn btn-primary" onclick="go_to_one_click()">go to
+                                one-click</button>
                         </div>
                     </div>
                 </div>
@@ -83,11 +90,7 @@
                         <div class="card-header">
                             <h4 class="card-title">Projected Analyses</h4>
                             <p class="card-category">
-                                Create a comprehensive data analysis pipline for your dataset. For example, you could
-                                try out different normalization methods and visualize the results using Principal
-                                Component Analysis. After selecting the best normalized dataset, continue with student
-                                t-test and Mann-Whitney U test and see which compounds have small p-values on both of
-                                the tests.
+                                Create a project and analyze your data step by step.
                             </p>
                         </div>
                         <div class="card-body">
@@ -149,7 +152,8 @@
 
                                 </div>
                             </div>
-                            <table class="table" id="projects_table"></table>
+                            <table id="projects_table" class="table table-striped table-no-bordered table-hover"
+                                cellspacing="0" width="100%" style="width:100%"></table>
                         </div>
                     </div>
                 </div>
@@ -171,7 +175,7 @@
                                     <div class="row">
                                         <div class="col-md-9">
                                             <div class="tab-content" id="method_tab_panes">
-                                                
+
                                             </div>
                                         </div>
                                         <div class="col-md-3">

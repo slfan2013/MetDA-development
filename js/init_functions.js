@@ -6,7 +6,7 @@ initialize_nav_link = function () {
     sidebar_ul = ""
 
 
-    sidebar_ul = sidebar_ul + '<li class="nav-item active"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
+    sidebar_ul = sidebar_ul + '<li class="nav-item"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
 
     category_names = Object.keys(data.methods_structure)
 
@@ -582,36 +582,110 @@ function sort(arr, desending = false) {
   }
 
 }
-update_projects_table = function (id = "projects_table", call_back = when_projects_table_clicked) {
+update_projects_table = function (id = "projects_table", select_call_back = "when_projects_table_click_selected",rename_call_back = "when_projects_table_click_renamed",delete_call_back = "when_projects_table_click_deleted") {
   console.log("HERE")
   console.log($("#projects_table").length)
   Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
     download: true,
     complete: function (results) {
       rrr = results
+      project_name_index = results.data[0].indexOf("project_name")
+
+      project_names = results.data.map(x => x[project_name_index])
+      project_names.shift()
+      project_names.pop()
+
 
       if(results.data[1][0] === ""){
         table_html = "<small>You don't have any project yet. Create One!</small>"
       }else{
-        var table_html = "<thead>"
-        for (var i = 0; i < results.data[0].length; i++) {
-          table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+        var table_html = "<thead><tr>"
+        for (var i = -1; i < results.data[0].length+1; i++) {
+          if(i === -1){
+            table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
+          }else if(i === results.data[0].length){
+            table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
+          }else{
+            table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+          }
+          
         }
-        table_html = table_html + "</thead>"
+        table_html = table_html + "</tr></thead>"
+        table_html = table_html + "<tfoot><tr>"
+        for (var i = -1; i < results.data[0].length+1; i++) {
+          if(i === -1){
+            table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
+          }else if(i === results.data[0].length){
+            table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
+          }else{
+            table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+          }
+          
+        }
+        table_html = table_html + "</tr></tfoot>"
+
+
         table_html = table_html + "<tbody>"
-        for (var i = 1; i < results.data.length; i++) {
+        for (var i = 1; i < results.data.length-1; i++) {
+          var current_project_id  =results.data[i][0]
+
+
           table_html = table_html + "<tr>"
-          for (var j = 0; j < results.data[i].length; j++) {
-            table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+          for (var j = -1; j < results.data[i].length+1; j++) {
+            if(j === -1){
+              table_html = table_html + "<td class='text-center'>" + (j+2) + "</td>"
+            }else if(j === results.data[i].length){
+              table_html = table_html + "<td class='text-right'>"
+              if(!select_call_back === false){
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Select This Project" onclick="'+select_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:green">check</i> </button>'
+              }
+              if(!rename_call_back === false){
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Rename This Project" onclick="'+rename_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:orange">edit</i> </button>'
+              }
+              if(!delete_call_back === false){
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Delete This Project" onclick="'+delete_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:red">close</i> </button>'
+              }
+              
+              table_html = table_html +  "</td>"
+            }else{
+              table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+            }
+            
           }
           table_html = table_html + "</tr>"
         }
         table_html = table_html + "</tbody>"
-        console.log(table_html)
+        //console.log(table_html)
       }
       
       $("#" + id).html(table_html)
-      $("#" + id + " tr").click(call_back);
+      //$("#" + id + " tr").click(call_back);
+
+
+      if($.fn.dataTable.isDataTable( '#'+id )){
+
+        if(results.data[1][0] === ""){
+          $("#" + id).DataTable().destroy();
+          $("#" + id).html(table_html)
+        }
+
+      }else{
+        $("#" + id).DataTable({
+          "pagingType": "full_numbers",
+          "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+          ],
+          responsive: true,
+          language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search records",
+          }
+        });
+      }
+
+
+      
 
     }
   });

@@ -2,3 +2,54 @@
     margin-bottom:0
 }
 
+
+.rainbow {
+
+
+    /* Chrome, Safari, Opera */
+   -webkit-animation: rainbow 3s infinite;
+ 
+   /* Internet Explorer */
+   -ms-animation: rainbow 3s infinite;
+ 
+   /* Standar Syntax */
+   animation: rainbow 3s infinite;
+ }
+ 
+ /* Chrome, Safari, Opera */
+ @-webkit-keyframes rainbow{
+   0%{background-color: orange;}
+   10%{background-color: purple;}
+     20%{background-color: red;}
+   30%{background-color: CadetBlue;}
+     40%{background-color: yellow;}
+   50%{background-color: coral;}
+     60%{background-color: green;}
+   70%{background-color: cyan;}
+   80%{background-color: DeepPink;}
+   90%{background-color: DodgerBlue;}
+     100%{background-color: orange;}
+ }
+ 
+ /* Internet Explorer */
+ @-ms-keyframes rainbow{
+   0%{background-color: orange;}
+   10%{background-color: purple;}
+     20%{background-color: red;}
+     40%{background-color: yellow;}
+     60%{background-color: green;}
+     100%{background-color: orange;}
+ }
+ 
+ /* Standar Syntax */
+ @keyframes rainbow{
+   0%{background-color: orange;}
+   10%{background-color: purple;}
+     20%{background-color: red;}
+     40%{background-color: yellow;}
+     60%{background-color: green;}
+     100%{background-color: orange;}
+ }
+ 
+ 
+ 

@@ -26,57 +26,13 @@
                   session.getObject(function (obj) {
                      console.log(obj)
                      localStorage['user_id'] = new_user_id
-                     //location.reload();
+                     location.reload();
                   })
                }).fail(function (e) {
-                Swal.fire('Oops...', e.responseText, 'error')
-            })
+                  Swal.fire('Oops...', e.responseText, 'error')
+               })
 
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -204,6 +160,9 @@
          // stop link reloading the page
          event.preventDefault();
       }
+
+      
+
    </script>
 
 </body>
