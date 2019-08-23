@@ -1,0 +1,218 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="nav nav-pills nav-pills-primary flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#plsda_loading_plot_general" data-toggle="tab">General</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#plsda_loading_plot_traces" data-toggle="tab">Traces</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#plsda_loading_plot_explanation"
+                            data-toggle="tab">Explanation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane" id="plsda_loading_plot_general">
+                        <div id="plsda_loading_plot_to_be_loaded"></div>
+                    </div>
+                    <div class="tab-pane" id="plsda_loading_plot_traces">
+                        <div id="plsda_loading_plot_traces_accordion" role="tablist">
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="plsda_loading_plot_traces_color_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#plsda_loading_plot_traces_color_collapse"
+                                            aria-expanded="true" aria-controls="plsda_loading_plot_traces_color_collapse">
+                                            Colors
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="plsda_loading_plot_traces_color_collapse" class="collapse show" role="tabpanel"
+                                    aria-labelledby="plsda_loading_plot_traces_color_heading"
+                                    data-parent="#plsda_loading_plot_traces_accordion">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="plsda_loading_plot_traces_color_by_info"
+                                                onchange="plsda_loading_plot_debounced()">
+                                            Color By Compound Information
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="plsda_loading_plot_confidence_ellipse" checked
+                                                onchange="plsda_loading_plot_debounced()">
+                                            Confidence Ellipse
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+
+                                    <div id="plsda_loading_plot_show_when_color_by_info">
+                                        <!-- here should be able to use p.-->
+                                        <div id="plsda_loading_plot_color_levels_div"></div>
+
+                                        <div id="plsda_loading_plot_color_options_div"></div>
+
+                                    </div>
+                                    <div id="plsda_loading_plot_hide_when_color_by_info">
+                                        <div class="input-group" id="plsda_loading_plot_color_option_div">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Dot Color</span>
+                                            </div>
+                                            <input type='text' id="plsda_loading_plot_color_option" class="spectrums"
+                                                data-show-alpha="true" onchange="plsda_loading_plot_debounced()" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="plsda_loading_plot_traces_shape_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#plsda_loading_plot_traces_shape_collapse"
+                                            aria-expanded="false" aria-controls="plsda_loading_plot_traces_shape_collapse">
+                                            Shapes
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="plsda_loading_plot_traces_shape_collapse" class="collapse" role="tabpanel"
+                                    aria-labelledby="plsda_loading_plot_traces_shape_heading"
+                                    data-parent="#plsda_loading_plot_traces_accordion">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="plsda_loading_plot_traces_shape_by_info"
+                                                onchange="plsda_loading_plot_debounced()">
+                                            Shape By Compound Information
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div id="plsda_loading_plot_show_when_shape_by_info">
+                                        <!-- here should be able to use p.-->
+                                        <div id="plsda_loading_plot_shape_levels_div"></div>
+                                        <div id="plsda_loading_plot_shape_options_div"></div>
+                                    </div>
+                                    <div id="plsda_loading_plot_hide_when_shape_by_info">
+                                        <div class="input-group">
+                                            <div class="form-group" style="margin:0;border:0;padding:0"
+                                                id="plsda_loading_plot_shape_option">
+                                                <label>Dot Shape</label>
+                                                <select class="form-control selectpicker" data-style="btn btn-link"
+                                                    onchange="plsda_loading_plot_debounced()">
+                                                    <option selected>circle</option>
+                                                    <option>square</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="plsda_loading_plot_traces_size_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#plsda_loading_plot_traces_size_collapse"
+                                            aria-expanded="false" aria-controls="plsda_loading_plot_traces_size_collapse">
+                                            Sizes
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="plsda_loading_plot_traces_size_collapse" class="collapse" role="tabpanel"
+                                    aria-labelledby="plsda_loading_plot_traces_size_heading"
+                                    data-parent="#plsda_loading_plot_traces_accordion">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="plsda_loading_plot_traces_size_by_info"
+                                                onchange="plsda_loading_plot_debounced()">
+                                            Size By Compound Information
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div id="plsda_loading_plot_show_when_size_by_info">
+                                        <!-- here should be able to use p.-->
+                                        <div id="plsda_loading_plot_size_levels_div"></div>
+                                        <div id="plsda_loading_plot_size_options_div"></div>
+                                    </div>
+                                    <div id="plsda_loading_plot_hide_when_size_by_info">
+
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    Dot Size
+                                                </span>
+                                            </div>
+                                            <input id="plsda_loading_plot_size_option" type="number" class="form-control"
+                                                value="15" placeholder="Dot Size" min="0" step="1"
+                                                onchange="plsda_loading_plot_debounced()">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="tab-pane active" id="plsda_loading_plot_explanation">
+
+                        <div class="form-group">
+                            <label for="plsda_loading_plot_pcx">PC x</label>
+                            <select class="form-control selectpicker" data-style="btn btn-link" id="plsda_loading_plot_pcx"
+                                onchange="plsda_loading_plot_debounced()">
+                                <option value="1" selected>PC 1</option>
+                                <option value="2">PC 2</option>
+                                <option value="3">PC 3</option>
+                                <option value="4">PC 4</option>
+                                <option value="5">PC 5</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plsda_loading_plot_pcx">PC y</label>
+                            <select class="form-control selectpicker" data-style="btn btn-link" id="plsda_loading_plot_pcy"
+                                onchange="plsda_loading_plot_debounced()">
+                                <option value="1">PC 1</option>
+                                <option value="2" selected>PC 2</option>
+                                <option value="3">PC 3</option>
+                                <option value="4">PC 4</option>
+                                <option value="5">PC 5</option>
+                            </select>
+                        </div>
+
+
+
+
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="save_plsda_loading_plot_style()">Set This Style As
+                            Default</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div id="plsda_loading_plot"></div>
+        </div>
+    </div>
+    <script src="js/plsda_loading_plot.js"></script>

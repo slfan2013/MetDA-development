@@ -1,6 +1,6 @@
-p_column_names = Object.keys(p[0])
+console.log("sample_information_non_changing_levels_select.js")
 
-//console.log(id)
+p_column_names = Object.keys(p[0])
 
 sample_information_non_changing_levels_select_div = '<div class="form-group"><select class="form-control selectpicker parameter" id="'+id+'" data-style="btn btn-link">'
 for (var i = 0; i < p_column_names.length; i++) {
@@ -12,3 +12,4 @@ sample_information_non_changing_levels_select_div = sample_information_non_chang
 $("#"+div_id).html(sample_information_non_changing_levels_select_div)
 
 
+   

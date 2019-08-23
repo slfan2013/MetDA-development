@@ -15,10 +15,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         // assign the default value for pca scree plot
         ocpu.call("call_fun", {parameter:{
             user_id: localStorage.user_id,
-            fun_name:"get_pca_scree_plot_style"
+            fun_name:"get_"+window.location.href.split("#")[1]+"_scree_plot_style"
         }}, function (session) {
             session.getObject(function (scree_plot_obj) {
-                console.log(scree_plot_obj)
+                
+                scree_plot_obj = prepare_layout(scree_plot_obj)
                 scree_plot_obj_global = scree_plot_obj
                 scree_plot_traces = scree_plot_obj.traces
 
@@ -30,14 +31,10 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     $("#scree_plot_layout_yaxis_title_text").val("Percentage of Variance Explained")
 
 
-
                     $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {
                         adjusted_scree_plot_layout_adjuster3 = plot_layout_adjuster3.replaceAll("PLOT_NAME", "scree_plot")
                         eval(adjusted_scree_plot_layout_adjuster3)
-
-
                         scree_plot_debounced()
-
                     }})
 
 
@@ -53,25 +50,43 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
         gather_page_information_to_scree_plot = function () {
             console.log("!")
-            ys = [obj_scree_plot.variance]
-            texts = ys.map(function (x) {
-                return (x.map(function (z) {
-                    return ((z * 100).toFixed(2) + "%")
-                }))
-            })
+            if(window.location.href.split("#")[1] === 'plsda'){
+
+                ys = [cumsum(obj_scree_plot.variance),obj_scree_plot.R2, obj_scree_plot.Q2]
+                texts = ys.map(function (x) {
+                    return (x.map(function (z) {
+                        return ((z * 100).toFixed(2) + "%")
+                    }))
+                })
+                var names = ["Variance Explained on X", "Variance Explained on Y", "Predictive Accuracy"]
+
+                
+            }else{
+
+                
+                ys = [obj_scree_plot.variance]
+                texts = ys.map(function (x) {
+                    return (x.map(function (z) {
+                        return ((z * 100).toFixed(2) + "%")
+                    }))
+                })
+                var names = ["Variance Explained"]
+
+            }
+            
             hovertexts = texts.map(function (x) {
                 return (x.map(function (z, i) {
                     return ("PC" + (i + 1) + ": " + z)
                 }))
             })
 
-            names = ["Variance Explained"]
-            add_line_trace = true
-            line_trace_index = 0
+            
+            var add_line_trace = true
+            var line_trace_index = 2
 
 
 
-            plot_id = "scree_plot"
+            var plot_id = "scree_plot"
 
 
             $.ajax({url:"js/plot_layout_adjuster3.js",converters: { 'text script': function (text) { return text; } },success:function (plot_layout_adjuster3) {

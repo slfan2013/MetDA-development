@@ -85,6 +85,136 @@ initialize_nav_link = function () {
 
 
 
+function nestedObjectToArray(obj) {
+  if (typeof(obj) !== "object"){
+      return [""];
+  }
+  var result = [];
+  if (obj.constructor === Array){
+      obj.map(function(item) {
+          result = result.concat(nestedObjectToArray(item));
+      });
+  } else {
+      Object.keys(obj).map(function(key) {
+          if(obj[key]) {
+              var chunk = nestedObjectToArray(obj[key]);
+              chunk.map(function(item) {
+                  result.push(key+"."+item);
+              });
+          } else {
+              result.push(key);
+          }
+      });
+  }
+  return result;
+};
+
+function get(reference, pathParts) {
+  if(typeof pathParts === 'string'){
+      pathParts = pathParts.split('.');
+  }
+
+  var index = 0,
+      pathLength = pathParts.length;
+
+  for(; index < pathLength; index++){
+      var key = pathParts[index];
+
+      if (reference == null) {
+          break;
+      } else if (
+          typeof reference[key] === 'object' &&
+          index !== pathLength - 1
+      ) {
+          reference = reference[key];
+      } else {
+
+          if(index < pathLength - 1){
+              return;
+          }
+
+          return reference[key];
+      }
+  }
+};
+
+prepare_layout = function(layout){
+  var oo = nestedObjectToArray(layout)
+  var ooo = oo.map(x=>x.slice(0,-1))
+
+  for(var i=0; i<ooo.length;i++){
+
+
+
+      var current_value = get(layout,ooo[i]);
+      if(current_value.length == 1 && Array.isArray(current_value)){
+          set(layout, ooo[i], current_value[0]);    
+      }else{
+        
+        if(current_value.map(x => x.length).filter(unique)==1){
+          set(layout, ooo[i], [].concat.apply([], current_value));    
+        }
+        // change [[1],[2]] to [1,2]
+      }
+  }
+  return(layout)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function set(reference, pathParts, value) {
+  if(typeof pathParts === 'string'){
+      pathParts = pathParts.split('.');
+  }
+
+  var index = 0,
+      pathLength = pathParts.length,
+      result = reference,
+      previousresult,
+      previousKey;
+
+  for(; index < pathLength; index++){
+      var key = pathParts[index];
+
+      if ((typeof result !== 'object' || result === null) && index < pathLength) {
+          if (typeof key !== 'symbol' && !Number.isNaN(Number(key))) {
+              result = previousresult[previousKey] = [];
+          }
+          else {
+              result = previousresult[previousKey] = {};
+          }
+      }
+      if (index === pathLength - 1) {
+          result[key] = value;
+      }
+      else {
+          previousresult = result;
+          previousKey = key;
+          result = result[key];
+      }
+  }
+};
+cumsum = function(myarray){
+  var new_array = [];
+  myarray.reduce(function(a,b,i) { return new_array[i] = a+b; },0);
+  return(new_array) // [5, 15, 18, 20]
+}
+
+
 start_cal = function () {
   $("body").append('<div id="overlay" style="background-color:rgba(0,0,0,0.5);position:absolute;top:0;left:0;height:100%;width:100%;z-index:999"></div>');
 }
@@ -231,6 +361,7 @@ ellipse = function (x, y, level = 0.95) {
   }
 }
 transparent_rgba = function (rgba, alpha = 0.1) {
+  console.log(rgba)
   var splits = rgba.split(",")
   if (splits.length == 3) {
     var splits = rgba.split("(").map(x => x.split(")"))
@@ -338,9 +469,6 @@ init_fileInput = function () {
     $(this).parent().parent().find('.inputFileHidden').trigger('click');
     $(this).parent().parent().addClass('is-focused');
   });
-
-
-
 
   $('.form-file-multiple .inputFileHidden').change(function () {
     var names = '';

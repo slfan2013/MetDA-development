@@ -14,10 +14,15 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             ocpu.call("call_fun", {
                 parameter: {
                     user_id: localStorage.user_id,
-                    fun_name: "get_pca_score_plot_style"
+                    fun_name: "get_" + window.location.href.split("#")[1] + "_score_plot_style"
                 }
             }, function (session) {
                 session.getObject(function (score_plot_obj) {
+                    
+                    uuu = JSON.parse(JSON.stringify(score_plot_obj))
+
+
+                    score_plot_obj = prepare_layout(score_plot_obj)
                     score_plot_obj_global = score_plot_obj
                     score_plot_traces = score_plot_obj.traces
 
@@ -26,40 +31,62 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                             adjusted_score_plot_layout_adjuster2 = plot_layout_adjuster2.replaceAll("PLOT_NAME", "score_plot")
 
 
-
-
                             eval(adjusted_score_plot_layout_adjuster2)
                             $("#score_plot_layout_yaxis_title_text").val("PC" + $("#score_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#score_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")
                             $("#score_plot_layout_yaxis_title_text").val("PC" + $("#score_plot_pcy").val() + " (" + (obj_score_loading_plot.variance[$("#score_plot_pcy").val() - 1] * 100).toFixed(2) + "%)")
 
                             $("#score_plot_color_option").spectrum({
-                                color: score_plot_traces.scatter_colors[1][0],
+                                color: score_plot_traces.scatter_colors[1],
                                 showPalette: true,
                                 palette: color_pallete
                             });
                             $("#score_plot_color_option").change(score_plot_debounced)
 
-                            $("#score_plot_shape_option .selectpicker").val(score_plot_traces.scatter_shapes[1][0])
+                            $("#score_plot_shape_option .selectpicker").val(score_plot_traces.scatter_shapes[1])
                             $("#score_plot_shape_option .selectpicker").selectpicker('refresh')
                             $("#score_plot_shape_option .selectpicker").change(score_plot_debounced)
 
-                            $("#score_plot_size_option").val(score_plot_traces.scatter_sizes[1][0])
+                            $("#score_plot_size_option").val(score_plot_traces.scatter_sizes[1])
                             $("#score_plot_size_option").change(score_plot_debounced)
 
-                            if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
-                                for (var i = 0; i < p_column_unique_length.length; i++) {
-                                    if (p_column_unique_length[i] > 1 && p_column_unique_length[i] < 6) {
-                                        $("#score_plot_color_levels").val(p_column_names[i])
-                                        $("#score_plot_color_levels").selectpicker('refresh')
-                                        $("#score_plot_traces_color_by_info").prop("checked", true).change();
-                                        for (var j = 0; j < p_column_unique_length[i]; j++) {
-                                            $("#score_plot_color_options" + j).spectrum("set", score_plot_traces.scatter_colors[p_column_unique_length[i]][j][0]);
+                            if (window.location.href.split("#")[1] === "plsda") {
+                                $("#score_plot_color_levels").val($("#treatment_group").val())
+                                $("#score_plot_color_levels").selectpicker('refresh')
+                                $("#score_plot_traces_color_by_info").prop("checked", true).change();
+
+                                var i = p_column_names.indexOf($("#treatment_group").val())
+
+                                for (var j = 0; j < p_column_unique_length[i]; j++) {
+                                    $("#score_plot_color_options" + j).spectrum("set", score_plot_traces.scatter_colors[p_column_unique_length[i]][j]);
+                                }
+                                score_plot_debounced()
+                            } else {
+                                if (p_column_unique_length.some(function (x) { return (x > 1 && x < 6) })) {
+                                    for (var i = 0; i < p_column_unique_length.length; i++) {
+                                        if (p_column_unique_length[i] > 1 && p_column_unique_length[i] < 6) {
+                                            $("#score_plot_color_levels").val(p_column_names[i])
+                                            $("#score_plot_color_levels").selectpicker('refresh')
+                                            $("#score_plot_traces_color_by_info").prop("checked", true).change();
+                                            for (var j = 0; j < p_column_unique_length[i]; j++) {
+                                                $("#score_plot_color_options" + j).spectrum("set", score_plot_traces.scatter_colors[p_column_unique_length[i]][j]);
+                                            }
+                                            score_plot_debounced()
+                                            break;
                                         }
-                                        score_plot_debounced()
-                                        break;
                                     }
                                 }
                             }
+
+
+
+
+
+
+
+
+
+
+
                         }
                     })
 
@@ -67,20 +94,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             }).fail(function (e2) {
                 Swal.fire('Oops...', e2.responseText, 'error')
             })
-            /*scatter_by_group({
-                    x: x, y: y, color_by: score_plot_color_by, color_values: score_plot_color_values, color_levels: score_plot_color_levels,
-                    shape_by: score_plot_shape_by, shape_values: score_plot_shape_values, shape_levels: score_plot_shape_levels,
-                    size_by: score_plot_size_by, size_values: score_plot_size_values, size_levels: score_plot_size_levels,
-                    ellipse_group: score_plot_ellipse_group,
-                    labels: score_plot_labels,
-                    layout: score_plot_layout,
-                    plot_id: score_plot_plot_id
-                })*/
 
             gather_page_information_to_score_plot = function () {
 
-                x = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcx").val())
-                y = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcy").val())
+                var x = unpack(obj_score_loading_plot.sample_scores, "p" + $("#score_plot_pcx").val())
+                var y = unpack(obj_score_loading_plot.sample_scores, "p" + $("#score_plot_pcy").val())
 
 
                 if (!$("#score_plot_traces_color_by_info").is(":checked")) {
@@ -167,7 +185,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                         }
 
-                        if($("#score_plot_explanation_html").length==0){
+                        if ($("#score_plot_explanation_html").length == 0) {
                             $("#score_plot_explanation").append("<div id='score_plot_explanation_html'></div>")
                         }
                         $("#score_plot_explanation_html").html(obj_score_loading_plot.results_description[1])
@@ -187,21 +205,6 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
 
-                /*
-                        o = {
-                            x: x, y: y, color_by: score_plot_color_by, color_values: score_plot_color_values, color_levels: score_plot_color_levels,
-                            shape_by: score_plot_shape_by, shape_values: score_plot_shape_values, shape_levels: score_plot_shape_levels,
-                            size_by: score_plot_size_by, size_values: score_plot_size_values, size_levels: score_plot_size_levels,
-                            ellipse_group: score_plot_ellipse_group,
-                            labels: score_plot_labels,
-                            layout: score_plot_layout,
-                            plot_id: score_plot_plot_id
-                        }
-                
-                        for(var i=0; i<Object.keys(o).length; i++){
-                            window[Object.keys(o)[i]] = Object.values(o)[i]
-                        }
-                  */
 
 
             }
@@ -235,7 +238,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                 for (var i = 0; i < score_plot_color_levels.length; i++) {
                     $("#score_plot_color_options" + i).spectrum({
-                        color: score_plot_traces.scatter_colors[score_plot_color_levels.length][i][0],
+                        color: score_plot_traces.scatter_colors[score_plot_color_levels.length][i],
                         showPalette: true,
                         palette: color_pallete
                     });
@@ -284,7 +287,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
 
                 for (var i = 0; i < score_plot_shape_levels.length; i++) {
-                    $("#score_plot_shape_options" + i + " .selectpicker").val(score_plot_traces.scatter_shapes[score_plot_shape_levels.length][i][0])
+                    $("#score_plot_shape_options" + i + " .selectpicker").val(score_plot_traces.scatter_shapes[score_plot_shape_levels.length][i])
                     $("#score_plot_shape_options" + i + " .selectpicker").selectpicker('refresh')
                     $("#score_plot_shape_options" + i + " .selectpicker").change(score_plot_debounced)
                 }
@@ -339,7 +342,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                     if (score_plot_size_levels.length === 1) {
                         $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i])
                     } else {
-                        $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i][0])
+                        $("#score_plot_size_options" + i).val(score_plot_traces.scatter_sizes[score_plot_size_levels.length][i])
                     }
 
                     $("#score_plot_size_options" + i).change(score_plot_debounced)

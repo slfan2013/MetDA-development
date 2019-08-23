@@ -300,11 +300,10 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                 append_results_fun(obj, session)
             })
-        } else if (['pca','plsda'].includes(page)) {
+        } else if (['pca'].includes(page)) {
             obj_score_loading_plot = obj
             obj_scree_plot = obj
             obj_loading_plot = obj
-
 
             $("#results_card_body").append('<div id="results_description"></div>')
             $("#results_card_body").append('<div id="score_loading_plot_div"></div>')
@@ -339,7 +338,61 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     })
                 })
             })
-        } else if (['ssize'].includes(page)) {
+        } else if (['plsda'].includes(page)) {
+            obj_plsda_score_plot = obj
+            obj_plsda_scree_plot = obj
+            obj_plsda_loading_plot = obj
+            obj_vip_plot = obj
+
+            $("#results_card_body").append('<div id="results_description"></div>')
+            $("#results_card_body").append('<div id="plsda_score_plot_div"></div>')
+            $("#results_card_body").append('<hr />')
+            $("#results_card_body").append('<div id="plsda_loading_plot_div"></div>')
+            $("#results_card_body").append('<hr />')
+            $("#results_card_body").append('<div id="plsda_scree_plot_div"></div>')
+            $("#results_card_body").append('<hr />')
+            $("#results_card_body").append('<div id="vip_plot_div"></div>')
+
+            $("#plsda_score_plot_div").load("plsda_score_plot.html", function () {
+                init_selectpicker()
+                $("#plsda_loading_plot_div").load("plsda_loading_plot.html", function () {
+                    init_selectpicker()
+                    $("#plsda_scree_plot_div").load("plsda_scree_plot.html", function () {
+
+                        $("#vip_plot_div").load("vip_plot.html",function(){
+
+
+                            init_selectpicker()
+                            if (localStorage['big_category'] === 'project') {
+                                $("#save_results").show();
+                                $("#only_download_result_dataset").hide();
+                                $("#download_results").removeClass("btn-primary")
+                                $("#download_results").addClass("btn-default")
+                                $("#save_results").addClass("btn-primary")
+                                $("#save_results").removeClass("btn-default")
+                            } else if (localStorage['big_category'] === 'in_and_out') {
+                                $("#save_results").hide();
+                                $("#only_download_result_dataset").show();
+                                $("#download_results").addClass("btn-primary")
+                                $("#download_results").removeClass("btn-default")
+                                $("#save_results").removeClass("btn-primary")
+                                $("#save_results").addClass("btn-default")
+                            }
+                            var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
+                            append_results_fun(obj, session)
+
+
+
+
+                        })
+
+
+                        
+                    })
+                })
+            })
+        }
+         else if (['ssize'].includes(page)) {
             obj_ssize_plot = obj
             obj_power_plot = obj
             $("#results_card_body").append('<div id="result_table_div"></div>')
