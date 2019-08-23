@@ -22,10 +22,10 @@ missing_value_imputation_append_results = function (obj, session) {
         }
     });
 
-    var files_sources = [session.loc + "files/result_dataset.csv", session.loc + "files/summary_data.csv"];
+    var files_sources = [session.loc + "files/e.csv", session.loc + "files/summary_data.csv"];
     var zipfile_name = "missing_value_imputation_results"
     var fold_name = "Missing Value Imputation"
-    var files_names = ["result dataset.csv","result summary.csv"]
+    var files_names = ["e.csv","result summary.csv"]
     var files_types = ["application/vnd.ms-excel","application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {
         

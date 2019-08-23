@@ -1,21 +1,21 @@
 # read_data_from_projects = function(project_id, activate_data_id){
-  f = read.csv(paste0(
+  f = read.csv(URLencode(paste0(
     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/f.csv"
-  ), stringsAsFactors = FALSE)
-  p = read.csv(paste0(
+  )), stringsAsFactors = FALSE)
+  p = read.csv(URLencode(paste0(
     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/p.csv"
-  ), stringsAsFactors = FALSE)
+  )), stringsAsFactors = FALSE)
 
   e = read.csv(
-    paste0(
+    URLencode(paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",activate_data_id
-    )
+    ))
     ,row.names  = 1)
 
 

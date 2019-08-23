@@ -202,8 +202,6 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     get_parameter_settings = function () {
         $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", function(){
             init_selectpicker
-            
-
         })
         
         

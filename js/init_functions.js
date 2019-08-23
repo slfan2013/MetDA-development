@@ -2,7 +2,7 @@ initialize_nav_link = function () {
   console.log("trying to initialize the links")
 
   $.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
-    ddd = data
+    methods_data = data
     sidebar_ul = ""
 
 
@@ -27,7 +27,8 @@ initialize_nav_link = function () {
       console.log(being_active)
 
       if (being_active) {
-
+        sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
+        '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
       } else {
         sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
           '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
@@ -36,17 +37,9 @@ initialize_nav_link = function () {
       sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
 
       for (var it = 0; it < current_items.length; it++) {
-
-
         sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#'+current_items[it]+'">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
 
-
-
-
       }
-
-
-
 
       sidebar_ul = sidebar_ul + '</ul>'
       sidebar_ul = sidebar_ul + '</li>'

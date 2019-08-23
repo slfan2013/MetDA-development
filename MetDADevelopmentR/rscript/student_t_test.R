@@ -39,6 +39,8 @@ report_html = call_fun(parameter = list(
   result = result,
   levels = levels,
   alternative = "two.sided",
+  doc = NULL,
+  type = "result_summary",
   fun_name = "report_student_t_test"
 ))$text_html
 

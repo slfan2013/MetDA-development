@@ -17,7 +17,7 @@ text_html = ""
 
 
 
-  save(treatment_group,equal_variance_assumption,type,fdr,result, levels,alternative, doc,table_index ,  figure_index ,file = "report_student_t_test.RData")
+  # save(treatment_group,equal_variance_assumption,type,fdr,result, levels,alternative, doc,table_index ,  figure_index ,file = "report_student_t_test.RData")
 
   # load("report_student_t_test.RData")
   pacman::p_load(data.table, officer, magrittr)
@@ -133,8 +133,8 @@ text_html = ""
 
     doc <- doc %>%
       body_add_fpar(fpar(ftext(" - Correct the False Discovery Rate: ", prop = fp_text(bold = TRUE))), style = "Normal")%>%
-      slip_in_text(as.character(plyr::revalue(fdr, c("fdr"="Benjamini & Hochberg (1995)", 'bonferroni'="Bonferroni correction", "holm"= "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
-      slip_in_text(paste0(". When conducting multiple tests, the rate of incorrectly reject a null hypothesis will increase. FDR-controlling procedures are designed to control the expected proportion of \"discoveries\" (rejected null hypotheses) that are false (incorrect rejections). The suggested method for metabolomics is the Benjamini & Hochberg procedure. For more information, please visit https://en.wikipedia.org/wiki/False_discovery_rate."), style = "Default Paragraph Font", pos = "after")
+      slip_in_text(as.character(plyr::revalue(fdr, c("fdr"="Benjamini -- Hochberg (1995)", 'bonferroni'="Bonferroni correction", "holm"= "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini -- Hochberg (1995)", "BY" = "Benjamini -- Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(paste0(". When conducting multiple tests, the rate of incorrectly reject a null hypothesis will increase. FDR-controlling procedures are designed to control the expected proportion of \"discoveries\" (rejected null hypotheses) that are false (incorrect rejections). The suggested method for metabolomics is the Benjamini -- Hochberg procedure. For more information, please visit https://en.wikipedia.org/wiki/False_discovery_rate."), style = "Default Paragraph Font", pos = "after")
 
 
     if(type == 'parameter_settings_description'){
@@ -184,8 +184,8 @@ text_html = ""
       slip_in_text(nrow(result), style = "Default Paragraph Font", pos = "after")%>%
       slip_in_text(" compounds, ", style = "Default Paragraph Font", pos = "after")%>%
       slip_in_text(sum(result$p_values<0.05,na.rm = TRUE), style = "Default Paragraph Font", pos = "after")%>%
-      slip_in_text(" are significant with p-value < 0.05. To control the false discovery rate (FDR), the ", style = "Default Paragraph Font", pos = "after")%>%
-      slip_in_text(as.character(plyr::revalue(fdr, c("fdr"="Benjamini & Hochberg (1995)", 'bonferroni'="Bonferroni correction", "holm"= "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini & Hochberg (1995)", "BY" = "Benjamini & Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after")%>%
+      slip_in_text(" are significant with p-value less than 0.05. To control the false discovery rate (FDR), the ", style = "Default Paragraph Font", pos = "after")%>%
+      slip_in_text(as.character(plyr::revalue(fdr, c("fdr"="Benjamini -- Hochberg (1995)", 'bonferroni'="Bonferroni correction", "holm"= "Holm (1979)", "hochberg" = "Hochberg (1988)", "hommel" = "Hommel (1988)", "BH" = "Benjamini -- Hochberg (1995)", "BY" = "Benjamini -- Yekutieli (2001)"))), style = "Default Paragraph Font", pos = "after")%>%
       slip_in_text(" procedure was used. After FDR correction, ", style = "Default Paragraph Font", pos = "after")%>%
       slip_in_text(sum(result$p_values_adjusted<0.05,na.rm = TRUE), style = "Default Paragraph Font", pos = "after")%>%
       slip_in_text(" compounds are still significant. See Table ", style = "Default Paragraph Font", pos = "after")%>%

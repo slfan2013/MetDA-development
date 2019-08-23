@@ -117,7 +117,7 @@ e_imp = data.frame(e_imp)
 colnames(e_imp) = p$label
 rownames(e_imp) = rownames_e_imp
 result_dataset = e_imp
-write.csv(result_dataset, "result_dataset.csv", col.names = TRUE, row.names = TRUE)
+write.csv(result_dataset, "e.csv", col.names = TRUE, row.names = TRUE)
 
 summary_data = data.table(label = rownames(e))
 summary_data_matrix = do.call("cbind",summary)

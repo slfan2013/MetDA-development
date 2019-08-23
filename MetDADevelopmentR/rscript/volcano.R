@@ -5,8 +5,8 @@
 # helper function for creating dendograms
 
 
-pacman::p_load(data.table, ggdendro, plotly, ggplot2)
-
+# pacman::p_load(data.table, ggdendro, plotly, ggplot2)
+pacman::p_load(data.table)
 
 if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
@@ -84,9 +84,12 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
 
 
+report_html = call_fun(parameter = list(
+  type = "result_summary",
+  fun_name = "report_volcano"
+))$text_html
 
-
-
+result = list(results_description = report_html,label = data$label, p_values = data$p_values, fold_change = data$fold_change)
 if(exists("volcano_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
   # volcano_plot_style = get_volcano_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
@@ -131,5 +134,5 @@ if(exists("volcano_plot")){# this means this call is from quick_analysis. Here w
 
 
 }else{
-  result = list(results_description = "volcanos are ready to make.",label = data$label, p_values = data$p_values, fold_change = data$fold_change)
+  result = list(results_description = report_html,label = data$label, p_values = data$p_values, fold_change = data$fold_change)
 }
