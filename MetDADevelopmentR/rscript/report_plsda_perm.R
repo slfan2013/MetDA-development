@@ -1,24 +1,4 @@
-# report_plsda = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
-
-if (!exists("scaling_method")) {
-  scaling_method <- NULL
-}
-if (!exists("treatment_group")) {
-  treatment_group <- NULL
-}
-
-if (!exists("Q2")) {
-  Q2 <- NULL
-}
-if (!exists("vips")) {
-  vips <- NULL
-}
-if (!exists("R2")) {
-  R2 <- NULL
-}
-if (!exists("variance")) {
-  variance <- NULL
-}
+# report_plsda_perm = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
 
 if (!exists("n_perm")) {
   n_perm <- NULL
@@ -30,8 +10,6 @@ if (!exists("best_predI")) {
 if (!exists("perm_summary")) {
   perm_summary <- NULL
 }
-
-
 
 
 if (!exists("doc")) {
@@ -54,9 +32,9 @@ text_html <- ""
 
 
 
-save(parameter, file = "report_plsda.RData")
+save(parameter, file = "report_plsda_perm.RData")
 
-# load("report_plsda.RData")
+# load("report_plsda_perm.RData")
 pacman::p_load(data.table, officer, magrittr)
 
 
@@ -84,7 +62,6 @@ if (type == "all") {
 
 
   scaling_method <- parameters$scaling_method
-  treatment_group <- parameters$treatment_group
 
 
   # levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
@@ -155,9 +132,7 @@ if (type %in% c("parameter_settings_description", "all")) {
     slip_in_text(treatment_group, style = "Default Paragraph Font", pos = "after") %>%
     slip_in_text(paste0(". The PLS-DA model will be performed to find a linear transformation on the compounds to discriminant the ",treatment_group," group."), style = "Default Paragraph Font", pos = "after")
 
-  if(!exists("scaling_method_name")){
-    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
-  }
+
   doc <- doc %>%
     body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
     slip_in_text(scaling_method_name, style = "Default Paragraph Font", pos = "after") %>%
@@ -193,65 +168,11 @@ if (type %in% c("result_summary", "all")) {
   if (is.null(doc)) {
     doc <- read_docx()
   }
-  if(!exists("scaling_method_name")){
-    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
-  }
-
-
-
-  if(type == "all"){
-    Q2 =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Predictive Accuracy")]]
-    R2 =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on Y")]]
-    variance =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on X")]]
-
-    n_perm = length(parameters$perm_plot$data$x[[1]])
-
-    best_predI = which.max(Q2)
-    perm_summary = list(
-      pQ2Y = parameters$perm_plot$layout$pQ2,
-      pR2Y = parameters$perm_plot$layout$pR2
-    )
-
-  }
-
-
-
-
-  doc <- doc %>%
-    body_add_par("Result Summary: ", style = "heading 3") %>%
-    body_add_par(paste0("The dataset was first scaled using ",scaling_method_name,". Then the Partial Least Square - Discriminant Analysis (PLS-DA) was performed on the scaled dataset. "), style = "Normal", pos = "after")  %>%
-    slip_in_text(paste0("When the number of predictive components equals to ",which.max(Q2),", the model achieves the highest Q2 score. In this model, the R2X (variances explained), R2Y, and Q2 (cum) is ",cumsum(variance)[which.max(Q2)],", ",R2[which.max(Q2)]," and ", max(Q2),", respectively. "), style = "Default Paragraph Font", pos = "after")%>%
-    slip_in_text(paste0("See Figure ",figure_index,", Figure ",figure_index+1, " and Figure ",figure_index+2," for more details."), style = "Default Paragraph Font", pos = "after")
 
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
-    body_add_par("Scores plot. It can be used to visually validate the fitness of the PLS-DA model. If the between-group variation is obvious, it indicates a goodness of fit. Samples colors/shapes/sizes with 95% confidence intervals can be added to visualize the sample clusters.", style = "Normal", pos = "after")
-
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("Loadings plot. It summarizes the linear relationship/similarity between the compounds. Compounds colors/shapes/sizes with 95% confidence intervals can be added afterwards to visualize the compound clusters. Together with the scores plot (Figure ",figure_index,"), loadings plot can help toidentify compounds contributing to between-group variability based on separations observed between groups in the scores plot. "), style = "Normal", pos = "after")
-
-
-
-
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index+2), style = "Normal", pos = "after") %>%
-    body_add_par("Screes plot. Commonly, R2X and R2Y represent the fraction of variance of the X and Y matrix, respectively, and Q2 represents the predictive accuracy of the model, with cumulative (cum) values of R2X, R2Y and Q2 equating to ~1 indicating an effective model. Please note, when the number of components increase, the total sum of the R2X and R2Y increase, but not necessarily the Q2 as it is cross-validated R2Y. Generally, the higher the Q2 the better the model is. If R2X and R2Y is high but Q2 is too low, it means a crisis of overfitting. ", style = "Normal", pos = "after") %>%
-    body_add_par(paste0("This model achieves a Q2 of ",max(Q2)," at the ", which.max(Q2)," component."), style = "Normal", pos = "after")
-
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index+3), style = "Normal", pos = "after") %>%
-    body_add_par("Vip score plot. The VIP (Variable Importance in Projection) quantifies the contribution of a compound when building the model. Usually, a VIP score greater than one is considered important and (positively) affect classification between the groups.", style = "Normal", pos = "after")%>%
-    body_add_par("On the right hand side of the vip score plot is a simple heatmap, indicating the changing direction of the compounds.", style = "Normal", pos = "after") %>%
-    body_add_par(paste0("This model achieves a Q2 of ",max(Q2)," at the ", which.max(Q2)," component."), style = "Normal", pos = "after")
-
-
-
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index+4), style = "Normal", pos = "after") %>%
-    body_add_par("Permutation test plot. A permutation test can evaluate whether the PLS-DA classification in the designed groups is significantly better than any other random classification in arbitrary groups. ", style = "Normal", pos = "after") %>%
+    body_add_par(paste0("Permutation test plot. A permutation test can evaluate whether the PLS-DA classification in the designed groups is significantly better than any other random classification in arbitrary groups. "), style = "Normal", pos = "after") %>%
     body_add_par(paste0("In our case, ",n_perm," permutations was performed on ",best_predI," components (which achieved the highest Q2 score). The p-value of the R2Y is ",min(perm_summary$pR2Y,1),", while the Q2 (cum) is ",min(perm_summary$pQ2,1),". At least one of the p-values of R2Y and Q2 (cum) less than 0.05 indicates a valid model. Otherwise, it is hard to justify whether the designed dataset is different from a random arbitrarty dataset."), style = "Normal", pos = "after")
-
 
 
 
@@ -298,23 +219,15 @@ if (type == "all") {
     if(grepl("score",figures_paths[i])){
       doc <- doc %>%
         body_add_img(src = figures_paths[i], width = as.numeric(parameters$score_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Scores Plot."), style = "table title")
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": plsda Scores Plot."), style = "table title")
     }else if(grepl("loading",figures_paths[i])){
       doc <- doc %>%
         body_add_img(src = figures_paths[i], width = as.numeric(parameters$loading_plot$layout$width)/100*0.8, height = as.numeric(parameters$loading_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Loadings Plot."), style = "table title")
-    }else if(grepl("scree",figures_paths[i])){
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": plsda Loadings Plot."), style = "table title")
+    }else{
       doc <- doc %>%
         body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Scree Plot."), style = "table title")
-    }else if(grepl("vip",figures_paths[i])){
-      doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA VIP Score Plot."), style = "table title")
-    }else if(grepl("perm",figures_paths[i])){
-      doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Permutation Plot."), style = "table title")
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": plsda Scree Plot."), style = "table title")
     }
 
   }
@@ -328,11 +241,11 @@ if (type == "all") {
 
 
 
-  doc %>% print(target = "report_plsda.docx")
+  doc %>% print(target = "report_plsda_perm.docx")
 }
 
 
-result <- list(text_html = text_html, method_name = "Partial Least Square - Discriminant Analysis (PLS-DA)", table_index = table_index, figure_index = figure_index+3)
+result <- list(text_html = text_html, method_name = "Partial Least Square - Discriminant Analysis (PLS-DA)", table_index = table_index, figure_index = figure_index+1)
 
 
 # }

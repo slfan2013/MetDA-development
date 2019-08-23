@@ -543,6 +543,7 @@ power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
 
     Plotly.newPlot(plot_id, power_plot_data, layout)
         .then(gd => {
+            f
             power_plot_gd = gd
 
             power_plot_parameters = {
@@ -2050,7 +2051,172 @@ plsda_scree_plot_fun = function ({ ys = undefined, texts = undefined, hovertexts
 
 
 
+perm_plot_fun = function ({ obj_perm_plot = undefined,
+    layout = undefined,
+    plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined } = {}) {
 
+
+    var perm = obj_perm_plot.perm_table
+
+    var sim = unpack(perm, 'sim')
+    var y = unpack(perm, "y")
+    var type = unpack(perm, "type")
+    var R2_index = getAllIndexes(type, "R2")
+    var Q2_index = getAllIndexes(type, "Q2")
+    var R2_sim = R2_index.map(x => sim[x])
+    var Q2_sim = Q2_index.map(x => sim[x])
+    var R2_y = R2_index.map(x => y[x])
+    var Q2_y = Q2_index.map(x => y[x])
+
+    var sim_mean = jStat.mean(R2_sim.slice(1))
+    var R2_mean = jStat.mean(R2_y.slice(1))
+    var Q2_mean = jStat.mean(Q2_y.slice(1))
+    var R2_slope = (R2_y[0] - R2_mean) / (1 - sim_mean)
+    var Q2_slope = (Q2_y[0] - Q2_mean) / (1 - sim_mean)
+    var R2_intercept = R2_y[0] - R2_slope
+    var Q2_intercept = Q2_y[0] - Q2_slope
+
+
+
+    var trace_Q2 = {
+        x: Q2_sim.slice(1),
+        y: Q2_y.slice(1),
+        type: "scatter",
+        mode: "markers",
+        marker: {
+            color: "rgba(218,97,86,1)",
+            size: 6,
+            symbol: "circle-open"
+        },
+        hoveron: "points",
+        name: "Q2",
+        legendgroup: "Q2",
+        showlegend: false,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "y"
+    }
+    var trace_Q2_dot = {
+        x: [Q2_sim[0]],
+        y: [Q2_y[0]],
+        type: "scatter",
+        mode: "markers",
+        marker: {
+            color: "rgba(218,97,86,1)",
+            size: 12,
+            symbol: "circle"
+        },
+        hoveron: "points",
+        name: "Q2",
+        legendgroup: "Q2",
+        showlegend: true,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "y"
+    }
+    var trace_Q2_line = {
+        x: [Q2_sim[0], 0],
+        y: [Q2_y[0], Q2_intercept],
+        type: "scatter",
+        mode: "lines",
+        line: {
+            color: "rgba(218,97,86,1)",
+            dash: "dash"
+        },
+        name: "Q2_line",
+        legendgroup: "Q2",
+        showlegend: false,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "skip"
+    }
+    var trace_R2 = {
+        x: R2_sim.slice(1),
+        y: R2_y.slice(1),
+        type: "scatter",
+        mode: "markers",
+        marker: {
+            color: "rgba(112,177,192,1)",
+            size: 6,
+            symbol: "circle-open"
+        },
+        hoveron: "points",
+        name: "R2",
+        legendgroup: "R2",
+        showlegend: false,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "y"
+    }
+    var trace_R2_dot = {
+        x: [R2_sim[0]],
+        y: [R2_y[0]],
+        type: "scatter",
+        mode: "markers",
+        marker: {
+            color: "rgba(112,177,192,1)",
+            size: 12,
+            symbol: "circle"
+        },
+        hoveron: "points",
+        name: "R2",
+        legendgroup: "R2",
+        showlegend: true,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "y"
+    }
+    var trace_R2_line = {
+        x: [R2_sim[0], 0],
+        y: [R2_y[0], R2_intercept],
+        type: "scatter",
+        mode: "lines",
+        line: {
+            color: "rgba(112,177,192,1)",
+            dash: "dash"
+        },
+        name: "R2_line",
+        legendgroup: "R2",
+        showlegend: false,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "skip"
+    }
+
+    var data = [trace_Q2, trace_Q2_dot, trace_Q2_line, trace_R2, trace_R2_dot, trace_R2_line]
+
+
+    Plotly.newPlot(plot_id, data, layout).then(gd => {
+        perm_plot_gd = gd
+
+        perm_plot_parameters = {
+            data: perm_plot_gd.data,
+            layout: perm_plot_gd.layout,
+        }
+
+
+        Plotly.toImage(gd, { format: 'svg' })
+            .then(
+                function (url) {
+                    var perm_plot_url = url
+                    var perm_plot_url2 = perm_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                    perm_plot_url2 = decodeURIComponent(perm_plot_url2);
+
+
+                    if (!quick_analysis) {
+                        plot_url.perm_plot = btoa(unescape(encodeURIComponent(perm_plot_url2)))
+                        files_sources[6] = plot_url.perm_plot
+                    } else {
+                        plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(perm_plot_url2)))
+                    }
+
+                }
+            )
+
+
+
+    });
+}
 
 
 
@@ -2141,5 +2307,34 @@ vip_plot_fun = function ({ obj_vip_plot = undefined,
 
     layout.showlegend = false
 
-    Plotly.newPlot(plot_id, [trace1, trace2], layout)
+    Plotly.newPlot(plot_id, [trace1, trace2], layout).then(gd => {
+        vip_plot_gd = gd
+
+        vip_plot_parameters = {
+            data: vip_plot_gd.data,
+            layout: vip_plot_gd.layout,
+        }
+
+
+        Plotly.toImage(gd, { format: 'svg' })
+            .then(
+                function (url) {
+                    var vip_plot_url = url
+                    var vip_plot_url2 = vip_plot_url.replace(/^data:image\/svg\+xml,/, '');
+                    vip_plot_url2 = decodeURIComponent(vip_plot_url2);
+
+
+                    if (!quick_analysis) {
+                        plot_url.vip_plot = btoa(unescape(encodeURIComponent(vip_plot_url2)))
+                        files_sources[5] = plot_url.vip_plot
+                    } else {
+                        plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(vip_plot_url2)))
+                    }
+
+                }
+            )
+
+
+
+    });
 }

@@ -39,67 +39,27 @@ y <- factor(p[[treatment_group]])
 if (length(y) == 1) {
   stop("The treatment group you selected has only one level. Please select a treatment group with at least two levels.")
 }
-
-plsda <- ropls::opls(x = e_scale, y = y, predI = min(10, ncol(e_scale)), perm = 0, scaleC = "none", printL = FALSE, plotL = FALSE)
-
-
-
-variance <- plsda@modelDF$R2X
-R2 <- plsda@modelDF$`R2Y(cum)`
-Q2 <- plsda@modelDF$`Q2(cum)`
-
-scores <- plsda@scoreMN
-loadings <- plsda@loadingMN
-
-n_perm = 100
-plsda_best <- ropls::opls(x = e_scale, y = y, predI = which.max(Q2), perm = n_perm, scaleC = "none", printL = FALSE, plotL = FALSE)
-
-perm_table = data.table(sim = plsda_best@suppLs$permMN[,"sim"], y = c(plsda_best@suppLs$permMN[,"R2Y(cum)"], plsda_best@suppLs$permMN[,"Q2(cum)"]), type = rep(c("R2", "Q2"), each = length(plsda_best@suppLs$permMN[,"R2Y(cum)"])))
+best_predI = which.max(Q2)
+plsda_perm <- ropls::opls(x = e_scale, y = y,  predI = best_predI, perm = n_perm, scaleC = "none", printL = FALSE, plotL = FALSE)
 
 
-vips <- plsda_best@vipVn
-vip_table <- data.table(index = 1:nrow(f), label = f$label, vip = vips)
-vip_table <- vip_table[order(vips, decreasing = TRUE), ]
+perm_table = data.table(sim = plsda_perm@suppLs$permMN[,"sim"], y = c(plsda_perm@suppLs$permMN[,"R2Y(cum)"], plsda_perm@suppLs$permMN[,"Q2(cum)"]), type = rep(c("R2", "Q2"), each = length(plsda_perm@suppLs$permMN[,"R2Y(cum)"])))
 
-vip_heatmap <- t(apply(e, 1, function(x) {
-  order(by(x, y, mean))
-}))
-colnames(vip_heatmap) <- levels(y)
-vip_heatmap <- vip_heatmap[order(vips, decreasing = TRUE), ]
-
-
-
-
-sample_scores <- plsda@scoreMN
-sample_scores <- data.table(sample_scores)
-rownames(sample_scores) <- make.unique(p$label)
-
-compound_loadings <- plsda@loadingMN
-compound_loadings <- data.table(compound_loadings)
-rownames(compound_loadings) <- make.unique(f$label)
-
-fwrite(sample_scores, "sample_scores.csv", col.names = TRUE, row.names = TRUE)
-fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE, row.names = TRUE)
 
 
 
 report_html <- call_fun(parameter = list(
-  scaling_method = scaling_method,
-  treatment_group = treatment_group,
-  variance = variance,
-  R2 = R2,
-  Q2 = Q2,
-  vips = vips,
   n_perm = n_perm,
-  best_predI = which.max(Q2),
-  perm_summary = plsda_best@summaryDF,
+  best_predI = best_predI,
+  perm_summary = plsda_perm@summaryDF,
+  figure_index = 5,
   type = "result_summary",
-  fun_name = "report_plsda"
-))$text_html
+  fun_name = "report_plsda_perm"
+))$text_html[2]
 
 
 
-if (exists("score_plot")) { # this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
+if (exists("perm_plot")) { # this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
 
 
@@ -415,7 +375,8 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
   result <- jsonlite::toJSON(list("score_plot.svg" = score_plot_result, "scree_plot.svg" = scree_plot_result, "loading_plot.svg" = loading_plot_result), auto_unbox = TRUE, force = TRUE)
 } else {
   result <- list(
-    results_description = report_html, p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance, R2 = R2, Q2 = Q2, vip_table = vip_table, vip_heatmap = vip_heatmap, vip_heatmap_text = levels(y),perm_table = perm_table, perm_summary =  plsda_best@summaryDF
+    results_description = report_html, perm_table = perm_table,
+    perm_summary =  plsda_perm@summaryDF
   )
 }
 

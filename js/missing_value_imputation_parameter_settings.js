@@ -14,3 +14,6 @@ var defination_of_missing_value_onchange = function () {
 
 
 }
+
+
+$("#parameter_settings_description").load(window.location.href.split("#")[1] + "_parameter_settings_description.html", init_selectpicker)

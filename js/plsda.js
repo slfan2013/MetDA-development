@@ -29,26 +29,30 @@ plsda_append_results = function (obj, session) {
 
 
     // for downloads.
-    files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", plot_url.score_plot, plot_url.loading_plot, plot_url.scree_plot];
-    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg', 'loading_plot.svg', 'scree_plot.svg']
+    files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", plot_url.score_plot, plot_url.loading_plot, plot_url.scree_plot, plot_url.vip_plot, plot_url.perm_plot];
+    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg', 'loading_plot.svg', 'scree_plot.svg', 'vip_plot.svg', 'perm_plot.svg']
     zipfile_name = "plsda_results.zip"
     $("#download_results").off("click").on("click", function () {
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.score_plot = score_plot_parameters
         parameters.loading_plot = loading_plot_parameters
         parameters.scree_plot = scree_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none'])
+        parameters.vip_plot = vip_plot_parameters
+        parameters.perm_plot = perm_plot_parameters
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none','none','none'])
     })
 
 
     fold_name = "plsda"
-    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "image/svg+xml", "image/svg+xml", "image/svg+xml"]
+    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml"]
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.score_plot = score_plot_parameters
         parameters.loading_plot = loading_plot_parameters
         parameters.scree_plot = scree_plot_parameters
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none'])
+        parameters.vip_plot = vip_plot_parameters
+        parameters.perm_plot = perm_plot_parameters
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none','none','none'])
     })
 
 

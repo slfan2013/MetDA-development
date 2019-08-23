@@ -91,6 +91,14 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         var plot_id = "vip_plot"
 
 
+                        if($("#vip_plot_explanation_html").length==0){
+                            $("#vip_plot_explanation").append("<div id='vip_plot_explanation_html'></div>")
+                        }
+                        $("#vip_plot_explanation_html").html(obj_vip_plot.results_description[4])
+
+
+
+
                         vip_plot_fun({ obj_vip_plot: obj_vip_plot, layout: layout, plot_id: plot_id })
 
 

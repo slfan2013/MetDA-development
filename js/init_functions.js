@@ -654,32 +654,51 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
     }
     when_get_allResults_done()
   } else {
-    for (var i = 0; i < index_of_link.length; i++) {
-      Papa.parse(files[index_of_link[i]], {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        error: function (err, file, inputElem, reason) {
-          console.log("save_results Error: ")
-          console.log(err)
-        },
-        complete: function (results) {
-          console.log(results)
-          console.log("complete")
-          allResults.push(results.data);
-          if (allResults.length == index_of_link.length) {
-            // Do whatever you need to do
-            console.log("csv download finished. HERE")
-            console.log(allResults)
-            //console.log(data.node.original.id)
-            for (var j = 0; j < index_of_not_link.length; j++) {
-              allResults.push(files_sources[index_of_not_link[j]])
+    
+      download_files = function(file_link){
+        Papa.parse(file_link, {
+          download: true,
+          header: true,
+          skipEmptyLines: true,
+          error: function (err, file, inputElem, reason) {
+            console.log("save_results Error: ")
+            console.log(err)
+          },
+          complete: function (results) {
+            console.log(results)
+            console.log("complete")
+            allResults.push(results.data);
+            
+
+            if (allResults.length == index_of_link.length) {
+              // Do whatever you need to do
+              console.log("csv download finished. HERE")
+              console.log(allResults)
+              //console.log(data.node.original.id)
+              for (var j = 0; j < index_of_not_link.length; j++) {
+                allResults.push(files_sources[index_of_not_link[j]])
+              }
+              when_get_allResults_done()
+            }else{
+              i = i + 1
+              download_files(files[index_of_link[i]])
             }
-            when_get_allResults_done()
           }
-        }
-      });
-    }
+        });
+      }
+
+      var i = 0
+    //while(i<index_of_link.length){
+
+      file_link = files[index_of_link[i]]
+      download_files(file_link)
+
+
+
+     
+
+    
+   
   }
 }
 

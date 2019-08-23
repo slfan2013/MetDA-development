@@ -133,6 +133,18 @@ fwrite(summary_data, "summary_data.csv", col.names = TRUE)
 
 
 
+report_html = call_fun(parameter = list(
+  defination_of_missing_other_than = defination_of_missing_other_than,
+  defination_of_missing_value = defination_of_missing_value,
+  defination_of_missing_value_values_less_than = defination_of_missing_value_values_less_than,
+  missing_value_imputation_method = missing_value_imputation_method,
+  remove_missing_values_more_than = remove_missing_values_more_than,
+  remove_missing_values_more_than_value = remove_missing_values_more_than_value,
+  summary_data = summary_data,
+  type = "result_summary",
+  fun_name = "report_missing_value_imputation"
+))$text_html
+
 
 # if(grepl("temp_project_", project_id)){ # this means this is in and out, and we need to put everything to the metda_project so that the report generaters can make reports.
 #
@@ -259,7 +271,7 @@ fwrite(summary_data, "summary_data.csv", col.names = TRUE)
 # }else{
 #
 # }
-result = list(results_description = paste0(nrow(e) - nrow(e_imp), " compounds excluded."))
+result = list(results_description = report_html)
 
 
 
