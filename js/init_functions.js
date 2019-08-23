@@ -607,7 +607,7 @@ update_projects_table = function (id = "projects_table", call_back = when_projec
           table_html = table_html + "</tr>"
         }
         table_html = table_html + "</tbody>"
-        console.log(table_html)
+        //console.log(table_html)
       }
       
       $("#" + id).html(table_html)
