@@ -1,6 +1,5 @@
 PLOT_NAME_layout1 = PLOT_NAME_obj_global
-console.log("HERE")
-console.log(PLOT_NAME_layout1.xaxis.autorange)
+
 PLOT_NAME_layout2 = {
     plot_bgcolor: $("#PLOT_NAME_plot_bgcolor").spectrum("get").toRgbString(),
     paper_bgcolor: $("#PLOT_NAME_paper_bgcolor").spectrum("get").toRgbString(),
@@ -100,11 +99,7 @@ PLOT_NAME_layout2 = {
         orientation:$("#PLOT_NAME_legend_orientation"),
         x: $("#PLOT_NAME_legend_x").val(),
         y: $("#PLOT_NAME_legend_y").val(),
-    },
-    traces: PLOT_NAME_traces
+    }
 }
 PLOT_NAME_layout = mergeDeep(PLOT_NAME_layout1,PLOT_NAME_layout2)
-console.log("HERE2")
-console.log(PLOT_NAME_layout1.xaxis.autorange)
-console.log("HERE3")
-console.log(PLOT_NAME_layout.xaxis.autorange)
+PLOT_NAME_layout.traces = PLOT_NAME_traces

@@ -26,11 +26,11 @@
                   session.getObject(function (obj) {
                      console.log(obj)
                      localStorage['user_id'] = new_user_id
-                     //location.reload();
+                     location.reload();
                   })
                }).fail(function (e) {
-                Swal.fire('Oops...', e.responseText, 'error')
-            })
+                  Swal.fire('Oops...', e.responseText, 'error')
+               })
 
             }
 
@@ -39,55 +39,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             //$("#home_content").load("home.html")
             $("nav").load("nav.html", function () {
-               init_ripples()
+               //init_ripples()
                function load_page_by_url() {
-                  console.log("load_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_urlload_page_by_url")
                   $(".contents").empty();
                   if (window.location.href.split("#")[1] === undefined || window.location.href.split("#")[1] === "" || window.location.href.split("#")[1] === "home") {
                      //$("#home_content").show();
@@ -112,7 +67,6 @@
 
                   if (['home', 'one_click'].includes(window.location.href.split("#")[1]) || localStorage['big_category'] === 'in_and_out') {
                      $("#navbarDropdownMenuLink").hide()
-
                   } else {
                      $("#navbarDropdownMenuLink").show()
                      $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview', 'one_click', 'missing_value_imputation', 'pca', 'student_t_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'mann_whitney_test', 'data_subsetting'], ['Project Overview', 'One-Click Automated Analysis', 'Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
@@ -121,11 +75,10 @@
                }
                load_page_by_url();
                window.addEventListener('hashchange', load_page_by_url, false);
-               clearInterval(check_loaded_interval); $("#loading").hide(); $("#content").show();
-
+               clearInterval(check_loaded_interval); 
+               $("#loading").hide(); 
+               $("#content").show();
             })
-
-
          }
       }, 100);
    </script>
@@ -204,6 +157,9 @@
          // stop link reloading the page
          event.preventDefault();
       }
+
+      
+
    </script>
 
 </body>

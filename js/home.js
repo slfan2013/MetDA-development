@@ -37,7 +37,7 @@ $.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (d
     //ddd = data
     category_names = Object.keys(data.methods_structure)
     headers = Object.keys(data.methods_structure[category_names[0]].data_subsetting)
-    
+
     method_tab_panes = ""
     for (var cat = 0; cat < category_names.length; cat++) {
         console.log(cat)
@@ -110,29 +110,33 @@ $.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (d
 create_project = function () {
     // use R to validate the new project name.
 
-    ocpu.call("call_fun", {parameter:{
-        user_id: localStorage['user_id'],
-        new_name: $("#new_project_name").val(),
-        fun_name:"check_new_project_name"
-    }}, function (session) {
+    ocpu.call("call_fun", {
+        parameter: {
+            user_id: localStorage['user_id'],
+            new_name: $("#new_project_name").val(),
+            fun_name: "check_new_project_name"
+        }
+    }, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             ooo = obj
             console.log(obj)
             // if success, then make the temprary project_id a new id and associated new project to this temp.
             if (obj[0] === 'good') {
-                ocpu.call("call_fun", {parameter:{
-                    user_id: localStorage['user_id'],
-                    new_name: $("#new_project_name").val(),
-                    temp_project_id: localStorage['temp_project_id'],
-                    fun_name:"create_new_project"
-                }}, function (session2) {
+                ocpu.call("call_fun", {
+                    parameter: {
+                        user_id: localStorage['user_id'],
+                        new_name: $("#new_project_name").val(),
+                        temp_project_id: localStorage['temp_project_id'],
+                        fun_name: "create_new_project"
+                    }
+                }, function (session2) {
                     console.log(session2)
                     session2.getObject(function (obj2) {
                         ooo = obj2
                         console.log(obj2)
                         update_projects_table()
-                        $('#create_new_project_modal').modal('toggle');
+                        $('#create_new_project_collapse').collapse('toggle');
                     })
                 }).fail(function (e2) {
                     Swal.fire('Oops...', e2.responseText, 'error')
@@ -147,27 +151,82 @@ create_project = function () {
 
 }
 
+when_projects_table_click_renamed = function (project_id) {
+    var new_project_name = prompt("New Project Name:", "input a new project name");
+    if(new_project_name == null || new_project_name == ""){
+        console.log("rename canceled.")
+    }else{
+        // check if new name is taken.
+        console.log(new_project_name)
+        
+        if(project_names.includes(new_project_name)){
+            alert("The project name "+new_project_name+" has been taken. ")
+            when_projects_table_click_renamed(project_id)
+        }else{
+            // now everything is good. Use R to change project name. 
+            ocpu.call('call_fun',{parameter:{
+                user_id: localStorage.user_id,
+                project_id: project_id,
+                new_project_name: new_project_name,
+                fun_name:"rename_project"
+            }},function(session){
+                console.log("rename_project")
+                session.getObject(function(obj){
+                    console.log(obj)
+                    update_projects_table()
+                })
+            }).fail(function (e) {
+                Swal.fire('Oops...', e.responseText, 'error')
+            })
 
+        }
+        
 
-when_projects_table_clicked = function () {
-    $(this).addClass('selected').siblings().removeClass('selected');
-    var project_id = $(this).find('td:first').html();
-    localStorage['activate_project_id'] = project_id
-    localStorage['activate_data_id']='e.csv'
+    }
+}
+
+when_projects_table_click_deleted = function (project_id) {
+    console.log(project_id)
+    var confirm_to_delete = confirm("Are you sure to DELETE?");
+    console.log(confirm_to_delete)
+    if(confirm_to_delete){
+        // now everything is good. Use R to change project name. 
+        ocpu.call('call_fun',{parameter:{
+            user_id: localStorage.user_id,
+            project_id: project_id,
+            fun_name:"delete_project"
+        }},function(session){
+            console.log("delete_project")
+            session.getObject(function(obj){
+                console.log(obj)
+                update_projects_table()
+            })
+        }).fail(function (e) {
+            Swal.fire('Oops...', e.responseText, 'error')
+        })
+    }
+}
+
+when_projects_table_click_selected = function (project_id) {
     // here change the p and f.
-    ocpu.call("call_fun",{parameter:{
-        project_id:localStorage['activate_project_id'],
-        fun_name:"get_p_and_f"
-    }},function(session){
-        session.getObject(function(obj){
+    ocpu.call("call_fun", {
+        parameter: {
+            project_id: project_id,
+            fun_name: "get_p_and_f"
+        }
+    }, function (session) {
+        session.getObject(function (obj) {
+            ooo = obj
             change_big_category('project')
-            localStorage['p'] = JSON.stringify(obj.p) 
-            localStorage['f'] = JSON.stringify(obj.f) 
+            localStorage['p'] = JSON.stringify(obj.p)
+            localStorage['f'] = JSON.stringify(obj.f)
+            localStorage['activate_project_id'] = project_id
+            localStorage['activate_data_id'] = 'e.csv'
             window.location.href = "#project_overview";
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')
-    }) 
+    })
 }
 update_projects_table()
 
@@ -176,7 +235,7 @@ change_big_category = function (category) {
     localStorage['big_category'] = category
 }
 
-go_to_one_click = function(){
+go_to_one_click = function () {
     change_big_category("one_click")
     window.location.href = "#one_click";
 }

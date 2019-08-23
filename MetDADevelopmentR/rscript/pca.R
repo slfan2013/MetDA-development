@@ -65,19 +65,6 @@ report_html = call_fun(parameter = list(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 if(exists("score_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
 
@@ -235,22 +222,6 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
     plot_id= ""
 
   )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

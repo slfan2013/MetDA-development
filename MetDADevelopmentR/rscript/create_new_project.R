@@ -102,7 +102,7 @@ userinfoList <- jsonlite::fromJSON(userinfoUrl)
 names(userinfoList)[1:2] <- c("_id", "_rev")
 
 
-table_name = paste("metda_userinfo_",user_id,".csv")
+table_name = paste0("metda_userinfo_",user_id,".csv")
 
 write.csv(userinfo, table_name, row.names = FALSE)
 

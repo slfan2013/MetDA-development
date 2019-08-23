@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="nav nav-pills nav-pills-primary flex-column">
+                    <li class="nav-item"><a class="nav-link" href="#vip_plot_general" data-toggle="tab">General</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#vip_plot_traces" data-toggle="tab">Traces</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="#vip_plot_explanation"
+                            data-toggle="tab">Explanation</a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content">
+                    <div class="tab-pane" id="vip_plot_general">
+                        <div id="vip_plot_to_be_loaded"></div>
+                    </div>
+                    <div class="tab-pane" id="vip_plot_traces">
+                        <div id="vip_plot_traces_accordion" role="tablist">
+                            <div class="card-collapse">
+                                <div class="card-header" role="tab" id="vip_plot_traces_heading">
+                                    <h5 class="mb-0">
+                                        <a data-toggle="collapse" href="#vip_plot_traces_collapse" aria-expanded="true"
+                                            aria-controls="vip_plot_traces_collapse">
+                                            Plot Options
+                                            <i class="material-icons">keyboard_arrow_down</i>
+                                        </a>
+                                    </h5>
+                                </div>
+                                <div id="vip_plot_traces_collapse" class="collapse show" role="tabpanel"
+                                    aria-labelledby="vip_plot_traces_heading" data-parent="#vip_plot_traces_accordion">
+
+
+
+                                    <div class="form-group">
+                                        <label for="n_vip">Number of Compounds</label>
+                                        <input type="number" class="form-control" id="n_vip"
+                                            onchange="vip_plot_debounced()">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="colorscale">Color Scale</label>
+                                        <select class="form-control selectpicker" data-style="btn btn-link" id="colorscale" onchange="vip_plot_debounced()">
+                                            <option selected>Portland</option>
+                                            <option>Blackbody</option>
+                                            <option>Viridis</option>
+                                            <option>Hot</option>
+                                            <option>Jet</option>
+                                        </select>
+                                    </div>
+
+
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="tab-pane active" id="vip_plot_explanation"> </div>
+                    <button class="btn btn-primary btn-sm" onclick="save_vip_plot_style()">Set This Style As
+                        Default</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div id="vip_plot"></div>
+    </div>
+</div>
+<script src="js/vip_plot.js"></script>

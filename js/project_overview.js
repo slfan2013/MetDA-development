@@ -268,11 +268,9 @@ ocpu.call("call_fun", {parameter:{
     fun_name:"get_tree_structure"
 }}, function (session) {
     session.getObject(function (obj) {
+        $("#project_name").text("project name: "+obj[0].text)
         update_jstree(obj)
-
-
-
-
+        
     })
 })
 

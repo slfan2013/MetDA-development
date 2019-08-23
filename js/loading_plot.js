@@ -12,9 +12,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         // assign the default value for pca loading plot
         ocpu.call("call_fun", {parameter:{
             user_id: localStorage.user_id,
-            fun_name:"get_pca_loading_plot_style"
+            fun_name:"get_"+window.location.href.split("#")[1]+"_loading_plot_style"
         }}, function (session) {
             session.getObject(function (loading_plot_obj) {
+                
+                loading_plot_obj = prepare_layout(loading_plot_obj)
                 loading_plot_obj_global = loading_plot_obj
                 loading_plot_traces = loading_plot_obj.traces
 
@@ -62,20 +64,12 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         }).fail(function (e2) {
             Swal.fire('Oops...', e2.responseText, 'error')
         })
-        /*loading_plot_fun({
-                x: x, y: y, color_by: loading_plot_color_by, color_values: loading_plot_color_values, color_levels: loading_plot_color_levels,
-                shape_by: loading_plot_shape_by, shape_values: loading_plot_shape_values, shape_levels: loading_plot_shape_levels,
-                size_by: loading_plot_size_by, size_values: loading_plot_size_values, size_levels: loading_plot_size_levels,
-                ellipse_group: loading_plot_ellipse_group,
-                labels: loading_plot_labels,
-                layout: loading_plot_layout,
-                plot_id: loading_plot_plot_id
-            })*/
+
 
         gather_page_information_to_loading_plot = function () {
 
-            x = unpack(obj_loading_plot.compound_loadings, "PC" + $("#loading_plot_pcx").val())
-            y = unpack(obj_loading_plot.compound_loadings, "PC" + $("#loading_plot_pcy").val())
+            var x = unpack(obj_loading_plot.compound_loadings, "p" + $("#loading_plot_pcx").val())
+            var y = unpack(obj_loading_plot.compound_loadings, "p" + $("#loading_plot_pcy").val())
 
 
             if (!$("#loading_plot_traces_color_by_info").is(":checked")) {
@@ -202,11 +196,11 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
         loading_plot_debounced = _.debounce(gather_page_information_to_loading_plot, 250, { 'maxWait': 1000 }); // this must be a global object.
 
 
-        f_column_names = Object.keys(obj_loading_plot.f[0])
-        f_column_unique = f_column_names.map(x => unpack(obj_loading_plot.f, x))
-        f_column_unique_length = f_column_unique.map(x => x.filter(unique).length)
+        var f_column_names = Object.keys(obj_loading_plot.f[0])
+        var f_column_unique = f_column_names.map(x => unpack(obj_loading_plot.f, x))
+        var f_column_unique_length = f_column_unique.map(x => x.filter(unique).length)
 
-        loading_plot_color_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="loading_plot_color_levels" data-style="btn btn-link">'
+        var loading_plot_color_levels_div = '<div class="form-group" style="margin:0;border:0;padding:0"><select class="form-control selectpicker" id="loading_plot_color_levels" data-style="btn btn-link">'
         for (var i = 0; i < f_column_names.length; i++) {
             if (f_column_names[i] !== 'label') {
                 loading_plot_color_levels_div = loading_plot_color_levels_div + '<option>' + f_column_names[i] + '</option>'
