@@ -725,7 +725,8 @@ volcano_plot_fun = function ({
             data[5].text.push(temp_text)
         }
     }
-    layout.xaxis.range = [Math.log2(jStat.min(fold_change)) - 0.1, Math.log2(jStat.max(fold_change) + 0.1)]
+    layout.xaxis.range = [Math.log2(jStat.min(fold_change)) - 0.1, Math.log2(jStat.max(fold_change))+0.1]
+    
     data.push({ // significant line.
         x: layout.xaxis.range,
         y: [-Math.log10(p_value_cut_off), -Math.log10(p_value_cut_off)],
@@ -743,7 +744,7 @@ volcano_plot_fun = function ({
 
 
 
-    Plotly.newPlot(plot_id, data, layout, { editable: true })
+    Plotly.newPlot(plot_id, data, layout, { editable: false })
 
 
         .then(gd => {
@@ -801,7 +802,7 @@ volcano_plot_fun = function ({
 
 
         });
-
+/*
     myPlot.on('plotly_click', function (data, event) {//https://plot.ly/javascript/text-and-annotations/
         eee = event
         ddd = data
@@ -832,12 +833,12 @@ volcano_plot_fun = function ({
             if (foundCopy) return;
         }
         Plotly.relayout(plot_id, 'annotations[' + newIndex + ']', newAnnotation)
-        /*.then(function(gg){
-            ggg = gg
-            save the new plot here.
-        });*/
+        //.then(function(gg){
+         //   ggg = gg
+        //    save the new plot here.
+        //});
     })
-
+*/
 
 
 

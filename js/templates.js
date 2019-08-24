@@ -559,7 +559,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         }
 
 
-        ocpu.call("call_fun", { parameter: parameter }, function (session) {
+        ocpu.call("call_fun_temp", { parameter: parameter }, function (session) {
             sss = session
             console.log(session)
             console.log("SUBMIT")
@@ -567,13 +567,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 o = obj
                 $("#submit").text("Submit")
                 $("#submit").prop('disabled', false);
-
                 $("#results_card").show();
-
                 results_card_body_load(window.location.href.split("#")[1], obj, session)
                 localStorage.setItem('parameter', JSON.stringify(parameter))
-
-
             })
         }).fail(function (e) {
             Swal.fire('Oops...', e.responseText, 'error')

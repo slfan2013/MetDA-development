@@ -97,8 +97,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
             gather_page_information_to_score_plot = function () {
 
-                var x = unpack(obj_score_loading_plot.sample_scores, "p" + $("#score_plot_pcx").val())
-                var y = unpack(obj_score_loading_plot.sample_scores, "p" + $("#score_plot_pcy").val())
+                var x = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcx").val())
+                var y = unpack(obj_score_loading_plot.sample_scores, "PC" + $("#score_plot_pcy").val())
 
 
                 if (!$("#score_plot_traces_color_by_info").is(":checked")) {

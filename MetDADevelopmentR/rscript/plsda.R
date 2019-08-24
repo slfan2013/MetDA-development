@@ -418,4 +418,3 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
     results_description = report_html, p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance, R2 = R2, Q2 = Q2, vip_table = vip_table, vip_heatmap = vip_heatmap, vip_heatmap_text = levels(y),perm_table = perm_table, perm_summary =  plsda_best@summaryDF
   )
 }
-

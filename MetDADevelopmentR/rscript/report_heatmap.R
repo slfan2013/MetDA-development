@@ -1,6 +1,45 @@
-# report_heatmap <- function(project_id = "report heatmap21565307593", fold_id = "Heatmap1565307638", table_index = 1, figure_index = 1, doc = NULL) {
-  pacman::p_load(data.table, officer, magrittr, magick)
+# report_heatmap = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
 
+if (!exists("clust_method")) {
+  clust_method <- NULL
+}
+if (!exists("dist_method")) {
+  dist_method <- NULL
+}
+if (!exists("scaling_method")) {
+  scaling_method <- NULL
+}
+
+
+
+if (!exists("doc")) {
+  doc <- NULL
+}
+if (!exists("table_index")) {
+  table_index <- 1
+}
+if (!exists("figure_index")) {
+  figure_index <- 1
+}
+if (!exists("project_id")) {
+  project_id <- ""
+}
+if (!exists("fold_id")) {
+  fold_id <- NULL
+}
+text_html <- ""
+
+
+
+
+# save(parameter, file = "report_heatmap.RData")
+
+# load("report_heatmap.RData")
+pacman::p_load(data.table, officer, magrittr)
+
+
+
+if (type == "all") {
   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
@@ -10,142 +49,273 @@
   data_ids <- id[parent == fold_id]
 
 
-  # result_summary <- read.csv(
-  #   paste0(
-  #     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-  #     project_id,
-  #     "/", data_ids
-  #   ),
-  #   row.names = 1
-  # )
-
-  sample_order_id = data_ids[grepl("sample_order", data_ids)]
-
-  sample_order = read.csv(
+  result <- fread(
     paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
-      "/", sample_order_id
-    ),
-    row.names = 1
+      "/", data_ids[grepl("csv",data_ids)]
+    )
   )
 
-  compound_order_id = data_ids[grepl("compound_order", data_ids)]
-
-  compound_order = read.csv(
-    paste0(
-      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-      project_id,
-      "/", compound_order_id
-    ),
-    row.names = 1
-  )
+  input_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = parameters$activate_data_id, fun_name = "get_fold_seq")), paste0, collapse = "->")
+  output_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = data_ids, fun_name = "get_fold_seq")), paste0, collapse = "->")
 
 
+  test_type <- parameters$test_type
+  treatment_group <- parameters$treatment_group
+  n <- as.numeric(parameters$n)
+  power <- as.numeric(parameters$power)
 
+  fdr_check <- parameters$fdr_check
+  fdr_criterion <- as.numeric(parameters$fdr_criterion)
 
-  parameters <- projectList$project_structure[[which(id %in% fold_id)]]$parameter
-
-
-
-  # fold_seq <- get_fold_seq(project_id, parameters$activate_data_id)
-  fold_seq <- call_fun(parameter = list(project_id=project_id, file_id = parameters$activate_data_id, fun_name="get_fold_seq"))
-
-  # paste0(sapply(get_fold_seq(project_id, parameters$activate_data_id), paste0, collapse = "->"), "; ")
+  if(power>1){
+    power = power/100
+  }
+  sig_level <- as.numeric(parameters$sig_level)
+  # levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
+}
 
 
 
+if (type %in% c("method_description", "all")) {
+  if (is.null(doc)) {
+    doc <- read_docx()
+  }
+  if (type %in% "all") {
+    doc <- doc %>%
+      body_add_par("Heatmap -- Dendrogram Summary: ", style = "heading 1")
+  }
+
+  doc <- doc %>%
+    body_add_par("Heatmaps are an effective tool for displaying feature variation among groups of samples. The basic concept of a heatmap is to represent relationships among variables as a color image. Rows and columns typically are reordered according to the dendrograms so that variables and/or samples with similar profiles are closer to one another, making these profiles more visible. Each value in the data matrix is displayed as a color, making it possible to view the patterns graphically.", style = "Normal", pos = "after") %>%
+    body_add_par("Heatmaps uses an agglomerative hierarchical clustering algorithm to order and display the data as a dendrogram. Two important factors to consider when constructing a heatmap are the type of distance measure and the agglomeration method used. For details on the various methods available see [https://bmcbioinformatics.biomedcentral.com/articles/10.1186/1471-2105-13-S16-S10].", style = "Normal", pos = "after")
+
+  if (type %in% "method_description") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
+  }
+}
+if (type %in% c("parameter_settings_description", "all")) {
   if (is.null(doc)) {
     doc <- read_docx()
   }
 
-
-
-
-  doc <- doc %>%
-    body_add_par("Heatmap Plot Visualization Summary ", style = "heading 1") %>%
-    body_add_par("Input Statistics: ", style = "Normal") %>%
-    slip_in_text(paste0(sapply(fold_seq, paste0, collapse = "->"), "; "), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Scaling Method: ", style = "Normal") %>%
-    slip_in_text(parameters$scaling_method, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Dendrogram Clustering Method: ", style = "Normal") %>%
-    slip_in_text(parameters$clust_method, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Dendrogram Distance Method: ", style = "Normal") %>%
-    slip_in_text(parameters$dist_method, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-
-
-  if(length(parameters$heatmap_plot$sample_annotation)>0){
+  if (type == "all") {
     doc <- doc %>%
-      body_add_par("Sample Annotations: ", style = "Normal") %>%
-      slip_in_text(paste0(parameters$heatmap_plot$sample_annotation, collapse = ", "), style = "Default Paragraph Font", pos = "after") %>%
-      slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-  }
+      body_add_par("Input Summary: ", style = "heading 3") %>%
+      body_add_par("Input Dataset: ", style = "Normal") %>%
+      slip_in_text(input_file_path, style = "Default Paragraph Font", pos = "after")
 
-  if(length(parameters$heatmap_plot$compound_annotation)>0){
+
     doc <- doc %>%
-      body_add_par("compound Annotations: ", style = "Normal") %>%
-      slip_in_text(paste0(parameters$heatmap_plot$compound_annotation, collapse = ", "), style = "Default Paragraph Font", pos = "after") %>%
-      slip_in_text(".", style = "Default Paragraph Font", pos = "after")
+      body_add_par("Output Datasets and Files: ", style = "Normal") %>%
+      slip_in_text(output_file_path, style = "Default Paragraph Font", pos = "after")
   }
 
 
 
   doc <- doc %>%
-    body_add_par("Sample Order: ", style = "Normal") %>%
-    slip_in_text(paste0(parameters$heatmap_plot$order_sample_by, collapse = ", "), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Compound Order: ", style = "Normal") %>%
-    slip_in_text(paste0(parameters$heatmap_plot$order_compound_by, collapse = ", "), style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(".", style = "Default Paragraph Font", pos = "after")
+    body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(scaling_method_name, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". Scaling methods are data pretreatment approaches that divide each variable by a factor, the scaling factor, which is different for each variable. They aim to adjust for the differences in fold differences between the different metabolites by converting the data into differences in concentration relative to the scaling factor. It is highly recommended for multivariate statistical analyses. More information is available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/.", style = "Default Paragraph Font", pos = "after")
 
 
 
-  figure_index <- figure_index + 1
-
-
-
-
-
-
-  data_ids = data_ids[grepl("svg",data_ids)]
-  data_ids_name_split <- strsplit(data_ids, "\\.")[[1]]
-  data_ids_name_split1 <- paste0(data_ids_name_split[1:(length(data_ids_name_split) - 1)])
-  data_ids_name <- paste0(substr(data_ids_name_split1, 1, nchar(data_ids_name_split1) - 11 + 1), ".", data_ids_name_split[length(data_ids_name_split)])
-
-  download.file(URLencode(paste0(
-    "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-    project_id,
-    "/", data_ids
-  )), destfile = data_ids_name)
-
-
-  figure <- image_read_svg(data_ids_name, height = 500)
 
 
   doc <- doc %>%
-    body_add_img(src = data_ids_name, width = image_info(figure)$width/72, height = image_info(figure)$height/72) %>%
-    body_add_par(value = paste0("Figure ", figure_index, ": Heatmap Plot ("), style = "table title")%>%
-    body_add_par(value = paste0(sapply(call_fun(parameter = list(project_id=project_id, file_id = data_ids, fun_name="get_fold_seq")), paste0, collapse = "->"), "; "), style = "table title") %>%
-    body_add_par(value = ". ", style = "table title")
+    body_add_fpar(fpar(ftext(" - Agglomeration Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(clust_method, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". Agglomeration is the process by which clusters are merged into larger clusters.", style = "Default Paragraph Font", pos = "after")
+
+
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Distance Function: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(dist_method, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". A distance metric is a non-negative number which measures the difference between two objects (e.g. samples/compounds.)", style = "Default Paragraph Font", pos = "after")
+
+
+
+
+
+
+  # report_heatmap = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
+
+  if (!exists("clust_method")) {
+    clust_method <- NULL
+  }
+  if (!exists("dist_method")) {
+    dist_method <- NULL
+  }
+  if (!exists("scaling_method")) {
+    scaling_method <- NULL
+  }
+
+
+
+  if(!exists("scaling_method_name")){
+    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
+  }
+
+
+
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(scaling_method_name, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". Scaling methods are data pretreatment approaches that divide each variable by a factor, the scaling factor, which is different for each variable. They aim to adjust for the differences in fold differences between the different metabolites by converting the data into differences in concentration relative to the scaling factor. It is highly recommended for multivariate statistical analyses. More information is available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/.", style = "Default Paragraph Font", pos = "after")
+
+
+
+
+  if (type == "parameter_settings_description") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
+  }
+}
+if (type %in% c("result_summary", "all")) {
+  if (is.null(doc)) {
+    doc <- read_docx()
+  }
+
+  doc <- doc %>%
+    body_add_par("Result Summary: ", style = "heading 3") %>%
+    body_add_par(paste0("The statistical powers were estimated for each compound given a sample size of ",n,", and the sample size was estimated based on a target power of ",power,". The effect size of each compound was calculated from the dataset using the treatment group ", treatment_group, '. A significant level of ',sig_level," was used. "), style = "Normal", pos = "after")
+
+  if(fdr_check){
+    doc <- doc %>%
+      slip_in_text(paste0(" Multiple comparision (or false discovery rate, FDR) problem was also taken into account with Benjamini-Hochberg procedure. The FDR was controlled at the level of ",fdr_criterion,". The significant level for each compounds was adjusted accordingly."), style = "Default Paragraph Font", pos = "after")
+  }
+
+  doc <- doc %>%
+    slip_in_text(paste0(" See Table ",table_index, ", Figure ", figure_index, " and ", figure_index+1, " for more detail."), style = "Default Paragraph Font", pos = "after")
+
+  doc <- doc %>%
+    body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
+    body_add_par(" - index: the index of compounds, mainly for sorting the table.", style = "Normal", pos = "after") %>%
+    body_add_par(" - label: compound labels.", style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" - power (n=",n,"): the estimated statistical power given sample size of ",n,"."), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" - n (power=",power,"): the estimated sample size for the target power of ",power*100,"%."), style = "Normal", pos = "after")
+
+
+
+
+  doc <- doc %>%
+    body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" answers the question of What is the necessary per-group sample size for ",power*100,"% power with the observed effect size and at significant level of ",sig_level,"?."), style = "Normal", pos = "after") %>%
+    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power*100,"% power."), style = "Normal", pos = "after")
+
+
+  doc <- doc %>%
+    body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
+    body_add_par(paste0(" answers the question of What is the power for ",n," samples per group with the observed effect size and significant level of ", sig_level,'?. '), style = "Normal", pos = "after") %>%
+    body_add_par(paste0("From the plot, ",signif(sum(result[[3]]>0.8)/nrow(result),digits = 4)*100,"% of compounds achieve at ",power*100,"% statistical power at the sample size of ",n," and significant level of ",sig_level,". "), style = "Normal", pos = "after")
+
+
+  if (type == "result_summary") {
+    content <- docx_summary(doc)
+    par_data <- subset(content, content_type %in% "paragraph")
+    par_data <- par_data[, c("doc_index", "style_name", "text", "level", "num_id") ]
+    par_data <- par_data[!is.na(par_data$style_name), ]
+
+    text_html <- ""
+    tags_begin <- revalue(par_data$style_name, c("heading 3", "Normal"), c("<h3>", "<p>"))
+    tags_end <- revalue(par_data$style_name, c("heading 3", "Normal"), c("</h3>", "</p>"))
+    for (i in 1:length(par_data$style_name)) {
+      text_html <- paste0(text_html, tags_begin[i], par_data$text[i], tags_end[i])
+    }
+
+    text_html = strsplit(text_html,"<p>Figure")[[1]]
+    text_html = unname(sapply(text_html, function(x){
+      if(!is.na(as.numeric(substr(x,1,2)))){
+        return(paste0("<p>Figure",x))
+      }else{
+        return(x)
+      }
+    }))
+
+
+  }
+}
+
+# if this is all, put all the tables and figures here.
+if (type == "all") {
+  doc <- doc %>%
+    body_add_table(value = result[1:10, ], style = "table_template") %>%
+    body_add_par(value = paste0("Table ", table_index, ": First 10 compounds and their estimated statistial powers of having ",n," samples and required sample size for ",power*100,"% power."), style = "table title")
+
+
+
+  figures_paths = data_ids[grepl("svg",data_ids)]
+
+  for(i in 1:length(figures_paths)){
+    download.file(URLencode(paste0(
+      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
+      project_id,
+      "/", figures_paths[i]
+    )), destfile = figures_paths[i])
+
+
+    if(grepl("power",figures_paths[i])){
+      doc <- doc %>%
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds having x% statistical power when having ",n," samples."), style = "table title")
+    }else{
+      doc <- doc %>%
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds needing x samples to achieve a ",power*100,"% statistical power."), style = "table title")
+    }
+
+  }
+
+
+
+
+
+
 
 
 
 
   doc %>% print(target = "report_heatmap.docx")
+}
 
 
+result <- list(text_html = text_html, method_name = "Sample Size Estimation -- Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
 
-  result = list(doc = doc, table_index = table_index, figure_index = figure_index)
+
 # }

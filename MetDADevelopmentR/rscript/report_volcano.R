@@ -1,4 +1,4 @@
-# report_ssize = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
+# report_volcano = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
 
 
 
@@ -22,9 +22,9 @@ text_html <- ""
 
 
 
-save(parameter, file = "report_ssize.RData")
+save(parameter, file = "report_volcano.RData")
 
-# load("report_ssize.RData")
+# load("report_volcano.RData")
 pacman::p_load(data.table, officer, magrittr)
 
 
@@ -39,30 +39,18 @@ if (type == "all") {
   data_ids <- id[parent == fold_id]
 
 
-  result <- fread(
-    paste0(
-      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-      project_id,
-      "/", data_ids[grepl("csv",data_ids)]
-    )
-  )
+  # result <- fread(
+  #   paste0(
+  #     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
+  #     project_id,
+  #     "/", data_ids[grepl("csv",data_ids)]
+  #   )
+  # )
 
   input_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = parameters$activate_data_id, fun_name = "get_fold_seq")), paste0, collapse = "->")
   output_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = data_ids, fun_name = "get_fold_seq")), paste0, collapse = "->")
 
 
-  test_type <- parameters$test_type
-  treatment_group <- parameters$treatment_group
-  n <- as.numeric(parameters$n)
-  power <- as.numeric(parameters$power)
-
-  fdr_check <- parameters$fdr_check
-  fdr_criterion <- as.numeric(parameters$fdr_criterion)
-
-  if(power>1){
-    power = power/100
-  }
-  sig_level <- as.numeric(parameters$sig_level)
   # levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
 }
 
@@ -121,9 +109,34 @@ if (type %in% c("parameter_settings_description", "all")) {
 
 
 
-
+  if(type == "parameter_settings_description"){
     doc <- doc %>%
       body_add_fpar(fpar(ftext(" no parameter needed. Click Submit.", prop = fp_text(bold = TRUE))), style = "Normal")
+  }else if(type=="all"){
+
+    if(is.null(parameters$p_value_data_treatment)){
+      doc <- doc %>%
+        body_add_fpar(fpar(ftext(" - P-value Comparing: ", prop = fp_text(bold = TRUE))), style = "Normal")%>%
+        slip_in_text(paste0(parameters$p_value_data_treatment,". "), style = "Default Paragraph Font", pos = "after")
+    }
+    if(is.null(parameters$fold_change_data_treatment)){
+      doc <- doc %>%
+        body_add_fpar(fpar(ftext(" - Fold Change Comparing: ", prop = fp_text(bold = TRUE))), style = "Normal")%>%
+        slip_in_text(paste0(parameters$fold_change_data_treatment,". "), style = "Default Paragraph Font", pos = "after")
+    }
+
+
+
+
+    doc <- doc %>%
+      body_add_fpar(fpar(ftext(" - P-value Cut-off: ", prop = fp_text(bold = TRUE))), style = "Normal")%>%
+      slip_in_text(paste0(parameters$volcano_plot$p_value_cut_off,". "), style = "Default Paragraph Font", pos = "after")
+
+    doc <- doc %>%
+      body_add_fpar(fpar(ftext(" - Fold Change Cut-off: ", prop = fp_text(bold = TRUE))), style = "Normal")%>%
+      slip_in_text(paste0(parameters$volcano_plot$fold_change_cut_off," (Fold change greater than ",parameters$volcano_plot$fold_change_cut_off," is considered to be large increase, whereas fold change less than 1/",parameters$volcano_plot$fold_change_cut_off,"=",signif(1/as.numeric(parameters$volcano_plot$fold_change_cut_off),2)," is considered to be large decrease)."), style = "Default Paragraph Font", pos = "after")
+
+  }
 
 
 
@@ -160,17 +173,34 @@ if (type %in% c("result_summary", "all")) {
     body_add_par("Result Summary: ", style = "heading 3") %>%
     body_add_par(paste0("Volcano plot shows the relationship between the p-values and the fold changes. See Figure ",figure_index), style = "Normal", pos = "after")
 
+  if(type == "all"){
+    categories <-parameters$volcano_plot$data$x
+
+    doc <- doc %>%
+      body_add_par("Figure ", style = "Normal") %>%
+      slip_in_text(figure_index, style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(" is the volcano plot. There are ", style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(length(categories[[1]]), style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(" compounds significantly increased more than the fold change cut-off, while ", style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(length(categories[[2]]), style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(" compounds significantly decreased more than the fold change cut-off.", style = "Default Paragraph Font", pos = "after") %>%
+      slip_in_text(" The y axis is the -log10 p-values. The higher the more significant. The x axis is the log2 Fold Change. The further from the origin the larger the fold change.", style = "Default Paragraph Font", pos = "after")
+
+
+
+
+  }
 
 
 
 if(type == "result_summary"){
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" Visualize the p-values and fold changes for each compound. The x-axis shows the log2 scale fold change. The further from the origin the larger the fold change. The y-axis is the -log10 p-values. The higher the more significant. Only p-values less than the criterion and fold change greater than the criterion, the dots are colored. See Traces for more options."), style = "Normal", pos = "after")
+    body_add_par(paste0(" Visualize the p-values and fold changes for each compound. The x-axis shows the log2 scale fold change. The further from the origin the larger the fold change. The y-axis is the -log10 p-values. The higher the more significant. Only p-values less than the criterion and fold change greater than the criterion, the dots are colored. See TRACES for more options."), style = "Normal", pos = "after")
 }else if(type == "all"){
   doc <- doc %>%
     body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" Visualize the p-values and fold changes for each compound. The x-axis shows the log2 scale fold change. The further from the origin the larger the fold change. The y-axis is the -log10 p-values. The higher the more significant. Only p-values less than the criterion and fold change greater than the criterion, the dots are colored. See Traces for more options."), style = "Normal", pos = "after")
+    body_add_par(paste0(" Visualize the p-values and fold changes for each compound. The x-axis shows the log2 scale fold change. The further from the origin the larger the fold change. The y-axis is the -log10 p-values. The higher the more significant. Only p-values less than the criterion and fold change greater than the criterion, the dots are colored. See TRACES for more options."), style = "Normal", pos = "after")
 }
 
 
@@ -203,11 +233,6 @@ if(type == "result_summary"){
 
 # if this is all, put all the tables and figures here.
 if (type == "all") {
-  doc <- doc %>%
-    body_add_table(value = result[1:10, ], style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index, ": First 10 compounds and their estimated statistial powers of having ",n," samples and required sample size for ",power*100,"% power."), style = "table title")
-
-
 
   figures_paths = data_ids[grepl("svg",data_ids)]
 
@@ -219,21 +244,17 @@ if (type == "all") {
     )), destfile = figures_paths[i])
 
 
-    if(grepl("power",figures_paths[i])){
+    if(grepl("volcano",figures_paths[i])){
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds having x% statistical power when having ",n," samples."), style = "table title")
-    }else{
-      doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds needing x samples to achieve a ",power*100,"% statistical power."), style = "table title")
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$volcano_plot$layout$width)/100*0.8, height = as.numeric(parameters$volcano_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": volcano plot."))
     }
 
   }
 
 
 
-  doc %>% print(target = "report_ssize.docx")
+  doc %>% print(target = "report_volcano.docx")
 }
 
 

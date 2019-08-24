@@ -218,8 +218,8 @@ when_projects_table_click_selected = function (project_id) {
         session.getObject(function (obj) {
             ooo = obj
             change_big_category('project')
-            localStorage['p'] = JSON.stringify(obj.p)
-            localStorage['f'] = JSON.stringify(obj.f)
+            //localStorage['p'] = JSON.stringify(obj.p) we have p = ooo.p in template.js
+            //localStorage['f'] = JSON.stringify(obj.f)
             localStorage['activate_project_id'] = project_id
             localStorage['activate_data_id'] = 'e.csv'
             window.location.href = "#project_overview";

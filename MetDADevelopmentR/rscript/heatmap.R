@@ -88,6 +88,15 @@ fwrite(compound_order, "compound_order.csv", col.names = TRUE,row.names = TRUE)
 
 
 
+report_html = call_fun(parameter = list(
+  scaling_method = scaling_method,
+  dist_method = dist_method,
+  clust_method = clust_method,
+  type = "result_summary",
+  fun_name = "report_heatmap"
+))$text_html
+
+
 
 if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 

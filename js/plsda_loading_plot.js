@@ -57,6 +57,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                                 break;
                             }
                         }
+                    }else{
+                        plsda_loading_plot_debounced()
                     }
                 }})
 

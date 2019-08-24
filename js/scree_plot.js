@@ -82,7 +82,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
             
             var add_line_trace = true
-            var line_trace_index = 2
+            var line_trace_index = 0
 
 
 

@@ -43,7 +43,7 @@ plsda_append_results = function (obj, session) {
     })
 
 
-    fold_name = "plsda"
+    fold_name = "PLSDA"
     files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml"]
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
