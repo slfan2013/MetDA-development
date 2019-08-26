@@ -128,7 +128,9 @@ ocpu.call("get_compound_sample_info", {
                     $("#sample_criterion_type__" + current_index).selectpicker('refresh')
 
                     sample_criterion_type_change = function(){
+                        console.log("!!!!")
                         var current_index = $(this).attr('id').split("__")[1]
+                        console.log(current_index)
                         $("#sample_criterion_type__" + current_index).selectpicker('refresh')
                         if($("#sample_criterion_type__" + current_index).val() == "character"){
                             var new_sample_level_div = '<div class="form-group">'+
@@ -145,13 +147,20 @@ ocpu.call("get_compound_sample_info", {
                                 }
                             }
                             new_sample_level_div = new_sample_level_div + "</select></div>"
+                            $("#sample_criterion_level_div__" + current_index).html(new_sample_level_div)
+                            
+                            $("#sample_criterion_level__" + current_index).off('change').on('change',function(){
+                                $("#sample_criterion_level__" + current_index).selectpicker('refresh')
+                            })
+
+
 
                         }else{
                             new_sample_level_div =  "<div class='row'>"+
                             "<div class='col-lg-6'>"+
                             '<div class="form-group">'+
                             '<label for="sample_criterion_level_min__'+current_index+'">Min</label>'+
-                            '<input type="number" step="any" class="form-control parameter" id="sample_criterion_level_min'+current_index+'" placeholder="min:'+jStat.min(sample_related_info[data_id].column_levels[$("#sample_criterion_column__"+current_index).val()])+'">'+
+                            '<input type="number" step="any" class="form-control parameter" id="sample_criterion_level_min__'+current_index+'" placeholder="min:'+jStat.min(sample_related_info[data_id].column_levels[$("#sample_criterion_column__"+current_index).val()])+'">'+
                             "</div>"+
                             "</div>"+
                             "<div class='col-lg-6'>"+
@@ -161,9 +170,13 @@ ocpu.call("get_compound_sample_info", {
                             "</div>"+
                             "</div>"+
                             "</div>"
+                            nnn = new_sample_level_div
+                            $("#sample_criterion_level_div__" + current_index).html(new_sample_level_div)
+
                         }
-                        $("#sample_criterion_level_div__" + current_index).html(new_sample_level_div)
-                        $(".parameter").off("change").on("change",get_parameter_description)
+
+                        
+                        $(".parameter").on("change",get_parameter_description)
                         init_selectpicker()
                         
                     }
@@ -312,6 +325,11 @@ ocpu.call("get_compound_sample_info", {
                                 }
                             }
                             new_compound_level_div = new_compound_level_div + "</select></div>"
+                            $("#compound_criterion_level_div__" + current_index).html(new_compound_level_div)
+                            
+                            $("#compound_criterion_level__" + current_index).off('change').on('change',function(){
+                                $("#compound_criterion_level__" + current_index).selectpicker('refresh')
+                            })
 
                         }else{
                             new_compound_level_div =  "<div class='row'>"+
@@ -328,10 +346,10 @@ ocpu.call("get_compound_sample_info", {
                             "</div>"+
                             "</div>"+
                             "</div>"
+                            $("#compound_criterion_level_div__" + current_index).html(new_compound_level_div)
                         }
-                        $("#compound_criterion_level_div__" + current_index).html(new_compound_level_div)
                         init_selectpicker()
-                        $(".parameter").off("change").on("change",get_parameter_description)
+                        $(".parameter").on("change",get_parameter_description)
                     }
                     $("#compound_criterion_type__" + number_of_compound_criterions).off("change").on("change",compound_criterion_type_change)
                     

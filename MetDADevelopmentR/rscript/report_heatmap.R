@@ -267,8 +267,6 @@ if (type %in% c("result_summary", "all")) {
 # if this is all, put all the tables and figures here.
 if (type == "all") {
 
-
-
   figures_paths = data_ids[grepl("svg",data_ids)]
 
   for(i in 1:length(figures_paths)){

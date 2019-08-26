@@ -4,7 +4,7 @@ console.log("data_subsetting_parameter_settings_description.js")
 console.log("data_subsetting_parameter_settings_description.js")
 
 
-get_parameter_description = function(){
+ get_parameter_description = _.debounce(function(){
 
     
     parameter = {}
@@ -33,7 +33,7 @@ get_parameter_description = function(){
         })
     })
 
-}
+}, 250, { 'maxWait': 100 }); // this must be a global object.
 
 $(".parameter").off("change").on("change",get_parameter_description)
 get_parameter_description()
