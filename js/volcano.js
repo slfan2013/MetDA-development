@@ -25,7 +25,16 @@ volcano_append_results = function (obj, session) {
 
         //download_results(files_names, files_sources, zipfile_name)
         parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.volcano_plot = volcano_plot_parameters
+        parameters.volcano_plot = {}
+
+        parameters.volcano_plot.p_value_cut_off = volcano_plot_parameters.p_value_cut_off
+        parameters.volcano_plot.fold_change_cut_off = volcano_plot_parameters.fold_change_cut_off
+        parameters.volcano_plot.data = {}
+        parameters.volcano_plot.data.x = unpack(volcano_plot_parameters.data,"x")
+        parameters.volcano_plot.layout = {}
+        parameters.volcano_plot.layout.width = volcano_plot_parameters.layout.width
+        parameters.volcano_plot.layout.height = volcano_plot_parameters.layout.height
+
         parameters.fun_name = "volcano"
         parameters.activate_data_id = $("#" + 'volcano_input_file')[0].files[0].name
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
@@ -36,7 +45,18 @@ volcano_append_results = function (obj, session) {
     
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.volcano_plot = volcano_plot_parameters
+        parameters.volcano_plot = {}
+
+        parameters.volcano_plot.p_value_cut_off = volcano_plot_parameters.p_value_cut_off
+        parameters.volcano_plot.fold_change_cut_off = volcano_plot_parameters.fold_change_cut_off
+        parameters.volcano_plot.data = {}
+        parameters.volcano_plot.data.x = unpack(volcano_plot_parameters.data,"x")
+        parameters.volcano_plot.layout = {}
+        parameters.volcano_plot.layout.width = volcano_plot_parameters.layout.width
+        parameters.volcano_plot.layout.height = volcano_plot_parameters.layout.height
+
+
+        //parameters.volcano_plot = volcano_plot_parameters
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none'])
     })
 

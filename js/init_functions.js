@@ -545,8 +545,9 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
           fun_name: "open_project_structure_to_save_result"
         }
       }, function (session) {
+        console.log(session)
         session.getObject(function (obj) {
-          ooo = obj
+          o = obj
           console.log(obj)
           $("#save_results_tree").jstree("destroy");
           $("#save_results_tree").jstree({

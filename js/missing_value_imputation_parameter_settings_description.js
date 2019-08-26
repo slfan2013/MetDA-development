@@ -31,6 +31,7 @@ get_parameter_description = function(){
         session.getObject(function(obj){
             console.log(obj)
             $("#parameter_description").html(obj.text_html)
+            $('#parameter_description').css({"maxHeight":"450px","overflow":"scroll"});
         })
     })
 

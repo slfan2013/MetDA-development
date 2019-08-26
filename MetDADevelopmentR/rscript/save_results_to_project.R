@@ -204,7 +204,7 @@
     text = fold_name,
     icon = "fa fa-folder",
     parameter = parameters,
-    files_sources = files_sources,
+    # files_sources = files_sources,
     files_types = files_types,
     epf_index = epf_index
   )

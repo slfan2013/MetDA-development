@@ -208,8 +208,8 @@ if (type %in% c("result_summary", "all")) {
 
     best_predI = which.max(Q2)
     perm_summary = list(
-      pQ2Y = parameters$perm_plot$layout$pQ2,
-      pR2Y = parameters$perm_plot$layout$pR2
+      pQ2 = parameters$perm_plot$layout$pQ2,
+      pR2Y = parameters$perm_plot$layout$pR2Y
     )
 
   }
@@ -309,11 +309,11 @@ if (type == "all") {
         body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Scree Plot."), style = "table title")
     }else if(grepl("vip",figures_paths[i])){
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$vip_plot$layout$width)/100*0.8, height = as.numeric(parameters$vip_plot$layout$height)/100*0.8) %>%
         body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA VIP Score Plot."), style = "table title")
     }else if(grepl("perm",figures_paths[i])){
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$scree_plot$layout$width)/100*0.8, height = as.numeric(parameters$score_plot$layout$height)/100*0.8) %>%
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$perm_plot$layout$width)/100*0.8, height = as.numeric(parameters$perm_plot$layout$height)/100*0.8) %>%
         body_add_par(value = paste0("Figure ", figure_index+i-1,": PLS-DA Permutation Plot."), style = "table title")
     }
 
