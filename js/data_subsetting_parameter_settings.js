@@ -22,6 +22,8 @@ ocpu.call("get_compound_sample_info", {
     project_id: project_id
 }, function (session) {
     session.getObject(function (obj) {
+        
+
         console.log("ready")
         ooo = obj
         sample_related_info_keys = Object.keys(obj.sample_related_info)
@@ -161,13 +163,14 @@ ocpu.call("get_compound_sample_info", {
                             "</div>"
                         }
                         $("#sample_criterion_level_div__" + current_index).html(new_sample_level_div)
+                        $(".parameter").off("change").on("change",get_parameter_description)
                         init_selectpicker()
                         
                     }
                     $("#sample_criterion_type__" + number_of_sample_criterions).off("change").on("change",sample_criterion_type_change)
                     
                     
-
+                    
                     
 
                 }
@@ -177,8 +180,8 @@ ocpu.call("get_compound_sample_info", {
 
 
             }
+
             $("#sample_criterion_data_id__" + number_of_sample_criterions).off("change").on("change", sample_criterion_data_id_change)
-            
 
             
         }
@@ -328,7 +331,7 @@ ocpu.call("get_compound_sample_info", {
                         }
                         $("#compound_criterion_level_div__" + current_index).html(new_compound_level_div)
                         init_selectpicker()
-                        
+                        $(".parameter").off("change").on("change",get_parameter_description)
                     }
                     $("#compound_criterion_type__" + number_of_compound_criterions).off("change").on("change",compound_criterion_type_change)
                     
@@ -390,7 +393,7 @@ ocpu.call("get_compound_sample_info", {
 
 
 
-
+        $("#parameter_settings_description").load(window.location.href.split("#")[1] + "_parameter_settings_description.html", init_selectpicker)
 
 
 

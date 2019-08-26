@@ -120,7 +120,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
                         var plot_id = "perm_plot"
 
-                        layout
+                        
 
                         perm_plot_fun({ obj_perm_plot: obj_perm_plot, layout: layout, plot_id: plot_id })
                     }

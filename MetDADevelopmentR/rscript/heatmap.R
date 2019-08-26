@@ -10,9 +10,9 @@ ggdend <- function(df) {
     theme(axis.text = element_blank(), axis.ticks = element_blank(),
           panel.grid = element_blank())
 }
-pacman::p_load(data.table, ggdendro, plotly, ggplot2)
+pacman::p_load(data.table, ggdendro, ggplot2)
 
-
+# pacman::p_load(,plotly)
 
 data = call_fun(parameter = list(project_id=project_id,activate_data_id=activate_data_id,fun_name="read_data_from_projects"))
 e = data$e
@@ -51,12 +51,23 @@ if(!exists("order_sample")){
 if(!exists("order_compound")){
   order_compound = 'dendrogram'
 }
+
+
+
 if(order_sample == 'dendrogram'){
   hc.col = hclust(dist(t(e_scale),method = dist_method),method = clust_method)
   dd.col <- as.dendrogram(hc.col)
   dy <- dendro_data(dd.col)
   py <- ggdend(dy$segments) + coord_flip()
-  yy = ggplotly(py)
+  # yy = ggplotly(py)
+
+  yy = list( x = list( data = list(
+    list(
+      y = c(t(matrix(c(dy$segments$x,dy$segments$xend,rep(NA,nrow(dy$segments))),nrow = nrow(dy$segments)))),
+      x = c(t(matrix(c(dy$segments$y,dy$segments$yend,rep(NA,nrow(dy$segments))),nrow = nrow(dy$segments))))
+      )
+    )))
+
 }else{
   hc.col = list()
   hc.col$order = 1:nrow(e)
@@ -67,7 +78,17 @@ if(order_compound=='dendrogram'){
   dd.row <- as.dendrogram(hc.row)
   dx <- dendro_data(dd.row)
   px <- ggdend(dx$segments)
-  xx = ggplotly(px)
+  # xx = ggplotly(px)
+
+  xx = list( x = list( data = list(
+    list(
+      y = c(t(matrix(c(dx$segments$y,dx$segments$yend,rep(NA,nrow(dx$segments))),nrow = nrow(dx$segments)))),
+      x = c(t(matrix(c(dx$segments$x,dx$segments$xend,rep(NA,nrow(dx$segments))),nrow = nrow(dx$segments))))
+    )
+  )))
+
+
+
 }else{
   hc.row = list()
   hc.row$order = 1:ncol(e)
@@ -263,7 +284,7 @@ if(exists("heatmap_plot")){# this means this call is from quick_analysis. Here w
 
 
 }else{
-  result = list(results_description = "Here is the heatmap summary.",p = p, f = f, hc_col_order = hc.col.order-1, hc_row_order = hc.row.order-1,temp_data = t(e_scale),sx = xx$x$data[[1]]$x,sy = xx$x$data[[1]]$y,cx = yy$x$data[[1]]$x,cy = yy$x$data[[1]]$y,max = max(e_scale, na.rm = TRUE),median = median(e_scale, na.rm = TRUE),min = min(e_scale, na.rm = TRUE))
+  result = list(results_description = report_html,p = p, f = f, hc_col_order = hc.col.order-1, hc_row_order = hc.row.order-1,temp_data = t(e_scale),sx = xx$x$data[[1]]$x,sy = xx$x$data[[1]]$y,cx = yy$x$data[[1]]$x,cy = yy$x$data[[1]]$y,max = max(e_scale, na.rm = TRUE),median = median(e_scale, na.rm = TRUE),min = min(e_scale, na.rm = TRUE))
 
 
 

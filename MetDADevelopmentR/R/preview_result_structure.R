@@ -25,7 +25,7 @@ preview_result_structure <- function(
 
   to_be_specified <- list()
   to_be_specified[["sample_info"]] <- list()
-  p2 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/p.csv"))
+  p2 <- data.table::fread(URLencode(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/p.csv")))
   colnames_p2 <- colnames(p2)
   # perform the statistical analysis.
   added_icons <- sapply(structure_to_be_added, function(x) {
@@ -56,7 +56,7 @@ preview_result_structure <- function(
 
 
 
-  f2 <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id2, "/f.csv"))
+  f2 <- data.table::fread(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id2, "/f.csv")))
   colnames_f2 <- colnames(f2)
 
 

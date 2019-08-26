@@ -12,11 +12,11 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
   sample_related_info = list()
   for(i in 1:length(sample_id)){
     temp_data = read.csv(
-      paste0(
+      URLencode(paste0(
         "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/", sample_id[i]
-      ),
+      )),
       row.names = 1
     )
 
@@ -41,11 +41,11 @@ get_compound_sample_info = function(project_id="statistics21565892249"){
   compound_related_info = list()
   for(i in 1:length(compound_id)){
     temp_data = read.csv(
-      paste0(
+      URLencode(paste0(
         "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/", compound_id[i]
-      ),
+      )),
       row.names = 1
     )
 

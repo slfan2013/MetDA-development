@@ -1,6 +1,6 @@
-old_user_id = "user1566576284548"
-plot_name = "perm_plot_layout"
-new_plot_name = "perm_plot_layout"
+old_user_id = "user1566659208940"
+plot_name = "heatmap_plot_layout"
+new_plot_name = "heatmap_plot_layout"
 # get the list (including styles) first.
 oldUrl <- URLencode(paste0("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/",old_user_id))
 oldList <- jsonlite::fromJSON(oldUrl, simplifyVector = FALSE)

@@ -9,7 +9,7 @@ userUrl <- URLencode(paste0("http://tempusername:temppassword@metda.fiehnlab.ucd
 userList <- jsonlite::fromJSON(userUrl, simplifyVector = FALSE)
 
 
-userinfo <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv"))
+userinfo <- data.table::fread(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv")))
 userinfo$project_name[userinfo$project_id %in% project_id] = new_project_name
 
 

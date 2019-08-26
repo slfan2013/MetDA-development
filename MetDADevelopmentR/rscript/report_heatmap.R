@@ -49,31 +49,23 @@ if (type == "all") {
   data_ids <- id[parent == fold_id]
 
 
-  result <- fread(
-    paste0(
-      "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
-      project_id,
-      "/", data_ids[grepl("csv",data_ids)]
-    )
-  )
+  # result <- fread(
+  #   paste0(
+  #     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
+  #     project_id,
+  #     "/", data_ids[grepl("csv",data_ids)]
+  #   )
+  # )
 
   input_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = parameters$activate_data_id, fun_name = "get_fold_seq")), paste0, collapse = "->")
   output_file_path <- sapply(call_fun(parameter = list(project_id = project_id, file_id = data_ids, fun_name = "get_fold_seq")), paste0, collapse = "->")
 
 
-  test_type <- parameters$test_type
-  treatment_group <- parameters$treatment_group
-  n <- as.numeric(parameters$n)
-  power <- as.numeric(parameters$power)
+  scaling_method <- parameters$scaling_method
+  clust_method <- parameters$clust_method
+  dist_method <- as.numeric(parameters$dist_method)
 
-  fdr_check <- parameters$fdr_check
-  fdr_criterion <- as.numeric(parameters$fdr_criterion)
 
-  if(power>1){
-    power = power/100
-  }
-  sig_level <- as.numeric(parameters$sig_level)
-  # levels <- levels(factor(call_fun(parameter = list(project_id = project_id, activate_data_id = parameters$activate_data_id, fun_name = "read_data_from_projects"))$p[[treatment_group]]))
 }
 
 
@@ -132,33 +124,6 @@ if (type %in% c("parameter_settings_description", "all")) {
 
 
 
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Scaling Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(scaling_method_name, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(". Scaling methods are data pretreatment approaches that divide each variable by a factor, the scaling factor, which is different for each variable. They aim to adjust for the differences in fold differences between the different metabolites by converting the data into differences in concentration relative to the scaling factor. It is highly recommended for multivariate statistical analyses. More information is available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/.", style = "Default Paragraph Font", pos = "after")
-
-
-
-
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Agglomeration Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(clust_method, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(". Agglomeration is the process by which clusters are merged into larger clusters.", style = "Default Paragraph Font", pos = "after")
-
-
-  doc <- doc %>%
-    body_add_fpar(fpar(ftext(" - Distance Function: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
-    slip_in_text(dist_method, style = "Default Paragraph Font", pos = "after") %>%
-    slip_in_text(". A distance metric is a non-negative number which measures the difference between two objects (e.g. samples/compounds.)", style = "Default Paragraph Font", pos = "after")
-
-
-
-
-
-
-  # report_heatmap = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
-
   if (!exists("clust_method")) {
     clust_method <- NULL
   }
@@ -183,6 +148,17 @@ if (type %in% c("parameter_settings_description", "all")) {
     slip_in_text(". Scaling methods are data pretreatment approaches that divide each variable by a factor, the scaling factor, which is different for each variable. They aim to adjust for the differences in fold differences between the different metabolites by converting the data into differences in concentration relative to the scaling factor. It is highly recommended for multivariate statistical analyses. More information is available at https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1534033/.", style = "Default Paragraph Font", pos = "after")
 
 
+
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Agglomeration Method: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(clust_method, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". Agglomeration is the process by which clusters are merged into larger clusters.", style = "Default Paragraph Font", pos = "after")
+
+
+  doc <- doc %>%
+    body_add_fpar(fpar(ftext(" - Distance Function: ", prop = fp_text(bold = TRUE))), style = "Normal") %>%
+    slip_in_text(dist_method, style = "Default Paragraph Font", pos = "after") %>%
+    slip_in_text(". A distance metric is a non-negative number which measures the difference between two objects (e.g. samples/compounds.)", style = "Default Paragraph Font", pos = "after")
 
 
   if (type == "parameter_settings_description") {
@@ -211,39 +187,55 @@ if (type %in% c("result_summary", "all")) {
   if (is.null(doc)) {
     doc <- read_docx()
   }
-
-  doc <- doc %>%
-    body_add_par("Result Summary: ", style = "heading 3") %>%
-    body_add_par(paste0("The statistical powers were estimated for each compound given a sample size of ",n,", and the sample size was estimated based on a target power of ",power,". The effect size of each compound was calculated from the dataset using the treatment group ", treatment_group, '. A significant level of ',sig_level," was used. "), style = "Normal", pos = "after")
-
-  if(fdr_check){
-    doc <- doc %>%
-      slip_in_text(paste0(" Multiple comparision (or false discovery rate, FDR) problem was also taken into account with Benjamini-Hochberg procedure. The FDR was controlled at the level of ",fdr_criterion,". The significant level for each compounds was adjusted accordingly."), style = "Default Paragraph Font", pos = "after")
+  if(!exists("scaling_method_name")){
+    scaling_method_name <- revalue(scaling_method, c("none","center","pareto","standard"),c("No Scaling","Mean Centering","Pareto",'Auto Scaling'))
   }
 
   doc <- doc %>%
-    slip_in_text(paste0(" See Table ",table_index, ", Figure ", figure_index, " and ", figure_index+1, " for more detail."), style = "Default Paragraph Font", pos = "after")
-
-  doc <- doc %>%
-    body_add_par("Table Explanation.", style = "Normal", pos = "after") %>%
-    body_add_par(" - index: the index of compounds, mainly for sorting the table.", style = "Normal", pos = "after") %>%
-    body_add_par(" - label: compound labels.", style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" - power (n=",n,"): the estimated statistical power given sample size of ",n,"."), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" - n (power=",power,"): the estimated sample size for the target power of ",power*100,"%."), style = "Normal", pos = "after")
+    body_add_par("Result Summary: ", style = "heading 3") %>%
+    body_add_par(paste0("The Heatmap and Dendrograms on the dataset with ",scaling_method_name,". See Figure",figure_index," for more details."), style = "Normal", pos = "after")
 
 
 
 
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" answers the question of What is the necessary per-group sample size for ",power*100,"% power with the observed effect size and at significant level of ",sig_level,"?."), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("The plot illustrates that smaple size of ",paste0(ceiling(quantile(result[[4]], c(.10, .20, .30)) ),collapse = " ,")," is required to ensure that at least 10%, 20%, and 30% of compounds have a statistical power greater than ",power*100,"%. It is also shown that a sample size of ",min(table(groups))," is sufficient if ",signif(sum(result[[4]]< min(table(groups)))/nrow(result),4)*100,"% of the compounds need to achieve a ",power*100,"% power."), style = "Normal", pos = "after")
+
+  if(type == "result_summary"){
+    doc <- doc %>%
+      body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
+      body_add_par(paste0(" shows the heatmap and dendrogram analysis on the dataset with ",scaling_method_name,". The row displays compounds and the column represents the samples. The color represent the value scale for the corresponding compound and sample (see colorbar). "), style = "Normal", pos = "after") %>%
+      body_add_par(paste0("The dendrogram on the right is conducted using distance metric ",dist_method, " with agglomeration method of ",clust_method," on the compounds while the top is on the samples. "), style = "Normal", pos = "after")
+
+    doc <- doc%>%
+      body_add_par(paste0("Please note, sample/compound annotation and ordering can be ajusted in the TRACES tab. "), style = "Normal", pos = "after")
+  }else{
 
 
-  doc <- doc %>%
-    body_add_par(paste0("Figure ", figure_index+1), style = "Normal", pos = "after") %>%
-    body_add_par(paste0(" answers the question of What is the power for ",n," samples per group with the observed effect size and significant level of ", sig_level,'?. '), style = "Normal", pos = "after") %>%
-    body_add_par(paste0("From the plot, ",signif(sum(result[[3]]>0.8)/nrow(result),digits = 4)*100,"% of compounds achieve at ",power*100,"% statistical power at the sample size of ",n," and significant level of ",sig_level,". "), style = "Normal", pos = "after")
+    doc <- doc %>%
+      body_add_par(paste0("Figure ", figure_index), style = "Normal", pos = "after") %>%
+      body_add_par(paste0(" shows the heatmap and dendrogram analysis on the dataset with ",scaling_method_name,". The row displays compounds and the column represents the samples. The color represent the value scale for the corresponding compound and sample (see colorbar)."), style = "Normal", pos = "after") %>%
+      body_add_par(paste0("The dendrogram on the right is conducted using distance metric ",dist_method, " with agglomeration method of ",clust_method," on the compounds while the top is on the samples. "), style = "Normal", pos = "after") %>%
+      body_add_par(paste0("The order of samples is determined by the ",paste0(parameters$heatmap_plot$order_sample_by,collapse = ", "),", and the compounds by the ",paste0(parameters$heatmap_plot$order_compound_by,collapse = ", "),". "), style = "Normal", pos = "after")
+
+    if(length(parameters$heatmap_plot$sample_annotation)>0){
+      doc <- doc %>%
+        slip_in_text(paste0("The annotation of the samples (",paste0(parameters$heatmap_plot$sample_annotation, collapse = ", "), ") were added on top of the plot. "), style = "Default Paragraph Font", pos = "after")
+    }else{
+      doc <- doc %>%
+        slip_in_text(paste0("No annotation of the samples were added to the plot. "), style = "Default Paragraph Font", pos = "after")
+    }
+
+    if(length(parameters$heatmap_plot$compound_annotation)>0){
+      doc <- doc %>%
+        slip_in_text(paste0("The annotation of the compounds (",paste0(parameters$heatmap_plot$compound_annotation, collapse = ", "), ") were added on the right of the plot. "), style = "Default Paragraph Font", pos = "after")
+    }else{
+      doc <- doc %>%
+        slip_in_text(paste0("No annotation of the compounds were added to the plot. "), style = "Default Paragraph Font", pos = "after")
+    }
+
+
+
+  }
+
 
 
   if (type == "result_summary") {
@@ -274,9 +266,6 @@ if (type %in% c("result_summary", "all")) {
 
 # if this is all, put all the tables and figures here.
 if (type == "all") {
-  doc <- doc %>%
-    body_add_table(value = result[1:10, ], style = "table_template") %>%
-    body_add_par(value = paste0("Table ", table_index, ": First 10 compounds and their estimated statistial powers of having ",n," samples and required sample size for ",power*100,"% power."), style = "table title")
 
 
 
@@ -290,14 +279,10 @@ if (type == "all") {
     )), destfile = figures_paths[i])
 
 
-    if(grepl("power",figures_paths[i])){
+    if(grepl("heatmap",figures_paths[i])){
       doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds having x% statistical power when having ",n," samples."), style = "table title")
-    }else{
-      doc <- doc %>%
-        body_add_img(src = figures_paths[i], width = as.numeric(parameters$power_plot$layout$width)/100*0.8, height = as.numeric(parameters$power_plot$layout$height)/100*0.8) %>%
-        body_add_par(value = paste0("Figure ", figure_index+i-1,": the proportion of compounds needing x samples to achieve a ",power*100,"% statistical power."), style = "table title")
+        body_add_img(src = figures_paths[i], width = as.numeric(parameters$heatmap_plot$layout$width)/100*0.8, height = as.numeric(parameters$heatmap_plot$layout$height)/100*0.8) %>%
+        body_add_par(value = paste0("Figure ", figure_index+i-1,": the heatmap of the dataset with ",scaling_method_name,"."), style = "table title")
     }
 
   }
@@ -315,7 +300,7 @@ if (type == "all") {
 }
 
 
-result <- list(text_html = text_html, method_name = "Sample Size Estimation -- Power Analysis", table_index = table_index + 1, figure_index = figure_index+2)
+result <- list(text_html = text_html, method_name = "Heatmap -- Dendrogram", table_index = table_index + 1, figure_index = figure_index+2)
 
 
 # }

@@ -92,7 +92,7 @@ RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" =
 
 
 # 3. update the userinfo slfan
-userinfo <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv"))
+userinfo <- data.table::fread(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/", user_id, "/metda_userinfo_", user_id, ".csv")))
 
 # new project table
 new_project_table <- data.table::data.table(project_id = new_id, project_name = new_name, create_time = as.character(Sys.time()))

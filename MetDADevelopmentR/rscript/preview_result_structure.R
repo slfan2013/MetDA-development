@@ -25,7 +25,7 @@
 
   to_be_specified <- list()
   to_be_specified[["sample_info"]] <- list()
-  p2 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/p.csv"))
+  p2 <- data.table::fread(URLencode(paste0("http://127.0.0.1:5985/metda_project/", project_id2, "/p.csv")))
   colnames_p2 <- colnames(p2)
   # perform the statistical analysis.
   added_icons <- sapply(structure_to_be_added, function(x) {
@@ -58,7 +58,7 @@
 
     if(any(grepl("Data Subsetting",structure_to_be_added_folders_only_ids))){
       stop("Sorry. The Project has a data subset by the sample info, thus is cannot be performed automatically using one-click module. Please manually create these datasets and use them for one-click module.")
-      p1 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/p.csv"))
+      p1 <- data.table::fread(URLencode(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/p.csv")))
     }else{
       p1 = ""
     }
@@ -74,7 +74,7 @@
 
 
 
-  f2 <- data.table::fread(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id2, "/f.csv"))
+  f2 <- data.table::fread(URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id2, "/f.csv")))
   colnames_f2 <- colnames(f2)
 
 
@@ -95,7 +95,7 @@
 
     if(any(grepl("Data Subsetting",structure_to_be_added_folders_only_ids))){
       stop("Sorry. The Project has a data subset by the compound info, thus is cannot be performed automatically using one-click module. Please manually create these datasets and use them for one-click module.")
-      f1 <- data.table::fread(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/f.csv"))
+      f1 <- data.table::fread(URLencode(paste0("http://127.0.0.1:5985/metda_project/", project_id, "/f.csv")))
     }else{
       f1 = ""
     }

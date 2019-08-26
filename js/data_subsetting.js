@@ -7,7 +7,7 @@ console.log("data_subsetting.js")
 data_subsetting_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description)
 
-    Papa.parse(session.loc + "files/data_subsetting.csv", {
+    Papa.parse(session.loc + "files/e.csv", {
         download: true,
         header: false,
         complete: function (results) {
@@ -19,9 +19,9 @@ data_subsetting_append_results = function (obj, session) {
         }
     });
 
-    var files_sources = [session.loc + "files/data_subsetting.csv"];
-    var files_names = ["data_subsetting.csv"]
-    var zipfile_name = "data_subsetting.csv"
+    var files_sources = [session.loc + "files/e.csv"];
+    var files_names = ["e.csv"]
+    var zipfile_name = "e.csv"
     var fold_name = "Data Subset"
     var files_types = ["application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {

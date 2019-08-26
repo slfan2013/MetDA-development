@@ -19,6 +19,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 }
             }, function (session) {
                 session.getObject(function (power_plot_obj) {
+                    power_plot_obj = prepare_layout(power_plot_obj)
                     power_plot_obj_global = power_plot_obj
                     power_plot_traces = power_plot_obj.traces
                     p_column_names = Object.keys(obj_power_plot.p[0])
@@ -119,7 +120,6 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                             smoothing:$("#power_plot_traces_line .form-control.smoothing").val()
                         }
 
-                        console.log(power_plot_layout.xaxis.autorange)
                         var layout = power_plot_layout
                         var plot_id = "power_plot"
                         //obj_power_plot

@@ -15,19 +15,19 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
   fold_change_data_id = parameter$activate_data_id[2]
 
 
-  p_value_data = tryCatch(read.csv(
+  p_value_data = tryCatch(read.csv(URLencode(
     paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",p_value_data_id
-    )
+    ))
     ,row.names  = 1), error = function(e){
       read.csv(
-      paste0(
+      URLencode(paste0(
         "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/",paste0("student_t_test_result", substr(fold_change_data_id,nchar(fold_change_data_id) - 14 + 1,nchar(fold_change_data_id)))
-      ))
+      )))
 
       stop("check row 29. mann_whitney not allowed.")
 
@@ -36,19 +36,19 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
 
   fold_change_data = tryCatch(read.csv(
-      paste0(
+      URLencode(paste0(
         "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
         project_id,
         "/",fold_change_data_id
-      )
+      ))
       ,row.names  = 1), error = function(e){
 
         read.csv(
-          paste0(
+          URLencode(paste0(
             "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
             project_id,
             "/",paste0("fold_change_result", substr(p_value_data_id,nchar(p_value_data_id) - 14 + 1,nchar(p_value_data_id)))
-          ))
+          )))
 
       })
   data = data.table(label = p_value_data$label, p_values = p_value_data$p_values, fold_change = fold_change_data$fold_changes)
@@ -58,12 +58,12 @@ if(length(parameter$activate_data_id)>1){ # this means this is not in and out
 
 }else{
 
-  data = read.csv(
+  data = read.csv(URLencode(
     paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/",activate_data_id
-    )
+    ))
     ,row.names  = 1)
 
   data$label = rownames(data)

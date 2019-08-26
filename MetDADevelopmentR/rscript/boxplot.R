@@ -4,8 +4,8 @@
 # http://localhost:5656/ocpu/tmp/x08f655c87c/
 # helper function for creating dendograms
 
-pacman::p_load(data.table, ggdendro, plotly, ggplot2)
-
+pacman::p_load(data.table, ggdendro,  ggplot2)
+#pacman::P_load(plotly)
 
 
 # data <- read_data_from_projects(project_id, activate_data_id)
@@ -22,6 +22,10 @@ p <- data$p
 # p = data$p
 
 
+report_html = call_fun(parameter = list(
+  type = "result_summary",
+  fun_name = "report_boxplot"
+))$text_html
 
 
 
@@ -151,5 +155,5 @@ if (exists("boxplot_plot")) { # this means this call is from quick_analysis. Her
     main_group_values = main_group_values, main_group_levels = main_group_levels, e = e
   )), auto_unbox = TRUE, force = TRUE)
 } else {
-  result <- list(results_description = "Boxplots are ready to make.", p = p, f = f, e = e)
+  result <- list(results_description = report_html, p = p, f = f, e = e)
 }

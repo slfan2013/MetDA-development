@@ -39,9 +39,9 @@ boxplot_append_results = function (obj, session) {
                 var main_group_values = unpack(obj.p, main_group)
                 var p_label = unpack(obj.p, 'label')
                 var f_label = unpack(obj.f, 'label')
-                //var texts = array_split_by_one_factor(p_label, main_group_values, $("#group_sample_by_" + main_group).val().split("||"))
+                
                 var zip = new JSZip();
-                if (plotting_compound_index === obj.f.length) {
+                if (plotting_compound_index === obj.f.length+1) {
                     console.log("Boxplots Generated")
                     clearInterval(plot_loop);
 
@@ -73,7 +73,15 @@ boxplot_append_results = function (obj, session) {
 
                 } else {
                     var y = obj.e[plotting_compound_index]
-                    var ys = array_split_by_one_factor(y, main_group_values, $("#group_sample_by_" + main_group).val().split("||"))
+
+                    if($("#boxplot_plot_group_sample_by").val().length == 0){
+
+                        var ys = [y]
+                    }else{
+                        var ys = array_split_by_one_factor(y, main_group_values, $("#group_sample_by_" + main_group).val().split("||"))
+
+                    }
+
 
 
                     update_data = {

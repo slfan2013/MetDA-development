@@ -24,10 +24,10 @@ heatmap_plot_fun = function ({
         type: "heatmap",
         showscale: layout.legend.showlegend[0],
         colorbar: {
-            thicknessmode: "fraction",
-            thickness: 0.05,
-            lenmode: "fraction",
-            len: 0.3,
+            thicknessmode: "pixels",
+            thickness: 30,
+            lenmode: "pixels",
+            len: 200,
             x: layout.legend.x,
             y: layout.legend.y,
             bordercolor: layout.legend.bordercolor,
@@ -645,9 +645,20 @@ boxplot_plot_fun = function ({
                     sub_group.splice(sub_group.indexOf(boxplot_plot_parameters.main_group), 1)[0]
                     boxplot_plot_parameters.categoryarray = $("#group_sample_by_" + sub_group).val().split("||")
                 } else {
-                    boxplot_plot_parameters.categoryarray = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
+                    if($("#group_sample_by_" + boxplot_plot_parameters.main_group).val() === undefined){
+                        boxplot_plot_parameters.categoryarray = ['value']
+
+                        boxplot_plot_parameters.main_group_split = ['value']
+
+
+                    }else{
+                        boxplot_plot_parameters.categoryarray = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
+
+                        boxplot_plot_parameters.main_group_split = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
+                    }
+                    
                 }
-                boxplot_plot_parameters.main_group_split = $("#group_sample_by_" + boxplot_plot_parameters.main_group).val().split("||")
+                
             }
 
 

@@ -42,7 +42,7 @@ for(i in 1:length(interested_term_id_list)){
 
   # current_id='6687334'
 
-  paper_html = readLines(paste0("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC",current_id))
+  paper_html = readLines(URLencode(paste0("https://www.ncbi.nlm.nih.gov/pmc/articles/PMC",current_id)))
   paper_html = paste0(paper_html,collapse = "")
   writeLines(substr(paper_html, 10, nchar(paper_html)),"paper_text.txt")
   paper_split_on_div = strsplit(paper_html, '<div id="')[[1]]

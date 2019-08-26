@@ -1,7 +1,4 @@
-console.log("data_subsetting_parameter_settings_description.js")
-
-
-console.log("data_subsetting_parameter_settings_description.js")
+console.log("boxplot_parameter_settings_description.js")
 
 
 get_parameter_description = function(){
@@ -19,13 +16,10 @@ get_parameter_description = function(){
         }
     })
     
-    console.log("!")
-
-    parameter.type = "parameter_settings_description"
-    parameter.fun_name = "report_data_subsetting"
-    parameter.project_id = project_id
-
-    ocpu.call("call_fun",{parameter:parameter},function(session){
+    ocpu.call("call_fun",{parameter:{
+        type:"parameter_settings_description",
+        fun_name:"report_boxplot"
+    }},function(session){
         console.log(session)
         session.getObject(function(obj){
             console.log(obj)
@@ -34,6 +28,5 @@ get_parameter_description = function(){
     })
 
 }
-
-$(".parameter").off("change").on("change",get_parameter_description)
+$(".parameter").change(get_parameter_description)
 get_parameter_description()

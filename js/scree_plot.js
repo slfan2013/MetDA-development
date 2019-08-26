@@ -52,8 +52,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             console.log("!")
             if(window.location.href.split("#")[1] === 'plsda'){
 
-                ys = [cumsum(obj_scree_plot.variance),obj_scree_plot.R2, obj_scree_plot.Q2]
-                texts = ys.map(function (x) {
+                var ys = [cumsum(obj_scree_plot.variance),obj_scree_plot.R2, obj_scree_plot.Q2]
+                var texts = ys.map(function (x) {
                     return (x.map(function (z) {
                         return ((z * 100).toFixed(2) + "%")
                     }))
@@ -64,8 +64,8 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
             }else{
 
                 
-                ys = [obj_scree_plot.variance]
-                texts = ys.map(function (x) {
+                var ys = [obj_scree_plot.variance]
+                var texts = ys.map(function (x) {
                     return (x.map(function (z) {
                         return ((z * 100).toFixed(2) + "%")
                     }))
@@ -74,7 +74,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
 
             }
             
-            hovertexts = texts.map(function (x) {
+            var hovertexts = texts.map(function (x) {
                 return (x.map(function (z, i) {
                     return ("PC" + (i + 1) + ": " + z)
                 }))

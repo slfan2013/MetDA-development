@@ -50,7 +50,8 @@
                                         </select>
                                     </div>
                                     <div id="boxplot_plot_group_sample_levels_div"></div>
-                                    <div class="form-group">
+
+                                    <div class="form-group" id="boxplot_plot_group_sample_main_div">
                                         <label for="boxplot_plot_group_sample_main">Main Group</label>
                                         <select class="form-control selectpicker" data-style="btn btn-link"
                                             id="boxplot_plot_group_sample_main">
@@ -170,7 +171,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
-                                                Outlier Color
+                                                Suspect Outlier Color
                                             </span>
                                         </div>
                                         <input type='text' id="outliercolor" class="spectrums" data-show-alpha="true"
@@ -178,21 +179,14 @@
                                     </div>
 
 
-
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="tab-pane active" id="boxplot_plot_explanation">
-                        explanations
+                        
                     </div>
-                    <button class="btn btn-primary btn-sm" onclick="save_boxplot_plot_style()">Set This Style As
-                        Default</button>
+                    <button class="btn btn-primary btn-sm" onclick="save_boxplot_plot_style()">Set This Style As Default</button>
                 </div>
 
             </div>

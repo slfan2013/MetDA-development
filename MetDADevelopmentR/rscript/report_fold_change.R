@@ -37,12 +37,12 @@ if(type == "all"){
   data_ids <- id[parent == fold_id]
 
 
-  result <- read.csv(
+  result <- read.csv(URLencode(
     paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
       project_id,
       "/", data_ids
-    ),
+    )),
     row.names = 1
   )
 

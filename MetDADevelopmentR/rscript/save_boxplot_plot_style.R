@@ -12,11 +12,11 @@
   for(i in 1:length(style$traces)){
     style$traces[[names(style$traces)[i]]] = sapply(style$traces[[i]], function(x){
       if(class(x) == "character"){
-
         return(c(x))
-
       }else if(class(x) == "matrix"){
         return(x[,1])
+      }else{
+        return(x)
       }
     }, simplify = F)
 

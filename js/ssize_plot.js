@@ -19,6 +19,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                 }
             }, function (session) {
                 session.getObject(function (ssize_plot_obj) {
+                    ssize_plot_obj = prepare_layout(ssize_plot_obj)
                     ssize_plot_obj_global = ssize_plot_obj
                     ssize_plot_traces = ssize_plot_obj.traces
                     p_column_names = Object.keys(obj_ssize_plot.p[0])

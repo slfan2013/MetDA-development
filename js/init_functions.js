@@ -28,7 +28,7 @@ initialize_nav_link = function () {
 
       if (being_active) {
         sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
-        '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
+          '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
       } else {
         sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
           '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
@@ -37,7 +37,7 @@ initialize_nav_link = function () {
       sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
 
       for (var it = 0; it < current_items.length; it++) {
-        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#'+current_items[it]+'">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
+        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#' + current_items[it] + '">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
 
       }
 
@@ -47,8 +47,8 @@ initialize_nav_link = function () {
 
     }
     $("#navbarDropdownMenuLink_items").html(sidebar_ul)
-  
-    $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function(e) {
+
+    $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function (e) {
       var $el = $(this);
       var $parent = $(this).offsetParent(".dropdown-menu");
       if (!$(this).next().hasClass('show')) {
@@ -57,8 +57,8 @@ initialize_nav_link = function () {
       var $subMenu = $(this).next(".dropdown-menu");
       $subMenu.toggleClass('show');
 
-      $(this).closest("a").toggleClass('open');  
-      $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+      $(this).closest("a").toggleClass('open');
+      $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
         $('.dropdown-menu .show').removeClass("show");
       });
       if (!$parent.parent().hasClass('navbar-nav')) {
@@ -79,78 +79,78 @@ initialize_nav_link = function () {
 
 
 function nestedObjectToArray(obj) {
-  if (typeof(obj) !== "object"){
-      return [""];
+  if (typeof (obj) !== "object") {
+    return [""];
   }
   var result = [];
-  if (obj.constructor === Array){
-      obj.map(function(item) {
-          result = result.concat(nestedObjectToArray(item));
-      });
+  if (obj.constructor === Array) {
+    obj.map(function (item) {
+      result = result.concat(nestedObjectToArray(item));
+    });
   } else {
-      Object.keys(obj).map(function(key) {
-          if(obj[key]) {
-              var chunk = nestedObjectToArray(obj[key]);
-              chunk.map(function(item) {
-                  result.push(key+"."+item);
-              });
-          } else {
-              result.push(key);
-          }
-      });
+    Object.keys(obj).map(function (key) {
+      if (obj[key]) {
+        var chunk = nestedObjectToArray(obj[key]);
+        chunk.map(function (item) {
+          result.push(key + "." + item);
+        });
+      } else {
+        result.push(key);
+      }
+    });
   }
   return result;
 };
 
 function get(reference, pathParts) {
-  if(typeof pathParts === 'string'){
-      pathParts = pathParts.split('.');
+  if (typeof pathParts === 'string') {
+    pathParts = pathParts.split('.');
   }
 
   var index = 0,
-      pathLength = pathParts.length;
+    pathLength = pathParts.length;
 
-  for(; index < pathLength; index++){
-      var key = pathParts[index];
+  for (; index < pathLength; index++) {
+    var key = pathParts[index];
 
-      if (reference == null) {
-          break;
-      } else if (
-          typeof reference[key] === 'object' &&
-          index !== pathLength - 1
-      ) {
-          reference = reference[key];
-      } else {
+    if (reference == null) {
+      break;
+    } else if (
+      typeof reference[key] === 'object' &&
+      index !== pathLength - 1
+    ) {
+      reference = reference[key];
+    } else {
 
-          if(index < pathLength - 1){
-              return;
-          }
-
-          return reference[key];
+      if (index < pathLength - 1) {
+        return;
       }
+
+      return reference[key];
+    }
   }
 };
 
-prepare_layout = function(layout){
+prepare_layout = function (layout) {
   var oo = nestedObjectToArray(layout)
-  var ooo = oo.map(x=>x.slice(0,-1))
+  var ooo = oo.map(x => x.slice(0, -1))
 
-  for(var i=0; i<ooo.length;i++){
+  for (var i = 0; i < ooo.length; i++) {
 
 
 
-      var current_value = get(layout,ooo[i]);
-      if(current_value.length == 1 && Array.isArray(current_value)){
-          set(layout, ooo[i], current_value[0]);    
-      }else{
-        
-        if(current_value.map(x => x.length).filter(unique)==1){
-          set(layout, ooo[i], [].concat.apply([], current_value));    
-        }
-        // change [[1],[2]] to [1,2]
+    var current_value = get(layout, ooo[i]);
+    if (current_value.length == 1 && Array.isArray(current_value)) {
+      set(layout, ooo[i], current_value[0]);
+    } else {
+
+      if (current_value.map(x => x.length).filter(unique) == 1) {
+        set(layout, ooo[i], [].concat.apply([], current_value));
       }
+      // change [[1],[2]] to [1,2]
+    }
   }
-  return(layout)
+  return (layout)
 }
 
 
@@ -170,41 +170,41 @@ prepare_layout = function(layout){
 
 
 function set(reference, pathParts, value) {
-  if(typeof pathParts === 'string'){
-      pathParts = pathParts.split('.');
+  if (typeof pathParts === 'string') {
+    pathParts = pathParts.split('.');
   }
 
   var index = 0,
-      pathLength = pathParts.length,
-      result = reference,
-      previousresult,
-      previousKey;
+    pathLength = pathParts.length,
+    result = reference,
+    previousresult,
+    previousKey;
 
-  for(; index < pathLength; index++){
-      var key = pathParts[index];
+  for (; index < pathLength; index++) {
+    var key = pathParts[index];
 
-      if ((typeof result !== 'object' || result === null) && index < pathLength) {
-          if (typeof key !== 'symbol' && !Number.isNaN(Number(key))) {
-              result = previousresult[previousKey] = [];
-          }
-          else {
-              result = previousresult[previousKey] = {};
-          }
-      }
-      if (index === pathLength - 1) {
-          result[key] = value;
+    if ((typeof result !== 'object' || result === null) && index < pathLength) {
+      if (typeof key !== 'symbol' && !Number.isNaN(Number(key))) {
+        result = previousresult[previousKey] = [];
       }
       else {
-          previousresult = result;
-          previousKey = key;
-          result = result[key];
+        result = previousresult[previousKey] = {};
       }
+    }
+    if (index === pathLength - 1) {
+      result[key] = value;
+    }
+    else {
+      previousresult = result;
+      previousKey = key;
+      result = result[key];
+    }
   }
 };
-cumsum = function(myarray){
+cumsum = function (myarray) {
   var new_array = [];
-  myarray.reduce(function(a,b,i) { return new_array[i] = a+b; },0);
-  return(new_array) // [5, 15, 18, 20]
+  myarray.reduce(function (a, b, i) { return new_array[i] = a + b; }, 0);
+  return (new_array) // [5, 15, 18, 20]
 }
 
 
@@ -534,7 +534,8 @@ function mergeDeep(target, ...sources) {
 save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index) {
   // 2. What to do after get all the Results.
   // if it is a project, need to ask user to select a folder first. Otherwise, just call save_results_to_project to save in a temp project.
-  when_get_allResults_done = function () {
+  when_get_allResults_done = function (fold_name) {
+    console.log(fold_name)
     var is_temp_project = parameter.project_id.includes("temp_project_")
     if (!is_temp_project) {
       ocpu.call("call_fun", {
@@ -556,19 +557,56 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
               'check_callback': true
             }
           })
+          current_fold_name = fold_name
           $('#save_results_tree').on("select_node.jstree", function (e, data) {
+            current_fold_name = window["current_fold_name"]
+            console.log(current_fold_name)
+            ddd = data
             var selected_folder = data.node.original.id
-            call_save_results_to_project_to_save(is_temp_project, selected_folder)
+
+
+            var children = $("#save_results_tree").jstree("get_children_dom", $("#save_results_tree").jstree("get_selected"));
+            children_folder_names=[]
+            for (var i = 0; i < children.length; i++) {
+              children_folder_names[i] = children[i].innerText
+            }
+            
+            if(children_folder_names.includes(current_fold_name)){
+              
+              var index = 2
+              while(children_folder_names.includes(current_fold_name+index)){
+                
+                index++;
+              }
+              current_fold_name = current_fold_name + index
+            }
+            
+            var current_fold_name = prompt("Please Enter a Folder Name.", current_fold_name);
+
+            if(["\\","/",":","*","?","<",">","|"].some(el=>current_fold_name.includes(el))){
+              alert("Error: folder name cannot contain any of the following '\\/:*?<>| '.")
+
+              if(children_folder_names.includes(current_fold_name)){
+                alert("Error: this destination already contains a fold name "+current_fold_name+".")
+              }else{
+                call_save_results_to_project_to_save(is_temp_project, selected_folder,current_fold_name)
+              }
+            }else{
+              call_save_results_to_project_to_save(is_temp_project, selected_folder,current_fold_name)
+            }
+            
+
+            
           })
         })
       })
     } else {
       var selected_folder = 'to_be_determined'
-      call_save_results_to_project_to_save(is_temp_project, selected_folder)
+      call_save_results_to_project_to_save(is_temp_project, selected_folder, fold_name)
     }
 
   }
-  call_save_results_to_project_to_save = function (is_temp_project, selected_folder) {
+  call_save_results_to_project_to_save = function (is_temp_project, selected_folder, fold_name) {
     ocpu.call("call_fun", {
       parameter: {
         files_names: files_names,
@@ -623,7 +661,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
     })
   }
   console.log(files_sources)
-  console.log(fold_name)
+  
 
   index_of_link = []
   index_of_not_link = []
@@ -645,53 +683,54 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
     for (var j = 0; j < index_of_not_link.length; j++) {
       allResults.push({ fake: files_sources[index_of_not_link[j]] })
     }
-    when_get_allResults_done()
+    when_get_allResults_done(fold_name)
   } else {
-    
-      download_files = function(file_link){
-        Papa.parse(file_link, {
-          download: true,
-          header: true,
-          skipEmptyLines: true,
-          error: function (err, file, inputElem, reason) {
-            console.log("save_results Error: ")
-            console.log(err)
-          },
-          complete: function (results) {
-            console.log(results)
-            console.log("complete")
-            allResults.push(results.data);
-            
 
-            if (allResults.length == index_of_link.length) {
-              // Do whatever you need to do
-              console.log("csv download finished. HERE")
-              console.log(allResults)
-              //console.log(data.node.original.id)
-              for (var j = 0; j < index_of_not_link.length; j++) {
-                allResults.push(files_sources[index_of_not_link[j]])
-              }
-              when_get_allResults_done()
-            }else{
-              i = i + 1
-              download_files(files[index_of_link[i]])
+    download_files = function (file_link) {
+      Papa.parse(file_link, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        error: function (err, file, inputElem, reason) {
+          console.log("save_results Error: ")
+          console.log(err)
+        },
+        complete: function (results) {
+          console.log(results)
+          console.log("complete")
+          allResults.push(results.data);
+
+
+          if (allResults.length == index_of_link.length) {
+            // Do whatever you need to do
+            console.log("csv download finished. HERE")
+            console.log(allResults)
+            //console.log(data.node.original.id)
+            for (var j = 0; j < index_of_not_link.length; j++) {
+              allResults.push(files_sources[index_of_not_link[j]])
             }
+            
+            when_get_allResults_done(fold_name)
+          } else {
+            i = i + 1
+            download_files(files[index_of_link[i]])
           }
-        });
-      }
+        }
+      });
+    }
 
-      var i = 0
+    var i = 0
     //while(i<index_of_link.length){
 
-      file_link = files[index_of_link[i]]
-      download_files(file_link)
+    file_link = files[index_of_link[i]]
+    download_files(file_link)
 
 
 
-     
 
-    
-   
+
+
+
   }
 }
 
@@ -722,7 +761,7 @@ function sort(arr, desending = false) {
   }
 
 }
-update_projects_table = function (id = "projects_table", select_call_back = "when_projects_table_click_selected",rename_call_back = "when_projects_table_click_renamed",delete_call_back = "when_projects_table_click_deleted") {
+update_projects_table = function (id = "projects_table", select_call_back = "when_projects_table_click_selected", rename_call_back = "when_projects_table_click_renamed", delete_call_back = "when_projects_table_click_deleted") {
   console.log("HERE")
   console.log($("#projects_table").length)
   Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
@@ -736,80 +775,80 @@ update_projects_table = function (id = "projects_table", select_call_back = "whe
       project_names.pop()
 
 
-      if(results.data[1][0] === ""){
+      if (results.data[1][0] === "") {
         table_html = "<small>You don't have any project yet. Create One!</small>"
-      }else{
+      } else {
         var table_html = "<thead><tr>"
-        for (var i = -1; i < results.data[0].length+1; i++) {
-          if(i === -1){
+        for (var i = -1; i < results.data[0].length + 1; i++) {
+          if (i === -1) {
             table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
-          }else if(i === results.data[0].length){
+          } else if (i === results.data[0].length) {
             table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
-          }else{
+          } else {
             table_html = table_html + "<th>" + results.data[0][i] + "</th>"
           }
-          
+
         }
         table_html = table_html + "</tr></thead>"
         table_html = table_html + "<tfoot><tr>"
-        for (var i = -1; i < results.data[0].length+1; i++) {
-          if(i === -1){
+        for (var i = -1; i < results.data[0].length + 1; i++) {
+          if (i === -1) {
             table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
-          }else if(i === results.data[0].length){
+          } else if (i === results.data[0].length) {
             table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
-          }else{
+          } else {
             table_html = table_html + "<th>" + results.data[0][i] + "</th>"
           }
-          
+
         }
         table_html = table_html + "</tr></tfoot>"
 
 
         table_html = table_html + "<tbody>"
-        for (var i = 1; i < results.data.length-1; i++) {
-          var current_project_id  =results.data[i][0]
+        for (var i = 1; i < results.data.length - 1; i++) {
+          var current_project_id = results.data[i][0]
 
 
           table_html = table_html + "<tr>"
-          for (var j = -1; j < results.data[i].length+1; j++) {
-            if(j === -1){
-              table_html = table_html + "<td class='text-center'>" + (j+2) + "</td>"
-            }else if(j === results.data[i].length){
+          for (var j = -1; j < results.data[i].length + 1; j++) {
+            if (j === -1) {
+              table_html = table_html + "<td class='text-center'>" + (j + 2) + "</td>"
+            } else if (j === results.data[i].length) {
               table_html = table_html + "<td class='text-right'>"
-              if(!select_call_back === false){
-                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Select This Project" onclick="'+select_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:green">check</i> </button>'
+              if (!select_call_back === false) {
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Select This Project" onclick="' + select_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:green">check</i> </button>'
               }
-              if(!rename_call_back === false){
-                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Rename This Project" onclick="'+rename_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:orange">edit</i> </button>'
+              if (!rename_call_back === false) {
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Rename This Project" onclick="' + rename_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:orange">edit</i> </button>'
               }
-              if(!delete_call_back === false){
-                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Delete This Project" onclick="'+delete_call_back+'(\''+current_project_id+'\')"> <i class="material-icons" style="color:red">close</i> </button>'
+              if (!delete_call_back === false) {
+                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Delete This Project" onclick="' + delete_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:red">close</i> </button>'
               }
-              
-              table_html = table_html +  "</td>"
-            }else{
+
+              table_html = table_html + "</td>"
+            } else {
               table_html = table_html + "<td>" + results.data[i][j] + "</td>"
             }
-            
+
           }
           table_html = table_html + "</tr>"
         }
         table_html = table_html + "</tbody>"
         //console.log(table_html)
       }
-      
+
       $("#" + id).html(table_html)
       //$("#" + id + " tr").click(call_back);
 
 
-      if($.fn.dataTable.isDataTable( '#'+id )){
+      if ($.fn.dataTable.isDataTable('#' + id)) {
 
-        if(results.data[1][0] === ""){
+        if (results.data[1][0] === "") {
           $("#" + id).DataTable().destroy();
           $("#" + id).html(table_html)
         }
 
-      }else{
+      } else {
         $("#" + id).DataTable({
           "pagingType": "full_numbers",
           "lengthMenu": [
@@ -825,7 +864,7 @@ update_projects_table = function (id = "projects_table", select_call_back = "whe
       }
 
 
-      
+
 
     }
   });

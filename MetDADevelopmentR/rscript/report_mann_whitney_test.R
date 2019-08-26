@@ -10,12 +10,12 @@ parent <- sapply(projectList$project_structure, function(x) x$parent)
 data_ids <- id[parent == fold_id]
 
 
-result_summary <- read.csv(
+result_summary <- read.csv(URLencode(
   paste0(
     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
     project_id,
     "/", data_ids
-  ),
+  )),
   row.names = 1
 )
 

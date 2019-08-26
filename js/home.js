@@ -109,44 +109,50 @@ $.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (d
 
 create_project = function () {
     // use R to validate the new project name.
-
-    ocpu.call("call_fun", {
-        parameter: {
-            user_id: localStorage['user_id'],
-            new_name: $("#new_project_name").val(),
-            fun_name: "check_new_project_name"
-        }
-    }, function (session) {
-        console.log(session)
-        session.getObject(function (obj) {
-            ooo = obj
-            console.log(obj)
-            // if success, then make the temprary project_id a new id and associated new project to this temp.
-            if (obj[0] === 'good') {
-                ocpu.call("call_fun", {
-                    parameter: {
-                        user_id: localStorage['user_id'],
-                        new_name: $("#new_project_name").val(),
-                        temp_project_id: localStorage['temp_project_id'],
-                        fun_name: "create_new_project"
-                    }
-                }, function (session2) {
-                    console.log(session2)
-                    session2.getObject(function (obj2) {
-                        ooo = obj2
-                        console.log(obj2)
-                        update_projects_table()
-                        $('#create_new_project_collapse').collapse('toggle');
-                    })
-                }).fail(function (e2) {
-                    Swal.fire('Oops...', e2.responseText, 'error')
-                })
-
+    
+    if(["\\","/",":","*","?","<",">","|"," "].some(el=>$("#new_project_name").val().includes(el))){
+        alert("Project Name Cannot Contain '\\/:*?<>| '.")
+    }else{
+        ocpu.call("call_fun", {
+            parameter: {
+                user_id: localStorage['user_id'],
+                new_name: $("#new_project_name").val(),
+                fun_name: "check_new_project_name"
             }
+        }, function (session) {
+            console.log(session)
+            session.getObject(function (obj) {
+                ooo = obj
+                console.log(obj)
+                // if success, then make the temprary project_id a new id and associated new project to this temp.
+                if (obj[0] === 'good') {
+                    ocpu.call("call_fun", {
+                        parameter: {
+                            user_id: localStorage['user_id'],
+                            new_name: $("#new_project_name").val(),
+                            temp_project_id: localStorage['temp_project_id'],
+                            fun_name: "create_new_project"
+                        }
+                    }, function (session2) {
+                        console.log(session2)
+                        session2.getObject(function (obj2) {
+                            ooo = obj2
+                            console.log(obj2)
+                            update_projects_table()
+                            $('#create_new_project_collapse').collapse('toggle');
+                        })
+                    }).fail(function (e2) {
+                        Swal.fire('Oops...', e2.responseText, 'error')
+                    })
+    
+                }
+            })
+        }).fail(function (e) {
+            Swal.fire('Oops...', e.responseText, 'error')
         })
-    }).fail(function (e) {
-        Swal.fire('Oops...', e.responseText, 'error')
-    })
+    }
+
+
 
 
 }
