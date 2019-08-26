@@ -131,12 +131,16 @@ var update_jstree = function (project_structure) {
                             }).then((result) => {
                                 if (result.value) {
                                     var selected_node_id = obj.reference[0].id.substring(0, obj.reference[0].id.length - '_anchor'.length);
+                                    console.log(selected_node_id)
                                     start_cal()
                                     ocpu.call("call_fun", {parameter:{
                                         project_id: localStorage.activate_project_id,
                                         fun_name:"get_tree_structure"
                                     }}, function (session) {
+                                        console.log("get_tree_structure")
                                         session.getObject(function (obj) {
+                                            ooo = obj
+                                            
                                             var remove_index = [];
                                             var bad_id = [];
                                             bad_id.push(selected_node_id)
@@ -158,11 +162,12 @@ var update_jstree = function (project_structure) {
                                                 obj.splice(remove_index[i], 1)
                                             }
 
-                                            ocpu.call("call_fun", {
+                                            ocpu.call("call_fun", {parameter:{
                                                 project_id: localStorage.activate_project_id,
                                                 project_structure: obj,
                                                 fun_name:"update_tree_structure"
-                                            }, function (session) {
+                                            }}, function (session) {
+                                                console.log(session)
                                                 session.getObject(function (obj) {
                                                     update_jstree(obj)
                                                     end_cal()

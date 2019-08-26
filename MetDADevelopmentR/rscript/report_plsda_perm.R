@@ -44,10 +44,9 @@ if (type == "all") {
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
   id <- sapply(projectList$project_structure, function(x) x$id)
-  parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
-
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
 
   # result <- fread(
   #   paste0(

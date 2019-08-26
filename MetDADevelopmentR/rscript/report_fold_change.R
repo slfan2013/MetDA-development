@@ -14,6 +14,7 @@ if(!exists("table_index")){table_index=1}
 if(!exists("figure_index")){figure_index=1}
 if(!exists("project_id")){project_id = ""}
 if(!exists("fold_id")){fold_id = NULL}
+if(!exists("report_generator")){report_generator = FALSE}
 text_html = ""
 
 
@@ -33,8 +34,10 @@ if(type == "all"){
 
   id <- sapply(projectList$project_structure, function(x) x$id)
   parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
+
 
 
   result <- read.csv(URLencode(
@@ -265,14 +268,20 @@ if(type=="all"){
 
 
 
+  if(!report_generator){
+    doc %>% print(target = "report_fold_change.docx")
+  }
 
-
-  doc %>% print(target = "report_fold_change.docx")
 }
 
 
+if(!report_generator){
+  result = list(text_html = text_html, method_name = "Fold Change", table_index = table_index+2, figure_index = figure_index+1)
+}else{
+  result = list(table_index = table_index, figure_index = figure_index+1, doc = doc)
+}
 
-result = list(text_html = text_html, method_name = "Fold Change", table_index = table_index+2, figure_index = figure_index+1)
+
 
 
 # }

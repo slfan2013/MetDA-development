@@ -49,6 +49,7 @@ if (!exists("project_id")) {
 if (!exists("fold_id")) {
   fold_id <- NULL
 }
+if(!exists("report_generator")){report_generator = FALSE}
 text_html <- ""
 
 
@@ -67,8 +68,9 @@ if (type == "all") {
 
   id <- sapply(projectList$project_structure, function(x) x$id)
   parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
 
 
   # result <- fread(
@@ -200,16 +202,16 @@ if (type %in% c("result_summary", "all")) {
 
 
   if(type == "all"){
-    Q2 =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Predictive Accuracy")]]
-    R2 =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on Y")]]
-    variance =  parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on X")]]
+    Q2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Predictive Accuracy")]])
+    R2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on Y")]])
+    variance =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on X")]])
 
     n_perm = length(parameters$perm_plot$data$x[[1]])
 
     best_predI = which.max(Q2)
     perm_summary = list(
-      pQ2 = parameters$perm_plot$layout$pQ2,
-      pR2Y = parameters$perm_plot$layout$pR2Y
+      pQ2 = unlist(parameters$perm_plot$layout$pQ2),
+      pR2Y = unlist(parameters$perm_plot$layout$pR2Y)
     )
 
   }
@@ -286,7 +288,6 @@ if (type == "all") {
 
 
   figures_paths = data_ids[grepl("svg",data_ids)]
-
   for(i in 1:length(figures_paths)){
     download.file(URLencode(paste0(
       "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
@@ -326,13 +327,21 @@ if (type == "all") {
 
 
 
+  if(!report_generator){
+    doc %>% print(target = "report_plsda.docx")
+  }
 
 
-  doc %>% print(target = "report_plsda.docx")
+}
+if(!report_generator){
+
+  result <- list(text_html = text_html, method_name = "Partial Least Square - Discriminant Analysis (PLS-DA)", table_index = table_index, figure_index = figure_index+3)
+}else{
+  result = list(table_index = table_index, figure_index = figure_index+3, doc = doc)
 }
 
 
-result <- list(text_html = text_html, method_name = "Partial Least Square - Discriminant Analysis (PLS-DA)", table_index = table_index, figure_index = figure_index+3)
+
 
 
 # }

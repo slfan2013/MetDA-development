@@ -26,12 +26,13 @@ if (!exists("project_id")) {
 if (!exists("fold_id")) {
   fold_id <- NULL
 }
+if(!exists("report_generator")){report_generator = FALSE}
 text_html <- ""
 
 
 
 
-save(parameter, file = "report_pca.RData")
+# save(parameter, file = "report_pca.RData")
 
 # load("report_pca.RData")
 pacman::p_load(data.table, officer, magrittr)
@@ -44,8 +45,9 @@ if (type == "all") {
 
   id <- sapply(projectList$project_structure, function(x) x$id)
   parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
 
 
   # result <- fread(
@@ -158,6 +160,8 @@ if (type %in% c("parameter_settings_description", "all")) {
     }))
   }
 }
+
+
 if (type %in% c("result_summary", "all")) {
   if (is.null(doc)) {
     doc <- read_docx()
@@ -181,7 +185,7 @@ if (type %in% c("result_summary", "all")) {
 
 
   if(type == "all"){
-    variance = parameters$scree_plot$data$y[[1]]
+    variance = unlist(parameters$scree_plot$data$y[[1]])
   }
 
 
@@ -253,14 +257,22 @@ if (type == "all") {
 
 
 
+  if(!report_generator){
+    doc %>% print(target = "report_pca.docx")
+  }
 
 
 
-  doc %>% print(target = "report_pca.docx")
 }
 
 
-result <- list(text_html = text_html, method_name = "Principal Component Analysis (PCA)", table_index = table_index, figure_index = figure_index+3)
+if(!report_generator){
+
+  result <- list(text_html = text_html, method_name = "Principal Component Analysis (PCA)", table_index = table_index, figure_index = figure_index+3)
+}else{
+  result = list(table_index = table_index, figure_index = figure_index+3, doc = doc)
+}
+
 
 
 # }

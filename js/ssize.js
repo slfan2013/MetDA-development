@@ -31,15 +31,43 @@ ssize_append_results = function (obj, session) {
 
     $("#download_results").off("click").on("click",function () {
         parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.ssize_plot = ssize_plot_parameters
-        parameters.power_plot = power_plot_parameters
+
+
+
+        parameters.ssize_plot = {}
+        parameters.ssize_plot.layout = {}
+        parameters.ssize_plot.layout.height = ssize_plot_parameters.layout.height
+        parameters.ssize_plot.layout.width = ssize_plot_parameters.layout.width
+
+
+        parameters.power_plot = {}
+        parameters.power_plot.layout = {}
+        parameters.power_plot.layout.height = power_plot_parameters.layout.height
+        parameters.power_plot.layout.width = power_plot_parameters.layout.width
+        
+        parameters.groups = unpack(p, parameters.treatment_group)
+
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['compound','none','none'])
     })
    
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.ssize_plot = ssize_plot_parameters
-        parameters.power_plot = power_plot_parameters
+ 
+
+
+        parameters.ssize_plot = {}
+        parameters.ssize_plot.layout = {}
+        parameters.ssize_plot.layout.height = ssize_plot_parameters.layout.height
+        parameters.ssize_plot.layout.width = ssize_plot_parameters.layout.width
+
+
+        parameters.power_plot = {}
+        parameters.power_plot.layout = {}
+        parameters.power_plot.layout.height = power_plot_parameters.layout.height
+        parameters.power_plot.layout.width = power_plot_parameters.layout.width
+        
+        parameters.groups = unpack(p, parameters.treatment_group)
+        
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['compound','none','none'])
     })
 

@@ -103,7 +103,7 @@ if(fdr_check){
     p_vals = sapply(model_anovas, function(x){
       x$`Pr(>F)`[1]
     })
-    pi0 = pi0est(p_vals)$pi0
+    pi0 = tryCatch(pi0est(p_vals)$pi0, error = function(x) {return(1)})
     #https://www4.stat.ncsu.edu/~jaosborn/research/microarray/software/usses-ky.pdf
 
     alpha_adjusted = sig.level

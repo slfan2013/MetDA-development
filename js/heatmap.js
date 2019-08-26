@@ -21,16 +21,34 @@ heatmap_append_results = function (obj, session) {
     files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel","image/svg+xml"]
 
     $("#download_results").off("click").on("click", function () {
-        parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.heatmap_plot = heatmap_plot_parameters
+        var parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.heatmap_plot = {}
+        parameters.heatmap_plot.order_sample_by = heatmap_plot_parameters.order_sample_by
+        parameters.heatmap_plot.sample_annotation = heatmap_plot_parameters.sample_annotation
+        parameters.heatmap_plot.order_compound_by = heatmap_plot_parameters.order_compound_by
+        parameters.heatmap_plot.compound_annotation = heatmap_plot_parameters.compound_annotation
+
+        parameters.heatmap_plot.layout = {}
+        parameters.heatmap_plot.layout.width = heatmap_plot_parameters.layout.width
+        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height
+        //parameters.heatmap_plot = heatmap_plot_parameters
         //download_results(files_names, files_sources, zipfile_name)
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
     })
 
 
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
-        parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.heatmap_plot = heatmap_plot_parameters
+        var parameters = JSON.parse(localStorage.getItem('parameter'))
+        //parameters.heatmap_plot = heatmap_plot_parameters
+        parameters.heatmap_plot = {}
+        parameters.heatmap_plot.order_sample_by = heatmap_plot_parameters.order_sample_by
+        parameters.heatmap_plot.sample_annotation = heatmap_plot_parameters.sample_annotation
+        parameters.heatmap_plot.order_compound_by = heatmap_plot_parameters.order_compound_by
+        parameters.heatmap_plot.compound_annotation = heatmap_plot_parameters.compound_annotation
+
+        parameters.heatmap_plot.layout = {}
+        parameters.heatmap_plot.layout.width = heatmap_plot_parameters.layout.width
+        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
     })
 

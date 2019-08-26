@@ -1,6 +1,8 @@
 
 # report_missing_value_imputation = function(treatment_group,equal_variance_assumption,type,fdr,result,levels = NULL,alternative = "two.sided",doc = NULL, table_index = 1,figure_index = 1){
 
+
+
 if(!exists("defination_of_missing_other_than")){defination_of_missing_other_than=NULL}
 if(!exists("defination_of_missing_value")){defination_of_missing_value=NULL}
 if(!exists("defination_of_missing_value_values_less_than")){defination_of_missing_value_values_less_than=NULL}
@@ -14,6 +16,8 @@ if(!exists("table_index")){table_index=1}
 if(!exists("figure_index")){figure_index=1}
 if(!exists("project_id")){project_id = ""}
 if(!exists("fold_id")){fold_id = NULL}
+if(!exists("report_generator")){report_generator = FALSE}
+
 text_html = ""
 
 
@@ -27,14 +31,16 @@ pacman::p_load(data.table, officer, magrittr)
 
 
 if(type == "all"){
-
   projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))
   projectList <- jsonlite::fromJSON(projectUrl, simplifyVector = F)
 
   id <- sapply(projectList$project_structure, function(x) x$id)
   parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
+
 
 
   result <- read.csv(
@@ -68,6 +74,7 @@ if(type == "all"){
 if(type %in% c("method_description", "all")){
 
   if (is.null(doc)) {
+
     doc <- read_docx()
   }
   if (type %in% "all") {
@@ -284,60 +291,20 @@ if(type=="all"){
   }
 
 
-
+if(!report_generator){
   doc %>% print(target = "report_missing_value_imputation.docx")
+}
+
+}
+
+
+if(!report_generator){
+  result = list(text_html = text_html, method_name = "Missing Value Imputation", table_index = table_index+1, figure_index = figure_index)
+}else{
+  result = list(table_index = table_index+1, figure_index = figure_index, doc = doc)
 }
 
 
 
-result = list(text_html = text_html, method_name = "Missing Value Imputation", table_index = table_index+1, figure_index = figure_index)
-
-
 # }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

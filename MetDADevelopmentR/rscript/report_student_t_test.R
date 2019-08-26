@@ -12,6 +12,7 @@ if(!exists("table_index")){table_index=1}
 if(!exists("figure_index")){figure_index=1}
 if(!exists("project_id")){project_id = ""}
 if(!exists("fold_id")){fold_id = NULL}
+if(!exists("report_generator")){report_generator = FALSE}
 text_html = ""
 
 
@@ -31,8 +32,9 @@ text_html = ""
 
     id <- sapply(projectList$project_structure, function(x) x$id)
     parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-    data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
 
 
     result <- read.csv(
@@ -232,12 +234,19 @@ text_html = ""
       body_add_table(value = result[order(result$p_values, decreasing = FALSE)[1:10],], style = "table_template")%>%
       body_add_par(value = paste0("Table ", table_index, ": most significant compounds (i.e. small p-values)"), style = "table title")
 
-    doc %>% print(target = "report_student_t_test.docx")
+    if(!report_generator){
+      doc %>% print(target = "report_student_t_test.docx")
+    }
   }
 
 
+  if(!report_generator){
+    result = list(text_html = text_html, method_name = "Student's t-test", table_index = table_index+1, figure_index = figure_index)
+  }else{
+    result = list(table_index = table_index, figure_index = figure_index, doc = doc)
+  }
 
-  result = list(text_html = text_html, method_name = "Student's t-test", table_index = table_index+1, figure_index = figure_index)
+
 
 
 # }

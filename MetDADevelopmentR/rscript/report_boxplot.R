@@ -16,6 +16,7 @@ if (!exists("project_id")) {
 if (!exists("fold_id")) {
   fold_id <- NULL
 }
+if(!exists("report_generator")){report_generator = FALSE}
 text_html <- ""
 
 
@@ -34,8 +35,9 @@ if (type == "all") {
 
   id <- sapply(projectList$project_structure, function(x) x$id)
   parent <- sapply(projectList$project_structure, function(x) x$parent)
+  icon <- sapply(projectList$project_structure, function(x) x$icon)
 
-  data_ids <- id[parent == fold_id]
+  data_ids <- id[parent == fold_id & (!icon=="fa fa-folder")]
 
 
   # result <- fread(
@@ -251,14 +253,24 @@ if (type == "all") {
 
 
 
+      if(!report_generator){
+        doc %>% print(target = "report_boxplot.docx")
+      }
 
 
 
-  doc %>% print(target = "report_boxplot.docx")
+
+
+}
+if(!report_generator){
+  result <- list(text_html = text_html, method_name = "Boxplot Visualization", table_index = table_index + 1, figure_index = figure_index+1)
+
+}else{
+  result = list(table_index = table_index+1, figure_index = figure_index+1, doc = doc)
 }
 
 
-result <- list(text_html = text_html, method_name = "Boxplot Visualization", table_index = table_index + 1, figure_index = figure_index+1)
+
 
 
 # }
