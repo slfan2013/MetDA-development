@@ -1,14 +1,14 @@
 new_user_id = 'initiate'
 
 # get the list (including styles) first.
-initiateUrl <- URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate")
+initiateUrl <- URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/slfan")
 initiateList <- jsonlite::fromJSON(initiateUrl, simplifyVector = FALSE)
 table_name = paste0("metda_userinfo_",new_user_id,".csv")
 
 
 
 
-metda_userinfo_data = data.table::fread(URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate/metda_userinfo_initiate.csv"))
+metda_userinfo_data = data.table::fread(URLencode("http://tempusername:temppassword@metda.fiehnlab.ucdavis.edu/db/metda_userinfo/slfan/metda_userinfo_slfan.csv"))
 
 metda_userinfo_data = metda_userinfo_data[0,]
 
@@ -20,7 +20,7 @@ projectUrl <- URLencode(paste0("http://tempusername:temppassword@metda.fiehnlab.
 new_user_list = initiateList
 new_user_list$`_id` = new_user_id
 new_user_list$`_rev` = NULL
-new_user_list$`_attachments`[["metda_userinfo_initiate.csv"]] = NULL
+new_user_list$`_attachments`[[paste0("metda_userinfo_slfan.csv")]] = NULL
 
 
 new_user_list$`_attachments`[[table_name]] <- list(

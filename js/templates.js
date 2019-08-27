@@ -66,10 +66,12 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     $("#template_overview_div").hide()
 
 
-    ocpu.call("call_fun",{parameter:{
-        type:"method_description",
-        fun_name:"report_"+window.location.href.split("#")[1]
-    }},function(session){
+    ocpu.call("call_fun", {
+        parameter: {
+            type: "method_description",
+            fun_name: "report_" + window.location.href.split("#")[1]
+        }
+    }, function (session) {
         session.getObject(function (obj) {
             ooo = obj
             $("#method_name").text(obj.method_name)
@@ -82,11 +84,13 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     open_project_structure_to_select_dataset = function () {
         // open the data select collapse.
         // id：project_structure_with_dataset_only
-        ocpu.call("call_fun", {parameter:{
-            project_id: localStorage['activate_project_id'],
-            selected_data: localStorage['activate_data_id'],
-            fun_name:"open_project_structure_to_select_dataset"
-        }}, function (session) {
+        ocpu.call("call_fun", {
+            parameter: {
+                project_id: localStorage['activate_project_id'],
+                selected_data: localStorage['activate_data_id'],
+                fun_name: "open_project_structure_to_select_dataset"
+            }
+        }, function (session) {
 
             console.log(session)
             session.getObject(function (obj) {
@@ -106,9 +110,28 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 $('#project_structure_with_dataset_only').on("select_node.jstree", function (e, data) {
                     ddd = data
                     localStorage['activate_data_id'] = ddd.node.original.id[0]
-                    $("#parameter_settings_card").show()
-                    get_parameter_settings()
+
+                    ocpu.call("call_fun", {
+                        parameter: {
+                            project_id: project_id,
+                            activate_data_id: localStorage['activate_data_id'],
+                            fun_name: "get_p_and_f"
+                        }
+                    }, function (session) {
+                        console.log(session)
+                        session.getObject(function (obj) {
+                            p = obj.p
+                            f = obj.f
+                            $("#parameter_settings_card").show()
+                            get_parameter_settings()
+                        })
+                    })
+
+
                 })
+
+
+
                 if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
                     $("#parameter_settings_card").show()
                     get_parameter_settings()
@@ -125,16 +148,18 @@ if (window.location.href.split("#")[1] === 'project_overview') {
     }
     if (localStorage.big_category === 'project') {
 
-        if(window.location.href.split("#")[1] === 'volcano'){
-            
-            ocpu.call("call_fun",{parameter:{
-                project_id: localStorage['activate_project_id'],
-                fun_name:"open_project_structure_to_select_p_value_and_fold_change"
-            }}, function(session){
+        if (window.location.href.split("#")[1] === 'volcano') {
+
+            ocpu.call("call_fun", {
+                parameter: {
+                    project_id: localStorage['activate_project_id'],
+                    fun_name: "open_project_structure_to_select_p_value_and_fold_change"
+                }
+            }, function (session) {
                 console.log(session)
-                session.getObject(function(obj){
+                session.getObject(function (obj) {
                     ooo = obj
-                    
+
                     var volcano_plot_p_value = false;
                     var volcano_plot_fold_change = false;
 
@@ -147,8 +172,8 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                             'expand_selected_onload': true,
                             'check_callback': true
                         }
-                    }).bind('loaded.jstree', function(e, data) {
-                        if(obj.p_val_project_structure.length===3){
+                    }).bind('loaded.jstree', function (e, data) {
+                        if (obj.p_val_project_structure.length === 3) {
                             $('#volcano_plot_p_value').jstree('select_node', obj.p_val_project_structure[2].id[0]);
                         }
                     })
@@ -156,11 +181,11 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     $('#volcano_plot_p_value').on("select_node.jstree", function (e, data) {
                         volcano_plot_p_value = true
                         p_value_data_id = data.node.original.id[0]
-                        p_value_data_treatment =  $("#volcano_plot_p_value").jstree(true).get_node(data.node.parent).original.parameter.treatment_group[0]
-                        if(volcano_plot_p_value && volcano_plot_fold_change){
+                        p_value_data_treatment = $("#volcano_plot_p_value").jstree(true).get_node(data.node.parent).original.parameter.treatment_group[0]
+                        if (volcano_plot_p_value && volcano_plot_fold_change) {
                             $("#parameter_settings_card").show()
                             get_parameter_settings()
-                        }                        
+                        }
                     })
 
 
@@ -172,8 +197,8 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                             'expand_selected_onload': true,
                             'check_callback': true
                         }
-                    }).bind('loaded.jstree', function(e, data) {
-                        if(obj.p_val_project_structure.length===3){
+                    }).bind('loaded.jstree', function (e, data) {
+                        if (obj.p_val_project_structure.length === 3) {
                             $('#volcano_plot_fold_change').jstree('select_node', obj.fold_change_project_structure[2].id[0]);
                         }
                     })
@@ -182,7 +207,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                         volcano_plot_fold_change = true
                         fold_change_data_id = data.node.original.id[0]
                         fold_change_data_treatment = $("#volcano_plot_fold_change").jstree(true).get_node(data.node.parent).original.parameter.treatment_group[0]
-                        if(volcano_plot_p_value && volcano_plot_fold_change){
+                        if (volcano_plot_p_value && volcano_plot_fold_change) {
                             $("#parameter_settings_card").show()
                             get_parameter_settings()
                         }
@@ -192,19 +217,19 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
 
-        }else{
+        } else {
             open_project_structure_to_select_dataset()
         }
 
-        
+
     }
 
     get_parameter_settings = function () {
-        $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", function(){
+        $("#parameter_settings").load(window.location.href.split("#")[1] + "_parameter_settings.html", function () {
             init_selectpicker
         })
-        
-        
+
+
 
 
     }
@@ -276,7 +301,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-        if (['missing_value_imputation', 'student_t_test', 'mann_whitney_test','data_subsetting', 'fold_change'].includes(page)) {
+        if (['missing_value_imputation', 'student_t_test', 'mann_whitney_test', 'data_subsetting', 'fold_change'].includes(page)) {
             $("#results_card_body").load("one_top_description_bottom_table.html", function () {
                 init_selectpicker()
 
@@ -360,11 +385,11 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                     init_selectpicker()
                     $("#plsda_scree_plot_div").load("plsda_scree_plot.html", function () {
 
-                        $("#vip_plot_div").load("vip_plot.html",function(){
+                        $("#vip_plot_div").load("vip_plot.html", function () {
 
 
 
-                            $("#perm_plot_div").load("perm_plot.html",function(){
+                            $("#perm_plot_div").load("perm_plot.html", function () {
 
 
 
@@ -400,12 +425,12 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                         })
 
 
-                        
+
                     })
                 })
             })
         }
-         else if (['ssize'].includes(page)) {
+        else if (['ssize'].includes(page)) {
             obj_ssize_plot = obj
             obj_power_plot = obj
             $("#results_card_body").append('<div id="result_table_div"></div>')
@@ -437,7 +462,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                         var append_results_fun = window[window.location.href.split("#")[1] + "_append_results"];
                         append_results_fun(obj, session)
                     })
-                    
+
                 })
 
             })
@@ -445,7 +470,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
 
-            
+
         } else if (['heatmap'].includes(page)) {
             obj_heatmap_plot = obj
             $("#results_card_body").append('<div id="heatmap_plot_div"></div>')
@@ -536,18 +561,18 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             }
         })
         parameter.project_id = project_id
-            
+
         parameter.fun_name = window.location.href.split("#")[1]
-        if(parameter.fun_name === 'volcano'){
-            if(localStorage.big_category === 'in_and_out'){
+        if (parameter.fun_name === 'volcano') {
+            if (localStorage.big_category === 'in_and_out') {
                 parameter.activate_data_id = $("#" + 'volcano_input_file')[0].files[0].name
-            }else{
+            } else {
                 parameter.activate_data_id = [p_value_data_id, fold_change_data_id] // sequence matters. See volcano.R
                 parameter.p_value_data_treatment = p_value_data_treatment
                 parameter.fold_change_data_treatment = fold_change_data_treatment
             }
-        }else{
-            if(['t-test','ANOVA'].includes(parameter.test_type)){
+        } else {
+            if (['t-test', 'ANOVA'].includes(parameter.test_type)) {
                 delete parameter.sample_id;
             }
             if (localStorage['activate_data_id'] !== undefined && localStorage.big_category === 'project') {
@@ -555,7 +580,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
             } else {
                 parameter.activate_data_id = 'e.csv'
             }
-    
+
         }
 
 

@@ -1,5 +1,5 @@
 # generate_report
-project_id <- "test71566840456"
+project_id <- "aaa1566880884"
 
 
 projectUrl <- URLencode(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_project/", project_id))

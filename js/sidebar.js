@@ -1,4 +1,5 @@
 console.log("sidebar")
+/*
 
 if (localStorage['big_category'] === 'project') {
     $(".show_when_project").show()
@@ -100,3 +101,4 @@ $.getJSON("https://metda.fiehnlab.ucdavis.edu/db:5985/templates/methods", functi
 
     $("#sidebar_ul").html(sidebar_ul)
 })
+*/

@@ -78,7 +78,9 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   # score_plot_style = get_pca_score_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
 
 
-  score_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_score_plot_style"))
+  # score_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_score_plot_style"))
+
+  score_plot_style = score_plot$layout
 
 
   x = sample_scores$PC1
@@ -229,7 +231,8 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 
-  loading_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_loading_plot_style"))
+  # loading_plot_style = call_fun(parameter = list(user_id = "slfan", fun_name = "get_pca_loading_plot_style"))
+  loading_plot_style = loading_plot$layout
 
 
   x = compound_loadings$PC1

@@ -33,76 +33,93 @@ create_new_project_check_input_format = function (inputFile) {
 
 
 
-$.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
-    //ddd = data
-    category_names = Object.keys(data.methods_structure)
-    headers = Object.keys(data.methods_structure[category_names[0]].data_subsetting)
+//$.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
+    
 
-    method_tab_panes = ""
-    for (var cat = 0; cat < category_names.length; cat++) {
-        console.log(cat)
-        if (cat === 0) {
-            method_tab_panes = method_tab_panes + '<div class="tab-pane active" id="'
-        } else {
-            method_tab_panes = method_tab_panes + '<div class="tab-pane" id="'
+    ocpu.call("call_fun",{
+        parameter:{
+            fun_name:"get_method"
         }
-        method_tab_panes = method_tab_panes +
-            category_names[cat].toLowerCase().replace(" ", "_") +
-            '_link">' + '<div class="table-responsive">' +
-            '<table class="table">' +
-            '<thead><tr>' //+
-        var this_category = data.methods_structure[category_names[cat]]
-        for (var th = -1; th < headers.length; th++) {
-            if (th === -1) {
-                method_tab_panes = method_tab_panes + '<th class="text-center">#</th>'
-            } else {
-                method_tab_panes = method_tab_panes + '<th>' + headers[th] + '</th>'
-            }
-        }
-        method_tab_panes = method_tab_panes +
-            '</tr></thead>' //+
-        method_tab_panes = method_tab_panes + "<tbody>" //+
-
-        var methods_in_this_category = Object.keys(this_category)
-
-        for (var tr = 0; tr < methods_in_this_category.length; tr++) {
-            method_tab_panes = method_tab_panes + "<tr>"
-            var current_row_value = Object.values(this_category[methods_in_this_category[tr]])
-            for (var td = -1; td < current_row_value.length; td++) {
-                if (td === -1) {
-                    method_tab_panes = method_tab_panes + "<td>" + (td + 2) + "</td>"
-                } else if (td === 0) {
-                    method_tab_panes = method_tab_panes + "<td><a href='#" + methods_in_this_category[tr].toLowerCase().replace(" ", "_") + "'>" + current_row_value[td] + "</a></td>"
+    },function(session){
+        console.log(session)
+        session.getObject(function(obj){
+            var data = obj
+            ddd = data
+            category_names = Object.keys(data.methods_structure)
+            headers = Object.keys(data.methods_structure[category_names[0]].data_subsetting)
+        
+            method_tab_panes = ""
+            for (var cat = 0; cat < category_names.length; cat++) {
+                console.log(cat)
+                if (cat === 0) {
+                    method_tab_panes = method_tab_panes + '<div class="tab-pane active" id="'
                 } else {
-                    method_tab_panes = method_tab_panes + "<td>" + current_row_value[td] + "</td>"
+                    method_tab_panes = method_tab_panes + '<div class="tab-pane" id="'
                 }
-
+                method_tab_panes = method_tab_panes +
+                    category_names[cat].toLowerCase().replace(" ", "_") +
+                    '_link">' + '<div class="table-responsive">' +
+                    '<table class="table">' +
+                    '<thead><tr>' //+
+                var this_category = data.methods_structure[category_names[cat]]
+                for (var th = -1; th < headers.length; th++) {
+                    if (th === -1) {
+                        method_tab_panes = method_tab_panes + '<th class="text-center">#</th>'
+                    } else {
+                        method_tab_panes = method_tab_panes + '<th>' + headers[th] + '</th>'
+                    }
+                }
+                method_tab_panes = method_tab_panes +
+                    '</tr></thead>' //+
+                method_tab_panes = method_tab_panes + "<tbody>" //+
+        
+                var methods_in_this_category = Object.keys(this_category)
+        
+                for (var tr = 0; tr < methods_in_this_category.length; tr++) {
+                    method_tab_panes = method_tab_panes + "<tr>"
+                    var current_row_value = Object.values(this_category[methods_in_this_category[tr]])
+                    for (var td = -1; td < current_row_value.length; td++) {
+                        if (td === -1) {
+                            method_tab_panes = method_tab_panes + "<td>" + (td + 2) + "</td>"
+                        } else if (td === 0) {
+                            method_tab_panes = method_tab_panes + "<td><a href='#" + methods_in_this_category[tr].toLowerCase().replace(" ", "_") + "'>" + current_row_value[td] + "</a></td>"
+                        } else {
+                            method_tab_panes = method_tab_panes + "<td>" + current_row_value[td] + "</td>"
+                        }
+        
+                    }
+                    method_tab_panes = method_tab_panes + "</tr>"
+                }
+                method_tab_panes = method_tab_panes + "</tbody>" +
+                    '</table>' +
+                    '</div>' + '</div>'
             }
-            method_tab_panes = method_tab_panes + "</tr>"
-        }
-        method_tab_panes = method_tab_panes + "</tbody>" +
-            '</table>' +
-            '</div>' + '</div>'
-    }
-    //method_tab_panes = method_tab_panes 
-    $("#method_tab_panes").html(method_tab_panes)
-    method_nav_items = ""
-    for (var li = 0; li < category_names.length; li++) {
+            //method_tab_panes = method_tab_panes 
+            $("#method_tab_panes").html(method_tab_panes)
+            method_nav_items = ""
+            for (var li = 0; li < category_names.length; li++) {
+        
+                method_nav_items = method_nav_items +
+                    '<li class="nav-item">'
+                if (li === 0) {
+                    method_nav_items = method_nav_items +
+                        '<a class="nav-link active" data-toggle="tab" href="#' + category_names[li].toLowerCase().replace(" ", "_") + '_link" role="tablist">'
+                } else {
+                    method_nav_items = method_nav_items +
+                        '<a class="nav-link" data-toggle="tab" href="#' + category_names[li].toLowerCase().replace(" ", "_") + '_link" role="tablist">'
+                }
+                method_nav_items = method_nav_items + category_names[li] + "</a>" + "</li>"
+        
+            }
+            $("#method_nav_items").html(method_nav_items)
+        })
+    })
 
-        method_nav_items = method_nav_items +
-            '<li class="nav-item">'
-        if (li === 0) {
-            method_nav_items = method_nav_items +
-                '<a class="nav-link active" data-toggle="tab" href="#' + category_names[li].toLowerCase().replace(" ", "_") + '_link" role="tablist">'
-        } else {
-            method_nav_items = method_nav_items +
-                '<a class="nav-link" data-toggle="tab" href="#' + category_names[li].toLowerCase().replace(" ", "_") + '_link" role="tablist">'
-        }
-        method_nav_items = method_nav_items + category_names[li] + "</a>" + "</li>"
 
-    }
-    $("#method_nav_items").html(method_nav_items)
-});
+
+
+
+//});
 
 
 
@@ -214,6 +231,7 @@ when_projects_table_click_deleted = function (project_id) {
 }
 
 when_projects_table_click_selected = function (project_id) {
+	/*
     // here change the p and f.
     ocpu.call("call_fun", {
         parameter: {
@@ -232,8 +250,12 @@ when_projects_table_click_selected = function (project_id) {
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')
-    })
+    })*/
+	localStorage['activate_project_id'] = project_id
+	localStorage['activate_data_id'] = 'e.csv'
+    window.location.href = "#project_overview";
 }
+
 update_projects_table()
 
 localStorage['big_category'] = 'project'

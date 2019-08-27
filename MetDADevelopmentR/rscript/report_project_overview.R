@@ -2,7 +2,7 @@
 
   pacman::p_load(data.table, officer, magrittr)
 
-  p_and_f <- call_fun(parameter = list(project_id = project_id, fun_name = "get_p_and_f"))
+  p_and_f <- call_fun(parameter = list(project_id = project_id, activate_data_id = 'e.csv', return_projectList = TRUE,fun_name = "get_p_and_f"))
 
 
   p <- p_and_f$p

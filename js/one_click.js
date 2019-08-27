@@ -1,14 +1,140 @@
 console.log("one_click.js")
 
 
+
+update_projects_table_one_click = function (id = "projects_table", select_call_back = "when_projects_table_clicked", rename_call_back = false, delete_call_back = false) {
+
+    //Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
+    //download: true,
+    //complete: function (results) {
+
+
+    ocpu.call("call_fun", {
+        parameter: {
+            user_id: localStorage['user_id'],
+            fun_name: "get_userinfo"
+        }
+    }, function (session) {
+        console.log(session)
+        session.getObject(function (obj) {
+            var results = obj
+            rrr = results
+            project_name_index = results.data[0].indexOf("project_name")
+
+            project_names = results.data.map(x => x[project_name_index])
+            project_names.shift()
+            project_names.pop()
+
+
+            if (results.data.length === 1) {
+                table_html = "<small>You don't have any project yet. Create One!</small>"
+            } else {
+                var table_html = "<thead><tr>"
+                for (var i = -1; i < results.data[0].length + 1; i++) {
+                    if (i === -1) {
+                        table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
+                    } else if (i === results.data[0].length) {
+                        table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
+                    } else {
+                        table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+                    }
+
+                }
+                table_html = table_html + "</tr></thead>"
+                table_html = table_html + "<tfoot><tr>"
+                for (var i = -1; i < results.data[0].length + 1; i++) {
+                    if (i === -1) {
+                        table_html = table_html + "<th class='text-center'>" + "#" + "</th>"
+                    } else if (i === results.data[0].length) {
+                        table_html = table_html + "<th class='disabled-sorting text-right'>" + "Actions" + "</th>"
+                    } else {
+                        table_html = table_html + "<th>" + results.data[0][i] + "</th>"
+                    }
+
+                }
+                table_html = table_html + "</tr></tfoot>"
+
+
+                table_html = table_html + "<tbody>"
+                for (var i = 1; i < results.data.length; i++) {
+                    var current_project_id = results.data[i][0]
+                    console.log(current_project_id)
+
+
+                    table_html = table_html + "<tr>"
+                    for (var j = -1; j < results.data[i].length + 1; j++) {
+                        if (j === -1) {
+                            table_html = table_html + "<td class='text-center'>" + (j + 2) + "</td>"
+                        } else if (j === results.data[i].length) {
+                            table_html = table_html + "<td class='text-right'>"
+                            if (!select_call_back === false) {
+                                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Select This Project" onclick="' + select_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:green">check</i> </button>'
+                            }
+                            if (!rename_call_back === false) {
+                                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Rename This Project" onclick="' + rename_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:orange">edit</i> </button>'
+                            }
+                            if (!delete_call_back === false) {
+                                table_html = table_html + '<button class="btn btn-just-icon btn-link" title="Delete This Project" onclick="' + delete_call_back + '(\'' + current_project_id + '\')"> <i class="material-icons" style="color:red">close</i> </button>'
+                            }
+
+                            table_html = table_html + "</td>"
+                        } else {
+                            table_html = table_html + "<td>" + results.data[i][j] + "</td>"
+                        }
+
+                    }
+                    table_html = table_html + "</tr>"
+                }
+                table_html = table_html + "</tbody>"
+                //console.log(table_html)
+            }
+
+            $("#" + id).html(table_html)
+            //$("#" + id + " tr").click(call_back);
+
+
+            if ($.fn.dataTable.isDataTable('#' + id)) {
+
+                if (results.data[1][0] === "") {
+                    $("#" + id).DataTable().destroy();
+                    $("#" + id).html(table_html)
+                }
+
+            } else {
+                $("#" + id).DataTable({
+                    "pagingType": "full_numbers",
+                    "lengthMenu": [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "All"]
+                    ],
+                    responsive: true,
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search records",
+                    }
+                });
+            }
+        })
+    })
+
+
+
+
+
+    //}
+    //});
+}
+
+
+
+
 $("#upload_a_file").click(function () {
     $("#inputFile").off("change").on("change", function () {
         $(".inputFileHidden").prop("disabled", true);
         $(".inputFile_validating").text("Validating")
-        ocpu.call("call_fun", {parameter:{
-            path: $("#inputFile")[0].files[0],
-            fun_name:"inputFile"
-        }}, function (session) {
+        ocpu.call("inputFile", {
+            path: $("#inputFile")[0].files[0]
+        }, function (session) {
             session.getObject(function (obj) {
                 oo = obj
                 p = oo.p
@@ -20,6 +146,8 @@ $("#upload_a_file").click(function () {
 
                 $("#inputFile_success").html("<p><b>" + $("#inputFile")[0].files[0].name + " is validated.</b></p>")
                 $(".inputFile_validating").html(text)
+
+
             })
         }).fail(function (e) {
             Swal.fire('Oops...', e.responseText, 'error')
@@ -32,21 +160,18 @@ $("#upload_a_file").click(function () {
 
 
 
-
-when_projects_table_clicked = function () {
-    $(this).addClass('selected').siblings().removeClass('selected');
-    project_id = $(this).find('td:first').html();
+var selected_data;
+var selected_data2;
+when_projects_table_clicked = function (project_id) {
     selected_data = "e.csv"
-    console.log(project_id)
-    /*localStorage['activate_project_id'] = project_id
-     localStorage['activate_data_id']='e.csv'*/
-    // when the project_id is selected. We need to display the project tree so that the user could select dataset.
-
-    ocpu.call("call_fun", {parameter:{
-        project_id: project_id,
-        selected_data: selected_data,
-        fun_name:"open_project_structure_to_select_dataset"
-    }}, function (session) {
+    window['project_id'] = project_id
+    ocpu.call("call_fun", {
+        parameter: {
+            project_id: project_id,
+            selected_data: selected_data,
+            fun_name: "open_project_structure_to_select_dataset"
+        }
+    }, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             ooo = obj
@@ -64,15 +189,44 @@ when_projects_table_clicked = function () {
             $('#select_from_projects_collapse').collapse("hide")
             $("#data_selected_information").text("The above dataset " + selected_data + " is selected successfully.")
 
-
-            update_projects_table("projects_table2", when_projects_table_clicked2)
-            $("#select_from_projects_collapse2").collapse("show")
-
             $('#selected_project_structure').on("select_node.jstree", function (e, data) {
                 ddd = data
-                selected_data = ddd.node.id
-                $("#data_selected_information").text("The above dataset " + ddd.node.text[0] + " is selected successfully.")
+                selected_data = ddd.node.original.id[0]
+
+                ocpu.call('call_fun', {
+                    parameter: {
+                        project_id: project_id,
+                        activate_data_id: selected_data,
+                        fun_name: "get_p_and_f"
+                    }
+                }, function (session) {
+                    console.log(session)
+                    session.getObject(function (obj) {
+                        p = obj.p
+                        f = obj.f
+
+                        ocpu.call('call_fun', {
+                            parameter: {
+                                project_id: project_id,
+                                file_id: selected_data,
+                                fun_name: "get_fold_seq"
+                            }
+                        }, function (session) {
+                            console.log(session)
+                            session.getObject(function (obj) {
+                                $("#data_selected_information").text("The above dataset " + obj + " is selected successfully.")
+                            })
+                        })
+
+                    })
+                })
+
             })
+
+
+            update_projects_table_one_click("projects_table2", "when_projects_table_clicked2", false, false)
+            $("#select_from_projects_collapse2").collapse("show")
+
 
 
 
@@ -82,24 +236,31 @@ when_projects_table_clicked = function () {
     })
 
 
-  
+
 }
-update_projects_table()
 
 
 
-when_projects_table_clicked2 = function () {
-    $(this).addClass('selected').siblings().removeClass('selected');
-    project_id2 = $(this).find('td:first').html();
+update_projects_table_one_click("projects_table")
+
+
+when_projects_table_clicked2 = function (project_id2) {
+
+    window['project_id2'] = project_id2
+    //$(this).addClass('selected').siblings().removeClass('selected');
+    //project_id2 = $(this).find('td:first').html();
     selected_data2 = "e.csv"
+    console.log(selected_data2)
     console.log(project_id2)
 
 
-    ocpu.call("call_fun", {parameter:{
-        project_id: project_id2,
-        selected_data: 'e.csv',
-        fun_name:"open_project_structure"
-    }}, function (session) {
+    ocpu.call("call_fun", {
+        parameter: {
+            project_id: project_id2,
+            selected_data: selected_data2,
+            fun_name: "open_project_structure"
+        }
+    }, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             $("#selected_project_structure2").jstree("destroy");
@@ -111,16 +272,49 @@ when_projects_table_clicked2 = function () {
                     'check_callback': true
                 }
             })
-            $("#select_from_projects_collapse2").collapse("hide")
-            $("#data_selected_information").text("The above dataset " + selected_data2 + " is selected successfully.")
 
-            update_projects_table("projects_table2")
-            $("#projects_table2 tr").click(when_projects_table_clicked2);
             $('#selected_project_structure2').on("select_node.jstree", function (e, data) {
-                ddd2 = data
-                selected_data2 = ddd2.node.id
-                $("#data_selected_information2").text("The above dataset " + ddd2.node.text[0] + " is selected successfully.")
+
+                selected_data2 = data.node.original.id[0]
+
+                // ocpu.call('call_fun',{
+                //  parameter:{
+                //    project_id:project_id2,
+                //     activate_data_id: selected_data2,
+                //     fun_name:"get_p_and_f"
+                //   }
+                // },function(session){
+                //  console.log(session)
+                //  session.getObject(function(obj){
+                //   p2 = obj.p
+                // f2 = obj.f
+
+                ocpu.call('call_fun', {
+                    parameter: {
+                        project_id: project_id2,
+                        file_id: selected_data2,
+                        fun_name: "get_fold_seq"
+                    }
+                }, function (session) {
+                    console.log(session)
+                    session.getObject(function (obj) {
+                        $("#data_selected_information2").text("The above dataset " + obj + " is selected successfully.")
+                    })
+                })
+
+
+
+                //})
+                //})
+
             })
+
+
+
+            $("#select_from_projects_collapse2").collapse("hide")
+            $("#data_selected_information2").text("The above dataset " + selected_data2 + " is selected successfully.")
+
+
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')
@@ -137,13 +331,15 @@ $("#confirm_selected_project").click(function () {
 
 
     // 1. Mimic the result stucture.
-    ocpu.call("call_fun", {parameter:{
-        project_id: project_id,
-        selected_data: selected_data,
-        project_id2: project_id2,
-        selected_data2: selected_data2,
-        fun_name:"preview_result_structure"
-    }}, function (session) {
+    ocpu.call("call_fun", {
+        parameter: {
+            project_id: project_id,
+            selected_data: selected_data,
+            project_id2: project_id2,
+            selected_data2: selected_data2,
+            fun_name: "preview_result_structure"
+        }
+    }, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             console.log("Good")
@@ -181,7 +377,7 @@ $("#confirm_selected_project").click(function () {
                     div_id = "sample_parameters_global_id_" + sample_para_keys[sample_para_index]
                     id = "sample_parameters_global_id_" + sample_para_keys[sample_para_index]
                     $("#" + div_id).load("sample_information_non_changing_levels_select.html", init_selectpicker)
-                   
+
 
                     $("#sample_parameters_global_span" + sample_parameters_global_index).hover(function () {
                         sample_parameters_global_span_hovered = this
@@ -257,22 +453,175 @@ $("#submit").click(function () {
             }
         }
     })
-    console.log(parameter)
-    console.log("HERE")
-    ocpu.call("call_fun", {parameter:{
-        project_id: project_id,
-        selected_data: selected_data,
-        project_id2: project_id2,
-        selected_data2: selected_data2,
-        parameters: parameter,
-        fun_name:"perform_quick_analysis"
-    }}, function (session) {
+
+    ocpu.call("call_fun", {
+        parameter: {
+            project_id: project_id,
+            selected_data: selected_data,
+            project_id2: project_id2,
+            selected_data2: selected_data2,
+            parameters: parameter,
+            fun_name: "perform_quick_analysis"
+        }
+    }, function (session) {
         console.log(session)
         session.getObject(function (obj) {
             console.log(obj)
             oooo = obj
+            /*
+                        structure_to_be_added_ids = oooo.structure_to_be_added_ids
+                        structure_to_be_added_folders_only = oooo.structure_to_be_added_folders_only
+                        structure_to_be_added = oooo.structure_to_be_added
+                        old_id_to_new_id_matches = oooo.old_id_to_new_id_matches
+            */
+            plot_base64 = {}
+            number_of_plots = 0
 
-            if (obj.length>0 || obj.length === undefined) {
+            perform_quick_analysis_step_by_step_js = function (obj) {
+                finished = false
+                ocpu.call("call_fun", {
+                    parameter: {
+                        json: obj,
+                        fun_name: "perform_quick_analysis_step_by_step"
+                    }
+                }, function (session) {
+                    console.log(session)
+                    //window.open(session.loc + "files/call_fun.RData")
+                    session.getObject(function (obj) {
+
+                        oo = obj
+                        obj_json = JSON.parse(oo)
+                        console.log(obj_json.ii)
+
+                        console.log(obj_json.results)
+                        if (obj_json.results.length === undefined) {// this means we have a plot to draw.
+                            console.log("going to draw plot")
+
+                            var obj_json_plot = obj_json.results
+                            var project_times = Object.keys(obj_json_plot)
+                            var plots = Object.values(obj_json_plot)
+                            var i = 0
+                            plot_base64[project_times[i]] = {}
+                            var current_plot = JSON.parse(plots[i])
+
+                            var individual_plot_names = Object.keys(current_plot)
+                            var individual_plot_paramters = Object.values(current_plot)
+
+                            for (var j = 0; j < individual_plot_names.length; j++) {
+
+                                current_plot_name = individual_plot_names[j].split(".")[0]
+                                plot_fun = window[current_plot_name + "_fun"]
+                                current_parameter = individual_plot_paramters[j]
+
+                                current_parameter.plot_id = "temp_id_" + project_times[i] + current_plot_name
+
+                                current_parameter.quick_analysis = true
+                                current_parameter.quick_analysis_project_time = project_times[i]
+                                current_parameter.quick_analysis_plot_name = individual_plot_names[j]
+
+
+                                $('#for_temp_plots').append('<div id="' + current_parameter.plot_id + '"></div>')
+
+                                if (current_plot_name === 'boxplot_plot') {
+                                    // not done.
+                                } else {
+                                    console.log("making plot")
+                                    plot_fun(current_parameter)
+                                    setTimeout(() => {
+
+                                        if (obj_json.ii == 'done.') { // this means everything is done.
+                                            console.log("FINISHED")
+
+                                            function getValuesFromNestedObject(obj) {
+                                                for (var key in obj) {
+                                                    if (typeof obj[key] === "object") {
+                                                        getValuesFromNestedObject(obj[key]);
+                                                    } else {
+                                                        getValuesFromNestedObject_result.push(obj[key])
+                                                    }
+                                                }
+                                            }
+                                            var myVar = setInterval(function () {
+                                                getValuesFromNestedObject_result = []
+                                                getValuesFromNestedObject(plot_base64)
+                                                if (getValuesFromNestedObject_result.length < number_of_plots) {
+                                                    //console.log("waiting")
+                                                } else {
+                                                    clearInterval(myVar)
+                                                    finished = true
+                                                    
+                                                    ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
+                                                        console.log(session)
+                                                        session.getObject(function (obj) {
+                                                            console.log(obj)
+                                                        })
+                                                    })
+                                                }
+                                            }, 200)
+                                        } else {
+                                            perform_quick_analysis_step_by_step_js(obj)
+                                        }
+                                    }, 200);
+                                }
+                                number_of_plots++;
+                            }
+                        } else {
+
+                            if (obj_json.ii == 'done.') { // this means everything is done.
+                                console.log("FINISHED")
+
+                                function getValuesFromNestedObject(obj) {
+                                    for (var key in obj) {
+                                        if (typeof obj[key] === "object") {
+                                            getValuesFromNestedObject(obj[key]);
+                                        } else {
+                                            getValuesFromNestedObject_result.push(obj[key])
+                                        }
+                                    }
+                                }
+                                var myVar = setInterval(function () {
+                                    getValuesFromNestedObject_result = []
+                                    getValuesFromNestedObject(plot_base64)
+                                    if (getValuesFromNestedObject_result.length < number_of_plots) {
+                                        //console.log("waiting")
+                                    } else {
+                                        clearInterval(myVar)
+                                        ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
+                                            console.log(session)
+                                            session.getObject(function (obj) {
+                                                console.log(obj)
+                                            })
+                                        })
+                                    }
+                                }, 200)
+                            } else {
+                                perform_quick_analysis_step_by_step_js(obj)
+                            }
+
+                        }
+
+                    })
+                })
+            }
+
+
+            perform_quick_analysis_step_by_step_js_temp = function (obj) {
+                ocpu.call("call_fun_temp", {
+                    parameter: {
+                        json: obj,
+                        fun_name: "perform_quick_analysis_step_by_step"
+                    }
+                }, function (session) {
+                    console.log(session)
+                    window.open(session.loc + "files/call_fun.RData")
+                })
+            }
+
+
+            perform_quick_analysis_step_by_step_js(oooo)
+
+
+            /*if (obj.length>0 || obj.length === undefined) {
                 //obj.length>0 || obj.length === undefined
                 plot_base64 = {}
                 number_of_plots = 0
@@ -427,7 +776,7 @@ $("#submit").click(function () {
 
 
 
-            }
+            }*/
         })
     }).fail(function (e) {
         Swal.fire('Oops...', e.responseText, 'error')

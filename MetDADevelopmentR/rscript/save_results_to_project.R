@@ -53,16 +53,16 @@
       }
     } else { # this means it is from the perform_quick_analysis.
       for (file_source in 1:length(files_sources)) {
-        if (nchar(files_sources[file_source]) > 100) { # this means this is a base6 (pca score plot)<U+3002> Maybe there can be a better criterion.
+        if (nchar(files_sources[file_source]) > 100 || files_sources[file_source]=="MQ==") { # this means this is a base6 (pca score plot)<U+3002> Maybe there can be a better criterion.
         } else {
-          dta <- data.table::fread(files_sources[file_source])
+          dta <- data.table::fread(files_sources[[file_source]])
           if (colnames(dta)[1] == "V1") { # this means that the first column of the csv is the rownames of the data.
             rownames(dta) <- dta$V1
             # dta[,V1:=NULL]
             dta$V1 <- NULL
-            data.table::fwrite(dta, files_names[file_source], row.names = TRUE, col.names = TRUE)
+            data.table::fwrite(dta, files_names[[file_source]], row.names = TRUE, col.names = TRUE)
           } else {
-            data.table::fwrite(dta, files_names[file_source], row.names = FALSE, col.names = TRUE)
+            data.table::fwrite(dta, files_names[[file_source]], row.names = FALSE, col.names = TRUE)
           }
         }
       }
@@ -198,13 +198,14 @@
     selected_folder = project_structure[[1]]$id
   }
 
+  # files_sources[!grepl("files/",files_sources)] = 'NA'
   project_structure[[length(project_structure) + 1]] <- list(
     id = folder_id,
     parent = selected_folder,
     text = fold_name,
     icon = "fa fa-folder",
     parameter = parameters,
-    # files_sources = files_sources,
+    files_sources = files_sources,
     files_types = files_types,
     epf_index = epf_index
   )
@@ -228,18 +229,34 @@
     }
 
 
-    if(compound_sample_index[file_source] == 'compound'){
+    if(identical(compound_sample_index[file_source], 'compound')){
       project_structure[[length(project_structure)]]$subset = "compound"
-    }else if(compound_sample_index[file_source] == 'sample'){
+    }else if(identical(compound_sample_index[file_source],'sample')){
       project_structure[[length(project_structure)]]$subset = "sample"
     }
 
   }
+
+
+  sapply(projectList$`_attachments`, function(x){
+    sum(is.na(unlist(x)))
+  })
+
   projectList$project_structure <- project_structure
-  #
-  #
-  #
+  # projectList$project_structure <- project_structure[1:1]
+
+
+  for(k in 1:length(projectList$`_attachments`)){
+    if(class(projectList$`_attachments`[[k]]$data)=='list'){
+      projectList$`_attachments`[[k]]$data = unlist(projectList$`_attachments`[[k]]$data)
+    }
+  }
+
+
   RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
+
+#   print(j)
+# j = j-1
 
 
   if(is_temp_project){

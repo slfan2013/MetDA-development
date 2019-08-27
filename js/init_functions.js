@@ -1,78 +1,91 @@
 initialize_nav_link = function () {
   console.log("trying to initialize the links")
 
-  $.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
-    methods_data = data
-    sidebar_ul = ""
+  //$.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
 
 
-    sidebar_ul = sidebar_ul + '<li class="nav-item"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
-
-    category_names = Object.keys(data.methods_structure)
-
-    for (cat = 0; cat < category_names.length; cat++) {
-      current_cat = category_names[cat]
-
-      // check which is active.
-      current_items = Object.keys(data.methods_structure[category_names[cat]])
-      console.log(current_items)
-
-
-
-      if (current_items.includes(window.location.href.split("#")[1])) {
-        being_active = true
-      } else {
-        being_active = false
-      }
-      console.log(being_active)
-
-      if (being_active) {
-        sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
-          '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
-      } else {
-        sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
-          '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
-      }
-
-      sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
-
-      for (var it = 0; it < current_items.length; it++) {
-        sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#' + current_items[it] + '">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
-
-      }
-
-      sidebar_ul = sidebar_ul + '</ul>'
-      sidebar_ul = sidebar_ul + '</li>'
-
-
+  ocpu.call("call_fun", {
+    parameter: {
+      fun_name: "get_method"
     }
-    $("#navbarDropdownMenuLink_items").html(sidebar_ul)
+  }, function (session) {
+    console.log(session)
+    session.getObject(function (obj) {
+      var data = obj
+      methods_data = data
+      sidebar_ul = ""
 
-    $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function (e) {
-      var $el = $(this);
-      var $parent = $(this).offsetParent(".dropdown-menu");
-      if (!$(this).next().hasClass('show')) {
-        $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+
+      sidebar_ul = sidebar_ul + '<li class="nav-item"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
+
+      category_names = Object.keys(data.methods_structure)
+
+      for (cat = 0; cat < category_names.length; cat++) {
+        current_cat = category_names[cat]
+
+        // check which is active.
+        current_items = Object.keys(data.methods_structure[category_names[cat]])
+        console.log(current_items)
+
+
+
+        if (current_items.includes(window.location.href.split("#")[1])) {
+          being_active = true
+        } else {
+          being_active = false
+        }
+        console.log(being_active)
+
+        if (being_active) {
+          sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
+            '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
+        } else {
+          sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
+            '<a class="dropdown-item dropdown-toggle" href="#">' + current_cat + '</a>'
+        }
+
+        sidebar_ul = sidebar_ul + '<ul class="dropdown-menu">'
+
+        for (var it = 0; it < current_items.length; it++) {
+          sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#' + current_items[it] + '">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
+
+        }
+
+        sidebar_ul = sidebar_ul + '</ul>'
+        sidebar_ul = sidebar_ul + '</li>'
+
+
       }
-      var $subMenu = $(this).next(".dropdown-menu");
-      $subMenu.toggleClass('show');
+      $("#navbarDropdownMenuLink_items").html(sidebar_ul)
 
-      $(this).closest("a").toggleClass('open');
-      $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
-        $('.dropdown-menu .show').removeClass("show");
-      });
-      if (!$parent.parent().hasClass('navbar-nav')) {
-        $el.next().css({
-          "top": $el[0].offsetTop,
-          "left": $parent.outerWidth() - 4
+      $('.dropdown-menu a.dropdown-toggle').on('mouseenter', function (e) {
+        var $el = $(this);
+        var $parent = $(this).offsetParent(".dropdown-menu");
+        if (!$(this).next().hasClass('show')) {
+          $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+        }
+        var $subMenu = $(this).next(".dropdown-menu");
+        $subMenu.toggleClass('show');
+
+        $(this).closest("a").toggleClass('open');
+        $(this).parents('a.dropdown-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+          $('.dropdown-menu .show').removeClass("show");
         });
-      }
-      return false;
-    });
-
-
-
+        if (!$parent.parent().hasClass('navbar-nav')) {
+          $el.next().css({
+            "top": $el[0].offsetTop,
+            "left": $parent.outerWidth() - 4
+          });
+        }
+        return false;
+      });
+    })
   })
+
+
+
+
+  //})
 
 }
 
@@ -567,37 +580,37 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
 
 
             var children = $("#save_results_tree").jstree("get_children_dom", $("#save_results_tree").jstree("get_selected"));
-            children_folder_names=[]
+            children_folder_names = []
             for (var i = 0; i < children.length; i++) {
               children_folder_names[i] = children[i].innerText
             }
-            
-            if(children_folder_names.includes(current_fold_name)){
-              
+
+            if (children_folder_names.includes(current_fold_name)) {
+
               var index = 2
-              while(children_folder_names.includes(current_fold_name+index)){
-                
+              while (children_folder_names.includes(current_fold_name + index)) {
+
                 index++;
               }
               current_fold_name = current_fold_name + index
             }
-            
+
             var current_fold_name = prompt("Please Enter a Folder Name.", current_fold_name);
 
-            if(["\\","/",":","*","?","<",">","|"].some(el=>current_fold_name.includes(el))){
+            if (["\\", "/", ":", "*", "?", "<", ">", "|"].some(el => current_fold_name.includes(el))) {
               alert("Error: folder name cannot contain any of the following '\\/:*?<>| '.")
 
-              if(children_folder_names.includes(current_fold_name)){
-                alert("Error: this destination already contains a fold name "+current_fold_name+".")
-              }else{
-                call_save_results_to_project_to_save(is_temp_project, selected_folder,current_fold_name)
+              if (children_folder_names.includes(current_fold_name)) {
+                alert("Error: this destination already contains a fold name " + current_fold_name + ".")
+              } else {
+                call_save_results_to_project_to_save(is_temp_project, selected_folder, current_fold_name)
               }
-            }else{
-              call_save_results_to_project_to_save(is_temp_project, selected_folder,current_fold_name)
+            } else {
+              call_save_results_to_project_to_save(is_temp_project, selected_folder, current_fold_name)
             }
-            
 
-            
+
+
           })
         })
       })
@@ -662,7 +675,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
     })
   }
   console.log(files_sources)
-  
+
 
   index_of_link = []
   index_of_not_link = []
@@ -710,7 +723,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
             for (var j = 0; j < index_of_not_link.length; j++) {
               allResults.push(files_sources[index_of_not_link[j]])
             }
-            
+
             when_get_allResults_done(fold_name)
           } else {
             i = i + 1
@@ -765,18 +778,29 @@ function sort(arr, desending = false) {
 update_projects_table = function (id = "projects_table", select_call_back = "when_projects_table_click_selected", rename_call_back = "when_projects_table_click_renamed", delete_call_back = "when_projects_table_click_deleted") {
   console.log("HERE")
   console.log($("#projects_table").length)
-  Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
-    download: true,
-    complete: function (results) {
+  //Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
+  //download: true,
+  //complete: function (results) {
+
+  ocpu.call("call_fun", {
+    parameter: {
+      user_id:localStorage['user_id'],
+      fun_name: "get_userinfo"
+    }
+  }, function (session) {
+    console.log(session)
+    session.getObject(function (obj) {
+      var results = obj
+
       rrr = results
       project_name_index = results.data[0].indexOf("project_name")
 
       project_names = results.data.map(x => x[project_name_index])
       project_names.shift()
-      project_names.pop()
+      //project_names.pop()
 
 
-      if (results.data[1][0] === "") {
+      if (results.data.length === 1) {
         table_html = "<small>You don't have any project yet. Create One!</small>"
       } else {
         var table_html = "<thead><tr>"
@@ -806,7 +830,7 @@ update_projects_table = function (id = "projects_table", select_call_back = "whe
 
 
         table_html = table_html + "<tbody>"
-        for (var i = 1; i < results.data.length - 1; i++) {
+        for (var i = 1; i < results.data.length; i++) {
           var current_project_id = results.data[i][0]
 
 
@@ -863,10 +887,14 @@ update_projects_table = function (id = "projects_table", select_call_back = "whe
           }
         });
       }
+    })
+  })
 
 
 
 
-    }
-  });
+
+
+  //}
+  //});
 }
