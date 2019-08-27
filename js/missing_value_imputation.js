@@ -25,14 +25,14 @@ missing_value_imputation_append_results = function (obj, session) {
     var files_sources = [session.loc + "files/e.csv", session.loc + "files/summary_data.csv"];
     var zipfile_name = "missing_value_imputation_results"
     var fold_name = "Missing Value Imputation"
-    var files_names = ["e.csv","result summary.csv"]
+    var files_names = ["e.csv","result_summary.csv"]
     var files_types = ["application/vnd.ms-excel","application/vnd.ms-excel"]
     $("#download_results").off("click").on("click",function () {
         
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['compound','none'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['none','compound'])
     })
     $("#save_results").off("click").on("click",function () {// open a dialog and ask where to save.
-        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['compound','none'])
+        save_results(files_names, files_sources, files_types, fold_name, JSON.parse(localStorage.getItem('parameter')), [1],['none','compound'])
     })
 
 }

@@ -784,10 +784,6 @@ volcano_plot_fun = function ({
 
 
 
-
-
-
-
             }
 
             Plotly.toImage(gd, { format: 'svg' })
@@ -1197,7 +1193,282 @@ score_plot_fun = scatter_by_group
 
 
 
+plsda_score_plot_fun = function ({ x = undefined, y = undefined, color_by = undefined, color_values = undefined, color_levels = undefined,
+    shape_by = undefined, shape_values = undefined, shape_levels = undefined,
+    size_by = undefined, size_values = undefined, size_levels = undefined,
+    ellipse_group = ['color', 'shape', 'size'],
+    labels = undefined,
+    layout = undefined,
+    plot_id = undefined, quick_analysis = false, quick_analysis_project_time = undefined, quick_analysis_plot_name = undefined } = {}
+) {
+    var myPlot = document.getElementById(plot_id)
+    if (color_by === undefined) {
+        color_by = Array(x.length).fill("")
+        if (color_values === undefined) {
+            color_values = "black"
+        }
+        color_levels = ""
+    }
 
+    if (shape_by === undefined) {
+        shape_by = Array(x.length).fill("")
+        if (shape_values === undefined) {
+            shape_values = "circle"
+        }
+        shape_levels = ""
+    }
+    if (size_by === undefined) {
+        size_by = Array(x.length).fill("")
+        if (size_values === undefined) {
+            size_values = 2
+        }
+        size_levels = ""
+    }
+
+    if (typeof color_values === 'string') {
+        color_values = [color_values]
+    }
+    if (typeof color_levels === 'string') {
+        color_levels = [color_levels]
+    }
+    if (typeof shape_values === 'string') {
+        shape_values = [shape_values]
+    }
+    if (typeof shape_levels === 'string') {
+        shape_levels = [shape_levels]
+    }
+    if (typeof size_values === "number") {
+        size_values = [size_values]
+    }
+    if (typeof size_values === "string") {
+        size_values = [size_values]
+    }
+    if (typeof size_levels === 'string') {
+        size_levels = [size_levels]
+    }
+
+
+    color_by_revalue = revalue(color_by, color_levels, color_values)
+    shape_by_revalue = revalue(shape_by, shape_levels, shape_values)
+    size_by_revalue = revalue(size_by, size_levels, size_values)
+
+    // split the x and y to data traces according to split_by_revalue.
+    split_by = color_by.map((x, i) => x + "SLFAN" + shape_by[i] + "SLFAN" + size_by[i])
+    split_by_revalue = color_by_revalue.map((x, i) => x + "SLFAN" + shape_by_revalue[i] + "SLFAN" + size_by_revalue[i])
+
+
+
+
+    var xs = groupData(split_by, x)
+    var ys = groupData(split_by, y)
+    trace_keys = Object.keys(xs)
+    //names = revalue(trace_keys, split_by_revalue.filter(unique), split_by.filter(unique))
+    names = trace_keys
+    texts = groupData(split_by, labels)
+
+
+    data = []
+    for (var i = 0; i < trace_keys.length; i++) {
+        data.push({
+            mode: 'markers',
+            x: xs[trace_keys[i]],
+            y: ys[trace_keys[i]],
+            name: names[i].replaceAll("SLFAN", " "),
+            text: texts[trace_keys[i]],
+            marker: {
+                color: revalue([trace_keys[i].split("SLFAN")[0]], color_levels, color_values)[0],
+                symbol: revalue([trace_keys[i].split("SLFAN")[1]], shape_levels, shape_values)[0],
+                size: revalue([trace_keys[i].split("SLFAN")[2]], size_levels, size_values)[0],
+            },
+            legendgroup: trace_keys[i],
+            showlegend: true
+        })
+    }
+    // add ellipse.
+    if (ellipse_group === "no_ellipse") {
+        console.log("no ellipse")
+    } else { // it means use would like to draw ellipse.
+        if (typeof (ellipse_group) === 'string') {
+            ellipse_group = [ellipse_group]
+        }
+
+        ellipse_split_by = Array(x.length).fill("")
+        if (ellipse_group.length > 0) {
+            for (var i = 0; i < ellipse_group.length; i++) {
+                temp_split = eval(ellipse_group[i] + "_by")
+                ellipse_split_by = ellipse_split_by.map((x, j) => x + "SLFAN" + temp_split[j])
+            }
+        }
+        ellipse_split_by = ellipse_split_by.map(x => x.slice("SLFAN".length))
+        ellipse_split_by_revalue = Array(x.length).fill("")
+        if (ellipse_group.length > 0) {
+            for (var i = 0; i < ellipse_group.length; i++) {
+                temp_split = eval(ellipse_group[i] + "_by_revalue")
+                ellipse_split_by_revalue = ellipse_split_by_revalue.map((x, j) => x + "SLFAN" + temp_split[j])
+            }
+        }
+        ellipse_split_by_revalue = ellipse_split_by_revalue.map(x => x.slice(1))
+        ellipse_xs_from = groupData(ellipse_split_by, x)
+        ellipse_ys_from = groupData(ellipse_split_by, y)
+
+        ellipse_xs_ys = {}
+        ellipse_trace_keys = Object.keys(ellipse_xs_from)
+        for (var i = 0; i < ellipse_trace_keys.length; i++) {
+            ellipse_xs_ys[ellipse_trace_keys[i]] = ellipse(ellipse_xs_from[ellipse_trace_keys[i]],
+                ellipse_ys_from[ellipse_trace_keys[i]], 0.95)
+        }
+
+        //ellipse_names = revalue(ellipse_trace_keys, ellipse_split_by_revalue.filter(unique), ellipse_split_by.filter(unique))
+        ellipse_names = ellipse_trace_keys
+        for (var i = 0; i < ellipse_trace_keys.length; i++) {
+            revalue_color = revalue([ellipse_trace_keys[i].split("SLFAN")[0]], color_levels, color_values)
+            data.push({
+                mode: 'lines',
+                x: ellipse_xs_ys[ellipse_trace_keys[i]][0],
+                y: ellipse_xs_ys[ellipse_trace_keys[i]][1],
+                text: null,
+                line: {
+                    width: 1.889764,
+                    color: transparent_rgba(revalue_color[0], 0.1),
+                    dash: "solid"
+                },
+                fill: "toself",
+                fillcolor: transparent_rgba(revalue_color[0], 0.1),
+                name: ellipse_trace_keys[i],
+                showlegend: false,
+                hoverinfo: "skip",
+                legendgroup: trace_keys[i]
+            })
+        }
+    }
+
+
+
+
+    if (names == "SLFANSLFAN") {
+        layout.showlegend = false
+    }
+
+
+
+    Plotly.newPlot(plot_id, data, layout, { editable: false })
+
+
+        .then(gd => {
+            ggg = gd
+            if (!quick_analysis) {
+                // Note: cache should not be re-used by repeated calls to JSON.stringify.
+                /*var cache = [];
+                fullLayout = JSON.stringify(ggg._fullLayout, function (key, value) {
+                    if (typeof value === 'object' && value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Duplicate reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                });
+                cache = null; // Enable garbage collection
+                // Note: cache should not be re-used by repeated calls to JSON.stringify.
+                var cache = [];
+                fullData = JSON.stringify(ggg._fullData, function (key, value) {
+                    if (typeof value === 'object' && value !== null) {
+                        if (cache.indexOf(value) !== -1) {
+                            // Duplicate reference found, discard key
+                            return;
+                        }
+                        // Store value in our collection
+                        cache.push(value);
+                    }
+                    return value;
+                });
+                cache = null; // Enable garbage collection*/
+
+                score_plot_parameters = {
+                    //full_data: JSON.parse(fullData),
+                    //full_layout: JSON.parse(fullLayout),
+                    data: ggg.data,
+                    layout: ggg.layout,
+
+                }
+
+                if ($("#plsda_score_plot_traces_color_by_info").is(":checked")) {
+                    score_plot_parameters.score_plot_color_levels = $("#plsda_score_plot_color_levels").val()
+                }
+                if ($("#plsda_score_plot_traces_shape_by_info").is(":checked")) {
+                    score_plot_parameters.score_plot_shape_levels = $("#plsda_score_plot_shape_levels").val()
+                }
+                if ($("#plsda_score_plot_traces_size_by_info").is(":checked")) {
+                    score_plot_parameters.score_plot_size_levels = $("#plsda_score_plot_size_levels").val()
+                }
+
+            }
+
+            Plotly.toImage(gd, { format: 'svg' })
+                .then(
+                    function (url) {
+                        var uuuu = url
+                        var uuu = uuuu.replace(/^data:image\/svg\+xml,/, '');
+                        uuu = decodeURIComponent(uuu);
+
+
+
+                        if (!quick_analysis) {
+                            plot_url.score_plot = btoa(unescape(encodeURIComponent(uuu)))
+                            files_sources[2] = plot_url.score_plot
+                        } else {
+                            plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(uuu)))
+                        }
+
+                    }
+                )
+
+
+
+        })
+        ;
+
+    myPlot.on('plotly_click', function (data, event) {//https://plot.ly/javascript/text-and-annotations/
+        console.log(event)
+        ddd = data
+        console.log(ddd)
+        point = data.points[0]
+        newAnnotation = {
+            x: point.xaxis.d2l(point.x),
+            y: point.yaxis.d2l(point.y),
+            arrowhead: 6,
+            ax: 0,
+            ay: -80,
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            arrowcolor: point.fullData.marker.color,
+            font: { size: 12 },
+            text: point.text,
+            captureevents: true
+        },
+            divid = document.getElementById(plot_id)
+        newIndex = (divid.layout.annotations || []).length;
+        if (newIndex) {
+            var foundCopy = false;
+            divid.layout.annotations.forEach(function (ann, sameIndex) {
+                if (ann.text === newAnnotation.text) {
+                    Plotly.relayout(plot_id, 'annotations[' + sameIndex + ']', 'remove');
+                    foundCopy = true;
+                }
+            });
+            if (foundCopy) return;
+        }
+        Plotly.relayout(plot_id, 'annotations[' + newIndex + ']', newAnnotation);
+    })
+
+
+
+
+
+
+
+}
 
 
 
@@ -1432,14 +1703,14 @@ plsda_loading_plot_fun = function ({ x = undefined, y = undefined, color_by = un
 
                 }
 
-                if ($("#loading_plot_traces_color_by_info").is(":checked")) {
-                    loading_plot_parameters.loading_plot_color_levels = $("#loading_plot_color_levels").val()
+                if ($("#plsda_loading_plot_traces_color_by_info").is(":checked")) {
+                    loading_plot_parameters.loading_plot_color_levels = $("#plsda_loading_plot_color_levels").val()
                 }
-                if ($("#loading_plot_traces_shape_by_info").is(":checked")) {
-                    loading_plot_parameters.loading_plot_shape_levels = $("#loading_plot_shape_levels").val()
+                if ($("#plsda_loading_plot_traces_shape_by_info").is(":checked")) {
+                    loading_plot_parameters.loading_plot_shape_levels = $("#plsda_loading_plot_shape_levels").val()
                 }
-                if ($("#loading_plot_traces_size_by_info").is(":checked")) {
-                    loading_plot_parameters.loading_plot_size_levels = $("#loading_plot_size_levels").val()
+                if ($("#plsda_loading_plot_traces_size_by_info").is(":checked")) {
+                    loading_plot_parameters.loading_plot_size_levels = $("#plsda_loading_plot_size_levels").val()
                 }
 
 

@@ -101,22 +101,12 @@ report_html <- call_fun(parameter = list(
 
 if (exists("score_plot")) { # this means this call is from quick_analysis. Here we are going to draw score plot and loading plot.
 
+  score_plot_style = score_plot$layout
 
 
-  # for(i in 1:length(data)){
-  #   data[[i]]$x = unlist(data[[i]]$x)
-  #   data[[i]]$y = unlist(data[[i]]$y)
-  #   data[[i]]$text = unlist(data[[i]]$text)
-  # }
 
-  # score_plot_style = get_plsda_score_plot_style("slfan") # !!! HERE WE NEED TO CHANGE 'SLFAN' TO NEW ID.
-
-
-  score_plot_style <- call_fun(parameter = list(user_id = "slfan", fun_name = "get_plsda_score_plot_style"))
-
-
-  x <- sample_scores$PC1
-  y <- sample_scores$PC2
+  x <- sample_scores$p1
+  y <- sample_scores$p2
 
   # here I need to re-generate the data according to user's new dataset.
   if (!is.null(score_plot$score_plot_color_levels)) {
@@ -160,8 +150,8 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
   names(temp_replace) <- size_levels
   size_by_revalue <- plyr::revalue(size_by, temp_replace)
 
-  split_by <- paste0(color_by, "+", shape_by, "+", size_by)
-  split_by_revalue <- paste0(color_by_revalue, "+", shape_by_revalue, "+", size_by_revalue)
+  split_by <- paste0(color_by, "SLFAN", shape_by, "SLFAN", size_by)
+  split_by_revalue <- paste0(color_by_revalue, "SLFAN", shape_by_revalue, "SLFAN", size_by_revalue)
 
   xs <- by(x, split_by, function(x) x, simplify = FALSE)
   ys <- by(y, split_by, function(x) x, simplify = FALSE)
@@ -232,7 +222,7 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
   layout <- score_plot$layout
 
 
-  if (identical(names, "++")) {
+  if (identical(names, "SLFANSLFAN")) {
     layout$showlegend <- FALSE
   }
 
@@ -253,11 +243,12 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
 
 
 
-  loading_plot_style <- call_fun(parameter = list(user_id = "slfan", fun_name = "get_plsda_loading_plot_style"))
+  # loading_plot_style <- call_fun(parameter = list(user_id = "slfan", fun_name = "get_plsda_loading_plot_style"))
 
+  loading_plot_style = loading_plot$layout
 
-  x <- compound_loadings$PC1
-  y <- compound_loadings$PC2
+  x <- compound_loadings$p1
+  y <- compound_loadings$p2
 
   # here I need to re-generate the data according to user's new dataset.
   if (!is.null(loading_plot$loading_plot_color_levels)) {
@@ -301,8 +292,8 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
   names(temp_replace) <- size_levels
   size_by_revalue <- plyr::revalue(size_by, temp_replace)
 
-  split_by <- paste0(color_by, "+", shape_by, "+", size_by)
-  split_by_revalue <- paste0(color_by_revalue, "+", shape_by_revalue, "+", size_by_revalue)
+  split_by <- paste0(color_by, "SLFAN", shape_by, "SLFAN", size_by)
+  split_by_revalue <- paste0(color_by_revalue, "SLFAN", shape_by_revalue, "SLFAN", size_by_revalue)
 
   xs <- by(x, split_by, function(x) x, simplify = FALSE)
   ys <- by(y, split_by, function(x) x, simplify = FALSE)
@@ -372,7 +363,7 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
   layout <- loading_plot$layout
 
 
-  if (identical(names, "++")) {
+  if (identical(names, "SLFANSLFAN")) {
     layout$showlegend <- FALSE
   }
 
@@ -393,7 +384,9 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
 
   layout <- scree_plot$layout
 
-  ys <- list(variance)
+
+  ys <- list(cumsum(variance), R2, Q2)
+
   texts <- sapply(ys, function(x) {
     paste0(signif(x * 100, 4), "%")
   }, simplify = F)
@@ -402,17 +395,43 @@ if (exists("score_plot")) { # this means this call is from quick_analysis. Here 
     paste0("PC", 1:length(x), ": ", x)
   }, simplify = F)
 
-  names <- list("Variance Explained")
+
+  names <- list("Variance Explained on X", "Variance Explained on Y", "Predictive Accuracy")
   add_line_trace <- TRUE
-  line_trace_index <- 0
-  scree_plot_layout <- layout
+  line_trace_index <- 2
   plot_id <- ""
   scree_plot_result <- list(
-    ys = ys, texts = texts, hovertexts = hovertexts, names = names, add_line_trace = add_line_trace, line_trace_index = line_trace_index, scree_plot_layout = scree_plot_layout, plot_id = plot_id
+    ys = ys, texts = texts, hovertexts = hovertexts, names = names, add_line_trace = add_line_trace, line_trace_index = line_trace_index, layout = layout, plot_id = plot_id
   )
 
 
-  result <- jsonlite::toJSON(list("score_plot.svg" = score_plot_result, "scree_plot.svg" = scree_plot_result, "loading_plot.svg" = loading_plot_result), auto_unbox = TRUE, force = TRUE)
+
+
+  vip_plot_result = list(
+    obj_vip_plot =  list(
+      results_description = report_html, p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance, R2 = R2, Q2 = Q2, vip_table = vip_table, vip_heatmap = vip_heatmap, vip_heatmap_text = levels(y),perm_table = perm_table, perm_summary =  plsda_best@summaryDF
+    ),layout = vip_plot$layout,
+    plot_id <- ""
+
+  )
+
+
+  perm_plot_result = list(
+    obj_perm_plot =  list(
+      results_description = report_html, p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance, R2 = R2, Q2 = Q2, vip_table = vip_table, vip_heatmap = vip_heatmap, vip_heatmap_text = levels(y),perm_table = perm_table, perm_summary =  plsda_best@summaryDF
+    ),layout = perm_plot$layout,
+    plot_id <- ""
+
+  )
+
+
+
+
+
+  result <- jsonlite::toJSON(list("plsda_score_plot.svg" = score_plot_result, "plsda_scree_plot.svg" = scree_plot_result, "plsda_loading_plot.svg" = loading_plot_result, "vip_plot.svg" = vip_plot_result, "perm_plot.svg" = perm_plot_result), auto_unbox = TRUE, force = TRUE)
+
+
+
 } else {
   result <- list(
     results_description = report_html, p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance, R2 = R2, Q2 = Q2, vip_table = vip_table, vip_heatmap = vip_heatmap, vip_heatmap_text = levels(y),perm_table = perm_table, perm_summary =  plsda_best@summaryDF

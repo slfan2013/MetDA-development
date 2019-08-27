@@ -340,11 +340,15 @@ $("#confirm_selected_project").click(function () {
             fun_name: "preview_result_structure"
         }
     }, function (session) {
+        //window.open(session.loc + "files/call_fun.RData")
         console.log(session)
+        
         session.getObject(function (obj) {
             console.log("Good")
             console.log(obj)
             ob = obj
+            p1 = obj.p1
+            f1 = obj.f1
             $("#preview_result_structure").jstree("destroy");
             $("#preview_result_structure").jstree({
                 'core': {
@@ -392,7 +396,7 @@ $("#confirm_selected_project").click(function () {
                     sample_parameters_global_index++;
                     sample_para_index++
                 }
-            }, 100)
+            }, 1000)
 
 
             compound_parameters_global_index = 1
@@ -464,6 +468,7 @@ $("#submit").click(function () {
             fun_name: "perform_quick_analysis"
         }
     }, function (session) {
+        //window.open(session.loc + "files/call_fun.RData")
         console.log(session)
         session.getObject(function (obj) {
             console.log(obj)
@@ -494,111 +499,114 @@ $("#submit").click(function () {
                         console.log(obj_json.ii)
 
                         console.log(obj_json.results)
-                        if (obj_json.results.length === undefined) {// this means we have a plot to draw.
-                            console.log("going to draw plot")
-
-                            var obj_json_plot = obj_json.results
-                            var project_times = Object.keys(obj_json_plot)
-                            var plots = Object.values(obj_json_plot)
-                            var i = 0
-                            plot_base64[project_times[i]] = {}
-                            var current_plot = JSON.parse(plots[i])
-
-                            var individual_plot_names = Object.keys(current_plot)
-                            var individual_plot_paramters = Object.values(current_plot)
-
-                            for (var j = 0; j < individual_plot_names.length; j++) {
-
-                                current_plot_name = individual_plot_names[j].split(".")[0]
-                                plot_fun = window[current_plot_name + "_fun"]
-                                current_parameter = individual_plot_paramters[j]
-
-                                current_parameter.plot_id = "temp_id_" + project_times[i] + current_plot_name
-
-                                current_parameter.quick_analysis = true
-                                current_parameter.quick_analysis_project_time = project_times[i]
-                                current_parameter.quick_analysis_plot_name = individual_plot_names[j]
-
-
-                                $('#for_temp_plots').append('<div id="' + current_parameter.plot_id + '"></div>')
-
-                                if (current_plot_name === 'boxplot_plot') {
-                                    // not done.
-                                } else {
-                                    console.log("making plot")
-                                    plot_fun(current_parameter)
-                                    setTimeout(() => {
-
-                                        if (obj_json.ii == 'done.') { // this means everything is done.
-                                            console.log("FINISHED")
-
-                                            function getValuesFromNestedObject(obj) {
-                                                for (var key in obj) {
-                                                    if (typeof obj[key] === "object") {
-                                                        getValuesFromNestedObject(obj[key]);
-                                                    } else {
-                                                        getValuesFromNestedObject_result.push(obj[key])
+                        if(false){
+                            if (obj_json.results.length === undefined) {// this means we have a plot to draw.
+                                console.log("going to draw plot")
+    
+                                var obj_json_plot = obj_json.results
+                                var project_times = Object.keys(obj_json_plot)
+                                var plots = Object.values(obj_json_plot)
+                                var i = 0
+                                plot_base64[project_times[i]] = {}
+                                var current_plot = JSON.parse(plots[i])
+    
+                                var individual_plot_names = Object.keys(current_plot)
+                                var individual_plot_paramters = Object.values(current_plot)
+    
+                                for (var j = 0; j < individual_plot_names.length; j++) {
+    
+                                    current_plot_name = individual_plot_names[j].split(".")[0]
+                                    plot_fun = window[current_plot_name + "_fun"]
+                                    current_parameter = individual_plot_paramters[j]
+    
+                                    current_parameter.plot_id = "temp_id_" + project_times[i] + current_plot_name
+    
+                                    current_parameter.quick_analysis = true
+                                    current_parameter.quick_analysis_project_time = project_times[i]
+                                    current_parameter.quick_analysis_plot_name = individual_plot_names[j]
+    
+    
+                                    $('#for_temp_plots').append('<div id="' + current_parameter.plot_id + '"></div>')
+    
+                                    if (current_plot_name === 'boxplot_plot') {
+                                        // not done.
+                                    } else {
+                                        console.log("making plot")
+                                        plot_fun(current_parameter)
+                                        setTimeout(() => {
+    
+                                            if (obj_json.ii == 'done.') { // this means everything is done.
+                                                console.log("FINISHED")
+    
+                                                function getValuesFromNestedObject(obj) {
+                                                    for (var key in obj) {
+                                                        if (typeof obj[key] === "object") {
+                                                            getValuesFromNestedObject(obj[key]);
+                                                        } else {
+                                                            getValuesFromNestedObject_result.push(obj[key])
+                                                        }
                                                     }
                                                 }
-                                            }
-                                            var myVar = setInterval(function () {
-                                                getValuesFromNestedObject_result = []
-                                                getValuesFromNestedObject(plot_base64)
-                                                if (getValuesFromNestedObject_result.length < number_of_plots) {
-                                                    //console.log("waiting")
-                                                } else {
-                                                    clearInterval(myVar)
-                                                    finished = true
-                                                    
-                                                    ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
-                                                        console.log(session)
-                                                        session.getObject(function (obj) {
-                                                            console.log(obj)
+                                                var myVar = setInterval(function () {
+                                                    getValuesFromNestedObject_result = []
+                                                    getValuesFromNestedObject(plot_base64)
+                                                    if (getValuesFromNestedObject_result.length < number_of_plots) {
+                                                        //console.log("waiting")
+                                                    } else {
+                                                        clearInterval(myVar)
+                                                        finished = true
+                                                        
+                                                        ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
+                                                            console.log(session)
+                                                            session.getObject(function (obj) {
+                                                                console.log(obj)
+                                                            })
                                                         })
-                                                    })
-                                                }
-                                            }, 200)
-                                        } else {
-                                            perform_quick_analysis_step_by_step_js(obj)
-                                        }
-                                    }, 200);
-                                }
-                                number_of_plots++;
-                            }
-                        } else {
-
-                            if (obj_json.ii == 'done.') { // this means everything is done.
-                                console.log("FINISHED")
-
-                                function getValuesFromNestedObject(obj) {
-                                    for (var key in obj) {
-                                        if (typeof obj[key] === "object") {
-                                            getValuesFromNestedObject(obj[key]);
-                                        } else {
-                                            getValuesFromNestedObject_result.push(obj[key])
-                                        }
+                                                    }
+                                                }, 200)
+                                            } else {
+                                                perform_quick_analysis_step_by_step_js(obj)
+                                            }
+                                        }, 200);
                                     }
+                                    number_of_plots++;
                                 }
-                                var myVar = setInterval(function () {
-                                    getValuesFromNestedObject_result = []
-                                    getValuesFromNestedObject(plot_base64)
-                                    if (getValuesFromNestedObject_result.length < number_of_plots) {
-                                        //console.log("waiting")
-                                    } else {
-                                        clearInterval(myVar)
-                                        ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
-                                            console.log(session)
-                                            session.getObject(function (obj) {
-                                                console.log(obj)
-                                            })
-                                        })
-                                    }
-                                }, 200)
                             } else {
-                                perform_quick_analysis_step_by_step_js(obj)
+    
+                                if (obj_json.ii == 'done.') { // this means everything is done.
+                                    console.log("FINISHED")
+    
+                                    function getValuesFromNestedObject(obj) {
+                                        for (var key in obj) {
+                                            if (typeof obj[key] === "object") {
+                                                getValuesFromNestedObject(obj[key]);
+                                            } else {
+                                                getValuesFromNestedObject_result.push(obj[key])
+                                            }
+                                        }
+                                    }
+                                    var myVar = setInterval(function () {
+                                        getValuesFromNestedObject_result = []
+                                        getValuesFromNestedObject(plot_base64)
+                                        if (getValuesFromNestedObject_result.length < number_of_plots) {
+                                            //console.log("waiting")
+                                        } else {
+                                            clearInterval(myVar)
+                                            ocpu.call("call_fun", { parameter: { plot_base64: plot_base64, project_id: project_id, fun_name: "save_plots" } }, function (session) {
+                                                console.log(session)
+                                                session.getObject(function (obj) {
+                                                    console.log(obj)
+                                                })
+                                            })
+                                        }
+                                    }, 200)
+                                } else {
+                                    perform_quick_analysis_step_by_step_js(obj)
+                                }
+    
                             }
-
                         }
+                        
 
                     })
                 })

@@ -146,7 +146,17 @@ function get(reference, pathParts) {
 
 prepare_layout = function (layout) {
   var oo = nestedObjectToArray(layout)
-  var ooo = oo.map(x => x.slice(0, -1))
+ // var ooo = oo.map(x => x.slice(0, -1))
+  
+  var ooo = oo.map(function(x){
+    if(x[x.length-1]==="."){
+      return(x.slice(0, -1))
+    }else{
+      return(x)
+    }
+  })
+
+
 
   for (var i = 0; i < ooo.length; i++) {
 
@@ -156,11 +166,16 @@ prepare_layout = function (layout) {
     if (current_value.length == 1 && Array.isArray(current_value)) {
       set(layout, ooo[i], current_value[0]);
     } else {
+      if(current_value.map === undefined){// this is a string or logical
 
-      if (current_value.map(x => x.length).filter(unique) == 1) {
-        set(layout, ooo[i], [].concat.apply([], current_value));
+      }else{
+
+        if (current_value.map(x => x.length).filter(unique) == 1) {
+          set(layout, ooo[i], [].concat.apply([], current_value));
+        }
+        // change [[1],[2]] to [1,2]
       }
-      // change [[1],[2]] to [1,2]
+
     }
   }
   return (layout)
@@ -636,6 +651,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
         fun_name: "save_results_to_project"
       }
     }, function (session) {
+      //window.open(session.loc + "files/call_fun.RData")
       console.log("save_results_to_project")
       console.log(session)
       session.getObject(function (obj) {

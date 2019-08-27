@@ -190,7 +190,7 @@ $.get("plot_layout_adjuster.html", function (plot_layout_adjuster_string) {
                         }
                         $("#plsda_score_plot_explanation_html").html(obj_plsda_score_plot.results_description[1])
 
-                        scatter_by_group({
+                        plsda_score_plot_fun({
                             x: x, y: y, color_by: plsda_score_plot_color_by, color_values: plsda_score_plot_color_values, color_levels: plsda_score_plot_color_levels,
                             shape_by: plsda_score_plot_shape_by, shape_values: plsda_score_plot_shape_values, shape_levels: plsda_score_plot_shape_levels,
                             size_by: plsda_score_plot_size_by, size_values: plsda_score_plot_size_values, size_levels: plsda_score_plot_size_levels,

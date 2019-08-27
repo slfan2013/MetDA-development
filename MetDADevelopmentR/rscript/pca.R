@@ -128,8 +128,8 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   names(temp_replace) = size_levels
   size_by_revalue = plyr::revalue(size_by, temp_replace)
 
-  split_by = paste0(color_by,"+",shape_by,"+",size_by)
-  split_by_revalue = paste0(color_by_revalue,"+",shape_by_revalue,"+",size_by_revalue)
+  split_by = paste0(color_by,"SLFAN",shape_by,"SLFAN",size_by)
+  split_by_revalue = paste0(color_by_revalue,"SLFAN",shape_by_revalue,"SLFAN",size_by_revalue)
 
   xs = by(x,split_by,function(x) x, simplify = FALSE)
   ys = by(y,split_by,function(x) x, simplify = FALSE)
@@ -205,7 +205,7 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   layout = score_plot$layout
 
 
-  if(identical(names,"++")){
+  if(identical(names,"SLFANSLFAN")){
     layout$showlegend = FALSE
   }
 
@@ -280,8 +280,8 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   names(temp_replace) = size_levels
   size_by_revalue = plyr::revalue(size_by, temp_replace)
 
-  split_by = paste0(color_by,"+",shape_by,"+",size_by)
-  split_by_revalue = paste0(color_by_revalue,"+",shape_by_revalue,"+",size_by_revalue)
+  split_by = paste0(color_by,"SLFAN",shape_by,"SLFAN",size_by)
+  split_by_revalue = paste0(color_by_revalue,"SLFAN",shape_by_revalue,"SLFAN",size_by_revalue)
 
   xs = by(x,split_by,function(x) x, simplify = FALSE)
   ys = by(y,split_by,function(x) x, simplify = FALSE)
@@ -356,7 +356,7 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
   layout = loading_plot$layout
 
 
-  if(identical(names,"++")){
+  if(identical(names,"SLFANSLFAN")){
     layout$showlegend = FALSE
   }
 

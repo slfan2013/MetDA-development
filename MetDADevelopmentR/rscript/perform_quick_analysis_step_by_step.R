@@ -35,15 +35,75 @@ current_parameter <- structure_to_be_added[[index]]$parameter
 
 
 if (any(!depending[[ii]] == 0)) {
-  temp_id <- current_parameter$activate_data_id
 
-  temp_splits <- sapply(temp_id, function(x) {
-    strsplit(x, "\\.")[[1]]
-  }, simplify = F)
+  if(current_parameter$fun_name == "data_subsetting"){
 
-  current_parameter$activate_data_id <- sapply(1:length(temp_splits), function(x) {
-    paste0(substr(temp_splits[[x]][1], 1, nchar(temp_splits[[x]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[x]][length(temp_splits[[x]])])
-  })
+    temp_id <- current_parameter$activate_data_id
+
+    temp_splits <- sapply(temp_id, function(x) {
+      strsplit(x, "\\.")[[1]]
+    }, simplify = F)
+
+    # current_parameter$activate_data_id <- sapply(1:length(temp_splits), function(x) {
+    #   paste0(substr(temp_splits[[x]][1], 1, nchar(temp_splits[[x]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[x]][length(temp_splits[[x]])])
+    # })
+
+    current_parameter$activate_data_id = sapply(1:length(temp_splits), function(x) {
+      paste0(substr(temp_splits[[x]][1], 1, nchar(temp_splits[[x]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[x]][length(temp_splits[[x]])])
+    })
+
+
+    x = 2
+    for(k in 1:length(current_parameter)){
+
+      if(!names(current_parameter)[k] == "activate_data_id"){
+        if(is.character(current_parameter[[k]])){
+          temp_splits = strsplit(current_parameter[[k]], "\\.")
+
+          if(length(temp_splits[[1]])==2){
+
+            if(temp_splits[[1]][2] =='csv'){
+              # print(k)
+
+              current_parameter[[k]] = paste0(substr(temp_splits[[1]][1], 1, nchar(temp_splits[[1]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[1]][length(temp_splits[[1]])])
+#
+#               print(paste0(substr(temp_splits[[1]][1], 1, nchar(temp_splits[[1]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[1]][length(temp_splits[[1]])]))
+              x = x+1
+
+
+            }
+          }
+
+        }
+      }
+
+
+    }
+
+
+
+
+
+
+  }else{
+    temp_id <- current_parameter$activate_data_id
+
+    temp_splits <- sapply(temp_id, function(x) {
+      strsplit(x, "\\.")[[1]]
+    }, simplify = F)
+
+    current_parameter$activate_data_id <- sapply(1:length(temp_splits), function(x) {
+      paste0(substr(temp_splits[[x]][1], 1, nchar(temp_splits[[x]][1]) - 11 + 1), output_file_time[unlist(depending[[ii]][x])], ".", temp_splits[[x]][length(temp_splits[[x]])])
+    })
+  }
+
+
+
+
+
+
+
+
 }
 
 
@@ -171,7 +231,7 @@ if (need_plot) {
 }
 
 
-json_list <- list(structure_to_be_added_ids = structure_to_be_added_ids, structure_to_be_added_folders_only = structure_to_be_added_folders_only, structure_to_be_added = structure_to_be_added, old_id_to_new_id_matches = old_id_to_new_id_matches, depending = depending, sample_parameters_to = sample_parameters_to, project_id = project_id, structure_to_be_added_parents = structure_to_be_added_parents, structure_to_be_added_icons = structure_to_be_added_icons, structure_to_be_added_folders_only_parents = structure_to_be_added_folders_only_parents, output_file_time = output_file_time)
+# json_list <- list(structure_to_be_added_ids = structure_to_be_added_ids, structure_to_be_added_folders_only = structure_to_be_added_folders_only, structure_to_be_added = structure_to_be_added, old_id_to_new_id_matches = old_id_to_new_id_matches, depending = depending, sample_parameters_to = sample_parameters_to, project_id = project_id, structure_to_be_added_parents = structure_to_be_added_parents, structure_to_be_added_icons = structure_to_be_added_icons, structure_to_be_added_folders_only_parents = structure_to_be_added_folders_only_parents, output_file_time = output_file_time)
 
 if (length(structure_to_be_added_folders_only) == ii) {
   ii <- "done."

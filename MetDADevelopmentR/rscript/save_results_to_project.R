@@ -173,6 +173,10 @@
         # strsplit(markdown:::.b64EncodeFile(files_names[1]), "base64,")[[1]][2]
         # paste0("'data:image/svg+xml;base64,'",files_sources[file_source])
       )
+
+
+      files_sources[file_source] = "MQ==" # this is for saving space.
+
     } else {
       projectList$`_attachments`[[attachments_ids[file_source]]] <- list(
         content_type = files_types[file_source],
@@ -238,12 +242,8 @@
   }
 
 
-  sapply(projectList$`_attachments`, function(x){
-    sum(is.na(unlist(x)))
-  })
-
   projectList$project_structure <- project_structure
-  # projectList$project_structure <- project_structure[1:1]
+  # projectList$project_structure <- project_structure[1:j]
 
 
   for(k in 1:length(projectList$`_attachments`)){
@@ -252,11 +252,19 @@
     }
   }
 
+  # attachments = projectList$`_attachments`
+  # projectList$`_attachments` = NULL
 
-  RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
 
-#   print(j)
-# j = j-1
+  result = RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
+
+  if(grepl("The proxy server received an", result) & grepl("heatmap",project_structure[[length(project_structure)]]$id)){
+    stop("The heatmap plot is too big to save. Please try Subset your data (see 'Data Subsetting' ) and then draw the plot. ")
+  }
+
+
+
+
 
 
   if(is_temp_project){

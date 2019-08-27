@@ -93,18 +93,39 @@
 
   depending <- list()
   for (i in 1:length(structure_to_be_added_folders_only)) {
-    temp_index <- which(structure_to_be_added_id %in% structure_to_be_added_folders_only[[i]]$parameter$activate_data_id)
-
-    if (length(temp_index) == 0) {
-      depending[[i]] <- 0
-    } else {
-      # depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
-
-      depending[[i]] <- which(structure_to_be_added_folders_only_id %in% sapply(structure_to_be_added_folders_only[[i]]$parameter$activate_data_id, function(x) structure_to_be_added_parents[[x]]))
 
 
+      temp_index <- which(structure_to_be_added_id %in% structure_to_be_added_folders_only[[i]]$parameter$activate_data_id)
 
-    }
+      if (length(temp_index) == 0) {
+        depending[[i]] <- 0
+      } else {
+        # depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
+        depending[[i]] <- which(structure_to_be_added_folders_only_id %in% sapply(structure_to_be_added_folders_only[[i]]$parameter$activate_data_id, function(x) structure_to_be_added_parents[[x]]))
+      }
+
+
+      if(grepl("subsetting", tolower(structure_to_be_added_folders_only[[i]]$id))){
+
+        depended_ids = c()
+        j = 1
+        while(!is.null(structure_to_be_added_folders_only[[i]]$parameter[[paste0("compound_criterion_data_id__",j)]])){
+          depended_ids[length(depended_ids)+1] = structure_to_be_added_folders_only[[i]]$parameter[[paste0("compound_criterion_data_id__",j)]]
+          j = j+1
+        }
+
+        temp_index <- which(structure_to_be_added_id %in% depended_ids)
+
+
+        if (length(temp_index) == 0) {
+          # depending[[i]] <- 0
+        } else {
+          # depending[i] <- which(structure_to_be_added_folders_only_id %in% structure_to_be_added_folders_only[[i]]$parent)
+          depending[[i]][length(depending[[i]])+1] <- which(structure_to_be_added_folders_only_id %in% sapply(depended_ids, function(x) structure_to_be_added_parents[[x]]))
+        }
+
+      }
+
   }
   output_file_time <- c()
 

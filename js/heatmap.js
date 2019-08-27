@@ -22,7 +22,8 @@ heatmap_append_results = function (obj, session) {
 
     $("#download_results").off("click").on("click", function () {
         var parameters = JSON.parse(localStorage.getItem('parameter'))
-        parameters.heatmap_plot = {}
+        parameters.heatmap_plot = heatmap_plot_parameters
+        /*parameters.heatmap_plot = {}
         parameters.heatmap_plot.order_sample_by = heatmap_plot_parameters.order_sample_by
         parameters.heatmap_plot.sample_annotation = heatmap_plot_parameters.sample_annotation
         parameters.heatmap_plot.order_compound_by = heatmap_plot_parameters.order_compound_by
@@ -30,7 +31,7 @@ heatmap_append_results = function (obj, session) {
 
         parameters.heatmap_plot.layout = {}
         parameters.heatmap_plot.layout.width = heatmap_plot_parameters.layout.width
-        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height
+        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height*/
         //parameters.heatmap_plot = heatmap_plot_parameters
         //download_results(files_names, files_sources, zipfile_name)
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
@@ -39,8 +40,9 @@ heatmap_append_results = function (obj, session) {
 
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         var parameters = JSON.parse(localStorage.getItem('parameter'))
+        parameters.heatmap_plot = heatmap_plot_parameters
         //parameters.heatmap_plot = heatmap_plot_parameters
-        parameters.heatmap_plot = {}
+        /*parameters.heatmap_plot = {}
         parameters.heatmap_plot.order_sample_by = heatmap_plot_parameters.order_sample_by
         parameters.heatmap_plot.sample_annotation = heatmap_plot_parameters.sample_annotation
         parameters.heatmap_plot.order_compound_by = heatmap_plot_parameters.order_compound_by
@@ -48,7 +50,7 @@ heatmap_append_results = function (obj, session) {
 
         parameters.heatmap_plot.layout = {}
         parameters.heatmap_plot.layout.width = heatmap_plot_parameters.layout.width
-        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height
+        parameters.heatmap_plot.layout.height = heatmap_plot_parameters.layout.height*/
         save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['sample','compound','none'])
     })
 
