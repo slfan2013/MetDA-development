@@ -1,7 +1,7 @@
 # open_project_structure_to_select_p_value_and_fold_change = function(
 #   project_id = "test volcano1565046464"
 # ){
-  save(project_id, file = "open_project_structure_to_select_p_value_and_fold_change.RData")
+  # save(project_id, file = "open_project_structure_to_select_p_value_and_fold_change.RData")
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
@@ -27,9 +27,9 @@
 
 
 
-  p_val_folder_id = id[functions %in% c("student_t_test","mann_whitney_test)")]
-  p_val_needed_id = id[functions %in% c("student_t_test","mann_whitney_test)")]
-  p_val_parents = parent[functions %in% c("student_t_test","mann_whitney_test)")]
+  p_val_folder_id = id[functions %in% c("student_t_test","mann_whitney_u_test")]
+  p_val_needed_id = id[functions %in% c("student_t_test","mann_whitney_u_test")]
+  p_val_parents = parent[functions %in% c("student_t_test","mann_whitney_u_test")]
 
   fold_change_folder_id = id[functions %in% "fold_change"]
   fold_change_needed_id = id[functions %in% "fold_change"]

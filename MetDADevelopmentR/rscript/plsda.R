@@ -36,7 +36,7 @@ e_scale <- scale(e_t, center = !scaling_method == "none", scale = sds)
 
 y <- factor(p[[treatment_group]])
 
-if (length(y) == 1) {
+if (length(unique(y)) == 1) {
   stop("The treatment group you selected has only one level. Please select a treatment group with at least two levels.")
 }
 
@@ -80,6 +80,12 @@ rownames(compound_loadings) <- make.unique(f$label)
 
 fwrite(sample_scores, "sample_scores.csv", col.names = TRUE, row.names = TRUE)
 fwrite(compound_loadings, "compound_loadings.csv", col.names = TRUE, row.names = TRUE)
+
+
+vip_data = data.table(index = 1:length(vips), label = names(vips), VIP_score = vips)
+
+fwrite(vip_data, "vip_data.csv", col.names = TRUE, row.names = TRUE)
+
 
 
 

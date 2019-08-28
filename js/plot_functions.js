@@ -335,6 +335,7 @@ heatmap_plot_fun = function ({
         .then(gd => {
             heatmap_plot_gd = gd
             if (!quick_analysis) {
+                $("#save_results_tree").jstree("destroy");
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
                 /*var cache = [];
                 fullLayout = JSON.stringify(heatmap_plot_gd._fullLayout, function (key, value) {
@@ -476,6 +477,7 @@ ssize_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
     layout.yaxis.title.text = y_lab
     Plotly.newPlot(plot_id, ssize_plot_data, layout)
         .then(gd => {
+            $("#save_results_tree").jstree("destroy");
             ssize_plot_gd = gd
 
             ssize_plot_parameters = {
@@ -543,7 +545,7 @@ power_plot_fun = function ({ x = undefined, y = undefined, title = undefined, y_
 
     Plotly.newPlot(plot_id, power_plot_data, layout)
         .then(gd => {
-            f
+            $("#save_results_tree").jstree("destroy");
             power_plot_gd = gd
 
             power_plot_parameters = {
@@ -629,7 +631,7 @@ boxplot_plot_fun = function ({
         .then(gd => {
             boxplot_plot_gd = gd
             if (!quick_analysis) {
-
+                $("#save_results_tree").jstree("destroy");
                 boxplot_plot_parameters = {
                     //full_data: JSON.parse(fullData),
                     //full_layout: JSON.parse(fullLayout),
@@ -761,7 +763,7 @@ volcano_plot_fun = function ({
         .then(gd => {
             volcano_plot_gd = gd
             if (!quick_analysis) {
-
+                $("#save_results_tree").jstree("destroy");
                 volcano_plot_parameters = {
                     data: volcano_plot_gd.data,
                     layout: volcano_plot_gd.layout,
@@ -1049,6 +1051,7 @@ scatter_by_group = function ({ x = undefined, y = undefined, color_by = undefine
         .then(gd => {
             ggg = gd
             if (!quick_analysis) {
+                $("#save_results_tree").jstree("destroy");
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
                 /*var cache = [];
                 fullLayout = JSON.stringify(ggg._fullLayout, function (key, value) {
@@ -1355,6 +1358,7 @@ plsda_score_plot_fun = function ({ x = undefined, y = undefined, color_by = unde
 
 
         .then(gd => {
+            $("#save_results_tree").jstree("destroy");
             ggg = gd
             if (!quick_analysis) {
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
@@ -1417,7 +1421,7 @@ plsda_score_plot_fun = function ({ x = undefined, y = undefined, color_by = unde
 
                         if (!quick_analysis) {
                             plot_url.score_plot = btoa(unescape(encodeURIComponent(uuu)))
-                            files_sources[2] = plot_url.score_plot
+                            files_sources[3] = plot_url.score_plot
                         } else {
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(uuu)))
                         }
@@ -1664,6 +1668,7 @@ plsda_loading_plot_fun = function ({ x = undefined, y = undefined, color_by = un
 
 
         .then(gd => {
+            $("#save_results_tree").jstree("destroy");
             ggg = gd
             if (!quick_analysis) {
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
@@ -1736,7 +1741,7 @@ plsda_loading_plot_fun = function ({ x = undefined, y = undefined, color_by = un
 
                         if (!quick_analysis) {
                             plot_url.loading_plot = btoa(unescape(encodeURIComponent(uuu)))
-                            files_sources[3] = plot_url.loading_plot
+                            files_sources[4] = plot_url.loading_plot
                         } else {
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(uuu)))
                         }
@@ -1957,6 +1962,7 @@ loading_plot_fun = function ({ x = undefined, y = undefined, color_by = undefine
 
         .then(gd => {
             ggg = gd
+            $("#save_results_tree").jstree("destroy");
             if (!quick_analysis) {
                 // Note: cache should not be re-used by repeated calls to JSON.stringify.
                 /*var cache = [];
@@ -2169,6 +2175,7 @@ scree_plot_fun = function ({ ys = undefined, texts = undefined, hovertexts = und
 
 
         .then(gd => {
+            $("#save_results_tree").jstree("destroy");
             scree_plot_gd = gd
 
             scree_plot_parameters = {
@@ -2293,6 +2300,7 @@ plsda_scree_plot_fun = function ({ ys = undefined, texts = undefined, hovertexts
 
 
         .then(gd => {
+            $("#save_results_tree").jstree("destroy");
             scree_plot_gd = gd
 
             scree_plot_parameters = {
@@ -2311,7 +2319,7 @@ plsda_scree_plot_fun = function ({ ys = undefined, texts = undefined, hovertexts
 
                         if (!quick_analysis) {
                             plot_url.scree_plot = btoa(unescape(encodeURIComponent(scree_plot_url2)))
-                            files_sources[4] = plot_url.scree_plot
+                            files_sources[5] = plot_url.scree_plot
                         } else {
                             plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(scree_plot_url2)))
                         }
@@ -2470,6 +2478,7 @@ perm_plot_fun = function ({ obj_perm_plot = undefined,
 
 
     Plotly.newPlot(plot_id, data, layout).then(gd => {
+        $("#save_results_tree").jstree("destroy");
         perm_plot_gd = gd
 
         perm_plot_parameters = {
@@ -2488,7 +2497,7 @@ perm_plot_fun = function ({ obj_perm_plot = undefined,
 
                     if (!quick_analysis) {
                         plot_url.perm_plot = btoa(unescape(encodeURIComponent(perm_plot_url2)))
-                        files_sources[6] = plot_url.perm_plot
+                        files_sources[7] = plot_url.perm_plot
                     } else {
                         plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(perm_plot_url2)))
                     }
@@ -2592,6 +2601,7 @@ vip_plot_fun = function ({ obj_vip_plot = undefined,
 
     Plotly.newPlot(plot_id, [trace1, trace2], layout).then(gd => {
         vip_plot_gd = gd
+        $("#save_results_tree").jstree("destroy");
 
         vip_plot_parameters = {
             data: vip_plot_gd.data,
@@ -2609,7 +2619,7 @@ vip_plot_fun = function ({ obj_vip_plot = undefined,
 
                     if (!quick_analysis) {
                         plot_url.vip_plot = btoa(unescape(encodeURIComponent(vip_plot_url2)))
-                        files_sources[5] = plot_url.vip_plot
+                        files_sources[6] = plot_url.vip_plot
                     } else {
                         plot_base64[quick_analysis_project_time][quick_analysis_plot_name] = btoa(unescape(encodeURIComponent(vip_plot_url2)))
                     }

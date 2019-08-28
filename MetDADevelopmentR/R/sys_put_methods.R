@@ -4,7 +4,7 @@ sys_put_methods <- function() {
       "data_subsetting" = list(
         "Method Name" = "Data Subsetting",
         "Description" = "Subset your data according to criterions (e.g. p-values).",
-        "Example" = "paper1",
+        "Example" = "",
         "Example link" = ""
       )
     ),
@@ -12,7 +12,13 @@ sys_put_methods <- function() {
       "missing_value_imputation" = list(
         "Method Name" = "Missing Value Imputation",
         "Description" = "Replace or impute missing values.",
-        "Example" = "paper1",
+        "Example" = "",
+        "Example link" = ""
+      ),
+      "data_transformation" = list(
+        "Method Name" = "Data Transformation",
+        "Description" = "Transform your data tom meet model assumptions.",
+        "Example" = "",
         "Example link" = ""
       )
     ),
@@ -20,31 +26,31 @@ sys_put_methods <- function() {
       "fold_change" = list(
         "Method Name" = "Fold Change",
         "Description" = "Calculate the average ratio between two groups..",
-        "Example" = "paper3",
+        "Example" = "",
         "Example link" = ""
       ),
       "student_t_test" = list(
         "Method Name" = "Student's t-test",
         "Description" = "The Student's t-test is for testing if the two group means are statistically siginificantly different.",
-        "Example" = "paper3",
+        "Example" = "",
         "Example link" = ""
       ),
-      "mann_whitney_test" = list(
+      "mann_whitney_u_test" = list(
         "Method Name" = "Mann-Whitney U test",
         "Description" = "The Mann-Whitney U test is for testing if the two group medians are statistically siginificantly different.",
-        "Example" = "paper3",
+        "Example" = "",
         "Example link" = ""
       ),
       "boxplot" = list(
         "Method Name" = "Boxplot",
         "Description" = "To draw a beautiful boxplot for each compound.",
-        "Example" = "paper2",
+        "Example" = "",
         "Example link" = ""
       ),
       "volcano" = list(
         "Method Name" = "Volcano Plot",
         "Description" = "To visualize the significancy and fold change at once.",
-        "Example" = "paper2",
+        "Example" = "",
         "Example link" = ""
       )
     ),
@@ -52,19 +58,19 @@ sys_put_methods <- function() {
       "pca" = list(
         "Method Name" = "Principal Component Analysis (PCA)",
         "Description" = "To reduce a larger set of variables into a smaller set of 'artificial' variables that account for most of the variance in the original variables.",
-        "Example" = "paper2",
+        "Example" = "",
         "Example link" = ""
       ),
       "plsda" = list(
         "Method Name" = "Partial Least Square - Discriminant Analysis (PLSDA)",
         "Description" = "Prediction",
-        "Example" = "paper2",
+        "Example" = "",
         "Example link" = ""
       ),
 	  "heatmap" = list(
         "Method Name" = "Heatmap",
         "Description" = "To draw a beautiful heatmap.",
-        "Example" = "paper2",
+        "Example" = "",
         "Example link" = ""
       )
     ),
@@ -72,13 +78,13 @@ sys_put_methods <- function() {
       "sample_size_calculator" = list(
         "Method Name" = "Sample Size Calculator",
         "Description" = "Calculate Sample Size for an Individual Variable.",
-        "Example" = "paper3",
+        "Example" = "",
         "Example link" = ""
       ),
       "ssize" = list(
         "Method Name" = "Sample Size Estimation for Microarray Experiments",
         "Description" = "Sample Size Estimation for Microarray Experiments. Post-hoc power analysis.",
-        "Example" = "paper3",
+        "Example" = "",
         "Example link" = ""
       )
 

@@ -155,6 +155,11 @@ var update_jstree = function (project_structure) {
                                                     bad_id.push(obj[i].id)
                                                 }
                                             }
+
+                                            if(bad_id.includes(localStorage.activate_data_id)){
+                                                localStorage.activate_data_id = 'e.csv'
+                                            }
+
                                             for (var i = remove_index.length - 1; i > -1; i--) {
                                                 if (obj[remove_index[i]].attachment_id !== undefined) { // delete attachment as well
                                                     delete doc._attachments[[obj[remove_index[i]].attachment_id]]
@@ -165,8 +170,10 @@ var update_jstree = function (project_structure) {
                                             ocpu.call("call_fun", {parameter:{
                                                 project_id: localStorage.activate_project_id,
                                                 project_structure: obj,
+                                                delete:true,
                                                 fun_name:"update_tree_structure"
                                             }}, function (session) {
+                                                //window.open(session.loc +"files/call_fun.RData")
                                                 console.log(session)
                                                 session.getObject(function (obj) {
                                                     update_jstree(obj)

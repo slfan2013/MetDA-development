@@ -10,6 +10,7 @@
   # save(project_id, selected_folder, files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index,files_sources_data, file = "test.RData")
 
   # load("test.RData")
+pacman::p_load(rsvg)
   if (class(files_sources_data) %in% c("list", "data.frame")) { # this means this is localhost.https://github.com/opencpu/opencpu/issues/345
     for (file_source in 1:length(files_sources_data)) {
       if (is.null(ncol(files_sources_data[[file_source]]))) { # this means this is a base6 (pca score plot)
@@ -191,7 +192,7 @@
   # folder_id <- paste0(fold_name, current_time)
 
 
-  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA","plsda" = "PLSDA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "data_subsetting" = "Data Subsetting","mann_whitney_test" = "Mann-Whitney U test", "ssize" = "post-hoc Sample Size Analysis")
+  from_fun_name_to_folder_id <- c("fold_change" = "Fold Change", "heatmap" = "Heatmap", "boxplot" = "Boxplot", "volcano" = "Volcano Plot", "pca" = "PCA","plsda" = "PLSDA", "missing_value_imputation" = "Missing Value Imputation", "student_t_test" = "Student t-test", "data_transformation"="Data Transformation","data_subsetting" = "Data Subsetting","mann_whitney_u_test" = "Mann-Whitney U test", "ssize" = "post-hoc Sample Size Analysis")
 
   folder_id <- paste0(plyr::revalue(parameters$fun_name, from_fun_name_to_folder_id), current_time)
 
@@ -259,7 +260,68 @@
   result = RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
 
   if(grepl("The proxy server received an", result) & grepl("heatmap",project_structure[[length(project_structure)]]$id)){
-    stop("The heatmap plot is too big to save. Please try Subset your data (see 'Data Subsetting' ) and then draw the plot. ")
+
+    # library(rsvg)
+    # # create some svg
+    # svg('test.svg', width = 10, height = 7)
+    # ggplot2::qplot(mpg, wt, data = mtcars, colour = factor(cyl))
+    # dev.off()
+    #
+    #
+    # rsvg_png('test.svg', "out.png")
+
+
+
+    # tmp_id = attachments_ids[which(grepl("heatmap", attachments_ids))]
+    # tmp_att = projectList$`_attachments`[[tmp_id]]
+    #
+    #
+    #
+    #
+    # library(base64enc)
+    # enc <- tmp_att$data
+    # conn <- file("w.bin","wb")
+    # writeBin(enc, conn)
+    # close(conn)
+    # inconn <- file("w.bin","rb")
+    # outconn <- file("test.svg","wb")
+    # base64decode(what=inconn, output=outconn)
+    # close(inconn)
+    # close(outconn)
+    # new_id = gsub('\\.svg','\\.png',tmp_id)
+    # rsvg_png("test.svg", new_id)
+    #
+    #
+    # file.info(new_id)$size
+    #
+    # new_id = gsub('\\.svg','\\.png',tmp_id)
+    # rsvg_png("test.svg", new_id)
+    #
+    #
+    #
+    # projectList$`_attachments`[[tmp_id]] <- list(
+    #   content_type = "image/png",
+    #   data = base64encode(new_id)
+    # )
+    #
+    #
+    # RCurl::getURL(projectUrl, customrequest = "PUT", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(projectList, auto_unbox = TRUE, force = TRUE))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # stop("The heatmap plot is too big to save. Please try Subset your data (see 'Data Subsetting' ) and then draw the plot. ")
   }
 
 

@@ -80,7 +80,7 @@ create_new_project_check_input_format = function (inputFile) {
                     var current_row_value = Object.values(this_category[methods_in_this_category[tr]])
                     for (var td = -1; td < current_row_value.length; td++) {
                         if (td === -1) {
-                            method_tab_panes = method_tab_panes + "<td>" + (td + 2) + "</td>"
+                            method_tab_panes = method_tab_panes + "<td>" + (tr + 1) + "</td>"
                         } else if (td === 0) {
                             method_tab_panes = method_tab_panes + "<td><a href='#" + methods_in_this_category[tr].toLowerCase().replace(" ", "_") + "'>" + current_row_value[td] + "</a></td>"
                         } else {

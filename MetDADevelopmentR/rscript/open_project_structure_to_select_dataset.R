@@ -2,7 +2,7 @@
 #   project_id = "fdeq1560538867",
 #   selected_data = "result dataset1562687052.csv"
 # ){
-  save(project_id, selected_data, file = "test.RData")
+  # save(project_id, selected_data, file = "test.RData")
 
   projectList <- jsonlite::fromJSON(URLencode(
     paste0(
@@ -36,10 +36,16 @@
 
 
     result_id = sapply(result_project_structure, function(x){x$id})
+    # if(sum(result_id %in% selected_data)==0){
+    #   selected_data = result_id[substr(result_id,1,1)=="e" & grepl('\\.csv',result_id)]
+    #   selected_data = selected_data[length(selected_data)]
+    #
+    # }
     result_project_structure[[which(result_id %in% selected_data)]]$state = list(
       opened = TRUE,
       selected = TRUE
     )
+
 
 
   }

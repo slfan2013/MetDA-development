@@ -91,7 +91,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 fun_name: "open_project_structure_to_select_dataset"
             }
         }, function (session) {
-
+            //window.open(session.loc +"files/call_fun.RData")
             console.log(session)
             session.getObject(function (obj) {
                 ooo = obj
@@ -157,9 +157,9 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 }
             }, function (session) {
                 console.log(session)
+                //window.open(session.loc + "files/call_fun.RData")
                 session.getObject(function (obj) {
                     ooo = obj
-
                     var volcano_plot_p_value = false;
                     var volcano_plot_fold_change = false;
 
@@ -269,6 +269,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
         $('#parameter_settings_card').hide();
         $(".inputFileHidden").prop("disabled", true);
         $(".volcano_input_file_validating").text("Validating")
+   
 
 
         ocpu.call("check_input_format_volcano_input_file", {
@@ -301,7 +302,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
 
     results_card_body_load = function (page, obj, session) {//multiple pages may use one page style.
-        if (['missing_value_imputation', 'student_t_test', 'mann_whitney_test', 'data_subsetting', 'fold_change'].includes(page)) {
+        if (['missing_value_imputation', 'student_t_test', 'mann_whitney_u_test', 'data_transformation','data_subsetting', 'fold_change'].includes(page)) {
             $("#results_card_body").load("one_top_description_bottom_table.html", function () {
                 init_selectpicker()
 
@@ -586,6 +587,7 @@ if (window.location.href.split("#")[1] === 'project_overview') {
 
         ocpu.call("call_fun", { parameter: parameter }, function (session) {
             sss = session
+            //window.open(session.loc +"files/call_fun.RData")
             console.log(session)
             console.log("SUBMIT")
             session.getObject(function (obj) {
@@ -595,6 +597,11 @@ if (window.location.href.split("#")[1] === 'project_overview') {
                 $("#results_card").show();
                 results_card_body_load(window.location.href.split("#")[1], obj, session)
                 localStorage.setItem('parameter', JSON.stringify(parameter))
+
+                $("#save_results_tree").jstree("destroy");
+
+
+
             })
         }).fail(function (e) {
             Swal.fire('Oops...', e.responseText, 'error')

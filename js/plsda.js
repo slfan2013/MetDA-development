@@ -28,9 +28,12 @@ plsda_append_results = function (obj, session) {
     $("#results_description").html(obj.results_description[0])
 
 
+    //ss = session
+    //console.log(session)
+
     // for downloads.
-    files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", plot_url.score_plot, plot_url.loading_plot, plot_url.scree_plot, plot_url.vip_plot, plot_url.perm_plot];
-    files_names = ["sample_scores.csv", "compound_loadings.csv", 'score_plot.svg', 'loading_plot.svg', 'scree_plot.svg', 'vip_plot.svg', 'perm_plot.svg']
+    files_sources = [session.loc + "files/sample_scores.csv", session.loc + "files/compound_loadings.csv", session.loc + "files/vip_data.csv", plot_url.score_plot, plot_url.loading_plot, plot_url.scree_plot, plot_url.vip_plot, plot_url.perm_plot];
+    files_names = ["sample_scores.csv", "compound_loadings.csv", 'vip_data.csv','score_plot.svg', 'loading_plot.svg', 'scree_plot.svg', 'vip_plot.svg', 'perm_plot.svg']
     zipfile_name = "plsda_results.zip"
     $("#download_results").off("click").on("click", function () {
         parameters = JSON.parse(localStorage.getItem('parameter'))
@@ -73,12 +76,12 @@ plsda_append_results = function (obj, session) {
         parameters.vip_plot.layout.height = vip_plot_parameters.layout.height
         parameters.vip_plot.layout.width = vip_plot_parameters.layout.width*/
 
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none','none','none'])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','compound','none','none','none','none','none','none'])
     })
 
 
     fold_name = "PLSDA"
-    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml"]
+    files_types = ["application/vnd.ms-excel", "application/vnd.ms-excel", "application/vnd.ms-excel","image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml", "image/svg+xml"]
     $("#save_results").off("click").on("click", function () {// open a dialog and ask where to save.
         parameters = JSON.parse(localStorage.getItem('parameter'))
         parameters.scree_plot = scree_plot_parameters
@@ -122,7 +125,7 @@ plsda_append_results = function (obj, session) {
         parameters.vip_plot.layout.height = vip_plot_parameters.layout.height
         parameters.vip_plot.layout.width = vip_plot_parameters.layout.width*/
         
-        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','none','none','none','none','none','none'])
+        save_results(files_names, files_sources, files_types, fold_name, parameters, [0],['none','none','compound','none','none','none','none','none','none'])
     })
 
 

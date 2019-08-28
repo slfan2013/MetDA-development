@@ -202,17 +202,42 @@ if (type %in% c("result_summary", "all")) {
 
 
   if(type == "all"){
-    Q2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Predictive Accuracy")]])
-    R2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on Y")]])
-    variance =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on X")]])
 
-    n_perm = length(parameters$perm_plot$data$x[[1]])
+    if(is.null(parameters$scree_plot$data$name)){
 
-    best_predI = which.max(Q2)
-    perm_summary = list(
-      pQ2 = unlist(parameters$perm_plot$layout$pQ2),
-      pR2Y = unlist(parameters$perm_plot$layout$pR2Y)
-    )
+      names = sapply(parameters$scree_plot$data, function(x){
+        x$name
+      })
+      Q2 = unlist(parameters$scree_plot$data[[which(names %in% "Predictive Accuracy")]]$y)
+
+      R2 = unlist(parameters$scree_plot$data[[which(names %in% "Variance Explained on Y")]]$y)
+
+      variance = unlist(parameters$scree_plot$data[[which(names %in% "Variance Explained on X")]]$y)
+
+
+      n_perm = length(parameters$perm_plot$data[[1]]$x)
+
+      best_predI = which.max(Q2)
+      perm_summary = list(
+        pQ2 = unlist(parameters$perm_plot$layout$pQ2),
+        pR2Y = unlist(parameters$perm_plot$layout$pR2Y)
+      )
+    }else{
+
+      Q2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Predictive Accuracy")]])
+      R2 =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on Y")]])
+      variance =  unlist(parameters$scree_plot$data$y[[which(parameters$scree_plot$data$name == "Variance Explained on X")]])
+
+      n_perm = length(parameters$perm_plot$data$x[[1]])
+
+      best_predI = which.max(Q2)
+      perm_summary = list(
+        pQ2 = unlist(parameters$perm_plot$layout$pQ2),
+        pR2Y = unlist(parameters$perm_plot$layout$pR2Y)
+      )
+    }
+
+
 
   }
 

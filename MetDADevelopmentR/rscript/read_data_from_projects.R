@@ -1,3 +1,6 @@
+
+
+
 # read_data_from_projects = function(project_id, activate_data_id){
   f = read.csv(URLencode(paste0(
     "http://metda.fiehnlab.ucdavis.edu/db/metda_project/",
@@ -24,7 +27,10 @@
 
   e = data.matrix(e)
 
-  e = call_fun(parameter = list(e = e, fun_name="deal_with_missing_values"))
+  if(!exists("extempt")){
+    e = call_fun(parameter = list(e = e, fun_name="deal_with_missing_values"))
+  }
+
 
 
   f = f[f$label %in% rownames(e),]

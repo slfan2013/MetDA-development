@@ -1,0 +1,29 @@
+<div>
+    <form onsubmit="Submit()">
+
+        <!-- Here add sample information related non-changing-levels select div (this div should be updated every time user change a dataset)-->
+        1. Select Transformation Method  
+        <div class="form-group">
+            <select class="form-control selectpicker parameter" data-style="btn btn-link" id="method">
+              <option>log2</option>
+              <option>log10</option>
+              <option>square root</option>
+              <option>cubic root</option>
+              <option>boxcox</option>
+            </select>
+          </div>
+        
+        <div id="show_when_boxcox">
+            2. Treatment Groups
+            <div class="form-group">
+              <select multiple class="form-control selectpicker parameter" data-style="btn btn-link" id="treatment_group">
+              </select>
+          </div>
+        </div>
+
+        
+
+        <button type='submit' class="btn btn-primary btn-sm" id="submit">Submit</button>
+    </form>
+</div>
+<script src="js/data_transformation_parameter_settings.js"></script>

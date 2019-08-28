@@ -6,7 +6,7 @@
 pacman::p_load(data.table, missForest, tmvtnorm, magrittr)
 
 
-data = call_fun(parameter = list(project_id=project_id,activate_data_id=activate_data_id,fun_name="read_data_from_projects"))
+data = call_fun(parameter = list(project_id=project_id,activate_data_id=activate_data_id, extempt = TRUE,fun_name="read_data_from_projects"))
 e = data$e
 f = data$f
 p = data$p

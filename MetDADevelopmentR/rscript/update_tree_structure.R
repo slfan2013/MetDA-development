@@ -25,6 +25,18 @@
 
 
 
+  if(exists("delete")){
+
+
+    names_attachments = names(projectList$`_attachments`)
+
+
+
+    structure_id = sapply(projectList$project_structure, function(x) x$id)
+
+    projectList$`_attachments` = projectList$`_attachments`[which(names_attachments %in% structure_id)]
+
+    }
 
 
 
