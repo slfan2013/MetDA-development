@@ -237,7 +237,7 @@ cumsum = function (myarray) {
 
 
 start_cal = function () {
-  $("body").append('<div id="overlay" style="background-color:rgba(0,0,0,0.5);position:absolute;top:0;left:0;height:100%;width:100%;z-index:999"></div>');
+  $("body").append('<div id="overlay" style="background-color:rgba(0,0,0,0.5);position:absolute;top:0;left:0;height:1000%;width:100%;z-index:9999"></div>');
 }
 end_cal = function () {
   $("#overlay").remove();
@@ -560,8 +560,10 @@ function mergeDeep(target, ...sources) {
 
 
 save_results = function (files_names, files_sources, files_types, fold_name, parameters, epf_index, compound_sample_index) {
+  start_cal()
   // 2. What to do after get all the Results.
   // if it is a project, need to ask user to select a folder first. Otherwise, just call save_results_to_project to save in a temp project.
+  
   when_get_allResults_done = function (fold_name) {
     console.log(fold_name)
     var is_temp_project = parameter.project_id.includes("temp_project_")
@@ -586,6 +588,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
               'check_callback': true
             }
           })
+          end_cal()
           current_fold_name = fold_name
           $('#save_results_tree').on("select_node.jstree", function (e, data) {
             current_fold_name = window["current_fold_name"]
@@ -611,6 +614,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
             }
 
             var current_fold_name = prompt("Please Enter a Folder Name.", current_fold_name);
+            start_cal()
 
             if (["\\", "/", ":", "*", "?", "<", ">", "|"].some(el => current_fold_name.includes(el))) {
               alert("Error: folder name cannot contain any of the following '\\/:*?<>| '.")
@@ -667,6 +671,7 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
               }
             }, function (session) {
               session.getObject(function (obj) {
+                end_cal()
                 ooo = obj
                 $("#save_results_tree").jstree("destroy");
                 $("#save_results_tree").jstree({
@@ -682,11 +687,13 @@ save_results = function (files_names, files_sources, files_types, fold_name, par
               Swal.fire('Oops...', e3.responseText, 'error')
             })
           } else {
+            end_cal()
             window.open(session.loc + "files/" + parameter.fun_name + " - result.zip");
           }
         }
       })
     }).fail(function (e2) {
+      end_cal()
       Swal.fire('Oops...', e2.responseText, 'error')
     })
   }

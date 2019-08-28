@@ -8,12 +8,14 @@ $("#create_new_project").click(function () {
 
 
 create_new_project_check_input_format = function (inputFile) {
+    start_cal()
     $(".inputFileHidden").prop("disabled", true);
     $(".inputFile_validating").text("Validating")
     ocpu.call("inputFile", {
         path: $("#" + inputFile)[0].files[0]
     }, function (session) {
         session.getObject(function (obj) {
+            end_cal()
             oo = obj
             project_id = obj.project_id[0]
             $(".inputFileHidden").prop("disabled", false);
@@ -24,6 +26,7 @@ create_new_project_check_input_format = function (inputFile) {
             localStorage['activate_data_id'] = 'e.csv'
         })
     }).fail(function (e) {
+        end_cal()
         //alert(e.responseText)
         Swal.fire('Oops...', e.responseText, 'error')
         $(".inputFileHidden").prop("disabled", false);
@@ -125,11 +128,13 @@ create_new_project_check_input_format = function (inputFile) {
 
 
 create_project = function () {
+
     // use R to validate the new project name.
     
     if(["\\","/",":","*","?","<",">","|"," "].some(el=>$("#new_project_name").val().includes(el))){
         alert("Project Name Cannot Contain '\\/:*?<>| '.")
     }else{
+        start_cal()
         ocpu.call("call_fun", {
             parameter: {
                 user_id: localStorage['user_id'],
@@ -153,18 +158,21 @@ create_project = function () {
                     }, function (session2) {
                         console.log(session2)
                         session2.getObject(function (obj2) {
+                            end_cal()
                             ooo = obj2
                             console.log(obj2)
                             update_projects_table()
                             $('#create_new_project_collapse').collapse('toggle');
                         })
                     }).fail(function (e2) {
+                        end_cal()
                         Swal.fire('Oops...', e2.responseText, 'error')
                     })
     
                 }
             })
         }).fail(function (e) {
+            end_cal()
             Swal.fire('Oops...', e.responseText, 'error')
         })
     }
