@@ -25,7 +25,7 @@ initialize_nav_link = function () {
 
         // check which is active.
         current_items = Object.keys(data.methods_structure[category_names[cat]])
-        console.log(current_items)
+        
 
 
 
@@ -34,7 +34,7 @@ initialize_nav_link = function () {
         } else {
           being_active = false
         }
-        console.log(being_active)
+        
 
         if (being_active) {
           sidebar_ul = sidebar_ul + '<li class="dropdown-submenu">' +
