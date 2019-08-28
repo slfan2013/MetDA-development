@@ -11,10 +11,11 @@ initialize_nav_link = function () {
   }, function (session) {
     console.log(session)
     session.getObject(function (obj) {
+      dta = obj
       var data = obj
       methods_data = data
       sidebar_ul = ""
-
+      $("#navbarDropdownMenuLink").text(window.location.href.split("#")[1])
 
       sidebar_ul = sidebar_ul + '<li class="nav-item"><a class="nav-link" href="#project_overview">Project Overview <span class="sr-only">(current)</span></a></li>'
 
@@ -25,7 +26,6 @@ initialize_nav_link = function () {
 
         // check which is active.
         current_items = Object.keys(data.methods_structure[category_names[cat]])
-        
 
 
 
@@ -48,7 +48,6 @@ initialize_nav_link = function () {
 
         for (var it = 0; it < current_items.length; it++) {
           sidebar_ul = sidebar_ul + '<li><a class="dropdown-item" href="#' + current_items[it] + '">' + data.methods_structure[category_names[cat]][current_items[it]]['Method Name'] + '</a></li>'
-
         }
 
         sidebar_ul = sidebar_ul + '</ul>'
@@ -79,6 +78,9 @@ initialize_nav_link = function () {
         }
         return false;
       });
+
+      
+
     })
   })
 

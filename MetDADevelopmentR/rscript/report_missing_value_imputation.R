@@ -11,7 +11,7 @@ if(!exists("remove_missing_values_more_than")){remove_missing_values_more_than=N
 if(!exists("remove_missing_values_more_than_value")){remove_missing_values_more_than_value=NULL}
 if(!exists("summary_data")){summary_data=NULL}
 
-if(!exists("doc")){doc=NULL}
+if(!exists("doc")){doc=NULL;print("!!")}
 if(!exists("table_index")){table_index=1}
 if(!exists("figure_index")){figure_index=1}
 if(!exists("project_id")){project_id = ""}

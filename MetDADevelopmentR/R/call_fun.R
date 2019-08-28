@@ -2,6 +2,7 @@ call_fun <- function(parameter, ...) {
   save(parameter, file = "call_fun.RData") # for debugging
 
 
+
   load("call_fun.RData")
   parameter_names <- names(parameter)
 

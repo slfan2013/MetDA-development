@@ -1,6 +1,36 @@
 console.log("project_overview.js")
 
 var update_jstree = function (project_structure) {
+
+
+    $("#generate_report").off('click').on('click', function(){
+        if(project_structure.length<5){
+            alert('No statistics is done yet. Click "PROJECT_OVERVIEW" for more options.')
+        }else{
+            start_cal()
+            ocpu.call('call_fun',{parameter:{
+                project_id:project_structure[0].id,
+                fun_name:"generate_report"
+            }},function(session){
+                end_cal()
+                console.log(session)
+                //window.open(session.loc + "files/call_fun.RData")
+                session.getObject(function(obj){
+                    if(obj){
+                        window.open(session.loc + "files/MESOLUTION_REPORT_"+project_structure[0].text+".docx")
+                    }
+                })
+            }).fail(function(e){
+                end_cal()
+            })
+        }
+
+    })
+
+    
+
+
+
     $("#project_structure").jstree("destroy");
     $("#project_structure").jstree({
         'core': {
