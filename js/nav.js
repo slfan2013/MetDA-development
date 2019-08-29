@@ -10,6 +10,8 @@ refresh = function () {
 
     if(result){
         localStorage.clear();
+        window.location.replace("#home");
+        location.reload();
     }
     
 }

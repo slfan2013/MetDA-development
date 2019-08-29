@@ -12,8 +12,7 @@
 
             // check if this is a new user.
             if (localStorage['user_id'] === undefined) {
-               //start_cal()
-               console.log('user_id not found. Creating new user_id!!!!!!!!!!!!!!!!!!!!!!!!')
+               start_cal()
                var new_user_id = "user" + get_time_string()
                ocpu.call("call_fun", {
                   parameter: {
@@ -31,7 +30,6 @@
                }).fail(function (e) {
                   Swal.fire('Oops...', e.responseText, 'error')
                })
-
             }
 
 
