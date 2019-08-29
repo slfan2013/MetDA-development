@@ -12,7 +12,7 @@
 
             // check if this is a new user.
             if (localStorage['user_id'] === undefined) {
-
+               //start_cal()
                console.log('user_id not found. Creating new user_id!!!!!!!!!!!!!!!!!!!!!!!!')
                var new_user_id = "user" + get_time_string()
                ocpu.call("call_fun", {
@@ -22,7 +22,7 @@
                   }
                }, function (session) {
                   console.log("create_new_user")
-                  console.log(session)
+                  //window.open(session.loc +"files/call_fun.RData")
                   session.getObject(function (obj) {
                      console.log(obj)
                      localStorage['user_id'] = new_user_id

@@ -1,3 +1,6 @@
+# Initialize the initiate in the metda_userinfo
+
+
 new_user_id = 'initiate'
 
 # get the list (including styles) first.
@@ -39,6 +42,8 @@ new_user_list$`_attachments`[[table_name]] <- list(
 result = RCurl::getURL(projectUrl, customrequest = "POST", httpheader = c("Content-Type" = "application/json"), postfields = jsonlite::toJSON(new_user_list, auto_unbox = TRUE, force = TRUE))
 
 
+result
+
 
 
 if(grepl("conflict", result)){
@@ -46,8 +51,6 @@ if(grepl("conflict", result)){
   initiateList <- jsonlite::fromJSON(initiateUrl, simplifyVector = FALSE)
   RCurl::getURL(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate?rev=",initiateList$`_rev`), customrequest = "DELETE", httpheader = c("Content-Type" = "application/json"))
 }
-
-result
 
 
 
