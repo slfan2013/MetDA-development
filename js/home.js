@@ -267,7 +267,10 @@ when_projects_table_click_selected = function (project_id) {
 
 update_projects_table()
 
-localStorage['big_category'] = 'in_and_out'
+
+if(localStorage['big_category'] === undefined){
+    localStorage['big_category'] = 'in_and_out'
+}
 change_big_category = function (category) {
     localStorage['big_category'] = category
 }
