@@ -36,9 +36,6 @@ create_new_project_check_input_format = function (inputFile) {
 
 
 
-//$.getJSON("https://metda.fiehnlab.ucdavis.edu/db/templates/methods", function (data) {
-    
-
     ocpu.call("call_fun",{
         parameter:{
             fun_name:"get_method"
@@ -116,6 +113,9 @@ create_new_project_check_input_format = function (inputFile) {
             }
             $("#method_nav_items").html(method_nav_items)
         })
+    }).fail(function (e) {
+        //end_cal()
+        Swal.fire('Oops...', e.responseText, 'error')
     })
 
 
@@ -266,7 +266,7 @@ when_projects_table_click_selected = function (project_id) {
 
 update_projects_table()
 
-localStorage['big_category'] = 'project'
+localStorage['big_category'] = 'in_and_out'
 change_big_category = function (category) {
     localStorage['big_category'] = category
 }

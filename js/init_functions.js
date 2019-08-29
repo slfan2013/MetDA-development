@@ -803,10 +803,9 @@ function sort(arr, desending = false) {
 update_projects_table = function (id = "projects_table", select_call_back = "when_projects_table_click_selected", rename_call_back = "when_projects_table_click_renamed", delete_call_back = "when_projects_table_click_deleted") {
   console.log("HERE")
   console.log($("#projects_table").length)
-  //Papa.parse("https://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/" + localStorage['user_id'] + "/metda_userinfo_" + localStorage['user_id'] + ".csv", {
-  //download: true,
-  //complete: function (results) {
 
+
+if(localStorage.user_id !== undefined){
   ocpu.call("call_fun", {
     parameter: {
       user_id:localStorage['user_id'],
@@ -913,7 +912,16 @@ update_projects_table = function (id = "projects_table", select_call_back = "whe
         });
       }
     })
-  })
+  }).fail(function (e) {
+    //end_cal()
+    //Swal.fire('Oops...', e.responseText, 'error')
+    alert("We didn't find the information associated with your PC. Please click 'CLEAR MY ACCOUNT' button (top-right) to reset.")
+})
+
+}else{
+  
+}
+
 
 
 
