@@ -61,7 +61,7 @@
                         $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html", init_ripples)
                      }
                   }
-                  setTimeout(function () { init_fileInput() }, 500)
+                  setTimeout(function () { init_fileInput() }, 1500)
 
                   if (['home', 'one_click'].includes(window.location.href.split("#")[1]) || localStorage['big_category'] === 'in_and_out') {
                      $("#navbarDropdownMenuLink").hide()

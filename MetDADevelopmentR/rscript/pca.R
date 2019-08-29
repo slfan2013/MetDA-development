@@ -411,7 +411,7 @@ if(exists("score_plot")){# this means this call is from quick_analysis. Here we 
 
 
 }else{
-  result = list(results_description = report_html,p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance)
+  result = list(results_description = report_html,p = p, f = f, sample_scores = sample_scores, compound_loadings = compound_loadings, variance = variance[1:min(length(variance),10)])
 
 }
 

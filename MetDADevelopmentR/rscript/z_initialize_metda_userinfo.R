@@ -50,6 +50,8 @@ if(grepl("conflict", result)){
   initiateUrl <- URLencode("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate")
   initiateList <- jsonlite::fromJSON(initiateUrl, simplifyVector = FALSE)
   RCurl::getURL(paste0("http://metda.fiehnlab.ucdavis.edu/db/metda_userinfo/initiate?rev=",initiateList$`_rev`), customrequest = "DELETE", httpheader = c("Content-Type" = "application/json"))
+
+  print("RUN AGAIN!")
 }
 
 
