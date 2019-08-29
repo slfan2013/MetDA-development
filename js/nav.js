@@ -15,3 +15,7 @@ refresh = function () {
     }
     
 }
+
+open_tutorial = function(){
+    
+}
