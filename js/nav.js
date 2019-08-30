@@ -17,5 +17,5 @@ refresh = function () {
 }
 
 open_tutorial = function(){
-    
+    window.open("https://github.com/slfan2013/MetDA-development/raw/master/MetSolution%20Tutorial/MetSolution%20-%20Tutorial.pptx")
 }
