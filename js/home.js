@@ -261,12 +261,16 @@ when_projects_table_click_selected = function (project_id) {
     })*/
 	localStorage['activate_project_id'] = project_id
 	localStorage['activate_data_id'] = 'e.csv'
+	change_big_category('project')
     window.location.href = "#project_overview";
 }
 
 update_projects_table()
 
-localStorage['big_category'] = 'in_and_out'
+
+if(localStorage['big_category'] === undefined){
+    localStorage['big_category'] = 'in_and_out'
+}
 change_big_category = function (category) {
     localStorage['big_category'] = category
 }
