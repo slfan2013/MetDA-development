@@ -13,6 +13,8 @@
             // check if this is a new user.
             if (localStorage['user_id'] === undefined) {
                start_cal()
+               window.location.href = "#";
+               console.log("!!")
                var new_user_id = "user" + get_time_string()
                ocpu.call("call_fun", {
                   parameter: {
@@ -25,6 +27,7 @@
                   session.getObject(function (obj) {
                      console.log(obj)
                      localStorage['user_id'] = new_user_id
+
                      location.reload();
                   })
                }).fail(function (e) {
@@ -54,27 +57,39 @@
                   } else if (window.location.href.split("#")[1] === 'sample_size_calculator') {
                      $("#sample_size_calculator_content").load("sample_size_calculator.html")
                   } else {
-                     if (["pca", "plsda", "missing_value_imputation", "project_overview", "student_t_test","mann_whitney_u_test", "data_transformation", "data_subsetting", "fold_change", "heatmap", 'boxplot', 'volcano', 'ssize'].includes(window.location.href.split("#")[1])) {
+                     if (["pca", "plsda", "missing_value_imputation", "project_overview", "student_t_test", "mann_whitney_u_test", "data_transformation", "data_subsetting", "fold_change", "heatmap", 'boxplot', 'volcano', 'ssize'].includes(window.location.href.split("#")[1])) {
                         //$("#templates_content").show();
                         $("#templates_content").load("templates.html", init_ripples)
                      } else {
                         $("#" + window.location.href.split("#")[1] + "_content").load(window.location.href.split("#")[1] + ".html", init_ripples)
                      }
                   }
-                  setTimeout(function () { init_fileInput() }, 1500)
+                  setTimeout(function () {
+                     init_fileInput();
+                     //$('#test').tooltip()
+
+                     $("[data-toggle='tooltip']").each(function () {
+                        $(this).tooltip({
+                           placement:'right'
+                        });
+                     })
+                     
+
+                  }, 500)
 
                   if (['home', 'one_click'].includes(window.location.href.split("#")[1]) || localStorage['big_category'] === 'in_and_out') {
                      $("#navbarDropdownMenuLink").hide()
                   } else {
                      $("#navbarDropdownMenuLink").show()
-                     $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview', 'one_click', 'missing_value_imputation', 'data_transformation','pca', 'student_t_test', 'mann_whitney_u_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'data_subsetting'], ['Project Overview', 'One-Click Automated Analysis', 'Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
+                     $("#navbarDropdownMenuLink").text(revalue([window.location.href.split("#")[1]], ['project_overview', 'one_click', 'missing_value_imputation', 'data_transformation', 'pca', 'student_t_test', 'mann_whitney_u_test', 'fold_change', 'heatmap', 'boxplot', 'volcano', 'ssize', 'plsda', 'data_subsetting'], ['Project Overview', 'One-Click Automated Analysis', 'Missing Value Imputation', 'Principal Component Analysis (PCA)', "Student's t-test", 'Fold Change', 'Heatmap & Dendrogram', 'Boxplot', 'Volcano Plot', 'Sample Size Estimation for Microarray Experiments', 'Partial Least Square - Discriminant Analysis (PLSDA)', 'Mann-Whitney U test', 'Data Subsetting'])[0])
                      initialize_nav_link()
                   }
+
                }
                load_page_by_url();
                window.addEventListener('hashchange', load_page_by_url, false);
-               clearInterval(check_loaded_interval); 
-               $("#loading").hide(); 
+               clearInterval(check_loaded_interval);
+               $("#loading").hide();
                $("#content").show();
             })
          }
@@ -156,7 +171,7 @@
          event.preventDefault();
       }
 
-      
+
 
    </script>
 

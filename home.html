@@ -4,7 +4,9 @@
             <h1 class="font-weight-bold text-black mb-3" style=" font-weight:700!important">MetSolution</h1>
             <p class="text-black mb-4 animated fadeIn slower">
                 A web page tailored for providing statistics solutions for Metabolomics.</p>
-            <button class="btn btn-primary"  title="Get Started" onClick="document.getElementById('here').scrollIntoView();">Let's Get Started</button>
+            <button class="btn btn-primary"  title="Get Started" onClick="document.getElementById('here').scrollIntoView();" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Let's Get Started</button>
+
+            
         </div>
     </div>
     <div class="col-lg-6">
@@ -41,7 +43,7 @@
 <div class="row" id='here'>
     <div class="col-md-12">
         <div class="page-categories">
-            <h2 class="font-weight-bold text-black mb-3 title text-center">How it Works</h2>
+            <h2 class="font-weight-bold text-black mb-3 title text-center">How it Works<sup data-toggle="tooltip" data-placement="top" title="tutorial"><a href="#" onclick="open_tutorial();event.preventDefault();" ><i class="material-icons">help_outline</i></a></sup></h2>
             <br />
             <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
                 <li class="nav-item">
@@ -67,7 +69,7 @@
                 <div class="tab-pane" id="link7">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Description about product</h4>
+                            <h4 class="card-title">Description about product<sup data-toggle="tooltip" data-placement="top" title="tutorial"><a href="#" onclick="open_tutorial();event.preventDefault();" ><i class="material-icons">help_outline</i></a></sup></h4>
                             <p class="card-category">
                                 More information here
                             </p>
@@ -82,7 +84,7 @@
                 <div class="tab-pane active" id="projects">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Projected Analyses</h4>
+                            <h4 class="card-title">Projected Analyses<sup data-toggle="tooltip" data-placement="top" title="tutorial"><a href="#" onclick="open_tutorial();event.preventDefault();" ><i class="material-icons">help_outline</i></a></sup></h4>
                             <p class="card-category">
                                 Create a project and analyze your data step by step.
                             </p>
@@ -151,7 +153,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title"><b style="color:#ff9800">In</b>put <b style="color:#ff9800">&</b> <b
-                                    style="color:#ff9800">Out</b>put</h4>
+                                    style="color:#ff9800">Out</b>put<sup data-toggle="tooltip" data-placement="top" title="tutorial"><a href="#" onclick="open_tutorial();event.preventDefault();" ><i class="material-icons">help_outline</i></a></sup></h4>
                             <p class="card-category">
                                 This module collects many common statistical analysis methods used in metabolomics. Find
                                 the method you want to apply on your data. Input a dataset file according to the
