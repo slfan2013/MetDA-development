@@ -16,6 +16,11 @@ refresh = function () {
     
 }
 
-open_tutorial = function(){
-    window.open("https://github.com/slfan2013/MetDA-development/raw/master/MetSolution%20Tutorial/MetSolution%20-%20Tutorial.pptx")
+open_tutorial = function(name=null){
+    if(name == null){
+        window.open("https://github.com/slfan2013/MetDA-development/raw/master/MetSolution%20Tutorial/MetSolution%20-%20Tutorial.pptx")
+    }else{
+        window.open("https://github.com/slfan2013/MetDA-development/raw/master/MetSolution%20Tutorial/MetSolution%20-%20Tutorial - " + name + ".pptx")
+    }
+    
 }
